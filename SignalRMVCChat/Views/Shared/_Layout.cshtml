@@ -1,0 +1,161 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.Service
+@using TelegramBotsWebApplication
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="shortcut icon" href="~/Content/HelpImages/logo.png" />
+
+    <title>@ViewBag.Title - پشتیبان همراه </title>
+    @*@Styles.Render("~/bundles/css/flikr")*@
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"/>
+    <link rel="stylesheet" href="~/Content/ThemeFlikr/lifetrakr/plugins/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/ThemeFlikr/lifetrakr/plugins/themify-icons/themify-icons.css" />
+    <link rel="stylesheet" href="~/Content/ThemeFlikr/lifetrakr/plugins/slick/slick.css" />
+    <link rel="stylesheet" href="~/Content/ThemeFlikr/lifetrakr/plugins/slick/slick-theme.css" />
+    <link rel="stylesheet" href="~/Content/ThemeFlikr/lifetrakr/css/style.css" />
+
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
+
+
+    @Scripts.Render("~/bundles/modernizr")
+    
+    
+    <link rel="stylesheet" href="~/Content/Site.css"/>
+
+</head>
+
+@{ 
+    var baseUrl= MyGlobal.GetBaseUrl(Request.Url);
+}
+
+<body class="body-wrapper">
+
+<nav class="navbar main-nav fixed-top navbar-expand-lg large"  style="margin-bottom:0px">
+    <div class="container">
+       <li class="navbar-brand" style="height: 19px !important;">
+                             <a class="navbar-brand scrollTo" href="/" style="color:white;font-size: 20px">
+                                 افزونه گفتگوی آنلاین
+                             </a>
+                             </li>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="ti-menu text-white"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          
+            <ul class="navbar-nav ml-auto navbar-right">
+                <!-- <li class="nav-item">
+                    <a class="nav-link scrollTo" href="#home">معرفی</a>
+                </li>-->
+                <!--<li class="nav-item">
+                    <a class="nav-link scrollTo" href="#about">درباره </a>
+                </li>-->
+
+                <li class="nav-item">
+                    <a class="nav-link scrollTo" href="/Home/Docs">راهنما</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link scrollTo" href="@baseUrl/#feature">امکانات</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link scrollTo" href="@baseUrl/#pricingTable">قیمت</a>
+                </li>
+                @*<li class="nav-item">
+                    <a class="nav-link scrollTo" href="@baseUrl/#FreeDownloadNow">دانلود اپ های پشتیبان</a>
+                </li>*@
+                @*<li class="nav-item">
+                    <a class="nav-link scrollTo" href="@baseUrl/#extentionDownloadNow">نصب افزونه</a>
+                </li>*@
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link scrollTo" href="/Customer/Dashboard">داشبورد
+                            <i class="ti-user"></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link scrollTo" href="/Security/Account/Login">نصب افزونه </a>
+                    </li>
+                }
+
+                <!-- <li class="nav-item">
+                    <a class="nav-link scrollTo" href="#contact">مشتریان راضی</a>
+                </li>-->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+        @RenderBody()
+        
+<footer class="footer-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mr-auto">
+                <div class="footer-logo">
+                    افزونه گفتگوی آنلاین وب
+                    @*<img src="~/Content/ThemeFlikr/lifetrakr/images/logo.png" alt="footer-logo">*@
+                </div>
+                <div class="copyright">
+                    <p>تمامی حقوق محفوظ است </p>
+                </div>
+            </div>
+            <div class="col-lg-6 text-lg-right">
+                <!-- Social Icons -->
+                @*<ul class="social-icons list-inline">
+                    <li class="list-inline-item">
+                        <a target="_blank" href="https://facebook.com/themefisher"><i
+                                class="text-primary ti-facebook"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a target="_blank" href="https://twitter.com/themefisher"><i
+                                class="text-primary ti-twitter-alt"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a target="_blank" href="https://github.com/themefisher"><i
+                                class="text-primary ti-linkedin"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a target="_blank" href="https://instagram.com/themefisher"><i
+                                class="text-primary ti-instagram"></i></a>
+                    </li>
+                </ul>*@
+                <!-- Footer Links -->
+                <ul class="footer-links list-inline">
+                    <li> <a style="color: white" class="scrollTo" href="/Account/AdminLogin">ورود به سیستم</a></li>
+                    
+                    @if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        <li><a style="color: white"  href="/Account/RegisterAdmin">ثبت نام ادمین</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+   @Scripts.Render("~/bundles/js/flikr")
+
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")*@
+    <script src="~/Content/Tools.js"></script>
+    @RenderSection("scripts", required: false)
+
+
+
+<div id="gapPlugin"></div>
+
+@Html.Partial("~/Areas/Customer/Views/Shared/ExampleJsPlugin.cshtml",new MyWebsite(),null)
+</body>
+</html>

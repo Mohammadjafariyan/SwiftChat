@@ -1,0 +1,27 @@
+﻿@using System.Data.Entity
+@using SignalRMVCChat.Areas.Customer.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.SysAdmin.Service
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Models.MyAccountPayment>
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    
+    
+    ViewBag.Title = "صورتحساب ها";
+    ViewBag.Desc = "صورتحساب ها";
+}
+
+<br/>
+@{
+    var accountPaymentService = Injector.Inject<MyAccountPaymentService>();
+    var myAccountPayments =
+        accountPaymentService.GetQuery()
+            .Include(q => q.MyAccount)
+            .Where(q => q.PaymentIsOk)
+            .Where(a=>a.MyAccount.ParentId.HasValue==false).ToList();
+}
+
+@Html.Partial("~/Areas/Customer/Views/Shared/ShowBillsPartial.cshtml", myAccountPayments)
+
+

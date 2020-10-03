@@ -1,0 +1,48 @@
+﻿@model SignalRMVCChat.Areas.Customer.Controllers.MyAccountViewModel
+
+@{
+    Layout = null;
+}
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>انتخاب</th>
+        <th>آدرس وب سایت</th>
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        if (Model?.Parent?.MyWebsites.Count==0)
+        {
+            <p>هیچ وب سایتی تعریف نشده است</p>
+        }
+        foreach (var parentMyWebsite in Model?.Parent?.MyWebsites)
+        {
+            bool hasWebsite = false;
+            if (Model?.childrenWebsites?.Count > 0)
+            {
+                hasWebsite = Model?.childrenWebsites?
+                .Any(c => c.Id == parentMyWebsite.Id) ?? false;
+            }
+            int childId=Model?.ChildId ?? 0;
+            <tr>
+                <td>
+                    @if (hasWebsite)
+                    {
+                        <input myaccountid="@childId" class="websiteSelected" checked="checked" type="checkbox" name="selectedWebsite" value="@parentMyWebsite.Id" />
+                    }
+                    else
+                    {
+                        <input myaccountid="@childId"  class="websiteSelected"  type="checkbox" name="selectedWebsite" value="@parentMyWebsite.Id"/>
+                    }
+                </td>
+                <td>@parentMyWebsite.BaseUrl</td>
+            </tr>
+        }
+           
+        }
+
+    </tbody>
+</table>

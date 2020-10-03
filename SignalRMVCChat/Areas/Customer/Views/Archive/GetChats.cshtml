@@ -1,0 +1,107 @@
+﻿@using SignalRMVCChat.Service
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Models.Chat>
+
+@{
+
+    var adminChat=  Model?.EntityList?.FirstOrDefault(f => f.SenderMySocket.IsCustomerOrAdmin ==  MySocketUserType.Admin);
+    var customerChat=  Model?.EntityList?.FirstOrDefault(f => f.SenderMySocket.IsCustomerOrAdmin ==  MySocketUserType.Customer);
+ 
+    ViewBag.AdminName = adminChat?.MyAccount?.Name ;
+    ViewBag.CustomerName = customerChat?.Customer?.Name;
+}
+<table class="table">
+    <thead>
+    <tr>
+        <th colspan="99">لیست چت ها </th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @if (Model == null)
+    {
+        <div class="alert alert-danger">اطلاعاتی یافت نشد</div>
+    }
+    else
+    {
+        <tr>
+            <td colspan="99">
+                @Html.Partial("renderPaging",Model.Total,new ViewDataDictionary
+                {
+                    {"page",ViewBag.page}
+                })
+               
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th >  کاربر  @ViewBag.CustomerName</th>
+                            <th >   ادمین   @ViewBag.AdminName</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var chat in Model.EntityList)
+                    {
+                    
+
+                        <tr class="achat" >
+                            <td >
+                                @if (chat.SenderMySocket.IsCustomerOrAdmin == MySocketUserType.Customer)
+                                {
+                                    <span class="btn btn-info">@Html.Partial("renderSingleChat", chat)</span>
+                                }
+
+                            </td>
+                            <td style="border-right: 1px solid #ddd " >
+                                @if (chat.SenderMySocket.IsCustomerOrAdmin == MySocketUserType.Admin)
+                                {    
+                                   
+
+                                    <span class="btn btn-success">@Html.Partial("renderSingleChat", chat)</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+
+            </td>
+            <td>
+                @*<table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="99">ادمین </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var chat in Model.EntityList)
+                    {
+
+                        <tr class="achat">
+                            
+                        </tr>
+                    }
+                    </tbody>
+                </table>*@
+            </td>
+        </tr>
+       
+        <tr>
+            <td colspan="99">
+                @Html.Partial("renderPaging",Model.Total,new ViewDataDictionary
+                {
+                    {"page",ViewBag.page}
+                })
+               
+            </td>
+        </tr>
+    }
+
+
+
+    </tbody>
+</table>

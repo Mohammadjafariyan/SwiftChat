@@ -1,0 +1,35 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@using TelegramBotsWebApplication.ActionFilters
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Areas.security.Models.Ticket>
+
+
+<table class="table table-responsive">
+    <thead>
+    <tr>
+        <th>عنوان</th>
+        <th>متن</th>
+        <th>تاریخ آخرین تغییر</th>
+        <th>وضعیت</th>
+        <th>عملیات</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var rec in Model.EntityList)
+    {
+        <tr >
+            <td>@MyGlobal.GetSummary(rec.Title)</td>
+            <td>@MyGlobal.GetSummary(rec.Body)</td>
+            <td>@MyGlobal.ToIranianDate(rec.ChangeDateTime)</td>
+            <td style="word-wrap: break-word">
+                @{
+                    string name = rec.Status.GetAttributeOfType<EnumName>()?.Name;
+                    <span> @name</span>
+                }
+            </td>
+            <td>
+                <a href="@ViewBag.detailUrl?ticketId=@rec.Id">مشاهده</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

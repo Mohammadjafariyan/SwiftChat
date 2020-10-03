@@ -1,0 +1,57 @@
+﻿@using SignalRMVCChat.Models
+@model SignalRMVCChat.Areas.Customer.Controllers.ArchiveViewModel
+
+
+<div class="card">
+    <div class="card-header">
+        <h5>لیست وب سایت هایی که شما به آن ها دسترسی دارید </h5>
+    </div>
+    <div class="card-block">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>آدرس وب سایت</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (TempData["myAccountId"] == null)
+            {
+                <div class="alert alert-danger">TempData["myAccountId"] is null</div>
+            }
+            else
+            {
+                foreach (var web in Model.HasAccessWebsites)
+                {
+                    var adminToken = MySpecificGlobal.CreateTokenForAdmin(web.BaseUrl, (int) TempData["myAccountId"],
+                        web.Id
+                        );
+                    <tr>
+                        <td>
+                            <form action="/customer/archive" method="post" >
+                                
+                                <input type="hidden" hidden="hidden" name="token" value="@TempData["token"]"/>
+                                <input type="hidden" hidden="hidden" name="adminToken" value="@adminToken"/>
+                                <a href="#" onclick="nextUrlSubmit(this)"> @web.BaseUrl </a >
+
+                                
+                            </form>
+                        </td >
+                    </tr>
+                }
+            }
+
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+<script>
+function nextUrlSubmit(THIS) {
+    $(THIS).parent().submit();
+  
+}
+</script>

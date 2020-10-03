@@ -1,0 +1,30 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@model dynamic
+
+@{
+    Layout = null;
+}
+
+@{
+    var httpBaseUrl = MyGlobal.GetBaseUrl(Request.Url);
+}
+@{
+    string htmlstr = File.ReadAllText(Server.MapPath("~/Content/ClientApp/my-app/build/index.html"));
+
+    string baseUrl = httpBaseUrl+ "/Content/ClientApp/my-app/build/";
+    htmlstr = htmlstr.Replace($@"href=""", $@"href=""{baseUrl}");
+    htmlstr = htmlstr.Replace($@"src=""", $@"src=""{baseUrl}");
+
+    htmlstr = htmlstr.Replace($@"@websiteToken@", TempData["websiteToken"] as string);
+    htmlstr = htmlstr.Replace($@"@port@", Request.Url.Port+"");
+
+
+}
+
+
+@if (TempData["err"] != null)
+{
+    <div class="alert alert-danger">@TempData["err"]</div>
+}
+
+@Html.Raw(htmlstr)

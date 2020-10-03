@@ -1,0 +1,43 @@
+﻿@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model List<MyWebsite>
+
+@{
+    ViewBag.Title = "وب سایت های تعریف شده";
+    Layout = "../Shared/_Layout_Customer.cshtml";
+}
+
+
+<h2>لطفا ابتدا وبسایت را انتخاب نمایید</h2>
+
+<style>
+    .aRow:hover{
+    background-color: #0edbf9;
+    }
+</style>
+
+
+<div class="card">
+                                                    <div class="card-header">
+                                                        <h5>@ViewBag.Title </h5>
+                                                    </div>
+<div class="card-block">
+           
+<table class="table table-bordered">
+    <tbody>
+    @foreach (var rec in Model)
+    {
+        <tr class="aRow" >
+
+            <td>
+                <a href="/customer/pluginCustomized/detail?websiteId=@rec.Id">@rec.Id</a>
+            </td>
+            <td>
+                <a href="/customer/pluginCustomized/detail?websiteId=@rec.Id">@rec.BaseUrl</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>                                            
+</div>
+</div>

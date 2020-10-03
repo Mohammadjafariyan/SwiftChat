@@ -1,0 +1,46 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "ارسال تیکت پشتیبانی";
+    Layout = "~/Areas/Customer/Views/Shared/_Layout_Customer.cshtml";
+}
+
+
+
+
+<div class="page-wrapper">
+    <!-- Page-header start -->
+    <div class="page-header horizontal-layout-icon menu-rtl">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <div class="d-inline">
+                        <h4>تیکت ها </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page-header end -->
+    <!-- Page body start -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>لیست تیکت ها</h5>
+                        </div>
+                        <div class="card-block">
+                                                    <a href="/Customer/CustomerTickets/Detail">تیکت جدید</a>
+<hr/>
+                        @Html.Action("PartialList"
+                            ,"Ticket",new {area="Common",take=10,skip=0,ticketId=0,detailUrl="/customer/CustomerTickets/Detail"})
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body end -->
+</div>
+

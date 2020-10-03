@@ -1,0 +1,39 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@model SignalRMVCChat.Areas.Customer.Controllers.PaymentViewModel
+
+@{
+    ViewBag.Title = "هدایت به صفحه بانک";
+    Layout = "../Shared/_Layout_Customer.cshtml";
+}
+<style>
+    #bank *{
+        direction:rtl;
+        text-align:center;
+    }
+</style>
+
+
+
+<div id="bank">
+    <h2>هدایت به صفحه بانک</h2>
+    
+    <p>@Model.Message</p>
+
+    <input id="Amount" hidden="hidden" style="display: none" name="Amount" value="@Model.Amount"/>
+   
+    
+
+    <div class="form-group">
+        <p>با تشکر از پرداخت شما</p>
+        <label style="text-align: center"> مبلغ مورد پرداخت:</label>
+        <label>@MyGlobal.ShowThreeDotMoney(Model.Amount )</label>
+    </div>
+    
+    
+    <div class="form-group">
+      
+        <a href="@Model.PaymentUrl"  class="btn btn-info"   >هدایت به بانک</a>
+    </div>
+
+
+</div>

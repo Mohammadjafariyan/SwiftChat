@@ -1,0 +1,89 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@using TelegramBotsWebApplication.Areas.Admin.Controllers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - ربات کده </title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("ربات مدیر تلگرام ", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/Admin/AllTablesAsMenu" target="_blank">اطلاعات جداول</a>
+                </li>
+                <li>
+                    <a href="/swagger" target="_blank">راهنمای API</a>
+                </li>
+
+                @*
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    *@
+                @*<li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @Html.Partial("_LoginPartial")
+                    
+
+                @if (!string.IsNullOrEmpty(ViewBag.hashed))
+                {
+                    MyGlobal.ValidateHash(ViewBag.hashed);
+                    <li>@Html.ActionLink("خرید یا تمدید اکانت", "Index", "MyAccount", new {hashed = ViewBag.hashed}, new {})</li>
+                    <li>
+                        @Html.ActionLink("تنظیمات فید", "Index", "Setting", new {hashed = ViewBag.hashed}, new {})</li>
+                }
+            </ul>
+        </div>
+            
+    </div>
+</div>
+@{
+    var controller = DependencyResolver.Current.GetService<AllTablesAsMenuController>();
+    controller.ControllerContext = new ControllerContext(Request.RequestContext, controller);
+    ;
+}
+<div class="container-fluid body-content">
+    <div class="col-md-9">
+        @RenderBody()
+
+    </div>
+    <div class="col-md-3">
+        @Html.Partial("AllTablesMenuIndex", ((ViewResult) controller.Index()).Model)
+    </div>
+    
+
+</div>
+<footer>
+    <p>&copy; @DateTime.Now.Year - سامانه مدیریت ربات تلگرام</p>
+</footer>
+
+
+<script>
+window.paceOptions = {
+  ajax: true, // disabled
+  document: false, // disabled
+    eventLag: false, // disabled
+};
+</script>
+@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+@RenderSection("scripts", required: false)
+
+</body>
+</html>

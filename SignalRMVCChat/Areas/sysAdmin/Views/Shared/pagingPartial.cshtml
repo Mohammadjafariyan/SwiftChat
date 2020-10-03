@@ -1,0 +1,94 @@
+﻿@model dynamic
+
+
+
+@{
+
+    string baseUrl = "";
+    if (TempData["Url"] == null)
+    {
+        string actionName = Request.RequestContext.RouteData.Values["action"].ToString();
+        string controllerName =Request.RequestContext.RouteData.Values["controller"].ToString();
+        string area= HttpContext.Current.Request.RequestContext.RouteData.DataTokens["area"]?.ToString() ?? "/";
+
+        baseUrl= $@"{area}/{controllerName}/{actionName}";
+    }
+    else
+    {
+        baseUrl = TempData["Url"]?.ToString() ?? "";
+    }
+    
+   
+    string path = "/"+ baseUrl;
+}
+
+<hr/>
+<div style="text-align: center">
+
+    @{
+        
+        
+        
+    int total=Model.Total;
+    int lastTake=Model.LastTake;
+    int? lastSkip=Model.LastSkip<=0 ? null: Model.LastSkip +1;
+
+    int parts= total / lastTake+(total% lastTake>0 ? 1 : 0);
+
+    int selectedPart=0;
+    if (lastSkip.HasValue)
+    {
+        // با تقسیم آخرین گرفته ها به تعداد یک پارت می فهمیم که در چندمین پارت هستیم
+        selectedPart= lastSkip.Value / lastTake;
+    }
+    else
+    {
+        lastSkip = 0;
+        selectedPart = 0;
+    }
+    for (int i = 0; i < parts; i++)
+    {
+
+        string url = path;
+        string Glass = "";
+
+        if (!url.Contains("?"))
+        {
+            url += "?";
+        }
+        else
+        {
+            url += "&";
+        }
+        url += $@"take={lastTake}&skip={lastTake*i}";
+        
+        // اگر قبلا یکی از صفحات را انتخاب کرده باشد
+        if (lastSkip.HasValue)
+        {
+            
+            if (i == selectedPart)
+            {
+                Glass = "btn btn-primary";
+
+            }
+            
+        }
+        else
+        {
+            // اولین بار است و هیچ صفحه ای انتخاب نشده است
+            if (i == 1)
+            {
+                Glass = "btn btn-primary";
+            }
+            
+        }
+        i++;
+        <a style="text-align: center" href="@url" class="@Glass">@i</a>
+
+        
+    }
+    
+    
+}
+</div>
+<hr/>

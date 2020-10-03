@@ -1,0 +1,104 @@
+﻿@using SignalRMVCChat.Models
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Service.CustomerViewModel>
+@{
+    int total =Model==null ? 0 : Model.Total/10 + (Model.Total%10 > 0 ? 1 : 0);
+}
+<table class="table">
+    <thead>
+    <tr>
+        <th colspan="99">@ViewBag.CustomersTitle </th>
+    </tr>
+    <tr>
+        <th colspan="99">
+            <input onchange="getChattedCustomers()" class="form-control" name="searchTerm" id="searchTerm" placeholder="جستجوی کاربران"/>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    
+    @if (Model == null || Model.EntityList==null || Model.EntityList.Count==0)
+    {
+        <tr>
+            <td class="alert alert-danger">اطلاعاتی یافت نشد</td>
+        </tr>
+    }
+    else
+    {
+        foreach (var customer in Model.EntityList)
+        {
+
+            <tr class="acustomer" onclick="getChats(@customer.Customer.Id,null,this)">
+                <td>
+                    
+                    @{
+                        var trachInfo= customer.Customer.TrackInfos?.OrderByDescending(o=>o.Id).FirstOrDefault();
+
+                    }
+                    @if (trachInfo!=null && string.IsNullOrEmpty(trachInfo.CityName)==false)
+
+                    {
+                        <span>@trachInfo.Region @trachInfo.CityName @trachInfo.Time.TrimEnd('.') </span>
+                    }
+                    else
+                    {
+
+                        if (string.IsNullOrEmpty(customer.Customer.Name))
+                        {
+                            customer.Customer.Name = " بازدید کننده ";
+                        }
+                        if (customer.Customer.MySockets?.Count > 0)
+                        {
+                            var ip = customer.Customer.MySockets.Select(m => m.MyConnectionInfo.ClientIpAddress).FirstOrDefault();
+                            var createTime = customer.Customer.MySockets.Select(m => m.CreationDateTime).FirstOrDefault();
+                            <span>@customer.Customer.Name (@ip )
+
+                                @{
+                                    DateTime myTime = createTime.AddMilliseconds(
+                                        -DateTime.Now.TimeOfDay.Milliseconds);
+                                }
+                                @myTime.ToString("HH:mm")
+                            </span>
+
+                        }
+                        else
+                        {
+                            <span>@customer.Customer.Name </span>
+
+                        }
+                    }
+                    
+                    <ul>
+                        <li> @customer.TotalChats <span>چت</span></li>
+                        @if (customer.TotalChatWithAdmin !=-1)
+                        {
+                            <li> @customer.TotalChatWithAdmin <span>چت با ادمین</span></li>
+                        }
+                    </ul>
+                    
+                    
+                    
+                </td >
+            </tr>
+        }
+        <tr>
+            <td colspan="99">
+                @for (int i = 1; i <= total; i ++)
+                {
+                    if (i == ViewBag.page)
+                    {
+                        <button onclick="goPageForCustomers(@i)" class="btn btn-primary" type="button"> @i</button>
+                    }
+                    else
+                    {
+                        <button onclick="goPageForCustomers(@i)" type="button"> @i</button>
+
+                    }
+                }
+            </td>
+        </tr>
+    }
+    
+
+
+    </tbody>
+</table>

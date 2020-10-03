@@ -1,0 +1,155 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.Models
+@model SignalRMVCChat.Service.MyWebsite
+
+@{
+    ViewBag.Title = "افزونه مخصوص ادمین ها و پشتیبانی";
+    Layout = "../Shared/_Layout_Customer.cshtml";
+    var url = MyGlobal.GetBaseUrl(Request.Url);
+
+}
+
+<div class="page-wrapper">
+    <!-- Page-header start -->
+    <div class="page-header horizontal-layout-icon menu-rtl">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <div class="d-inline">
+                        <h4>نصب افزونه </h4>
+                        <span>افزونه مخصوص ادمین ها و پشتیبانی </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="page-header-breadcrumb">
+                    <ul class="breadcrumb-title">
+                        <li class="breadcrumb-item">
+                            <a href="index-1.htm">
+                                <i class="icofont icofont-home"></i>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a>ایجاد افزونه</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a>افزونه جاوا اسکریپت  </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a>مخصوص پشتیبانی و ادمین ها  </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page-header end -->
+    <!-- Page body start -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12">
+                                     @Html.Partial("currentUserWebsitesSelectForm")
+
+                @*@Html.Partial("currentUserWebsitesSelectForm")*@
+
+                <!-- Default card start -->
+                @*<div class="card">
+                        <div class="card-block">
+                            <span>Box-layout Menu layout is useful for those users who wants container or box-view of theme.</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>JS Option</h5>
+                        </div>
+                        <div class="card-block">
+                            <span>To use Compact Menu for your project add <code><strong>verticalMenuplacement: 'right',</strong></code> class in js.</span>
+                        </div>
+                    </div>*@
+                <div class="card">
+                    <div class="card-header">
+                        <h5>افزونه (پلاگین) جاوا اسکریپت Javascript : </h5>
+                    </div>
+                    <div class="card-block">
+
+                        @if (Model == null)
+                        {
+                        }
+                        else
+                        {
+                            <p>تنها کافیست کد زیر را در <strong>یکی از صفحات</strong> سایت خود کپی نمایید </p>
+                            <p> مخصوص وب سایت  <strong>@Model.BaseUrl</strong> </p>
+
+                            <pre id="pre">                                                            
+                            <code class="language-markup">
+                                                        @{
+                                                            var text = $@"
+                                                                       <div id=""gapPluginAdmin""></div>
+<script src=""{@url}/Content/Tools.js""></script>
+
+  <script src=""{@url}/Content/JsPlugin/push/serviceWorker.min.js""></script>
+  <script src=""{@url}/Content/JsPlugin/push/push.min.js""></script>
+  <script src=""{@url}/Customer/JsPlugin/ResourceJsForAdmins?token={Model.WebsiteToken}""  async=""async""></script>
+ 
+
+
+                                                            
+                                                            ";
+
+
+                                                        }
+                                                        @text
+
+
+
+                                                                                                                    </code>
+                                                                                                                </pre>
+                                                                                                                <h6 class="m-t-20 f-w-600" style="float:left"> <button onclick="copyCode()" type="button" class="btn btn-primary waves-effect waves-light">کپی کن</button>  </h6>
+
+    }
+                    </div>
+                </div>
+                @*<div class="card">
+                        <div class="card-header">
+                            <h5>Sample Block</h5>
+                        </div>
+                        <div class="card-block">
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                            <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+                        </div>
+                    </div>*@
+                <!-- Default card end -->
+            </div>
+        </div>
+    </div>
+    <!-- Page body end -->
+</div>
+
+
+@section scripts {
+
+    <script>
+        function copyCode() {
+            /* Get the text field */
+            var el = document.getElementById("pre");
+
+            var range = document.createRange();
+            range.selectNodeContents(el);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+
+            /* Alert the copied text */
+        }
+    </script>
+}
+
+<div id="gapPluginAdmin"></div>
+
+@Html.Partial("ExampleJsPluginAdmins")
+
+

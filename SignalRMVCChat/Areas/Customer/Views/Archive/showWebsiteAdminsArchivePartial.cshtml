@@ -1,0 +1,48 @@
+﻿@model SignalRMVCChat.Areas.Customer.Controllers.ArchiveViewModel
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th colspan="99">لیست ادمین ها </th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model == null)
+    {
+        <tr class="aadmin">
+            <td>هیچ اطلاعاتی یافت نشد</td>
+        </tr>
+    }
+    else
+    {
+        @*<tr onclick="getAllCustomers()" class="aadmin">
+            <td>همه کاربران</td>
+        </tr>*@
+        var children = Model.Admins.children.OrderByDescending(o=>o.AdminTotalChats).ToList();
+        foreach (var admin in children)
+        {
+            var myAccount = admin.MyAccount;
+            admin.AdminTotalChats= admin.AdminTotalChats??0;
+            admin.AdminTotalSendChats= admin.AdminTotalSendChats??0;
+            admin.AdminTotalReceiveChats= admin.AdminTotalReceiveChats??0;
+            
+            <tr onclick="selectAdmin(@myAccount.Id,null,this)" class="aadmin">
+                <td>@myAccount.Name (@myAccount.Username)
+                
+                    <div dir="rtl">
+                          <ul> <span>  تعداد چت ها  :</span>
+                                            <li><span>کل:</span><span>@admin.AdminTotalChats</span> </li>
+                                            <li><span>ارسال:</span><span>@admin.AdminTotalSendChats</span> </li>
+                                            <li> <span>دریافت:</span><span>@admin.AdminTotalReceiveChats</span></li>
+                                        </ul>
+                    </div>
+                    </td>
+            </tr>
+        }
+
+       
+    }
+    
+    </tbody>
+</table>

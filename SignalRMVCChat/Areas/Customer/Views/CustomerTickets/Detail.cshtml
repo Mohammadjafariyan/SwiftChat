@@ -1,0 +1,102 @@
+﻿@using SignalRMVCChat.Areas.Common.Service
+@using SignalRMVCChat.Areas.security.Models
+@using SignalRMVCChat.DependencyInjection
+@using TelegramBotsWebApplication.ActionFilters
+@model dynamic
+
+@{
+    ViewBag.Title = "ارسال تیکت پشتیبانی";
+    Layout = "~/Areas/Customer/Views/Shared/_Layout_Customer.cshtml";
+}
+
+
+
+
+<div class="page-wrapper">
+    <!-- Page-header start -->
+    <div class="page-header horizontal-layout-icon menu-rtl">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <div class="d-inline">
+                        <h4>ارسال تیکت پشتیبانی </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page-header end -->
+    <!-- Page body start -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12">
+
+              
+                                          <div class="card">
+                                                            <div class="card-header">
+                                                                
+                                                                @if (Request.Params["ticketId"] != null)
+                                                                {
+                                                                    int ticketId = 0;
+                                                                    bool parsed = int.TryParse(Request.Params["ticketId"], out ticketId);
+                                                                    if (parsed == false)
+                                                                    {
+                                                                        throw new Exception("کد تیکت قابل شناسایی نیست");
+                                                                    }
+                                        
+                                                                    var ticketService = Injector.Inject<TicketService>();
+                                                                   
+                                        
+                                                                    var parent=ticketService.GetById(ticketId).Single;
+                                        
+                                                                    <span >
+                                                                        @{
+                                                                            string name = parent.Status.GetAttributeOfType<EnumName>()?.Name;
+                                                                            <span> @name</span>
+                                                                        }
+                                                                    </span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <h5>بعد از تکمیل فرم و ارسال ، در اسرع وقت پاسخوی شما عزیزان خواهیم بود</h5>
+                                        
+                                                                }
+                                                                
+                                                            </div>
+                                                            <div class="card-block">
+                                                                @Html.Action("PartialDetail","Ticket",new {area="Common",status=TicketStatus.Pending,ticketId=0,returnUrl="/Customer/CustomerTickets/Detail?ticketId="+Request.Params["ticketId"]})
+                                                            </div>
+                                                        </div>      
+
+                 
+                 @if (Request.Params["ticketId"] != null)
+                 {
+                     TempData["Url"] = "/Customer/CustomerTickets/Detail?ticketId="+Request.Params["ticketId"];
+                 }
+                @Html.Partial("~/Areas/Common/Views/Shared/TicketDetailSubListPartial.cshtml")
+                 
+            </div>
+        </div>
+    </div>
+    <!-- Page body end -->
+</div>
+
+
+@section scripts
+{
+    
+    <script>
+    
+    $(document).ready(function() {
+      
+        var uploadField = document.getElementById("file");
+        
+        uploadField.onchange = function() {
+            if(this.files[0].size > 3 * 1024 * 1024){
+               alert("فایل خیلی بزرگ است حداکثر 3 مگابایت مورد قبول است");
+               this.value = "";
+            };
+        };
+    })
+    </script>
+}

@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        *{
+        direction: rtl;
+        text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("داشبورد مدیریت", "Index", "AdminDashboard", new { area = "Admin" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    
+                    <li> <a href="/Admin/SignUsers/Index">لیست ثبت نام کنندگان بهمراه پلن های آنها</a></li>
+                    <li> <a href="/Admin/PaymentBills/ShowMyAccountsBills">	صورتحساب ها</a></li>
+                    <li> <a href="/Admin/Plan/Index">	پلن ها</a></li>
+                    <li> <a href="/Admin/AdminTickets/Index">	تیکت ها</a></li>
+                    <li> <a href="/Admin/Setting/Detail?id=0">تنظیمات سیستم</a></li>
+                     <li onclick="document.getElementById('logoutForm').submit()">
+                                                    @using (Html.BeginForm("LogOff", "Account"
+                                                        , new {area = ""}, FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                    }
+                                                    <a href="javascript:document.getElementById('logoutForm').submit()">
+                                                        <i class="feather icon-log-out"></i> خروج
+                                                    </a>
+                                                </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-content" style="padding-top:150px">
+        @RenderBody()
+        <hr />
+        <footer>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

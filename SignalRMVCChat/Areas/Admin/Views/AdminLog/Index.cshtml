@@ -1,0 +1,98 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model dynamic
+
+@{
+    ViewBag.Title = "system logs";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<h2>system logs</h2>
+
+
+<div class="container-fluid">
+@{
+    var logService = Injector.Inject<LogService>();
+    var logs= logService.GetQuery().OrderByDescending(o=>o.SessionDateTime).ToList();
+    var groupedLogs= logs.GroupBy(l => l.SessionDateTime);
+}
+
+@foreach (var grouped in groupedLogs)
+{
+    <table class="table table-bordered">
+        <thead>
+          <tr>
+                    <th>SessionDateTime</th>
+                    <th>Data</th>
+                    <th>File</th>
+                    <th>LineNumber</th>
+                    <th>Exception</th>
+                </tr>
+        </thead>
+        
+        <tbody>
+        @foreach (var log     in grouped)
+        {
+
+            <tr>
+                <td>
+                    
+                    @if (log.SessionDateTime.HasValue)
+                    {
+<span>
+    @MyGlobal.ToIranianDateWidthTime(log.SessionDateTime.Value)
+
+</span>
+                    }
+                </td>
+                <td>@{
+                        if (log.Data?.Length>30)
+                        {
+                            string text = MyGlobal.SplitArr(log.Data);
+                            <span>@Html.Raw(text)</span>
+                        }
+                    else
+                    {
+                    <span>@log.Data</span>
+                    }
+                    }</td>
+                <td>@{
+
+                        if (log.File?.Length > 30)
+                        {
+                            string text = MyGlobal.SplitArr(log.File);
+
+                            <span>@Html.Raw(text)</span>
+                        }
+                        else
+                        {
+                            <span>@log.File</span>
+                        }
+                    }</td>
+                <td>@log.LineNumber</td>
+                <td>@{
+                        if (log.Exception?.Length>30)
+                        {
+                            string text = MyGlobal.SplitArr(log.Exception);
+
+                            <span>@Html.Raw(text)</span>
+                        }
+                        else
+                        {
+                            <span>@log.Exception</span>
+                        }
+                     
+                
+                    }</td>
+            </tr>
+
+        }
+
+        </tbody>
+
+    </table>
+            
+    
+}
+</div>

@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using SignalRMVCChat.Areas.security.Models
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account" 
+        , new {area=""}, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @{
+                using (var db = new ApplicationDbContext())
+                {
+                    string currentUserId = User.Identity.GetUserId();
+                    ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+                    @Html.ActionLink(" خوش آمدید " + currentUser.Name +"  " + currentUser.LastName, "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                }
+            }
+        </li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">خروج</a></li>
+    </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("ثبت نام", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("ورود", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

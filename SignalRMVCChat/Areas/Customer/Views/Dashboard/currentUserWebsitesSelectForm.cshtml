@@ -1,0 +1,48 @@
+﻿@using SignalRMVCChat.Areas.security.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Models
+@using SignalRMVCChat.Service
+﻿@model dynamic
+@{
+    var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
+    var myAccount = myAccountProviderService.GetAccountIdByUsername(SecurityService.GetCurrentUser().UserName);
+    var myWebsites = myAccount?.MyWebsites.Where(w => w.IsDeleted == false).ToList();
+
+    if (myWebsites.Count==1 && Request.QueryString.Count==0)
+    {
+        Response.Redirect($@"{Request.Url.GetLeftPart(UriPartial.Path)}?websiteId={myWebsites.First().Id}");
+    }
+}
+@if (Request.QueryString.Count == 0)
+{
+    
+<div class="card">
+    <div class="card-header">
+        <h5>انتخاب وب سایت </h5>
+    </div>
+    <div class="card-block">
+        @if (myWebsites.Count>0)
+        {
+            <div style="">
+                <p>جهت دانلود افزونه لطفا ابتدا یکی از وب سایت ها خود را انتخاب نمایید</p>
+                <ul class="form-control" style="display: inline-table;padding: 20px;list-style: arabic-indic">
+                    @foreach (var item in myWebsites)
+                    {
+                        var uri = new Uri(item.BaseUrl);
+                        string path = uri.GetLeftPart(UriPartial.Path);
+
+                        <li >   <a style="direction: ltr" href="@Request.Url.GetLeftPart(UriPartial.Path)?websiteId=@item.Id">@path</a>  </li>
+
+                    }
+                </ul>
+            </div>
+        }
+        else
+        {
+            <p>شما هیچ وب سایتی تعریف نکرده اید ابتدا بایستی وب سایت تعریف کرده سپس برای هر وب سایت پلاگین ایجاد نمایید</p>
+            <p>جهت تعریف وب سایت <a href="/Customer/Mywebsites/Detail?Id=0">اینجا</a> کلیک نمایید</p>
+        }
+    </div>
+</div>
+
+}

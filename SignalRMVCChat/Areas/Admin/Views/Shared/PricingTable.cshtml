@@ -1,0 +1,221 @@
+﻿@using SignalRMVCChat.Areas.security.Service
+@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@using SignalRMVCChat.SysAdmin.Service
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Service.Plan>
+
+@{
+    int planId = 0;
+    bool isParsed = int.TryParse(Request.Params["planId"], out planId);
+}
+<style>
+    td{
+    text-align: right;
+    }
+</style>
+
+
+<div style="text-align: center" id="pricingTable">
+    @{
+            if (planId != 0)
+            {
+                var selected = Model.EntityList.First(f => f.Id == planId);
+                <tr>
+                    <td colspan="99">
+                        پلن انتخاب شده :
+                        @selected.Name
+                        <a id="buyPerMonth" class="btn btn-primary" href="/Customer/UpgradePlan/Upgrade?planId=@selected.Id&perYear=false">
+                            ماهانه
+                            <span>@MyGlobal.ShowThreeDotMoney(selected.PerMonthPrice + "") ریال </span>
+                        </a>
+                        <a id="buyPerYear" class="btn btn-primary" href="/Customer/UpgradePlan/Upgrade?planId=@selected.Id&perYear=true">
+                            سالیانه
+                            <span>@MyGlobal.ShowThreeDotMoney(selected.PerMonthPrice * 12 + "") ریال </span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+</div>
+<hr/>
+<table class="table table-bordered">
+    <thead>
+    
+
+
+
+    </thead>
+    <tbody>
+
+    <tr>
+        <th>عنوان پلن</th>
+        @foreach (var m in Model.EntityList)
+        {
+            var appRoleService = Injector.Inject<AppRoleService>();
+            var appUserId = CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.AppUserId ?? 0;
+            if (appRoleService.IsInRole(appUserId, "superAdmin"))
+            {
+                <td>
+                    @m.Name -
+                    <a href="/Admin/Plan/Detail?id=@m.Id">ویرایش</a>
+                </td>
+            }
+            else
+            {
+                if (planId == m.Id)
+                {
+                    <td>
+                        @m.Name -
+                        <a class="btn btn-info" id="Plan-@m.Id"  href="/Customer/UpgradePlan/Index?planId=@m.Id">انتخاب</a>
+                        (انتخاب شده)
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @m.Name -
+                        <a class="btn btn-primary" id="Plan-@m.Id"  href="/Customer/UpgradePlan/Index?planId=@m.Id">انتخاب</a>
+                    </td>
+                }
+            }
+        }
+    </tr>
+      <tr>
+            <th>قیمت در ماه (ریال)</th>
+            @foreach (var m in Model.EntityList)
+            {
+                <td>@m.PerMonthPrice   ریال</td>
+            }
+        </tr>
+    <tr>
+        <th>جستجو</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.Search</td>
+        }
+    </tr>
+    <tr>
+        <th>برنامه اندروید</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.AndroidApp</td>
+        }
+    </tr>
+    <tr>
+        <th>برنامه IOS</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.IOSApp</td>
+        }
+    </tr>
+    <tr>
+        <th>تعداد چت ها </th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.ChatCounts</td>
+        }
+    </tr>
+    <tr>
+        <th> فضا </th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.GigHost</td>
+        }
+    </tr>
+    <tr>
+        <th>مترجم آنلاین</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.OnlineTranslator</td>
+        }
+    </tr>
+    <tr>
+        <th>ارسال پیام غیر متنی</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.SendMultimedia</td>
+        }
+    </tr>
+    <tr>
+        <th>تم خصوصی سازی شده</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.SpecialTheme</td>
+        }
+    </tr>
+    <tr>
+        <th>تعداد پشتیبان</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.SupporterCount</td>
+        }
+    </tr>
+    <tr>
+        <th>صندوق ورودی تیم</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.TeamInbox</td>
+        }
+    </tr>
+    <tr>
+        <th>بات تلگرام</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.TelegramBot</td>
+        }
+    </tr>
+    <tr>
+        <th>ویدئو چت</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.VideoChat</td>
+        }
+    </tr>
+    <tr>
+        <th>پلاگین وب</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.WebApp</td>
+        }
+    </tr>
+    <tr>
+        <th>تاریخچه نگهداری چت ها</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.ChatHistoryDays</td>
+        }
+    </tr>
+  
+
+    <tr>
+        <th>پاسخ دهی اتوماتیک مواقع آفلاین</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.SmartAnswersOnOffline</td>
+        }
+    </tr>
+    <tr>
+        <th>فوروارد کاربر به پشتیبان دیگر</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.ForwardUserToAnotherAdmin</td>
+        }
+    </tr>
+    <tr>
+        <th>اختصاص صفحات خاص به پشتیبان های خاص</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.URLSpecificSupporter</td>
+        }
+    </tr>
+    <tr>
+        <th>مشاهده آنلاین مانیتور کاربر</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.OnlineScreenMonitor</td>
+        }
+    </tr>
+
+    </tbody>
+</table>

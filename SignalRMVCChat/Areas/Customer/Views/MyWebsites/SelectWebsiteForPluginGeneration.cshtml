@@ -1,0 +1,52 @@
+﻿@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model dynamic
+
+@{
+    ViewBag.Title = "انتخاب وبسایت شما جهت ایجاد افزونه";
+    Layout = "~/Areas/Customer/Views/Shared/_Layout_Customer.cshtml";
+}
+
+<h2>انتخاب وبسایت شما جهت ایجاد افزونه</h2>
+@{
+    var myWebsiteService = Injector.Inject<MyWebsiteService>();
+    var myWebsites = myWebsiteService.GetQuery().ToList();
+}
+
+@if (myWebsites != null && myWebsites.Count > 0)
+{
+    <table class="table">
+        <thead>
+
+        <tr>
+            <th>آدرس وب سایت</th>
+            <th></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var rec in myWebsites)
+        {
+            <tr>
+                <td>@rec.BaseUrl</td>
+                <td>
+                    <a href="/Customer/Dashboard/CreatePluginForCustomers?websiteId=@rec.Id" class="btn btn-download">پلاگین مشتریان</a>
+                </td>
+                <td>
+                    <a href="/Customer/Dashboard/CreatePluginForAdmins?websiteId=@rec.Id" class="btn btn-blog">پلاگین پشتیبانی و ادمین</a>
+                </td>
+   <td><form method="post" action="/Customer/MyWebsites/Delete?id=@rec.Id">
+                    
+                    <input hidden="hidden" name="Id" value="@rec.Id"/>
+                    
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                    </form></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>در حال حاضر هیچ وب سایتی ثبت نشده است برای شروع یک وب سایت <a href="/customer/MyWebsites/Detail?id=0">ایجاد</a> نموده و پلاگین برای آن تولید نمایید</p>
+}

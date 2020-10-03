@@ -1,0 +1,26 @@
+﻿@model Dictionary<string,string>
+
+@{
+    ViewBag.Title = "title";
+    Layout = null;
+
+}
+
+
+<h2>لیست منو ها</h2>
+<ul>
+    <li><a href="/admin/TelegramUsers/Index">اطلاعات کاربران بهمراه کانال ها</a></li>
+    <li><a href="/admin/TelegramUsers/IndexTrad">اطلاعات کاربران بهمراه کانال ها (نمایش قدیمی)</a></li>
+</ul>
+
+
+<h2>لیست جداول</h2>
+
+    <ul>
+    @foreach (var m in Model)
+    {
+        <li>
+            <a href="@Url.Action("TableIndex" , "AllTablesAsMenu",new {key=m.Key})">@m.Value (@m.Key)</a>
+        </li>
+    }
+    </ul>

@@ -1,0 +1,141 @@
+﻿@using System.Data.Entity
+@using SignalRMVCChat.Areas.Customer.Service
+@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model dynamic
+
+@{
+    ViewBag.Title = "وضعیت پلن کاربری";
+    Layout = "~/Areas/Customer/Views/Shared/_Layout_Customer.cshtml";
+}
+
+
+<style>
+    #incenter *{
+        direction:rtl;
+        text-align:center;
+    }
+</style>
+
+
+<div class="page-wrapper">
+    <!-- Page-header start -->
+    <div class="page-header horizontal-layout-icon menu-rtl">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <div class="d-inline">
+                        <h4>وضعیت پلن کاربری شما </h4>
+                        <span> </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Page-header end -->
+
+    <!-- Page body start -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12">
+
+
+                <!-- Default card end -->
+
+                <div class="card">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-block">
+                        <div id="incenter">
+
+
+                            @{
+                                var myAccountPlansService = Injector.Inject<MyAccountPlansService>();
+                                var plans = myAccountPlansService.
+                                    GetQuery().Include(q => q.Plan).OrderBy(o => o.ExpireDateTime).ToList();
+                            }
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>عنوان</th>
+                                    <th>تاریخ شروع</th>
+                                    <th>تاریخ اتمام</th>
+                                    <th>باقیمانده(روز)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @{
+                                    var c = 0;
+                                }
+
+                                @foreach (var rec in plans)
+                                {
+                                    c++;
+                                    string style = "";
+                                    if (c == 1)
+                                    {
+                                        style = "style='background-color:#ffff003b;'";
+                                    }
+                                    <tr @Html.Raw(style)>
+
+
+                                        <td >@rec.Plan.Name</td>
+                                        <td>
+                                            @if (rec.StartDate.HasValue)
+                                            {
+                                                <span>@MyGlobal.ToIranianDate(rec.StartDate.Value)</span>
+                                            }
+                                            else
+                                            {
+                                                <span>تاریخ اشتباه است</span>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @if (rec.ExpireDateTime.HasValue)
+                                            {
+                                                <span>@MyGlobal.ToIranianDate(rec.ExpireDateTime.Value)</span>
+                                            }
+                                            else
+                                            {
+                                                <span>تاریخ اشتباه است</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (rec.ExpireDateTime.HasValue)
+                                            {
+                                                if (rec.ExpireDateTime > DateTime.Now)
+                                                {
+                                                    <span> @Math.Floor(rec.ExpireDateTime.Value.Subtract(DateTime.Now).TotalDays)
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span>تاریخ ان گذشته است</span>
+                                                }
+                                              
+                                            }
+                                            else
+                                            {
+                                                <span>تاریخ اشتباه است</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Page body end -->
+</div>

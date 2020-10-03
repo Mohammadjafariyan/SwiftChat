@@ -1,0 +1,48 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@model List<SignalRMVCChat.Models.Log>
+
+@{
+    ViewBag.Title = "لاگ سیستم";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>لاگ سیستم</h2>
+
+
+<table class="table table-bordered">
+    
+    <thead>
+     <tr>
+                <th>تاریخ</th>
+                           <th>خطا</th>
+     <th>فایل</th>
+                <th>شماره لاین </th>
+                <th>دیتا</th>
+            </tr>
+    </thead>
+    <tbody>
+    @foreach (var rec in Model)
+    {
+        <tr>
+            <td>@MyGlobal.ToIranianDateWidthTime(rec.CreationDateTime)</td>
+                      <td>@rec.Exception</td>
+  <td>@{
+          if (rec.File?.Length>50)
+          {
+              string name = rec.File?.Substring(rec.File.Length - 50, 50);
+              <span>@name</span>
+          }
+          else
+          {
+              <span>@rec.File</span>
+  
+          } 
+  
+      }</td>
+            <td>@rec.LineNumber</td>
+            <td>@rec.Data</td>
+        </tr>
+    }
+    </tbody>
+</table>
+

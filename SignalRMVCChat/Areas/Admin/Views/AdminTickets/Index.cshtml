@@ -1,0 +1,19 @@
+﻿@using SignalRMVCChat.Areas.security.Models
+@model dynamic
+
+@{
+    ViewBag.Title = "تیکت های پشتیبانی";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    
+    
+    ViewBag.Title = "تیکت های پشتیبانی";
+    ViewBag.Desc = "درخواست های پشتیبانی";
+}
+
+<div >
+    
+    
+     @Html.Action("PartialList"
+                                ,"Ticket",new {area="Common",take=10,skip=0,ticketId=0,detailUrl="/admin/AdminTickets/Detail"})
+
+</div>

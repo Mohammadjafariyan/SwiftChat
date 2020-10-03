@@ -1,0 +1,53 @@
+﻿@using System.Data
+@using TelegramBotsWebApplication.Areas.Admin.Service
+@model TelegramBotsWebApplication.Areas.Admin.Service.GenericTablesService.TableViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "../Shared/_Admin_Layout.cshtml";
+
+}
+
+<h2>اطلاعات جدول @Model.TableFaName (@Model.TableName)</h2>
+
+<table class="table table-bordered table-condensed table-hover table-responsive table-striped">
+    <thead>
+        <tr>
+            @foreach (DataColumn col in Model.DataTable.Columns)
+            {
+                <th>@col.ColumnName</th>
+            }
+        </tr>
+
+    @*
+
+    var tableData = new Dictionary<DataColumn, EntityList<object>>();
+
+                // Go through all columns, retrieving their names and populating the rows
+                foreach (DataColumn dc in dt.Columns)
+                {
+                    string columnName = dc.ColumnName;
+                   var rowData = new EntityList<object>();
+
+                   tableData.Add(dc, rowData);
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        rowData.Add(dr[columnName]);
+                    }
+                }*@
+
+    </thead>
+    <tbody>
+    @foreach (DataRow dr in Model.DataTable.Rows)
+    {
+        <tr>
+            @foreach (DataColumn col in Model.DataTable.Columns)
+            {
+            <td>@dr[col.ColumnName]</td>
+            }
+        </tr>
+
+    }
+    </tbody>
+</table>

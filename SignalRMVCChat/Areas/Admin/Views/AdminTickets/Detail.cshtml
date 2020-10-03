@@ -1,0 +1,37 @@
+﻿@using SignalRMVCChat.Areas.security.Models
+@model dynamic
+
+@{
+    ViewBag.Title = "تیکت های پشتیبانی";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    
+    
+    ViewBag.Title = "تیکت های پشتیبانی";
+    ViewBag.Desc = "جزئیات درخواست پشتیبانی";
+}
+
+
+<style>
+    .card{
+    border: 1px solid orange;
+    margin-top: 20px;
+    border-radius: 20px;
+    padding:10px
+    }
+</style>
+
+<div >
+    
+    <h4>ارسال پاسخ</h4>
+@Html.Action("PartialDetail","Ticket",new {area="Common",status=TicketStatus.Answered
+    ,ticketId=0,returnUrl="/Admin/AdminTickets/Detail?ticketId="+Request.Params["ticketId"]})
+
+
+
+@if (Request.Params["ticketId"] != null)
+                 {
+                     TempData["Url"] = "/Admin/AdminTickets/Detail?ticketId="+Request.Params["ticketId"];
+                 }
+@Html.Partial("~/Areas/Common/Views/Shared/TicketDetailSubListPartial.cshtml")
+
+</div>

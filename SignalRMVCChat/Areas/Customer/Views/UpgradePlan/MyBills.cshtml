@@ -1,0 +1,71 @@
+﻿@using System.Data.Entity
+@using SignalRMVCChat.Areas.Customer.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@using SignalRMVCChat.SysAdmin.Service
+@model dynamic
+
+@{
+    ViewBag.Title = "صورت حساب پرداخت ها";
+    Layout = "~/Areas/Customer/Views/Shared/_Layout_Customer.cshtml";
+}
+
+
+
+
+
+
+@{
+    var accountPaymentService = Injector.Inject<MyAccountPaymentService>();
+}
+
+<div class="page-wrapper">
+    <!-- Page-header start -->
+    <div class="page-header horizontal-layout-icon menu-rtl">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <div class="d-inline">
+                     <h4>صورت حساب پرداخت ها</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Default card start -->
+                
+                <div class="card">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-block">
+                        
+                        
+                        @{
+                            var username = CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.Username;
+                            var myAccountPayments =
+                                accountPaymentService.GetQuery()
+                                    .Include(q=>q.MyAccount)
+                                    .Where(q => q.PaymentIsOk)
+                                    .Where(q=>q.MyAccount.Username==username)
+                                    .ToList();
+                        }
+                        
+                        @Html.Partial("ShowBillsPartial",myAccountPayments)
+
+                    </div>
+                </div>
+                
+                <!-- Default card end -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Page-header end -->
+
+    
+
+
+</div>

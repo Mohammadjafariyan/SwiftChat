@@ -1,0 +1,18 @@
+﻿@model int
+
+<p>صفحه بندی</p>
+@{
+    var pages = Model / 10 + (Model % 10 >1 ?1 : 0);
+}
+@for (int i = 1; i <= pages; i++)
+{
+    if (i == ViewBag.page)
+    {
+        <button onclick="goPage(@i)" class="btn btn-primary" type="button"> @i</button>
+    }
+    else
+    {
+        <button onclick="goPage(@i)" type="button"> @i</button>
+
+    }
+}

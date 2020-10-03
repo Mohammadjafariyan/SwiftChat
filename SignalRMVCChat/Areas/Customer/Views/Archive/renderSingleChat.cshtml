@@ -1,0 +1,76 @@
+﻿@using System.Linq
+@using SignalRMVCChat.WebSocket.Tests
+@model SignalRMVCChat.Models.Chat
+
+<style>
+    .multimedia{
+        max-height: 300px;
+        width: auto;
+    }
+</style>
+
+@if (string.IsNullOrEmpty(Model.MultimediaContent))
+{
+    <span>@Model.Message</span>
+            }
+            else
+            {
+                var multiMediaContent = Model.MultimediaContent.ToLower();
+              //  var type= multiMediaContent.Split(';')[0].Replace("data:","");
+                if (multiMediaContent.Contains("data:image/"))
+                {
+        <img class="multimedia" src="@Model.MultimediaContent"/>
+    }
+    else if (multiMediaContent.Contains("data:audio/"))
+    {
+        <audio   controls>
+            <source src="@Model.MultimediaContent" >
+            Your browser does not support the video tag.\n +
+        </audio>
+    }
+    else if (multiMediaContent.Contains("data:video/"))
+    {
+        <video  controls   >
+            <source src="@Model.MultimediaContent" >
+            Your browser does not support the video tag.\n +
+        </video>
+    }
+    else if (multiMediaContent.Contains("data:voice/"))
+    {
+        <audio  controls >
+            <source src="@Model.MultimediaContent" >
+            Your browser does not support the video tag.\n +
+        </audio>
+    }
+    else if (multiMediaContent.Contains("file"))
+    {
+        <a href="@Model.MultimediaContent" download id="download" hidden></a>
+    }
+    else
+    {
+        Uri uriResult;
+        bool result = Uri.TryCreate(Model.MultimediaContent, UriKind.Absolute, out uriResult) 
+                      && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+        if (result)
+        {
+            <a  href="@Model.MultimediaContent">
+                
+                @{
+                    if (Model.MultimediaContent.Length> 40)
+                    {
+                        Model.MultimediaContent = "..."+ Model.MultimediaContent.Substring(0, 40);
+                    }
+                }
+                @Model.MultimediaContent
+            </a>
+
+                    }
+                    else
+                    {
+            <p>نوع شناسایی نشد</p>
+        }
+
+    }
+    
+}

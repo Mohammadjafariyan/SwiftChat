@@ -1,0 +1,49 @@
+﻿@using System.Data.Entity
+@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@using TelegramBotsWebApplication.Areas.Admin.Models
+@model dynamic
+
+@{
+    ViewBag.Title = "سایت های ثبت نام شده";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var myWebsiteService = Injector.Inject<MyWebsiteService>();
+   var myWebsites= myWebsiteService.GetQuery()
+        .Include(m => m.MyAccount);
+
+
+    var response = MyGlobal.Paging(myWebsites, Request.Params);
+}
+
+<h2>سایت های ثبت نام شده</h2>
+
+<table class="table table-bordered ">
+    <thead>
+    <tr>
+        <td>نام کاربری کاربر</td>
+        <td>ادرس وب سایت</td>
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in response.EntityList)
+    {
+        <tr>
+            <td>@item.MyAccount.Username</td>
+            <td>@item.BaseUrl</td>
+        </tr>
+    }
+    
+    </tbody>
+</table>
+@{
+
+    TempData["Url"] = "/Admin/SignWebsites/Index";
+}
+
+@Html.Partial("~/Areas/sysAdmin/Views/Shared/pagingPartial.cshtml", response)
+

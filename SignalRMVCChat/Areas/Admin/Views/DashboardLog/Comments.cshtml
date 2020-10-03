@@ -1,0 +1,66 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Models.Comment>
+
+@{
+    ViewBag.Title = "نظرات دریافت شده";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+
+<h3 style="text-align: center">@ViewBag.Title</h3>
+
+@{
+    var pages = Model.Total / 10 + (Model.Total % 10 > 0 ? 1 : 0);
+}
+    <ul style="display: flex">
+
+@for (int i = 1; i <= pages; i++)
+{
+    
+    if (Model.LastSkip==i)
+    {
+        <li> <a class="btn btn-primary" href="/Admin/DashboardLog/Comments?page=@i">@i</a></li>
+    }
+    else
+    {
+         <li><a  class="btn btn-default" href="/Admin/DashboardLog/Comments?page=@i">@i</a></li>
+    }
+}
+        </ul>
+
+
+<table class="table table-bordered">
+    
+    <thead>
+    <tr>
+        <th></th>
+        <th>متن</th>
+        <th>تاریخ و زمان</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var rec in Model.EntityList)
+    {
+        <tr>
+            <td>@rec.Id</td>
+            <td>@rec.Text</td>
+            <td>@MyGlobal.ToIranianDateWidthTime(rec.CreationDateTime)</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<ul style="display: flex">
+
+    @for (int i = 1; i <= pages; i++)
+    {
+    
+        if (Model.LastSkip==i)
+        {
+            <li> <a class="btn btn-primary" href="/Admin/DashboardLog/Comments?page=@i">@i</a></li>
+        }
+        else
+        {
+            <li><a  class="btn btn-default" href="/Admin/DashboardLog/Comments?page=@i">@i</a></li>
+        }
+    }
+</ul>

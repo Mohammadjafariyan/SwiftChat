@@ -1,0 +1,161 @@
+﻿@using System.Data.Entity
+@using SignalRMVCChat.Areas.Customer.Service
+@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@{
+    ViewBag.Title = "نتیجه پرداخت";
+    Layout = "../Shared/_Layout_Customer.cshtml";
+
+}
+<style>
+    #incenter *{
+        direction:rtl;
+        text-align:center;
+    }
+</style>
+
+
+
+
+<div class="page-wrapper">
+    <!-- Page-header start -->
+    <div class="page-header horizontal-layout-icon menu-rtl">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <div class="d-inline">
+                        <h4>وضعیت پلن کاربری شما </h4>
+                        <span> </span>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    <!-- Page-header end -->
+
+    <!-- Page body start -->
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12">
+       
+  
+                <div class="card">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-block">
+<div id="incenter">
+
+    <h2>
+        @ViewBag.Message
+    </h2>
+
+    <hr/>
+    @{
+        var currentPlan = MyAccountProviderService.GetCurrentPlan();
+        
+    }
+    <div class="form-group" style="text-align: center">
+        <label>
+            وضعیت اکانت :
+
+           @if (currentPlan != null)
+           {
+               <span>@currentPlan.Name</span>
+               @*<span>تاریخ شروع :</span>
+               <span>@currentPlan.Name</span>
+                                      
+               <span>تاریخ انقضا :</span>
+               <span>@currentPlan.E</span>*@
+           }
+           else
+           {
+               <span>هیچ پلنی برای شما تعریف نشده است</span>
+           }
+        </label>
+    </div>
+
+</div>
+                    </div>
+
+                </div>
+                @*<div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Sample Block</h5>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                                        <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+                                                    </div>
+                                                </div>*@
+                <!-- Default card end -->
+                
+                                <div class="card">
+                                    <div class="card-header">
+                                    </div>
+                                    <div class="card-block">
+                <div id="incenter">
+                
+                    
+                    @{
+                        var myAccountPlansService = Injector.Inject<MyAccountPlansService>();
+                        var plans= myAccountPlansService.
+                            GetQuery().Include(q=>q.Plan).OrderBy(o => o.ExpireDateTime).ToList();
+                    }
+                    
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>عنوان</th>
+                            <th>تاریخ شروع</th>
+                            <th>تاریخ اتمام</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach (var rec in plans)
+                        {
+                            <tr>
+                                <td>@rec.Plan.Name</td>
+                                <td>
+                                    @if (rec.StartDate.HasValue)
+                                    {
+                                        <span>@MyGlobal.ToIranianDate(rec.StartDate.Value)</span>
+ 
+                                    }
+                                    else
+                                    {
+                                        <span>تاریخ اشتباه است</span>
+                                    }
+                                    
+                                </td>
+                                <td>
+                                     @if (rec.ExpireDateTime.HasValue)
+                                        {
+                                            <span>@MyGlobal.ToIranianDate(rec.ExpireDateTime.Value)</span>
+     
+                                        }
+                                        else
+                                        {
+                                            <span>تاریخ اشتباه است</span>
+                                        }
+</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                
+                   
+                
+                </div>
+                                    </div>
+                
+                                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Page body end -->
+</div>
+

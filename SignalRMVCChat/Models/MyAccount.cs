@@ -1,0 +1,174 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
+using SignalRMVCChat.Service;
+using SignalRMVCChat.SysAdmin.Service;
+using TelegramBotsWebApplication.Areas.Admin.Service;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SignalRMVCChat.Models
+{
+    public class MyAccount:EntitySafeDelete,ISelfReferenceEntity<MyAccount>
+    {
+        public MyAccount()
+        {
+            MyWebsites = new List<MyWebsite>();
+            Chats = new List<Chat>();
+            MySockets = new List<MySocket>();
+            Children = new List<MyAccount>();
+            MyAccountPlans = new List<MyAccountPlans>();
+            MyAccountPayments = new List<MyAccountPayment>();
+            Tags=new List<Tag>();
+            Forms =new List<Form>();
+        }
+
+        public List<Tag> Tags { get; set; }
+
+        public string IdentityUsername { get; set; }
+
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public OnlineStatus OnlineStatus { get; set; }
+        public string Name { get; set; }
+        public string Token { get; set; }
+
+        public string AccessWebsitesJson
+        {
+            get;
+            set;
+        }
+        [NotMapped]
+        public int[] AccessWebsites
+        {
+            set
+            {
+                AccessWebsitesJson = JsonConvert.SerializeObject(value);
+            }
+            get
+            {
+                if (string.IsNullOrEmpty(AccessWebsitesJson))
+                {
+                    return new int[0];
+                }
+                return JsonConvert.DeserializeObject<int[]>(AccessWebsitesJson);
+            }
+        }
+        public MyAccount Parent { get; set; }
+        public int? ParentId { get; set; }
+        public List<Chat> Chats { get; set; }
+
+        public int TotalUnRead { get; set; }
+        public PlanType PlanType { get; set; }
+
+        //  public int TotalUnRead { get; set; }
+
+
+        /// <summary>
+        /// این مال کاستومر است در جایی لازم شد تا ابجکت دیگری تعریف نکنم 
+        /// </summary>
+        [NotMapped]
+        public CustomerTrackInfo LastTrackInfo { get; set; }
+        
+           
+        /// <summary>
+        /// در هر اتصال یک ابجکت ایجاد می شود و یا از دیتابیس فراخوانی می شود اطلاعات اتصال
+        /// </summary>
+        [JsonIgnore]
+
+        public List<MySocket> MySockets { get; set; }
+        
+        /// <summary>
+        /// وب سایت هایی که ادمین ثبت کرده است
+        /// یا اگر زیر مجموعه این ادمین باشد مثلا من صاحب سایتی هستم و یک ادمین دیگر برای آن تعریف کرده باشم
+        /// در اینصورت زیر ادمین نیز به هرکدام از وب سایت ها که بخواهم می توانم وصل کرده و دسترسی بدهم
+        /// </summary>
+        public List<MyWebsite> MyWebsites { get; set; }
+        
+        
+
+        public List<MyAccount> Children { get; set; }
+        public List<MyAccountPlans> MyAccountPlans { get; set; }
+        public List<MyAccountPayment> MyAccountPayments { get; set; }
+        public List<ChatAutomatic> ChatAutomatics { get; set; }
+
+        [NotMapped]
+        public string Address { get; set; }
+
+        [NotMapped]
+        public Chat Message { get; set; }
+
+        [NotMapped]
+        public int NewMessageCount { get; set; }
+
+
+        [NotMapped]
+        public Chat LastMessage { get; set; }
+
+        public int? ProfileImageId { get; set; }
+        
+        [NotMapped]
+        public string Time { get; set; }
+
+        // برای نمایش در سمت کلاینت
+        [NotMapped]
+        public IEnumerable<Tag> CustomerTags { get; set; }
+
+        public Image ProfileImage { get; set; }
+
+        public string GetPlanTypeTranslate()
+        {
+            switch (PlanType)
+            {
+                case PlanType.Gold:
+                    return "پلن طلایی";
+                case PlanType.Silver:
+                    return "پلن نقره ای";
+                default:
+                    return "پلن معمولی";
+            }
+        }
+
+        public static string CalculateOnlineTime(DateTime argCreationDateTime)
+        {
+            var now=DateTime.Now;
+            var seconds= (now - argCreationDateTime).TotalSeconds;
+            var TotalMinutes= (now - argCreationDateTime).TotalMinutes;
+            var TotalDays= (now - argCreationDateTime).TotalDays;
+            var TotalHours= (now - argCreationDateTime).TotalHours;
+
+            if (seconds<60)
+            {
+                return Math.Round(seconds)+ " ثانیه قبل " ;
+            }
+
+            if (TotalMinutes<60)
+            {
+                return Math.Round(TotalMinutes)+ " دقیقه قبل " ;
+            }
+            
+            if (TotalHours<24)
+            {
+                return  Math.Round(TotalHours)+" ساعت قبل " ;
+            }
+            
+            if (TotalDays>0)
+            {
+                return  Math.Round(TotalDays)+"روز قبل" ;
+            }
+
+            return "ساعت تشخیص داده نشد";
+        }
+        
+        public List<Form> Forms { get; set; }
+        public bool HasRootPrivilages { get; set; }
+    }
+
+    public enum PlanType
+    {
+        Trial,Silver,Gold
+    }
+
+
+    
+}

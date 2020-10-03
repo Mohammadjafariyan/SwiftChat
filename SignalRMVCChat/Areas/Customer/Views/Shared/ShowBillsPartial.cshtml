@@ -1,0 +1,63 @@
+﻿@using SignalRMVCChat.Areas.security.Service
+@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.DependencyInjection
+@model List<SignalRMVCChat.Models.MyAccountPayment>
+
+
+
+@{
+
+    var userNames= Model
+        .Select(m => m.MyAccount.IdentityUsername).ToList();
+    var appUserService = Injector.Inject<AppUserService>();
+    var appUsers = appUserService.GetQuery()
+        .Where(q => userNames.Contains(q.UserName)).ToList();
+}
+
+
+<table class="table">
+
+    <thead>
+    <tr>
+        <th>پرداخت کننده</th>
+        <th>تاریخ پرداخت</th>
+        <th>شماره پیگیری</th>
+        <th>شماره کارت</th>
+        <th>مبلغ</th>
+    </tr>
+    
+    </thead>
+
+    <tbody>
+
+
+    @foreach (var rec in Model)
+    {
+        var appUser = appUsers.FirstOrDefault(f => f.UserName == rec.MyAccount.IdentityUsername);
+        if (appUser == null)
+        {
+            throw new Exception("برای کاربر مورد نظر اکانت یافت نشد اشکال در دیتای سیستم " + rec.MyAccount.Username);
+        }
+
+
+        <tr>
+            <td>@appUser.Name @appUser.LastName</td>
+            <td>
+                @if (rec.PaymentDate.HasValue)
+                {
+                    @MyGlobal.ToIranianDate(rec.PaymentDate.Value)
+                }
+                else
+                {
+                    <span>تاریخ پرداخت ثبت نشده است</span>
+                }
+
+            </td>
+            <td>@rec.PaymentTrackId</td>
+            <td>@rec.PaymentCardNo</td>
+            <td>  @MyGlobal.ShowThreeDotMoney(rec.PaymentAmount+"") ریال </td>
+        </tr>
+    }
+    </tbody>
+
+</table>

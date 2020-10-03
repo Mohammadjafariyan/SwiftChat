@@ -1,0 +1,43 @@
+﻿@model string
+
+@{
+    var baseUrl = Model;
+}
+
+
+<style id="gap_fonts">
+
+
+/*font awsome*/
+@@font-face{font-family:'FontAwesome';
+src:url('@baseUrl/Content/fonts/fontawesome-webfont.eot');
+src:url('@baseUrl/Content/fonts/fontawesome-webfont.eot') format('embedded-opentype'),
+url('@baseUrl/Content/fonts/fontawesome-webfont.woff2') format('woff2')
+,url('@baseUrl/Content/fonts/fontawesome-webfont.woff') format('woff')
+,url('@baseUrl/Content/fonts/fontawesome-webfont.ttf') format('truetype')
+,url('@baseUrl/Content/fonts/fontawesome-webfont.svg') format('svg');
+
+font-weight:normal;font-style:normal
+}
+
+/*font aswome end*/
+
+
+/*byekan font*/
+
+
+@@font-face {
+    font-family: byekan;
+    src: url('@baseUrl/Content/fonts/Sahel.ttf');
+}
+span,td,th,p,div,a{
+    font-size: 14px !important;
+}
+@@font-face {
+    font-family: koodak;
+    src: url('@baseUrl/fonts/koodak.ttf');
+}
+
+/*byekan font end*/
+</style>
+

@@ -1,0 +1,116 @@
+﻿@using System.Data.Entity
+@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@using SignalRMVCChat.SysAdmin.Service
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Areas.security.Models.AppUser>
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+
+    ViewBag.Title = "لیست کاربران";
+    ViewBag.Desc = "لیست کاربران بهمراه پلن های آنها";
+}
+
+@{
+    var list = Model.EntityList.OrderByDescending(o => o.Id).ToList();
+
+
+    var usernames = Model.EntityList.Select(e => e.UserName).ToList();
+
+    var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
+
+    
+
+    var myAccounts = myAccountProviderService.GetQuery()
+        .Include(q => q.MyAccountPlans)
+        .Include("MyAccountPlans.Plan")
+        .Where(q => usernames.Contains(q.IdentityUsername)).ToList();
+}
+
+
+
+<table class="table">
+    <thead>
+
+    <tr>
+        <th>نام </th>
+        <th>نام خانوادگی</th>
+        <th>نام کاربری</th>
+        <th>تاریخ ثبت نام</th>
+        <th>نام پلن</th>
+        <th>تاریخ انقضاء</th>
+        <th>باقیماند(روز)</th>
+    </tr>
+
+    </thead>
+    <tbody>
+    @foreach (var m in list)
+    {
+        if (m.Id == CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.AppUserId)
+        {
+            continue;
+        }
+        var account = myAccounts.FirstOrDefault(f => f.IdentityUsername == m.UserName);
+        if (account == null)
+        {
+            continue;
+            
+            //throw new Exception("برای کاربر اکانت مخصوص چت ایجاد نشده است");
+        }
+
+        var plan = account.MyAccountPlans.OrderBy(o => o.Id).FirstOrDefault();
+
+        <tr>
+            <td>@m.Name</td>
+            <td>@m.LastName</td>
+            <td>@m.UserName</td>
+            <td>
+            <span>@MyGlobal.ToIranianDate(m.SignUpDateTime)</span>
+
+            </td>
+            <td>
+                @{
+                    if (plan != null)
+                    {
+                        <span>@plan.Plan.Name</span>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (plan != null && plan.ExpireDateTime.HasValue)
+                    {
+                        <span>@MyGlobal.ToIranianDate(plan.ExpireDateTime.Value)</span>
+                    }
+                }
+            </td>
+            <td>
+                @if (plan != null && plan.ExpireDateTime.HasValue)
+                {
+                    if (plan.ExpireDateTime > DateTime.Now)
+                    {
+                        <span>
+                            @Math.Floor(plan.ExpireDateTime.Value.Subtract(DateTime.Now).TotalDays)
+                        </span>
+                    }
+                    else
+                    {
+                        <span>تاریخ ان گذشته است</span>
+                    }
+                }
+                else
+                {
+                    <span>بدون پلن</span>
+                }
+            </td>
+        </tr>
+    }
+
+
+
+    </tbody>
+</table>
+
+
+@Html.Partial("~/Areas/sysAdmin/Views/Shared/pagingPartial.cshtml")

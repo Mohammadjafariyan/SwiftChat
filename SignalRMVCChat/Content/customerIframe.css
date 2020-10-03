@@ -1,0 +1,26 @@
+﻿body {
+    background: bisque;
+    padding: 0px;
+    margin: 0px;
+}
+.chat-header {
+    position: fixed;
+    width: 100%;
+    bottom: 4px;
+    height: 41px;
+    background: #ffd4d4;
+    border-top: 1px solid #bdb1b1;
+    padding-top: 15px;
+}
+.chat-header input {
+    height: 28px;
+}
+.chat-body {
+    height: 80%;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+}
+
+.text-center {
+    text-align: center !important;
+}

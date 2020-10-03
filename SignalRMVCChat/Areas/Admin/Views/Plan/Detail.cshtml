@@ -1,0 +1,185 @@
+﻿@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyEntityResponse<SignalRMVCChat.Service.Plan>
+
+<style>
+input{
+direction: ltr;
+}
+</style>
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    
+    
+    ViewBag.Title = "پلن های کاربری";
+    ViewBag.Desc = "تعریف پلن کاربری جدید ";
+
+    Plan plan = new Plan();
+
+    int id;
+    int.TryParse(Request.Params["id"] ?? "0", out id);
+
+    if (id != 0)
+    {
+        var planService = Injector.Inject<PlanService>();
+        plan = planService.GetById(id).Single;
+    }
+
+}
+
+
+<form method="post" action="/Admin/Plan/Save">
+@Html.Hidden("Id", plan.Id)
+
+<div  >
+    
+    <div >
+        
+        <table class="table table-bordered">
+            
+            <tbody>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" class="btn btn-primary" value="ثبت"/>
+                    <a href="/admin/plan/index" class="btn btn-default">
+                        لغو
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>عنوان پلن</td>
+                <td>
+
+                    <input name="Name" type="text" value="@plan.Name"/>
+                </td>
+            </tr>
+            <tr>
+                <td>جستجو</td>
+                <td>@Html.CheckBox("Search", plan.Search) </td>
+            </tr>
+            <tr>
+           
+                <td>برنامه اندروید</td>
+                <td>@Html.CheckBox("AndroidApp", plan.AndroidApp)</td>
+            </tr>
+                   <tr>
+                  
+                            <td>نمایش واترمارک</td>
+                            <td>@Html.CheckBox("ShowWatermark", plan.ShowWatermark)</td>
+                        </tr>
+                  <tr>
+            
+                            <td>نمایش واترمارک</td>
+                            <td>@Html.CheckBox("ShowWatermark", plan.ShowWatermark)</td>
+                        </tr>
+            <tr>
+                <td>برنامه IOS</td>
+                <td>@Html.CheckBox("IOSApp", plan.IOSApp)</td>
+            </tr>
+            <tr>
+                <td>تعداد چت ها ( منفی یک به معنی بینهایت )</td>
+                <td>
+                    <input name="ChatCounts" type="text" value="@plan.ChatCounts"/>
+
+                </td>
+            </tr>
+            <tr>
+                <td>فضا( منفی یک به معنی بینهایت )</td>
+                <td>
+                    <input name="GigHost" type="text" value="@plan.GigHost"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td>مترجم آنلاین</td>
+                <td>@Html.CheckBox("OnlineTranslator", plan.OnlineTranslator)</td>
+
+            </tr>
+            <tr>
+                <td>ارسال پیام غیر متنی</td>
+                <td>@Html.CheckBox("SendMultimedia", plan.SendMultimedia)</td>
+
+            </tr>
+            <tr>
+                <td>تم خصوصی سازی شده</td>
+                <td>@Html.CheckBox("SpecialTheme", plan.SpecialTheme)</td>
+
+            </tr>
+            <tr>
+                <td>تعداد پشتیبان( منفی یک به معنی بینهایت )</td>
+                <td>
+                    <input type="number" value="@plan.SupporterCount" name="SupporterCount"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td>صندوق ورودی تیم</td>
+                <td>@Html.CheckBox("TeamInbox", plan.TeamInbox)</td>
+
+            </tr>
+            <tr>
+                <td>بات تلگرام</td>
+                <td>@Html.CheckBox("TelegramBot", plan.TelegramBot)</td>
+
+            </tr>
+            <tr>
+                <td>ویدئو چت</td>
+                <td>@Html.CheckBox("VideoChat", plan.VideoChat)</td>
+
+            </tr>
+            <tr>
+                <td>پلاگین وب</td>
+                <td>@Html.CheckBox("WebApp", plan.WebApp)</td>
+
+            </tr>
+            <tr>
+                <td>تاریخچه نگهداری چت ها( منفی یک به معنی بینهایت )</td>
+                <td>
+                    <input name="ChatHistoryDays" type="text" value="@plan.ChatHistoryDays"/>
+
+                </td>
+            </tr>
+            <tr>
+                <td>قیمت در ماه (ریال)</td>
+                <td>
+                    <input name="PerMonthPrice" type="text" value="@plan.PerMonthPrice"/>
+
+                </td>
+            </tr>
+            <tr>
+                <td>پاسخ دهی اتوماتیک مواقع آفلاین</td>
+                <td>@Html.CheckBox("SmartAnswersOnOffline", plan.SmartAnswersOnOffline)</td>
+
+            </tr>
+            <tr>
+                <td>فوروارد کاربر به پشتیبان دیگر</td>
+                <td>@Html.CheckBox("ForwardUserToAnotherAdmin", plan.ForwardUserToAnotherAdmin)</td>
+
+            </tr>
+            <tr>
+                <td>اختصاص صفحات خاص به پشتیبان های خاص</td>
+                <td>@Html.CheckBox("URLSpecificSupporter", plan.URLSpecificSupporter)</td>
+
+            </tr>
+            <tr>
+                <td>مشاهده آنلاین مانیتور کاربر</td>
+                <td>@Html.CheckBox("OnlineScreenMonitor", plan.OnlineScreenMonitor)</td>
+
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" class="btn btn-primary" value="ثبت"/>
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+    
+
+</div>
+
+</form>
+

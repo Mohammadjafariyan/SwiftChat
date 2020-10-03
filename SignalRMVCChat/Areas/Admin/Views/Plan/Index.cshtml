@@ -1,0 +1,54 @@
+﻿@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Service.Plan>
+
+<style>
+input{
+direction: ltr;
+}
+</style>
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    
+    
+    ViewBag.Title = "پلن های کاربری";
+    ViewBag.Desc = "چدول پنل های کاربری ";
+
+    Plan plan = new Plan();
+
+    int id;
+    int.TryParse(Request.Params["id"] ?? "0", out id);
+
+    if (id != 0)
+    {
+        var planService = Injector.Inject<PlanService>();
+        plan = planService.GetById(id).Single;
+    }
+
+}
+
+
+
+<div >
+    <div >
+        <a  href="/Admin/Plan/Detail?id=0" class="btn btn-primary">تعریف پلن کاربری جدید</a>
+            @Html.Partial("PricingTable", Model)
+        </div>
+
+</div>
+
+
+@section scripts{
+
+
+    <script>
+    $(document).ready(function() {
+        
+       $('td:contains("True")').html('<span style="color:green" class="glyphicon glyphicon-ok"></span>');
+       $('td:contains("False")').html('<span style="color:red" class="glyphicon glyphicon-remove"></span>');
+       $('td:contains("-1")').text('بینهایت');
+
+      
+    })
+    </script>
+}

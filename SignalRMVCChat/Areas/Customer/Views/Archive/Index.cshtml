@@ -1,0 +1,292 @@
+﻿@model SignalRMVCChat.Areas.Customer.Controllers.ArchiveViewModel
+
+@{
+    ViewBag.Title = "آرشیو گفتگو های سایت ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string websiteTitle = /*Model?.Website?.WebsiteTitle +*/ Model?.Website?.BaseUrl;
+}
+
+<style>
+
+.navbar {
+display: none;
+}
+    .pace-activity{
+        border-top-color: #d22;
+        border-left-color: #d22;
+    }
+    .tdright{
+        text-align: right;
+    }
+</style>
+
+@if (TempData["err"] != null)
+{
+    
+    
+    
+    <div style="margin: 300px" class="alert alert-danger" >@TempData["err"]</div>
+}
+else
+{
+    
+
+
+<div style="position: relative" id="disableBackgroundholder">
+
+</div>
+<div id="loading2" class="pace-running pace-running">
+    <div class="pace pace-active">
+        <div class="pace-progress" data-progress-text="0%" data-progress="00" style="transform: translate3d(0%, 0px, 0px);">
+            <div class="pace-progress-inner"></div>
+        </div>
+        <div class="pace-activity"></div>
+    </div>
+</div>
+
+    
+     <div class="container "  dir="rtl">
+        <div class="card" dir="rtl">
+            <div class="card-header">
+                <h5>آمار سایت </h5>
+            </div>
+            <div class="card-block">
+            
+                <div class="row">
+                    <div class="col-12">
+                               
+                        <div id="GetStatistics" style="padding: 20px"></div>
+                    </div>
+            
+                            
+                </div>
+            </div>
+        </div>
+        </div>
+<div class="container-fluid"  dir="rtl">
+    
+    
+    <hr/>
+    <style>
+        .card-header{
+            background-color: #29b3d2;
+            color: white;
+        }
+        
+        h5 {
+                          direction: rtl;
+                          text-align: center;
+                       
+                      }
+        .acustomer:hover{
+            background-color: aqua;
+            cursor: pointer
+        }
+        .aadmin:hover{
+            background-color: bisque;
+            cursor: pointer
+        }
+    </style>
+
+                    <div class="card">
+        <div class="card-header">
+            <h5>@ViewBag.Title @websiteTitle </h5>
+        </div>
+        <div class="card-block">
+        
+        
+            <div id="msgHolder"></div>
+            <hr/>
+   <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    @Html.Partial("FilterForm")
+                </div>
+                <div class="col-3"></div>
+
+                
+            </div>
+                          <hr/>
+  <div class="row">
+                <div class="col-md-2 tdright">
+                    @Html.Partial("showWebsiteAdminsArchivePartial")
+                </div>
+                <div class="col-md-2 tdright">
+                    <div id="customerList"></div>
+                </div>
+                   <div class="col-md-2 tdright">
+                       <div id="allCustomers"> </div>
+                   </div>
+                
+
+                <div class="col-md-6">
+                    <div id="chatList"></div>
+
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+   
+
+    <div class="container " style="margin-top: 100px;margin-bottom: 100px" dir="rtl">
+    
+        @Html.Partial("HasAccessWebsiteListForArchive")
+    </div>
+@section scripts
+{
+
+    <link href="~/Content/persianDatepicker-default.css" rel="stylesheet"/>
+
+    <script src="~/Content/persianDatepicker.min.js"></script>
+    @*         TempData["token"] = token;
+    TempData["adminToken"] = adminToken;myAccountId
+    *@
+    <script src="~/Content/Tools.js"></script>
+    <script>
+        let token = '@TempData["token"]';
+        let adminToken = '@TempData["adminToken"]';
+        let myAccountId = '@TempData["myAccountId"]';
+        let queryString = `token=${token}&adminToken=${adminToken}&myAccountId=${myAccountId}`;
+
+        let currentPage = 1;
+        let chatsCurrentPage = 1;
+
+        
+        function init(){
+          getChattedCustomers(false,'#allCustomers');
+getAllCustomers(false);
+GetWebsiteStatistics();
+        }
+
+        $(document).ready(function() {
+init();
+            
+            
+                $(function() {
+                    $(".datepicker").persianDatepicker();       
+                });
+        })
+
+        function goPageForCustomers(page) {
+            currentPage = page;
+            getChattedCustomers(true);
+        }
+
+        function goPage(page) {
+            chatsCurrentPage = page;
+            getChats(window['customerId'],true )
+        }
+
+        function selectAdmin(myAccountId,f,THIS) {
+            window['myAccountId'] = myAccountId;
+            getChattedCustomers();
+            
+            $('.aadmin').css('background-color','white');
+                        $(THIS).css('background-color','#1ec3f5');
+                        
+        }
+
+        function getChats(customerId, isNextPage,THIS) {
+            
+            if (!isNextPage) {
+                chatsCurrentPage = 1;
+            }
+             
+            $('.acustomer').css('background-color','white');
+            $(THIS).css('background-color','#1ec3f5');
+            
+            
+
+            if (!window['myAccountId']) {
+                showError("ادمین انتخاب نشده است لطفا مجددا ادمین را انتخاب نمایید",'#msgHolder');
+                return;
+            }
+
+            window['customerId'] = customerId;
+            ajaxCallFill(`/customer/Archive/GetChats?${queryString}`,
+                "#chatList",
+                {
+                    page: chatsCurrentPage,
+                    myAccountId: window['myAccountId'],
+                    customerId: customerId,
+                    dateFrom:$('#DateFrom').val(),
+                    dateTo:$('#DateTo').val(),
+                });
+        }
+
+        /*function getAllCustomers() {
+          /!*  window['myAccountId'] = null;
+            getChattedCustomers();
+            
+                      $('.aadmin').css('background-color','white');
+*!/
+        }*/
+
+        function getChattedCustomers(isNextPage) {
+                  if (!isNextPage) {
+                      currentPage = 1;
+                  }
+      
+                  var searchTerm = $('#searchTerm').val();
+                  ajaxCallFill(`/customer/Archive/GetCustomers?${queryString}`,
+                     "#customerList",
+                      {
+                          page: currentPage,
+                          chatedMyAccountId: window['myAccountId'],
+                          searchTerm: searchTerm,
+                          dateFrom:$('#DateFrom').val(),
+                          dateTo:$('#DateTo').val(),
+                      })
+              }
+              
+                function getAllCustomers(isNextPage) {
+                          if (!isNextPage) {
+                              currentPage = 1;
+                          }
+              
+                          var searchTerm = $('#searchTerm').val();
+                          ajaxCallFill(`/customer/Archive/GetAllCustomers?${queryString}`,
+                             "#allCustomers",
+                              {
+                                  page: currentPage,
+                                  dateFrom:$('#DateFrom').val(),
+                                  dateTo:$('#DateTo').val(),
+                                  searchTerm:searchTerm
+                              })
+                      }
+
+
+        $.ajaxSetup({
+            beforeSend: function() {
+
+                document.getElementById('disableBackgroundholder').innerHTML = '<div id="disableBackground"><h2  style=" text-align: center">در حال خواندن اطلاعات</h2></div>';
+                document.getElementById('loading2').style.display = 'block';
+            },
+            complete: function() {
+
+                document.getElementById('disableBackgroundholder').innerHTML = '';
+
+                document.getElementById('loading2').style.display = 'none';
+            }
+        });
+        
+        
+        function GetWebsiteStatistics() {
+            ajaxCallFill(`/customer/Archive/GetStatistics?${queryString}`,
+                               "#GetStatistics",
+                                {
+                                    page: currentPage,
+                                    chatedMyAccountId: window['myAccountId'],
+                                    dateFrom:$('#DateFrom').val(),
+                                    dateTo:$('#DateTo').val(),
+                                })
+        }
+    </script>
+}
+
+}

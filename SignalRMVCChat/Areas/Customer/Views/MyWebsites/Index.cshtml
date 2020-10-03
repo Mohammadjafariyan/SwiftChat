@@ -1,0 +1,69 @@
+﻿@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Service.MyWebsite>
+
+@{
+    ViewBag.Title = "وب سایت های من";
+    Layout = "../../Views/Shared/_Layout_Customer.cshtml";
+}
+<style>
+    
+th{
+    text-align: right !important;
+    direction: rtl!important;
+}
+</style>
+
+<div class="card">
+                                                    <div class="card-header">
+                                                        <h5>@ViewBag.Title </h5>
+                                                    </div>
+<div class="card-block">
+                                                       
+
+
+    <a href="/customer/MyWebsites/Detail?id=0">ایجاد وب سایت جدید</a>
+    
+    <p>با کلیک بر روی دکمه های زیر می توانید برای هر وب سایت پلاگین مخصوص اش را دانلود نمایید</p>
+    @if (Model.EntityList!=null && Model.EntityList.Count > 0)
+    {
+    <table class="table">
+        <thead>
+
+        <tr>
+            <th>آدرس وب سایت</th>
+            <th colspan="3"></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var rec in Model.EntityList)
+        {
+            <tr>
+                <td>@rec.BaseUrl</td>
+                <td>
+                    <a href="/Customer/Dashboard/CreatePluginForCustomers?websiteId=@rec.Id" class="btn btn-download">پلاگین مشتریان</a>
+                </td>
+                <td>
+                    <a href="/Customer/Dashboard/CreatePluginForAdmins?websiteId=@rec.Id" class="btn btn-blog">پلاگین پشتیبانی و ادمین</a>
+                </td>
+                <td>
+                    <a href="/Customer/PluginCustomized/Detail?websiteId=@rec.Id" class="btn btn-blog">سفارشی سازی پلاگین</a>
+                </td>
+   <td><form method="post" action="/Customer/MyWebsites/Delete?id=@rec.Id">
+                    
+                    <input hidden="hidden" name="Id" value="@rec.Id"/>
+                    
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                    </form></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    }
+    else
+    {
+        <p>در حال حاضر هیچ وب سایتی ثبت نشده است برای شروع یک وب سایت <a href="/customer/MyWebsites/Detail?id=0">ایجاد</a> نموده و پلاگین برای آن تولید نمایید</p>
+    }
+    
+</div>
+</div>

@@ -1,0 +1,65 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Models
+@using SignalRMVCChat.Service
+@model MyWebsite
+
+
+@{
+
+
+    if (Model!=null)
+    {
+        
+    }
+    
+    
+    string url = MyGlobal.GetBaseUrl(Request.Url);
+    
+    
+    
+
+    var myWebsiteService = Injector.Inject<MyWebsiteService>();
+
+    MyWebsite website = null;
+
+
+    if (Model!=null && !string.IsNullOrEmpty(Model.BaseUrl))
+    {
+        website = Model;
+    }
+    else
+    {    website= myWebsiteService.GetQuery().FirstOrDefault(m => m.BaseUrl.Contains(url) || url.Contains(m.BaseUrl));
+
+        
+    }
+
+    /*if (website == null)
+    {
+        website = new MyWebsite(url);
+        myWebsiteService.Save(website);
+
+        website.WebsiteToken = MySpecificGlobal.GenerateWebsiteAdminToken(website);
+        myWebsiteService.Save(website);
+    }*/
+
+    // اگر پلاگین برای سایت خودمان ایجاد شده باشد 
+    // آن پلاگین را نشان بده
+  //  var websiteUrl = MyGlobal.GetBaseUrl(new Uri(website.BaseUrl));
+
+    if (website!=null)
+    {
+        <script src="@url/Content/JsPlugin/push/serviceWorker.min.js"></script>
+        <script src="@url/Content/JsPlugin/push/push.min.js"></script>
+
+        <script src="@url/Customer/JsPlugin/ResourceJs?token=@website.WebsiteToken" type="text/javascript" crossorigin="anonymous" async="async"></script>
+
+    }
+    else
+    {
+        
+    }
+
+   
+
+}

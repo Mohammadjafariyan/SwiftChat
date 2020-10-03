@@ -1,0 +1,307 @@
+﻿/*pace:*/
+
+
+.card-block{
+    
+    overflow: auto !important;
+}
+.dot a {
+    color: white;
+    text-decoration: none;
+}
+
+.dot a:hover {
+    color: white;
+    text-decoration: none;
+}
+.dot{
+    position: fixed;
+    top: 71%;
+    right: 5%;
+    z-index: 999999999;
+}
+.gapOnTheFlyMessage{
+    position: fixed;
+    top: 58%;
+    right: 5%;
+    z-index: 999999999;
+    
+    
+}
+.onTheFly{
+    top: 10% !important;
+    left: 65%!important;
+}
+
+
+@media screen and (max-width: 1366px) {
+    .gapContent {
+        width: 36vw !important; /* The width is 100%, when the viewport is 800px or smaller */
+    }
+
+    .onTheFly{
+        top: 15% !important;
+        left: 60%!important;
+    }
+
+    .gapChat{
+        overflow: hidden;
+        height: 62%;
+    }
+
+    .gapChat{
+        height: 60vh;
+    }
+}
+@media screen and (max-width: 1024px) {
+    .gapContent {
+        width: 36vw !important; /* The width is 100%, when the viewport is 800px or smaller */
+    }
+
+    .onTheFly{
+        top: 15% !important;
+        left: 62%!important;
+    }
+
+    .gapChat{
+        height: 50vh;
+    }
+}
+/* Use a media query to add a breakpoint at 800px: */
+@media screen and (max-width: 800px) {
+    .gapContent {
+        width: 90vw !important; /* The width is 100%, when the viewport is 800px or smaller */
+    }
+
+    .onTheFly{
+        top: 10% !important;
+        left: 5%!important;
+    }
+
+
+    .gapChat{
+        height: 50vh;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .gapContent {
+        width: 90vw !important; /* The width is 100%, when the viewport is 800px or smaller */
+    }
+
+    .onTheFly{
+        top: 10% !important;
+        left: 5%!important;
+    }
+
+    .gapChat{
+        height: 45vh;
+    }
+    
+}
+
+.pace {
+    -webkit-pointer-events: none;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.pace-inactive {
+    display: none;
+}
+
+.pace .pace-progress {
+    background: #29d;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    right: 100%;
+    width: 100%;
+    height: 2px;
+}
+
+.pace .pace-progress-inner {
+    display: block;
+    position: absolute;
+    right: 0px;
+    width: 100px;
+    height: 100%;
+    box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+    opacity: 1.0;
+    -webkit-transform: rotate(3deg) translate(0px, -4px);
+    -moz-transform: rotate(3deg) translate(0px, -4px);
+    -ms-transform: rotate(3deg) translate(0px, -4px);
+    -o-transform: rotate(3deg) translate(0px, -4px);
+    transform: rotate(3deg) translate(0px, -4px);
+}
+
+.pace .pace-activity {
+    display: block;
+    position: fixed;
+    z-index: 2000;
+    top: 15px;
+    right: 15px;
+    width: 14px;
+    height: 14px;
+    border: solid 2px transparent;
+    border-top-color: #29d;
+    border-left-color: #29d;
+    border-radius: 10px;
+    -webkit-animation: pace-spinner 400ms linear infinite;
+    -moz-animation: pace-spinner 400ms linear infinite;
+    -ms-animation: pace-spinner 400ms linear infinite;
+    -o-animation: pace-spinner 400ms linear infinite;
+    animation: pace-spinner 400ms linear infinite;
+}
+
+@-webkit-keyframes pace-spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes pace-spinner {
+    0% {
+        -moz-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-o-keyframes pace-spinner {
+    0% {
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-ms-keyframes pace-spinner {
+    0% {
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pace-spinner {
+    0% {
+        transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+#disableBackground h2 {
+    color: #3eb1ff;
+    margin: 20%;
+    z-index: 99999;
+}
+
+#disableBackground {
+    position: fixed;
+    opacity: 0.3;
+    width: 100%;
+    top: 50px;
+    height: 100%;
+    background-color: #0edbf9;
+    z-index: 9999;
+}
+/*pace end*/
+@font-face {
+    font-family: byekan;
+    src: url(../fonts/Sahel.ttf);
+}
+span,td,th,p,div,a{
+    font-size: 14px !important;
+}
+@font-face {
+    font-family: koodak;
+    src: url(../fonts/koodak.ttf);
+}
+
+.pcoded[theme-layout="vertical"][vertical-placement="right"] .pcoded-navbar .pcoded-item>li>a .pcoded-mtext{
+    padding:0px !important;;
+}
+th{
+    text-align: right;
+    direction: rtl;
+}
+
+
+*:not(i):not(.glyphicon){
+    font-family: byekan !important;
+}
+
+li a{
+    font-size: 18px !important;
+
+}
+
+/*
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+!* Set padding to keep content from hitting the edges *!
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+!* Set width on the form input elements since they're 100% wide by default *!
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+!* styles for validation helpers *!
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}*/

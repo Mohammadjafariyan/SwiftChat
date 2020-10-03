@@ -1,0 +1,179 @@
+﻿@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model SignalRMVCChat.Models.MyAccount
+
+@{
+    ViewBag.Title = "تخصیص ادمین های هر وب سایت";
+    Layout = "~/Areas/Customer/Views/Shared/_Layout_Customer.cshtml";
+}
+
+
+<style>
+    .sel:hover{
+        background-color: aqua;
+        cursor: pointer
+    }
+</style>
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h5>@ViewBag.Title </h5>
+    </div>
+    <div class="card-block">
+
+        @{
+            if (Model?.MyWebsites?.Count == 0)
+            {
+                <p>هیچ وب سایتی تعریف نکرده اید برای شروع اولین وب سایت را ایجاد نمایید</p>
+                <a href="/customer/Mywebsites/Detail?id=0">تعریف وب سایت</a>
+            }
+
+
+        }
+
+
+        <div class="alert alert-danger" id="err" style="display: none"></div>
+        <div class="alert alert-success" id="msg" style="display: none"></div>
+
+        @if (Model?.MyWebsites != null)
+        {
+
+
+        
+            <div class="">
+                <p>لطفا ابتدا ادمینی که میخواهید به او دسترسی بدهید انتخاب نمایید</p>
+                <div class="col-md-6">
+                    <table class="table">
+                        <thead>
+
+                        <tr>
+                            <th style="text-align: center">لیست ادمین ها</th>
+                        </tr>
+
+                        <tr>
+                            <th>نام کاربری</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var web in Model.Children)
+                        {
+                            <tr class="sel" onclick="selectChildMyAccount(@web.Id, @Model.Id)">
+                                <td>@web.Username</td>
+                            </tr>
+                        }
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <div id="selectList"></div>
+                </div>
+
+            </div>
+
+
+        }
+        
+        <br/>
+        <div class="col-md-2 " style="display: none" id="submitButton">
+
+            <button class="btn btn-primary" onclick="Mysubmit()">ثبت</button>
+        </div>
+
+
+        @section scripts{
+            <script>
+                function showError(text) {
+                    $('#msg').hide();
+                    $('#err').show();
+                    $('#err').html(text);
+                }
+
+                function showSuccess(text) {
+                    $('#err').hide();
+                    $('#msg').show();
+                    $('#msg').text(text);
+                }
+
+                function Mysubmit() {
+
+                    var selected = $('.websiteSelected');
+                    if (!selected || !selected.length) {
+                        showError('هیچ وبسایتی انتخاب نشده است');
+                        return;
+                    }
+                    if (!window['myaccountId']) {
+                        showError('هیچ ادمینی انتخاب نشده است');
+                        return;
+                    }
+                    if (!window['parent']) {
+                        showError('ریشه انتخاب نشده است');
+                        return;
+                    }
+                    let arr = [];
+                    for (var i = 0; i < selected.length; i++) {
+                        let val = $(selected[i]).val();
+                        arr.push(val);
+                    }
+                    $('#submitButton button').prop('disabled',true);
+
+
+                    $.ajax({
+                        url: '/customer/MyAccounts/SaveSelectedWebsites',
+                        data: {
+                            selectedWebsites: arr,
+                            parentId: window['parent'],
+                            myaccountId: window['myaccountId'],
+                        },
+                        method: 'post',
+                        success: function (res) {
+                            $('#submitButton button').prop('disabled',false);
+
+                            showSuccess("با موفقیت ثبت شد");
+                        },
+                        error: function (err) {
+                            $('#submitButton button').prop('disabled', false);
+
+                            console.error(err);
+                            showError('خطایی رخ داد' + err.responseText);
+                        }
+
+                    })
+                }
+
+                function selectChildMyAccount(myaccountId, parent) {
+                    window['myaccountId'] = myaccountId;
+                    window['parent'] = parent;
+
+                    
+
+                    ajaxCallFill('/Customer/MyAccounts/GetMyAccountWebsitesSelected','#selectList', { myAccountId: myaccountId, parentId: parent });
+                }
+
+                function ajaxCallFill(url, target, body) {
+
+                    $.ajax({
+                        url: url,
+                        data: body,
+                        method: 'post',
+                        success: function (res) {
+                            $(target).html(res);
+
+                            $('#submitButton').show();
+                        },
+                        error: function (err) {
+
+                            console.error(err);
+                            showError('خطایی رخ داد' + err.responseText);
+                        }
+
+                    })
+                }
+            </script>
+        }
+
+    </div>
+</div>

@@ -1,0 +1,76 @@
+﻿@using SignalRMVCChat.Areas.security.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Models
+@using SignalRMVCChat.Service
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyEntityResponse<MyAccount>
+
+@{
+    ViewBag.Title = "در این قسمت ادمین پشتیبانی تعریف می نمایید :";
+        Layout = "../../Views/Shared/_Layout_Customer.cshtml";
+
+
+    var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
+    MyAccount myAccount=  myAccountProviderService.GetAccountIdByUsername(SecurityService.GetCurrentUser().UserName);
+}
+
+
+@{ 
+
+    Plan plan= MyAccountProviderService.GetCurrentPlan();
+}
+
+@{
+
+    try
+    {
+        PlanService.CheckSupporterCount();
+    }
+    catch (PlanException e)
+    {
+        <div class="alert alert-danger">@e.Message</div>
+    }
+}
+
+
+<div class="card">
+                                                    <div class="card-header">
+                                                        <h5>@ViewBag.Title </h5>
+                                                    </div>
+<div class="card-block">
+
+
+    @using (Html.BeginForm("Save", "MyAccounts", FormMethod.Post))
+    {
+                               @Html.ValidationSummary("", new { @class = "text-danger" })
+
+        <label>
+                نام   
+             </label>
+             <input value="@Model.Single.Name"  
+                    style="width: 100%;text-align: left;direction: ltr" name="Name"/>
+
+
+   <label>
+           نام کاربری ادمین 
+        </label>
+        <input value="@Model.Single.Username"  
+               style="width: 100%;text-align: left;direction: ltr" name="Username"/>
+
+        <label>
+            رمز عبور ادمین
+        </label>
+        <input value="@Model.Single.Password"  
+               style="width: 100%;text-align: left;direction: ltr" name="Password"/>
+
+@Html.Hidden("Id", myAccount.Id)
+        <hr/>
+
+        <input type="submit" value="ثبت" class="btn btn-primary" />
+
+
+
+    }
+
+
+</div>
+</div>
