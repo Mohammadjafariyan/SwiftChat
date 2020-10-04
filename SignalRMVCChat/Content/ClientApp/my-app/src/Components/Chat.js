@@ -11,6 +11,7 @@ import TagList from "./TagList";
 import CustomerTags from "./CustomerTags";
 import FormShowerInChat from "./FormShowerInChat";
 import {_showError} from "../Pages/LayoutPage";
+import MarkAsResovled from "./MarkAsResovled";
 
 export default class Chat extends Component {
     constructor(arg) {
@@ -227,17 +228,22 @@ export default class Chat extends Component {
 
 
         this.setState({tmp: Math.random()});
+        
+        if (CurrentUserInfo.CustomerTags){
+            CurrentUserInfo.CustomerTags.setState({tmp:Math.random()})
+        }
 
     }
 
     render() {
         return (
             <div>
-                <div className="card">
-                    <div className="card-header">
+                <MarkAsResovled/>
+
+                <div className="card ">
+                    <div className="card-header ">
                         {DataHolder.SelectedUserName}
                         <MyHeader/>
-                        <CustomerTags customer={DataHolder.selectedCustomer}/>
                     </div>
                     <div className="card-body ">
                         <h5 className="card-title"></h5>
@@ -595,7 +601,7 @@ export function ChatPannel(props) {
     return props.chats.map((el, i, arr) => {
         if (!el.IsReceive) {
             return (
-                <div className="card post  offset-md-4" key={el.UniqId}>
+                <div className="card post  offset-md-4 " key={el.UniqId}>
                     {props.onDelete && (
                         <div className="card-header card-header-left">
                             <button

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework.Constraints;
@@ -11,6 +12,8 @@ namespace SignalRMVCChat.WebSocket
 {
     public class BaseDeleteTagByIdSocketHandler : ISocketHandler
     {
+        private int? deletedTagsCustomerId;
+
         public async Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
         {
             var _request = MyWebSocketRequest.Deserialize(request);
@@ -65,6 +68,7 @@ namespace SignalRMVCChat.WebSocket
 
         protected virtual async Task<MyWebSocketResponse> ReturnResponse(string request, MyWebSocketRequest currMySocketReq)
         {
+            
             // لیست برچسب ها بعد از برچسب جدید
             return await new GetTagsSocketHandler().ExecuteAsync(request, currMySocketReq);
         }
@@ -72,7 +76,10 @@ namespace SignalRMVCChat.WebSocket
         protected virtual void Delete(IQueryable<CustomerTag> userSettedTags, CustomerTagService customerTagService,
             TagService tagService, Tag selectedTag, MyWebSocketRequest request)
         {
-            customerTagService.Delete(userSettedTags);
+            var list = userSettedTags.ToList();
+
+            this.deletedTagsCustomerId= list.Select(t => t.CustomerId).FirstOrDefault();
+            customerTagService.Delete(list);
 
             tagService.DeleteById(selectedTag.Id);
         }

@@ -162,6 +162,20 @@ namespace SignalRMVCChat.WebSocket
                                 Time = DateTime.Now.ToString("HH:mm"),
                                 TimeDt = DateTime.Now.TimeOfDay,
                                 DateTime = DateTime.Now,
+                                
+                                
+                                ip=inforByIp.ip,
+                                type=inforByIp.type,
+                                continent_code=inforByIp.continent_code,
+                                continent_name=inforByIp.continent_name,
+                                country_code=inforByIp.country_code,
+                                country_name=inforByIp.country_name,
+                                region_code=inforByIp.region_code,
+                                region_name=inforByIp.region_name,
+                                city=inforByIp.city,
+                                latitude=inforByIp.latitude,
+                                longitude=inforByIp.longitude,
+                                
                             };
                             customerTrackerService.Save(track);
 

@@ -3,6 +3,7 @@ import {MyCaller, CurrentUserInfo} from './../Help/Socket';
 import {DataHolder} from './../Help/DataHolder';
 import WhileWriting from "./WhileWriting";
 import {Card} from "react-bootstrap";
+import MarkAsResovled from "./MarkAsResovled";
 
 
 export class ForwardChat extends Component {
@@ -118,6 +119,7 @@ export default class MyHeader extends Component {
     render() {
         return (
             <div>
+
 
                 <ForwardChat></ForwardChat>
 

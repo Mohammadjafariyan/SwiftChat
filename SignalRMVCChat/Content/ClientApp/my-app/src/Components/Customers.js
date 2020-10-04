@@ -297,6 +297,10 @@ export function ShowOnlineUsers(props){
                 props.parent.readChat();
 
 
+                
+                if (CurrentUserInfo.CustomerToolbar){
+                    CurrentUserInfo.CustomerToolbar.setState({ temp: Math.random() })
+                }
 
                 debugger
                 if (DataHolder.selectedCustomer) {

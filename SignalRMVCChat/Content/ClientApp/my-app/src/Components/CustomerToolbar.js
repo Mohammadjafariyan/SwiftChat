@@ -5,6 +5,15 @@ import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 import {DataHolder} from "../Help/DataHolder";
 import {_showError} from "../Pages/LayoutPage";
+import CustomerInfo from "./CustomerInfo";
+import UserDeviceInfo from "./UserDeviceInfo";
+import UserTags from "./UserTags";
+import OtherTools from "./OtherTools";
+import LastPagesVisited from "./LastPagesVisited";
+import CustomerData from "./CustomerData";
+import PrimengModal from "./SendFromHelpDeskModal";
+import SendFromHelpDesk from "./SendFromHelpDesk";
+import {Dialog} from "primereact/dialog";
 
 class CustomerToolbar extends Component {
 
@@ -40,10 +49,14 @@ class CustomerToolbar extends Component {
         return (
             <div>
 
+                
+                <CustomerInfo/>
+
+                <OtherTools/>
                 <div
                     className={"card adminsPanel" + (CurrentUserInfo.LayoutPage.state.focusForSelectingAdmin ? ' showSingle ' : '')}>
                     <div className="card-header">
-                        ابزار
+                        ارسال فرم
                     </div>
 
                     <div className="card-body">
@@ -71,6 +84,21 @@ class CustomerToolbar extends Component {
                         })}
                     </div>
                 </div>
+
+                <CustomerData/>
+                <UserDeviceInfo/>
+                
+                <UserTags/>
+             
+           
+           <LastPagesVisited/>
+           
+           
+           <PrimengModal title={'انتخاب از مقالات مرکز پشتیبانی'}>
+               <SendFromHelpDesk></SendFromHelpDesk>
+
+
+           </PrimengModal>
             </div>
         );
     }

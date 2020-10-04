@@ -50,19 +50,20 @@ namespace SignalRMVCChat.WebSocket
             // اگر کد کاربر ارسال شده باشد ، یعنی مخصوص آن کاربر را برگرداند
             if (customerId.HasValue)
             {
-tags=                tags.Include(t => t.CustomerTags).Where(c => c.CustomerTags.Any(t => t.CustomerId == customerId));
+var usertags=                tags.Include(t => t.CustomerTags).Where(c => c.CustomerTags.Any(t => t.CustomerId == customerId));
+await MySocketManagerService.SendToAdmin(currMySocketReq.MySocket.MyAccountId.Value,
+    currMySocketReq.MyWebsite.Id,
+    new MyWebSocketResponse
+    {
+        Name = "userAddedToTagsCallback",
+        Content = new MyDataTableResponse<Tag>
+        {
+            EntityList = usertags.ToList()
+        },
+    });
             }
 
-            await MySocketManagerService.SendToAdmin(currMySocketReq.MySocket.MyAccountId.Value,
-                currMySocketReq.MyWebsite.Id,
-                new MyWebSocketResponse
-                {
-                    Name = "userAddedToTagsCallback",
-                    Content = new MyDataTableResponse<Tag>
-                    {
-                        EntityList = tags.ToList()
-                    },
-                });
+           
 
             return new MyWebSocketResponse
             {

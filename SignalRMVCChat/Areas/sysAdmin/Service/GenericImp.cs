@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
+using Effort.Internal.DbManagement.Schema;
 using Engine.SysAdmin.Service;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.Areas.Admin.Models;
@@ -233,7 +234,8 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
         {
             var table= db.Set<T>();
 
-            table.RemoveRange(deletedChats);
+            var toRemove = table.Where(t => deletedChats.Select(d => d.Id).Contains(t.Id));
+            table.RemoveRange(toRemove);
         }
     }
 

@@ -16,5 +16,26 @@ namespace SignalRMVCChat.Service
         public string Time { get; set; }
         public TimeSpan TimeDt { get; set; }
         public DateTime DateTime { get; set; }
+        
+        
+        
+        public string Browser { get; set; }
+        public string OS { get; set; }
+
+        
+        
+        /*track infos*/
+        
+        public string ip { get; set; }
+        public string type { get; set; }
+        public string continent_code { get; set; }
+        public string continent_name { get; set; }
+        public string country_code { get; set; }
+        public string country_name { get; set; }
+        public string region_code { get; set; }
+        public string region_name { get; set; }
+        public string city { get; set; }
+        public double? latitude { get; set; }
+        public double? longitude { get; set; }
     }
 }

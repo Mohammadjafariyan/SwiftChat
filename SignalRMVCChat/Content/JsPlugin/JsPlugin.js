@@ -4996,3 +4996,74 @@ function seriJson(form) {
     });
     return {requestArray, arr};
 }
+
+
+let videoElem;
+
+function startCapture() {
+    let captureStream = null;
+
+  
+    document.body.append(createElementFromHTML(`
+    <video id="sdlfjksdlkfj" autoplay>
+    
+    
+    </video>
+    
+    `));
+
+     videoElem=document.getElementById('sdlfjksdlkfj')
+
+    var displayMediaOptions = {
+        video: {
+            cursor: "always"
+        },
+        audio: false
+    };
+    
+    return navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
+        .then(res=>{
+            debugger;
+            videoElem.srcObject=res;
+
+
+            var mediaRecorder = new MediaRecorder(res);
+
+
+            mediaRecorder.ondataavailable = function(e) {
+                //chunks.push(e.data);
+                debugger;
+                console.log(e)
+            }
+
+            mediaRecorder.start();
+
+            return res;
+        })
+        .catch(err => { console.error("Error:" + err); return null; });
+}
+
+
+function startCaptureVideo(){
+    startCapture().then(res=>{
+        
+        console.log(res)
+        dumpOptionsInfo();
+    })
+}
+
+function stopCapture(evt) {
+    let tracks = videoElem.srcObject.getTracks();
+
+    tracks.forEach(track => track.stop());
+    videoElem.srcObject = null;
+} 
+
+function dumpOptionsInfo() {
+    const videoTrack = videoElem.srcObject.getVideoTracks()[0];
+
+    console.info("Track settings:");
+    console.info(JSON.stringify(videoTrack.getSettings(), null, 2));
+    console.info("Track constraints:");
+    console.info(JSON.stringify(videoTrack.getConstraints(), null, 2));
+}

@@ -231,6 +231,15 @@
     background-color: #0edbf9;
     z-index: 9999;
 }
+@font-face {
+    font-family: 'primeicons';
+    font-display: auto;
+    src: url('./fonts/primeicons.eot');
+    src: url('./fonts/primeicons.eot') format('embedded-opentype'), url('./fonts/primeicons.ttf') format('truetype'), url('./fonts/primeicons.woff') format('woff'), url('./fonts/primeicons.svg?#primeicons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /*pace end*/
 @font-face {
     font-family: byekan;
@@ -253,7 +262,7 @@ th{
 }
 
 
-*:not(i):not(.glyphicon){
+*:not(i):not(.glyphicon):not(.pi){
     font-family: byekan !important;
 }
 

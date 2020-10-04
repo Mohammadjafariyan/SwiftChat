@@ -10,10 +10,14 @@ export default class ChatPage extends Component {
   render() {
     return (
      <div className="container">
+         
+         
+         
+         
           <div className="row">
 
 <div className="col-3 noMargin">
-    <Admins/>
+    {/*<Admins/>*/}
     
 <CustomerToolbar/>
 </div>

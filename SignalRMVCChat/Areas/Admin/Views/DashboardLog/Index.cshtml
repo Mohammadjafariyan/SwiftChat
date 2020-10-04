@@ -24,7 +24,7 @@
     @foreach (var rec in Model)
     {
         <tr>
-            <td>@MyGlobal.ToIranianDateWidthTime(rec.CreationDateTime)</td>
+            <td>@MyGlobal.ToIranianDateWidthTime(rec.CreationDateTime.Value)</td>
                       <td>@rec.Exception</td>
   <td>@{
           if (rec.File?.Length>50)

@@ -1,6 +1,7 @@
 ﻿import React, {Component} from 'react';
 import '../styles/myStyle.css'
 import { MyCaller, CurrentUserInfo } from "./../Help/Socket";
+import Badge from "react-bootstrap/Badge";
 
 class TagSingleCustomer extends Component {
 
@@ -10,7 +11,9 @@ class TagSingleCustomer extends Component {
             ' userTagBlue ' :' df '
         return (
             <div>
-                <i onClick={() => {
+                
+                
+                <Badge  aria-label="چسباندن برچسب به کاربر ، برای دسته بندی کاربران مفید است" data-microtip-position="top" role="tooltip" variant={'info'} onClick={() => {
                     CurrentUserInfo.NewTagModeCustomerId =this.props.customerId;
 
                     if (CurrentUserInfo.NewTagModeEnabled){
@@ -20,10 +23,17 @@ class TagSingleCustomer extends Component {
                         CurrentUserInfo.NewTagModeEnabled = true;
                     }
 
-    CurrentUserInfo.TagList.setState({tmp: Math.random()})
+                    CurrentUserInfo.TagList.setState({tmp: Math.random()})
 
-}} aria-label="برچسب زدن به کاربر" data-microtip-position="bottom" role="tooltip" className={"userTag gapBottomIcon fa fa-tag " +isActive}
-                   aria-hidden="true"/>
+                }}>
+                    <i  className={"fa fa-tag " +isActive}
+                       aria-hidden="true"/>
+                       
+                       
+                       <Badge>
+                           <i className={'fa fa-plus'}></i>
+                       </Badge>
+                </Badge>
 
             </div>
         );

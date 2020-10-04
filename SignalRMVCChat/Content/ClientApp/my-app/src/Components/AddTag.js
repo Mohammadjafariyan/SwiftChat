@@ -29,7 +29,11 @@ function AddTag() {
                         <InputGroup.Text onClick={()=>{
                             addNewTag(tagName);
                             setTagName('');
-                        }} className='pointer' id="inputGroupPrepend">برچسب جدید</InputGroup.Text>
+                        }} className='pointer' id="inputGroupPrepend">
+
+                            <i className={'fa fa-plus'}></i>
+
+                        </InputGroup.Text>
                     </InputGroup.Prepend>
                     <Form.Control
                         type="text"

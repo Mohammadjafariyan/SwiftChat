@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {MyCaller, CurrentUserInfo} from "./../Help/Socket";
 import AddTag from "./AddTag";
 import {ListGroup, Form, Button} from "react-bootstrap";
+import {DataHolder} from "../Help/DataHolder";
 
 export default class TagList extends Component {
 
@@ -23,7 +24,8 @@ export default class TagList extends Component {
         this.getAllTagsForCurrentAdminCallback(res);
 
     }
-    getAllTagsForCurrentAdmin(){
+
+    getAllTagsForCurrentAdmin() {
         CurrentUserInfo.LayoutPage.showMsg('در حال خواندن برچسب ها')
         MyCaller.Send("GetAllTagsForCurrentAdmin");
 
@@ -132,14 +134,14 @@ export default class TagList extends Component {
                 <ListGroup>
                     {CurrentUserInfo.NewTagModeEnabled && <>
 
-                    <h6>جهت برچسب زدن به کاربر انتخاب نمایید :</h6>
+                        <h6>جهت برچسب زدن به کاربر انتخاب نمایید :</h6>
 
 
-                    <Button variant="primary" type="button" onClick={() => {
-                        this.saveSelectedTagsForCustomer()
-                    }}>
-                        ثبت
-                    </Button>
+                        <Button variant="primary" type="button" onClick={() => {
+                            this.saveSelectedTagsForCustomer()
+                        }}>
+                            ثبت
+                        </Button>
                     </>
                     }
 
@@ -198,13 +200,12 @@ export default class TagList extends Component {
                                                             if (e.target.checked) {
                                                                 CurrentUserInfo.selectedTags.push(el.Id);
                                                             }
-                                                            
-                                                            this.setState({tmp:Math.random()})
+
+                                                            this.setState({tmp: Math.random()})
                                                         }}/>
                                         </Form.Group>
 
 
-                                     
                                     </>
 
                                     }
@@ -240,10 +241,10 @@ export default class TagList extends Component {
         CurrentUserInfo.NewTagModeEnabled = false;
 
 
-        CurrentUserInfo.selectedTags=[];
+        CurrentUserInfo.selectedTags = [];
 
         for (let i = 0; i < CurrentUserInfo.TagList.state.tags.length; i++) {
-            CurrentUserInfo.TagList.state.tags[i].checked=false;
+            CurrentUserInfo.TagList.state.tags[i].checked = false;
         }
         CurrentUserInfo.TagList.setState({tmp: Math.random()})
 
@@ -270,11 +271,16 @@ export default class TagList extends Component {
 
 
         CurrentUserInfo.LayoutPage.showMsg('برچسب با موفقیت حذف شد');
-        
+
         // آپدیت لیست برچسب ها
         this.getAllTagsForCurrentAdmin();
 
         // آپدیت لیست کاربران
         CurrentUserInfo.OnlineCustomerListHolder.GetClientsListForAdmin();
+
+        if (DataHolder.selectedCustomer)
+            MyCaller.Send("GetUserAddedToTags", {target: DataHolder.selectedCustomer.Id});
+
+
     }
 }

@@ -23,6 +23,11 @@ import SocialChannelsPage from "./SocialChannelsPage";
 import FormCreatorPage from "./FormCreatorPage";
 import FormDataPage from "./FormDataPage";
 import {AutomaticSendPage} from "../Components/Chat";
+
+import { Toast } from 'primereact/toast';
+
+
+
 export default class LayoutPage extends Component {
     constructor(props){
         super(props);
@@ -34,18 +39,36 @@ export default class LayoutPage extends Component {
 
 
     showError(msg) {
-        this.setState({ err: msg });
-        setTimeout(() => {
-            this.setState({ err: null });
+        
+        if (msg){
+            if (this.toast)
+            {
+                this.toast.show({severity: 'error', summary: 'پیغام', detail: msg});
+            }
+            else {
+                this.setState({ err: msg });
+                setTimeout(() => {
+                    this.setState({ err: null });
 
-        },10000)
+                },2000)
+            }
+        }
+    
+      
     }
     showMsg(msg) {
-        this.setState({ msg: msg });
-        setTimeout(() => {
-            this.setState({ msg: null });
+        if (msg) {
 
-        },3000)
+            if (this.toast) {
+                this.toast.show({severity: 'info', summary: 'پیغام', detail: msg});
+            } else {
+                this.setState({msg: msg});
+                setTimeout(() => {
+                    this.setState({msg: null});
+
+                }, 2000)
+            }
+        }
     }
 
     componentWillMount(){
@@ -74,6 +97,7 @@ export default class LayoutPage extends Component {
                 return (
                     <div>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        <Toast ref={(el) => this.toast = el} />
 
                         <Menu/>
                         {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
@@ -87,7 +111,8 @@ export default class LayoutPage extends Component {
             {
               return( 
                   <div>
-                <Menu/>
+                      <Toast ref={(el) => this.toast = el} />
+                      <Menu/>
                 {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
                 {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
     
@@ -107,6 +132,7 @@ export default class LayoutPage extends Component {
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
 
+                        <Toast ref={(el) => this.toast = el} />
                         <Menu/>
                         {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
                         {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
@@ -119,6 +145,7 @@ export default class LayoutPage extends Component {
                 return (
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        <Toast ref={(el) => this.toast = el} />
 
                         <Menu/>
                         {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
@@ -135,6 +162,7 @@ export default class LayoutPage extends Component {
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
 
+                        <Toast ref={(el) => this.toast = el} />
                         <Menu/>
                         {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
                         {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
@@ -148,6 +176,7 @@ export default class LayoutPage extends Component {
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
 
+                        <Toast ref={(el) => this.toast = el} />
                         <Menu/>
                         {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
                         {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
@@ -161,6 +190,7 @@ export default class LayoutPage extends Component {
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
 
+                        <Toast ref={(el) => this.toast = el} />
                         <Menu/>
                         {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
                         {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
@@ -176,6 +206,7 @@ export default class LayoutPage extends Component {
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
 
+                        <Toast ref={(el) => this.toast = el} />
                         <Menu/>
                         {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
                         {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
@@ -219,6 +250,7 @@ export default class LayoutPage extends Component {
         }else{
             return (
                 <div>
+                    <Toast ref={(el) => this.toast = el} />
                     {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
 
                     <LoginPage parent={this}/>
