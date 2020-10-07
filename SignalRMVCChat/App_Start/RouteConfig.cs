@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Http;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace SignalRMVCChat
@@ -11,6 +12,10 @@ namespace SignalRMVCChat
     AreaRegistration.RegisterAllAreas();
 
 
+    routes.MapHttpRoute(
+        name: "DefaultVideo",
+        routeTemplate: "api/{controller}/{action}/{id}"
+    );
 
             routes.MapRoute(
                 name: "Default",

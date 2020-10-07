@@ -302,7 +302,7 @@ export function ShowOnlineUsers(props){
                     CurrentUserInfo.CustomerToolbar.setState({ temp: Math.random() })
                 }
 
-                debugger
+              //  debugger
                 if (DataHolder.selectedCustomer) {
                     props.parent.GetUserAddedToTags(DataHolder.selectedCustomer.Id);
                 }

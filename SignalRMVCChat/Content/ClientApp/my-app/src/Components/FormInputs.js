@@ -15,7 +15,7 @@ export function Input(props,validate) {
 
 
     function Validate(newVal,newValCal)  {
-        debugger;
+        //debugger;
         if (props.required && !(newValCal ? newVal : val)) {
             setError(`${props.name} نمی تواند خالی باشد `)
             return false;

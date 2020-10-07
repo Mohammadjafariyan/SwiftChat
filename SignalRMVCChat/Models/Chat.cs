@@ -48,6 +48,8 @@ namespace SignalRMVCChat.Models
         public List<FormValue> FormValues { get; set; }
 
         public string FormPassed { get; set; }
+        public ChatContentType ChatContentType { get; set; }
+        public bool ChatContentTypeJobDone { get; set; }
     }
 
     

@@ -6,6 +6,7 @@ import { DataHolder } from "./../Help/DataHolder";
 
 import "../styles/myStyle.css";
 import {ShowPlusCount} from "./Menu";
+import Button from "react-bootstrap/Button";
 
 export default class SubMenu extends Component {
   constructor(arg) {
@@ -50,32 +51,33 @@ this.setState({TotalNewChatReceived:res.Content.TotalNewChatReceived,TotalWaitin
     return (
       <div>
           
-          <Row className='onMobile'>
-              <ButtonGroup aria-label="Basic example">
-                  <button
+          <div className='onMobile'>
+          <Row >
+              <ButtonGroup  variant='light'aria-label="Basic example">
+                  <Button variant='light'
                       className={
                           "btn btn-default " +
                           (DataHolder.currentPage === "CustomerList" &&
                           DataHolder.filterType === "SepratePerPage"
-                              ? " active "
+                              ? " bg-primary text-white "
                               : "")
                       }
-                      type="button"
+                      
                       onClick={() => {
                           this.setPage('SepratePerPage');
                       }}
                   >
                       بر اساس صفحه ها
-                  </button>
-                  <button
+                  </Button>
+                  <Button variant='light'
                       className={
                           "btn btn-default " +
                           (DataHolder.currentPage === "CustomerList" &&
                           DataHolder.filterType === "NotChatted"
-                              ? " active "
+                              ? " bg-primary text-white "
                               : "")
                       }
-                      type="button"
+                      
                       onClick={() => {
                           this.setPage("NotChatted");
                       }}
@@ -86,37 +88,38 @@ this.setState({TotalNewChatReceived:res.Content.TotalNewChatReceived,TotalWaitin
 
 
                       <span>              بدون گفتگو</span>
-                  </button>
+                  </Button>
 
 
-                  <button
+                  <Button variant='light'
                       className={
                           "btn btn-default " +
                           (DataHolder.currentPage === "CustomerList" &&
                           DataHolder.filterType === "Answered"
-                              ? " active "
+                              ? " bg-primary text-white "
                               : "")
                       }
-                      type="button"
+                      
                       onClick={() => {
                           this.setPage('Answered');
                       }}
                   >
 
+                      
                       <ShowPlusCount Count={this.state.TotalAnswered}></ShowPlusCount>
 
                       پاسخ داده شده
-                  </button>
+                  </Button>
 
-                  <button
+                  <Button variant='light'
                       className={
                           "btn btn-default " +
                           (DataHolder.currentPage === "CustomerList" &&
                           DataHolder.filterType === "WaitingForAnswer"
-                              ? " active "
+                              ? " bg-primary text-white "
                               : "")
                       }
-                      type="button"
+                      
                       onClick={() => {
                           this.setPage("WaitingForAnswer");
                       }}
@@ -125,11 +128,13 @@ this.setState({TotalNewChatReceived:res.Content.TotalNewChatReceived,TotalWaitin
 
                       <span>              در انتظار پاسخ
                 </span>
-                  </button>
+                  </Button>
               </ButtonGroup>    
           </Row>
+          </div>
           
-        <Row className='onDesktop'> 
+          <div className='onDesktop'> 
+        <Row > 
           <Col>
             <Dropdown>
               <Dropdown.Toggle variant="default" id="dropdown-basic">
@@ -157,21 +162,21 @@ this.setState({TotalNewChatReceived:res.Content.TotalNewChatReceived,TotalWaitin
             
 
           <Col>
-            <button
+            <Button variant='light'
               className={
                 "btn btn-default " +
                 (DataHolder.currentPage === "CustomerList" &&
                 DataHolder.filterType === "SepratePerPage"
-                  ? " active "
+                  ? " bg-primary text-white "
                   : "")
               }
-              type="button"
+              
               onClick={() => {
                 this.setPage('SepratePerPage');
               }}
             >
               بر اساس صفحه ها
-            </button>
+            </Button>
           </Col>
 
           <Col>
@@ -183,15 +188,15 @@ this.setState({TotalNewChatReceived:res.Content.TotalNewChatReceived,TotalWaitin
   </Form.Group>
           </Col>
           <Col>
-            <button
+            <Button variant='light'
               className={
                 "btn btn-default " +
                 (DataHolder.currentPage === "CustomerList" &&
                 DataHolder.filterType === "NotChatted"
-                  ? " active "
+                  ? " bg-primary text-white "
                   : "")
               }
-              type="button"
+              
               onClick={() => {
                 this.setPage("NotChatted");
               }}
@@ -202,19 +207,19 @@ this.setState({TotalNewChatReceived:res.Content.TotalNewChatReceived,TotalWaitin
              
 
 <span>              بدون گفتگو</span>
-            </button>
+            </Button>
           </Col>
 
           <Col>
-            <button
+            <Button variant='light'
               className={
                 "btn btn-default " +
                 (DataHolder.currentPage === "CustomerList" &&
                 DataHolder.filterType === "Answered"
-                  ? " active "
+                  ? " bg-primary text-white "
                   : "")
               }
-              type="button"
+              
               onClick={() => {
                 this.setPage('Answered');
               }}
@@ -223,18 +228,18 @@ this.setState({TotalNewChatReceived:res.Content.TotalNewChatReceived,TotalWaitin
                 <ShowPlusCount Count={this.state.TotalAnswered}></ShowPlusCount>
 
                 پاسخ داده شده
-            </button>
+            </Button>
           </Col>
           <Col>
-            <button
+            <Button variant='light'
               className={
                 "btn btn-default " +
                 (DataHolder.currentPage === "CustomerList" &&
                 DataHolder.filterType === "WaitingForAnswer"
-                  ? " active "
+                  ? " bg-primary text-white "
                   : "")
               }
-              type="button"
+              
               onClick={() => {
                 this.setPage("WaitingForAnswer");
               }}
@@ -243,10 +248,11 @@ this.setState({TotalNewChatReceived:res.Content.TotalNewChatReceived,TotalWaitin
 
                 <span>              در انتظار پاسخ
                 </span>
-            </button>
+            </Button>
           </Col>
 
         </Row>
+          </div>
         <hr />
 
       </div>

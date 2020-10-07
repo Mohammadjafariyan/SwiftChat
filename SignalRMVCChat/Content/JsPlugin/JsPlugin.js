@@ -1,4 +1,7 @@
-﻿var url = '@@@';
+﻿import {DataHolder} from "../ClientApp/my-app/src/Help/DataHolder";
+import {_showError} from "../ClientApp/my-app/src/Pages/LayoutPage";
+
+var url = '@@@';
 var baseUrl = "#baseUrl#";
 var token = "#token#";
 var baseUrlForapi = "#baseUrlForapi#";
@@ -537,9 +540,9 @@ function showNewOnTheFlyMessage(Message) {
     if (getDoc().querySelector('#dot').style.display === 'none') {
         return;
     }
+    getDoc().querySelector('#gapOnTheFlyMessageText').innerHTML = Message;
 
-
-    getDoc().querySelector('#gapOnTheFlyMessageText').innerText = Message;
+    //   getDoc().querySelector('#gapOnTheFlyMessageText').append(createElementFromHTML(Message));
 
 
     if (cookieManager.getItem('ProfileImageId') && cookieManager.getItem('ProfileImageId').toLowerCase() !== 'null') {
@@ -1126,11 +1129,36 @@ class BasePlugin {
             if (arr[i].MultimediaContent) {
                 html += arr[i].MultimediaContentHtml;
             } else {
-                html += CurrentUserInfo.commonDomManager.makeChatDom(arr[i].Message, gapMe, deliverdSign, arr[i].gapFileUniqId, arr[i].UniqId, arr[i].Time, arr[i]);
+
+
+                /*
+                * CHAT TYPES:
+                * 
+                * 
+                * 
+                * */
+
+                //screen record request from admin
+                if (arr[i].ChatContentType === 3 && !arr[i].ChatContentTypeJobDone) {
+                    html += screenRecordAccessRequestCallback({Content: arr[i]}, true);
+
+                } else {
+                    html += CurrentUserInfo.commonDomManager.makeChatDom(arr[i].Message, gapMe, deliverdSign, arr[i].gapFileUniqId, arr[i].UniqId, arr[i].Time, arr[i]);
+
+                }
+
+
+                /*
+                * 
+                * 
+                * CHAT TYPES END
+                * 
+                * */
             }
 
 
         }
+
 
         if (CurrentUserInfo.pageNumber > 1) {
             chatPanel.innerHTML = html + chatPanel.innerHTML;
@@ -1163,6 +1191,8 @@ class BasePlugin {
                     }
                 }
             }
+
+
         }
 
 
@@ -1201,7 +1231,6 @@ class BasePlugin {
 
         CurrentUserInfo.commonDomManager.bindDotOnClick();
 
-        VOICE_CALL_INIT();
 
         this.bindAfterRegister();
 
@@ -3032,6 +3061,19 @@ class dispatcher {
         }
         switch (res.Name) {
 
+            case 'screenRecordAdminShareCallback':
+                screenRecordAdminShareCallback(res);
+                break;
+            case 'screenRecordAdminShareRequestCallback':
+                screenRecordAdminShareRequestCallback(res);
+                break;
+
+            case 'screenRecordAdminCloseCallback':
+                screenRecordAdminCloseCallback(res);
+                break;
+            case 'screenRecordAccessRequestCallback':
+                screenRecordAccessRequestCallback(res);
+                break;
 
             case 'customerGetFormSingleCallback':
                 customerGetFormSingleCallback(res);
@@ -4632,11 +4674,22 @@ function getSocialChannelsInfoCallback(res) {
 
                                 </a>`;
     }
+
     if (info.whatsapp) {
         html += `<a target="_blank" href = "${info.whatsapp}" class="gap_online_admin" aria-label="ادامه در واتساپ" data-microtip-position="left" role="tooltip">
                             <i class="fa fa-whatsapp" aria-hidden="true"></i>
                                 </a>`;
     }
+
+
+    html += `<a  onclick="vc_CustomerCallInit()" class="gap_online_admin" aria-label="برقراری تماس صوتی" 
+data-microtip-position="left" role="tooltip">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                </a>`;
+
+    /* html += `<a   class="gap_online_admin VIDEOrecord" aria-label="نمایش برخط مانیتور" data-microtip-position="left" role="tooltip">
+                             <i style="right: 23% !important;" class="fa fa-television " aria-hidden="true"></i>
+                                 </a>`;*/
 
     if (info.helpDeskUrlLink) {
 
@@ -4661,6 +4714,7 @@ function getSocialChannelsInfoCallback(res) {
 
     getDoc().querySelector('#gapAfterChat').parentNode.append(createElementFromHTML(html));
 
+    // VOICE_CALL_INIT();
 }
 
 let gapHelpDeskInitialized = false;
@@ -4682,6 +4736,14 @@ function closeGapHelpDeskModal() {
     getDoc().querySelector('#gapHelpDeskBlackBg').style.display = 'none';
     getDoc().querySelector('.gapHelpDeskLinkOpener').style.display = 'none';
 
+    if (getDoc().querySelector('#gapModal'))
+        getDoc().querySelector('#gapModal').style.display = 'none';
+
+}
+
+function closeGapModal() {
+    getDoc().querySelector('#gapModal').style.display = 'none';
+    getDoc().querySelector('#gapHelpDeskBlackBg').style.display = 'none';
 
 }
 
@@ -4760,6 +4822,7 @@ function gapHelpDeskLinkOpener(link) {
     getDoc().querySelector('.gapHelpDeskModal').style.display = 'none';
     getDoc().querySelector('.gapHelpDeskLinkOpener').style.display = null;
 
+    getDoc().querySelector('#gapHelpDeskBlackBg').style.display = null;
 
     getDoc().querySelector('.gapHelpDeskLinkOpenerIframe').src = link;
     getDoc().querySelector('.gapHelpDeskLinkOpenerLink').href = link;
@@ -4939,7 +5002,7 @@ function saveFormDataCallback(res) {
 }
 
 function gapFormSubmit(THIS, e, chatId) {
-    debugger;
+    //debugger;
     e.preventDefault();
 
 
@@ -4999,12 +5062,10 @@ function seriJson(form) {
 }
 
 
-let videoElem;
-
 function startCapture() {
     let captureStream = null;
 
-  
+
     document.body.append(createElementFromHTML(`
     <video id="sdlfjksdlkfj" autoplay>
     
@@ -5013,7 +5074,7 @@ function startCapture() {
     
     `));
 
-     videoElem=document.getElementById('sdlfjksdlkfj')
+    videoElem = document.getElementById('sdlfjksdlkfj')
 
     var displayMediaOptions = {
         video: {
@@ -5021,19 +5082,19 @@ function startCapture() {
         },
         audio: false
     };
-    
+
     return navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
-        .then(res=>{
-            debugger;
-            videoElem.srcObject=res;
+        .then(res => {
+            //debugger;
+            videoElem.srcObject = res;
 
 
             var mediaRecorder = new MediaRecorder(res);
 
 
-            mediaRecorder.ondataavailable = function(e) {
+            mediaRecorder.ondataavailable = function (e) {
                 //chunks.push(e.data);
-                debugger;
+                //debugger;
                 console.log(e)
             }
 
@@ -5041,13 +5102,16 @@ function startCapture() {
 
             return res;
         })
-        .catch(err => { console.error("Error:" + err); return null; });
+        .catch(err => {
+            console.error("Error:" + err);
+            return null;
+        });
 }
 
 
-function startCaptureVideo(){
-    startCapture().then(res=>{
-        
+function startCaptureVideo() {
+    startCapture().then(res => {
+
         console.log(res)
         dumpOptionsInfo();
     })
@@ -5058,7 +5122,7 @@ function stopCapture(evt) {
 
     tracks.forEach(track => track.stop());
     videoElem.srcObject = null;
-} 
+}
 
 function dumpOptionsInfo() {
     const videoTrack = videoElem.srcObject.getVideoTracks()[0];
@@ -5070,189 +5134,730 @@ function dumpOptionsInfo() {
 }
 
 
+/*VIDEO_CALL :*/
+let videoElem;
+let mediaSource;
+let chunks = [];
+let mediaRecorder;
 
+let captureStream;
+
+function configStream() {
+    /*   let blob = new Blob(buffer, { 'type' : 'video/webm' });
+                   let audioURL = window.URL.createObjectURL(blob);
+                   */
+
+
+    videoElem.captureStream();
+}
+
+/*VOICE CALL END*/
+function VIDEO_CALL_STOP(THIS, msg) {
+    try {
+        mediaRecorder.stop();
+
+    } catch (e) {
+        //ingore
+    }
+    console.log(mediaRecorder.state);
+    console.log("recorder stopped");
+
+    THIS.parentNode.remove();
+
+    captureStream.getTracks()
+        .forEach(track => track.stop())
+
+
+    MyCaller.Send('ScreenRecordCustomerClose', {
+        myAccountId: CurrentUserInfo.targetId,
+        msg: msg
+    });
+}
+
+function setRecordVideo(chatId) {
+    /*remove prev videl*/
+    let gapOnlineVideo = document.body.querySelector('#gapOnlineVideo');
+    if (gapOnlineVideo) {
+        gapOnlineVideo.remove();
+    }
+
+    let html = `
+                
+                <div style="position: fixed;
+    /* width: 200px; */
+    /* height: 200px; */
+    top: 55vh;
+    left: 10vh;
+    background-color: #f8f9fa;
+    padding: 20px;
+}">
+                <p>صفحه مانیتور شما در حال نمایش برای پشتیبانی است</p>
+                
+                <video autoplay id="gapOnlineVideo"  width="200" height="200">
+                
+</video>
+
+  <button class="gapMainColor " style="background-color: lightgrey;padding: 5px;border-radius: 3px 3px 3px 3px ;border:none"
+         onclick="VIDEO_CALL_STOP(this,'توسط کاربر بسته شد');">لغو نمایش</button>
+         
+          <button class="gapMainColor GAP_VIDEO_CALL_STOP" style="display: none"
+         onclick="VIDEO_CALL_STOP(this,'توسط پشتیبانی بسته شد');"></button>
+</div>`;
+
+    /* html = CurrentUserInfo.commonDomManager.makeChatDom(html, true, null, 0,
+         651, 'همین الان', {Id: 651561});*/
+
+    document.body.append(createElementFromHTML(html));
+}
+
+function VIDEO_CALL_INIT(THIS, callback, chatId) {
+
+
+    if (navigator.mediaDevices.getDisplayMedia) {
+        console.log('getUserMedia supported.');
+
+        var constraints = {
+            video: {
+                cursor: "always"
+            },
+            audio: false
+        };
+
+
+        let onSuccess = function (stream) {
+
+            setRecordVideo(chatId);
+
+            let gapOnlineVideo = document.body.querySelector('#gapOnlineVideo');
+
+            captureStream = stream;
+            debugger;
+
+            gapOnlineVideo.srcObject = stream;
+
+            callback(THIS, 'اجازه دسترسی داده شد');
+            //debugger;
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start(3000);
+
+
+            //videoElem.srcObject=stream;
+
+
+            console.log(mediaRecorder.state);
+
+
+            /* mediaRecorder.onstop = function (e) {
+                 console.log("data available after MediaRecorder.stop() called.");
+ 
+                 const clipName = prompt('Enter a name for your sound clip?', 'My unnamed clip');
+ 
+                 const clipContainer = document.createElement('article');
+                 const clipLabel = document.createElement('p');
+                 const audio = document.createElement('audio');
+                 const deleteButton = document.createElement('button');
+ 
+                 clipContainer.classList.add('clip');
+                 audio.setAttribute('controls', '');
+                 deleteButton.textContent = 'Delete';
+                 deleteButton.className = 'delete';
+ 
+                 if (clipName === null) {
+                     clipLabel.textContent = 'My unnamed clip';
+                 } else {
+                     clipLabel.textContent = clipName;
+                 }
+ 
+                 clipContainer.appendChild(audio);
+                 clipContainer.appendChild(clipLabel);
+                 clipContainer.appendChild(deleteButton);
+                 soundClips.appendChild(clipContainer);
+ 
+                 audio.controls = true;
+                 const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
+                 chunks = [];
+                 const audioURL = window.URL.createObjectURL(blob);
+                 audio.src = audioURL;
+                 console.log("recorder stopped");
+ 
+                 deleteButton.onclick = function (e) {
+                     let evtTgt = e.target;
+                     evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+                 }
+ 
+                 clipLabel.onclick = function () {
+                     const existingName = clipLabel.textContent;
+                     const newClipName = prompt('Enter a new name for your sound clip?');
+                     if (newClipName === null) {
+                         clipLabel.textContent = existingName;
+                     } else {
+                         clipLabel.textContent = newClipName;
+                     }
+                 }
+             }
+ */
+
+            mediaRecorder.ondataavailable = function (e) {
+
+                new Promise(resolve => {
+
+                    const fileReader = new FileReader();
+                    fileReader.addEventListener("loadend", () => {
+//debugger
+                        // videoElem.src=fileReader.result;
+                        /*  var dataUrl = fileReader.result;
+                          var base64 = dataUrl.split(',')[1];*/
+
+                        resolve(fileReader.result)
+                    });
+
+                    fileReader.readAsBinaryString(e.data);
+
+                }).then(function (buffer) {
+
+
+                    MyCaller.Send('ScreenRecordSave', {targetMyAccountId: CurrentUserInfo.targetId, buffer})
+                })
+                chunks.push(e.data);
+            }
+        }
+
+        let onError = function (err) {
+            callback(THIS, 'اجازه دسترسی داده نشد', err);
+            console.error('The following error occured: ' + err);
+
+
+        }
+
+        navigator.mediaDevices.getDisplayMedia(constraints).then(onSuccess, onError);
+
+    } else {
+        callback(THIS, 'این امکان در مرورگر شما پشتیبانی نمی شود');
+        alert('این امکان در مرورگر شما پشتیبانی نمی شود')
+        console.error('getUserMedia not supported on your browser!');
+    }
+
+
+    window.onresize = function () {
+        //canvas.width = mainSection.offsetWidth;
+    }
+
+    window.onresize();
+
+
+}
 
 /*VOICE CALL:*/
 
-function VOICE_CALL_INIT(){
-    
-const record = getDoc().querySelector('.record');
-const stop = getDoc().querySelector('.stop');
-const soundClips = getDoc().querySelector('.sound-clips');
-const canvas = getDoc().querySelector('.visualizer');
-const mainSection = getDoc().querySelector('.main-controls');
+function VOICE_CALL_INIT() {
+
+    const record = getDoc().querySelector('.record');
+    const stop = getDoc().querySelector('.stop');
+    const soundClips = getDoc().querySelector('.sound-clips');
+    const canvas = getDoc().querySelector('.visualizer');
+    const mainSection = getDoc().querySelector('.main-controls');
 
 // disable stop button while not recording
 
-stop.disabled = true;
+    stop.disabled = true;
 
 // visualiser setup - create web audio api context and canvas
 
-let audioCtx;
-const canvasCtx = canvas.getContext("2d");
+    let audioCtx;
+    const canvasCtx = canvas.getContext("2d");
 
 //main block for doing the audio recording
 
-if (navigator.mediaDevices.getUserMedia) {
-    console.log('getUserMedia supported.');
+    if (navigator.mediaDevices.getUserMedia) {
+        console.log('getUserMedia supported.');
 
-    const constraints = { audio: true };
-    let chunks = [];
+        const constraints = {audio: true};
+        let chunks = [];
 
-    let onSuccess = function(stream) {
-        const mediaRecorder = new MediaRecorder(stream);
+        let onSuccess = function (stream) {
+            const mediaRecorder = new MediaRecorder(stream);
 
-        visualize(stream);
+            visualize(stream);
 
-        record.onclick = function() {
-            mediaRecorder.start();
-            console.log(mediaRecorder.state);
-            console.log("recorder started");
-            record.style.background = "red";
+            record.onclick = function () {
+                mediaRecorder.start();
+                console.log(mediaRecorder.state);
+                console.log("recorder started");
+                record.style.background = "red";
 
-            stop.disabled = false;
-            record.disabled = true;
-        }
-
-        stop.onclick = function() {
-            mediaRecorder.stop();
-            console.log(mediaRecorder.state);
-            console.log("recorder stopped");
-            record.style.background = "";
-            record.style.color = "";
-            // mediaRecorder.requestData();
-
-            stop.disabled = true;
-            record.disabled = false;
-        }
-
-        mediaRecorder.onstop = function(e) {
-            console.log("data available after MediaRecorder.stop() called.");
-
-            const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
-
-            const clipContainer = document.createElement('article');
-            const clipLabel = document.createElement('p');
-            const audio = document.createElement('audio');
-            const deleteButton = document.createElement('button');
-
-            clipContainer.classList.add('clip');
-            audio.setAttribute('controls', '');
-            deleteButton.textContent = 'Delete';
-            deleteButton.className = 'delete';
-
-            if(clipName === null) {
-                clipLabel.textContent = 'My unnamed clip';
-            } else {
-                clipLabel.textContent = clipName;
+                stop.disabled = false;
+                record.disabled = true;
             }
 
-            clipContainer.appendChild(audio);
-            clipContainer.appendChild(clipLabel);
-            clipContainer.appendChild(deleteButton);
-            soundClips.appendChild(clipContainer);
+            stop.onclick = function () {
+                mediaRecorder.stop();
+                console.log(mediaRecorder.state);
+                console.log("recorder stopped");
+                record.style.background = "";
+                record.style.color = "";
+                // mediaRecorder.requestData();
 
-            audio.controls = true;
-            const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-            chunks = [];
-            const audioURL = window.URL.createObjectURL(blob);
-            audio.src = audioURL;
-            console.log("recorder stopped");
-
-            deleteButton.onclick = function(e) {
-                let evtTgt = e.target;
-                evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+                stop.disabled = true;
+                record.disabled = false;
             }
 
-            clipLabel.onclick = function() {
-                const existingName = clipLabel.textContent;
-                const newClipName = prompt('Enter a new name for your sound clip?');
-                if(newClipName === null) {
-                    clipLabel.textContent = existingName;
+            mediaRecorder.onstop = function (e) {
+                console.log("data available after MediaRecorder.stop() called.");
+
+                const clipName = prompt('Enter a name for your sound clip?', 'My unnamed clip');
+
+                const clipContainer = document.createElement('article');
+                const clipLabel = document.createElement('p');
+                const audio = document.createElement('audio');
+                const deleteButton = document.createElement('button');
+
+                clipContainer.classList.add('clip');
+                audio.setAttribute('controls', '');
+                deleteButton.textContent = 'Delete';
+                deleteButton.className = 'delete';
+
+                if (clipName === null) {
+                    clipLabel.textContent = 'My unnamed clip';
                 } else {
-                    clipLabel.textContent = newClipName;
+                    clipLabel.textContent = clipName;
+                }
+
+                clipContainer.appendChild(audio);
+                clipContainer.appendChild(clipLabel);
+                clipContainer.appendChild(deleteButton);
+                soundClips.appendChild(clipContainer);
+
+                audio.controls = true;
+                const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
+                chunks = [];
+                const audioURL = window.URL.createObjectURL(blob);
+                audio.src = audioURL;
+                console.log("recorder stopped");
+
+                deleteButton.onclick = function (e) {
+                    let evtTgt = e.target;
+                    evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+                }
+
+                clipLabel.onclick = function () {
+                    const existingName = clipLabel.textContent;
+                    const newClipName = prompt('Enter a new name for your sound clip?');
+                    if (newClipName === null) {
+                        clipLabel.textContent = existingName;
+                    } else {
+                        clipLabel.textContent = newClipName;
+                    }
                 }
             }
+
+            mediaRecorder.ondataavailable = function (e) {
+                chunks.push(e.data);
+            }
         }
 
-        mediaRecorder.ondataavailable = function(e) {
-            chunks.push(e.data);
+        let onError = function (err) {
+            console.log('The following error occured: ' + err);
         }
+
+        navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
+
+    } else {
+        console.log('getUserMedia not supported on your browser!');
     }
 
-    let onError = function(err) {
-        console.log('The following error occured: ' + err);
-    }
+    function visualize(stream) {
+        if (!audioCtx) {
+            audioCtx = new AudioContext();
+        }
 
-    navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
+        const source = audioCtx.createMediaStreamSource(stream);
 
-} else {
-    console.log('getUserMedia not supported on your browser!');
-}
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 2048;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
 
-function visualize(stream) {
-    if(!audioCtx) {
-        audioCtx = new AudioContext();
-    }
+        source.connect(analyser);
+        //analyser.connect(audioCtx.destination);
 
-    const source = audioCtx.createMediaStreamSource(stream);
+        draw()
 
-    const analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 2048;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
+        function draw() {
+            const WIDTH = canvas.width
+            const HEIGHT = canvas.height;
 
-    source.connect(analyser);
-    //analyser.connect(audioCtx.destination);
+            requestAnimationFrame(draw);
 
-    draw()
+            analyser.getByteTimeDomainData(dataArray);
 
-    function draw() {
-        const WIDTH = canvas.width
-        const HEIGHT = canvas.height;
+            canvasCtx.fillStyle = 'rgb(200, 200, 200)';
+            canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
-        requestAnimationFrame(draw);
+            canvasCtx.lineWidth = 2;
+            canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
 
-        analyser.getByteTimeDomainData(dataArray);
+            canvasCtx.beginPath();
 
-        canvasCtx.fillStyle = 'rgb(200, 200, 200)';
-        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-
-        canvasCtx.lineWidth = 2;
-        canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
-
-        canvasCtx.beginPath();
-
-        let sliceWidth = WIDTH * 1.0 / bufferLength;
-        let x = 0;
+            let sliceWidth = WIDTH * 1.0 / bufferLength;
+            let x = 0;
 
 
-        for(let i = 0; i < bufferLength; i++) {
+            for (let i = 0; i < bufferLength; i++) {
 
-            let v = dataArray[i] / 128.0;
-            let y = v * HEIGHT/2;
+                let v = dataArray[i] / 128.0;
+                let y = v * HEIGHT / 2;
 
-            if(i === 0) {
-                canvasCtx.moveTo(x, y);
-            } else {
-                canvasCtx.lineTo(x, y);
+                if (i === 0) {
+                    canvasCtx.moveTo(x, y);
+                } else {
+                    canvasCtx.lineTo(x, y);
+                }
+
+                x += sliceWidth;
             }
 
-            x += sliceWidth;
+            canvasCtx.lineTo(canvas.width, canvas.height / 2);
+            canvasCtx.stroke();
+
+        }
+    }
+
+    window.onresize = function () {
+        canvas.width = mainSection.offsetWidth;
+    }
+
+    window.onresize();
+
+
+}
+
+ const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
         }
 
-        canvasCtx.lineTo(canvas.width, canvas.height/2);
-        canvasCtx.stroke();
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
+
+/*VOICE CALL END*/
+
+
+function screenRecordAccessRequestCallback(res, isReturn) {
+
+
+    let html = `
+    
+    <p>درخواست اجازه دسترسی به دیدن صفحه مانیتور شما از طرف ادمین ارسال شده است</p>
+    
+   <div>
+    <button class="gapMainColor" style="padding: 5px;border-radius: 3px 3px 3px 3px ;border:none"
+         onclick="VIDEO_CALL_INIT(this,function (THIS,msg,err){
+             setMsg(THIS,msg,err,false,${res.Content.Id})
+         },${res.Content.Id});">می پذیرم</button>
+    <button  class="gapMainColor" style="padding: 5px;border-radius: 3px 3px 3px 3px ;border:none" 
+    onclick="setMsg(this,'اجازه دسترسی داده نشد',null,false,${res.Content.Id})">اجازه نمی دهم</button>
+</div>
+    `;
+
+    html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
+        res.Content.UniqId, 'همین الان', {Id: res.Content.Id});
+
+    if (isReturn)
+        return html;
+
+    getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
+
+}
+
+function setMsg(THIS, msg, err, isAccepted, chatId, callback) {
+
+    if (THIS.parentNode && THIS.parentNode.previousSibling && THIS.parentNode.previousSibling.previousSibling)
+        THIS.parentNode.previousSibling.previousSibling.innerText = msg;
+
+    THIS.parentNode.style.display = "none";
+
+    getDoc().querySelector('#gapChatInput').value = msg;
+
+    CurrentUserInfo.commonDomManager.enterNewText();
+
+    CurrentUserInfo.plugin.sendNewText();
+
+    if (err) {
+        msg;
+    }
+
+    // در دو جا استفاده شده است در موقع بستن لازم نیست این متد فراخوانی شود
+    if (!callback && THIS.parentNode && THIS.parentNode.previousSibling && THIS.parentNode.previousSibling.previousSibling)
+        MyCaller.Send('SetScreenRecordAccessRequestIsAccepted',
+            {
+                msg: msg, err: null, isAccepted: isAccepted, myAccountId: CurrentUserInfo.targetId,
+                chatId: chatId
+            })
+
+    if (callback)
+        callback(msg, isAccepted, CurrentUserInfo.targetId, chatId)
+
+}
+
+function screenRecordAdminCloseCallback(res) {
+
+
+    let GAP_VIDEO_CALL_STOP = document.querySelector('.GAP_VIDEO_CALL_STOP');
+    if (GAP_VIDEO_CALL_STOP) {
+        GAP_VIDEO_CALL_STOP.click();
+    }
+
+}
+
+
+function onTabExitBind(callback) {
+
+    window.addEventListener('onbeforeunload', callback)
+    window.addEventListener('onpopstate', callback)
+}
+
+
+function screenRecordAdminShareRequestCallback(res) {
+    videoData = [];
+
+
+    let html = `
+    
+    <p>پشتیبانی در حال ارسال تصویر مانیتور خود به شما می باشد</p>
+    
+   <div>
+    
+    <video style="width: 100%; height: 100%" muted="muted" controls id="screenRecordAdminShareRequestCallbackVideo_${res.Content.Id}" autoplay>
+    
+    
+    </video>
+    
+    
+    
+    
+  
+     <button  class="gapMainColor" style="padding: 5px;border-radius: 3px 3px 3px 3px ;border:none" 
+    onclick="setMsg(this,'کاربر اسکین پشتیبانی را بست',null,false,${res.Content.Id})">بستن</button>
+    
+    <button  class="gapMainColor" style="padding: 5px;border-radius: 3px 3px 3px 3px ;border:none" 
+    onclick="fullScreen('screenRecordAdminShareRequestCallbackVideo_${res.Content.Id}')">بزرگنمایی</button>
+</div>
+    `;
+
+    html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
+        res.Content.UniqId, 'همین الان', {Id: res.Content.Id});
+
+    getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
+
+}
+
+function fullScreen(id) {
+    debugger;
+    getDoc().querySelector('#gapModal').style.display = null;
+    getDoc().querySelector('#gapHelpDeskBlackBg').style.display = null;
+
+
+    getDoc().querySelector('#gapModalBody')
+        .innerHTML = `<video style="width: 100%; height: 100%" muted="muted" 
+controls id="${id}_big" autoplay>
+    
+    </video>`;
+}
+
+let videoData = [];
+
+function screenRecordAdminShareCallback(res) {
+
+    if (!res || !res.Content || !res.Content.buffer) {
+        alert("ویدئو برگشتی فرمت صحیح ندارد");
+        return;
+    }
+
+
+    let base64 = btoa(res.Content.buffer)
+    let blob = b64toBlob(base64, 'video/webm');
+
+    const videoElem = getDoc()
+        .querySelector(`#screenRecordAdminShareRequestCallbackVideo_${res.Content.chatId}`)
+
+
+    const videoElemBig = getDoc()
+        .querySelector(`#screenRecordAdminShareRequestCallbackVideo_${res.Content.chatId}_big`)
+
+    videoData.push(blob);
+
+    let wholeVideoBlob = new Blob(videoData, {'type': 'video/webm'})
+
+    let blobUrl = URL.createObjectURL(wholeVideoBlob);
+
+    // برای اولین بار نال است
+    if (videoElem) {
+        // blobUrl= URL.revokeObjectURL(blobUrl)
+
+        let lastTime = videoElem.currentTime ? videoElem.currentTime : 0;
+
+        videoElem.src = blobUrl;
+
+        if (videoElemBig)
+            videoElemBig.src = blobUrl;
+        videoElem.load()
+
+        videoElem.currentTime = lastTime;
+        videoElem.play();
+    }
+    return blobUrl;
+
+}
+
+
+function VC_AdminCallInitCallback(res) {
+
+
+    let html = `
+    
+    <p>تماس صوتی از پشتیبانی</p>
+    
+   <div>
+    
+    <voice style="width: 100%; height: 100%" muted="muted" controls id="VC_AdminCallInitCallback_${res.Content.Id}" autoplay>
+    
+    
+    </voice>
+  
+     <button  class="gapMainColor" style="padding: 5px;border-radius: 3px 3px 3px 3px ;border:none" 
+    onclick="vc_voiceCallReject(this,'${res.Content.Id}')">رد </button>
+    
+    <button  class="gapMainColor" style="padding: 5px;border-radius: 3px 3px 3px 3px ;border:none" 
+    onclick="vc_voiceCallAccept(this,'${res.Content.Id}')">جواب</button>
+</div>
+    `;
+
+    html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
+        res.Content.UniqId, 'همین الان', {Id: res.Content.Id});
+
+    getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
+
+}
+
+function vc_voiceCallReject(THIS, chatId) {
+
+
+    setMsg(THIS, 'تماس توسط کاربر رد شد', null, true, chatId,
+        function (msg, isAccepted, targetId, chatId) {
+            MyCaller.Send('VC_CustomerIsAcceptOrReject',
+                {
+                    msg: msg, err: null, isAccepted: false, myAccountId: targetId,
+                    chatId: chatId
+                })
+        });
+}
+
+function vc_voiceCallAccept(THIS, chatId) {
+
+
+    setMsg(THIS, 'کاربر جواب داد', null, true, chatId,
+        function (msg, isAccepted, targetId, chatId) {
+            MyCaller.Send('VC_CustomerIsAcceptOrReject',
+                {
+                    msg: msg, err: null, isAccepted: true, myAccountId: targetId,
+                    chatId: chatId
+                })
+        });
+
+    //todo:toooodo
+
+}
+
+let voiceData = [];
+
+function vC_AdminSpeakCallback(res) {
+
+    if (!res || !res.Content || !res.Content.buffer) {
+        alert("صدا برگشتی فرمت صحیح ندارد");
+        return;
+    }
+
+
+    const voiceElem = getDoc().querySelector(`VC_AdminCallInitCallback_${res.Content.chatId}`)
+
+    let base64 = btoa(res.Content.buffer)
+    let blob = b64toBlob(base64, 'video/mp4');
+
+    voiceData.push(blob);
+
+    let wholeVideoBlob = new Blob(voiceData, {'type': 'video/webm'})
+
+    let blobUrl = URL.createObjectURL(wholeVideoBlob);
+
+    // برای اولین بار نال است
+    if (voiceElem) {
+        // blobUrl= URL.revokeObjectURL(blobUrl)
+
+        let lastTime = voiceElem.currentTime ? voiceElem.currentTime : 0;
+
+        voiceElem.src = blobUrl;
+
+        voiceElem.load()
+
+        voiceElem.currentTime = lastTime;
+        voiceElem.play();
+    }
+    return blobUrl;
+}
+
+
+function vc_CustomerCallInit() {
+
+    if (!CurrentUserInfo.targetId) {
+        _showError("ادمین یافت نشد می توانید صفحه را از نو باز کنید تا اشکالات احتمالی حل شود");
+        return;
+    }
+
+    MyCaller.Send('VC_CustomerCallInit', {myAccountId: CurrentUserInfo.targetId})
+
+}
+
+function vC_AdminIsAcceptOrRejectCallback(res) {
+    if (!res || !res.Content) {
+        alert("vC_AdminIsAcceptOrRejectCallback res is null");
+        return;
+    }
+
+
+    const voiceElem = getDoc().querySelector(`VC_AdminCallInitCallback_${res.Content.chatId}`)
+
+
+    if (res.Content.IsAccepted)
+        voiceElem.parentNode.append(createElementFromHTML(`<p>به تماس پاسخ داد</p>`))
+    else {
+        voiceElem.parentNode.append(createElementFromHTML(`<p>تماس شما توسط پشتیبانی رد شد</p>`))
 
     }
 }
 
-window.onresize = function() {
-    canvas.width = mainSection.offsetWidth;
+
+function cC_AdminInAnotherCallingCallback(res) {
+    if (!res || !res.Content || !res.Content.buffer) {
+        alert("صدا برگشتی فرمت صحیح ندارد");
+        return;
+    }
+
+
+    const voiceElem = getDoc().querySelector(`VC_AdminCallInitCallback_${res.Content.chatId}`)
+
+
+    voiceElem.parentNode.append(createElementFromHTML(`<p>پشتیبانی در حال مکالمه است لطفا منتظر بمانید</p>`))
+
 }
-
-window.onresize();
-
-
-}
-/*VOICE CALL END*/

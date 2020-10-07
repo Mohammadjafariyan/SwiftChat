@@ -22,23 +22,37 @@ class PrimengModal extends Component {
 
         this.onClick = this.onClick.bind(this);
         this.onHide = this.onHide.bind(this);
-        
-        CurrentUserInfo.SendFromHelpDeskModal=this;
+
+
+        if (this.props.currName) {
+            if (!CurrentUserInfo.Modals) {
+                CurrentUserInfo.Modals = [];
+            }
+
+            CurrentUserInfo.Modals[this.props.currName] = this;
+
+        } else {
+            CurrentUserInfo.SendFromHelpDeskModal = this;
+        }
+
+
     }
 
     renderFooter(name) {
         return (
             <div>
-                <Button label="لغو" icon="pi pi-times" onClick={() => this.onHide(name)} className="p-button-text" />
-                <Button label="تایید" icon="pi pi-check" onClick={() => this.onHide(name)} autoFocus />
+                <Button label="لغو" icon="pi pi-times" onClick={() => this.onHide(name)} className="p-button-text"/>
+                {this.state.ok && <Button label="تایید" icon="pi pi-check" onClick={() => this.onHide(name)} autoFocus/>}
             </div>
         );
     }
+
     onHide(name) {
         this.setState({
             [`${name}`]: false
         });
     }
+
     onClick(name, position) {
         let state = {
             [`${name}`]: true
@@ -53,21 +67,25 @@ class PrimengModal extends Component {
 
         this.setState(state);
     }
-    
-    show(){
+    hide() {
+        this.onHide('displayBasic');
+
+    }
+    show() {
         this.onClick('displayBasic');
     }
-    
+
     render() {
         return (
             <div>
                 {/*<Button label="Show" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic')} />*/}
 
-                <Dialog maximizable modal  header={this.props.title} visible={this.state.displayBasic} style={{ width: '50vw' }} footer={this.renderFooter('displayBasic')} onHide={() => this.onHide('displayBasic')}>
-                   
+                <Dialog maximizable modal header={this.props.title} visible={this.state.displayBasic}
+                        style={{width: '80vw'}} footer={this.renderFooter('displayBasic')}
+                        onHide={() => this.onHide('displayBasic')}>
 
-                    
-{this.props.children}                    
+
+                    {this.props.children}
                 </Dialog>
 
             </div>

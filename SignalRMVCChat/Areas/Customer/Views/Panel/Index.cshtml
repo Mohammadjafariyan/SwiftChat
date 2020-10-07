@@ -18,7 +18,9 @@
     htmlstr = htmlstr.Replace($@"@websiteToken@", TempData["websiteToken"] as string);
     htmlstr = htmlstr.Replace($@"@port@", Request.Url.Port+"");
 
+    htmlstr = htmlstr.Replace($@"@baseUrl@", Request.Url.Host);
 
+    
 }
 
 

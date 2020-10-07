@@ -81,17 +81,30 @@ class SocialChannelsPage extends Component {
                     <h5>هر کدام از فیلد ها خالی باشد به معنای عدم نمایش آن است</h5>
 <hr/>
                     <div className={'form-group'}>
-                        <Input value={this.state.email} type={'text'} name={'ایمیل'} placeholder={'mohammad.jafariyan7@gmail.com'}></Input>
+                        <Input value={this.state.email}
+                               onChange={(e)=>this.setState({email:e.target.value})}
+
+                               type={'text'} name={'ایمیل'} placeholder={'mohammad.jafariyan7@gmail.com'}></Input>
                     </div>
                     <div className={'form-group'}>
-                        <Input value={this.state.telegram} type={'text'} name={'تلگرام'} placeholder={'https://t.me/asharsoft'}></Input>
+                        <Input value={this.state.telegram}
+                               onChange={(e)=>this.setState({telegram:e.target.value})}
+                               type={'text'} name={'تلگرام'} placeholder={'https://t.me/asharsoft'}></Input>
                     </div>
                     <div className={'form-group'}>
-                        <Input value={this.state.whatsapp} type={'text'} name={'واتساپ'} placeholder={'https://wa.me/+989148980692'}></Input>
+                        <Input value={this.state.whatsapp} type={'text'}
+                               onChange={(e)=>this.setState({whatsapp:e.target.value})}
+                               name={'واتساپ'} placeholder={'https://wa.me/+989148980692'}></Input>
                     </div>
                     <hr/>
                     <div className={'form-group'}>
-                        <Input value={this.state.helpDeskApi} type={'text'} name={'آدرس Api فراخوانی HelpDesk'} placeholder={'/HelpDeskApi/Search'}></Input>
+                        <Input value={this.state.helpDeskApi} type={'text'} 
+                               name={'آدرس Api فراخوانی HelpDesk'}
+                               placeholder={'/HelpDeskApi/Search'}
+                        
+                        onChange={(e)=>this.setState({helpDeskApi:e.target.value})}
+                        
+                        ></Input>
                         <hr/>
 
                         <h5 style={{textAlign:'right'}}>نمونه درخواست اطلاعات از پلاگین</h5>
@@ -111,16 +124,25 @@ class SocialChannelsPage extends Component {
 
                 <hr/>
                 <div className={'form-group'}>
-                    <Input value={this.state.helpDeskUrlLink} type={'text'} name={'آدرس helpdesk در سایت شما'} placeholder={'/Home/Docs'}></Input>
+                    <Input value={this.state.helpDeskUrlLink}
+
+
+                           onChange={(e)=>this.setState({helpDeskUrlLink:e.target.value})}
+
+                           type={'text'} name={'آدرس helpdesk در سایت شما'} placeholder={'/Home/Docs'}></Input>
 
                     <small dir={'rtl'}>اگر تنها ادرس helpdesk وارد شده باشد و آدرس Api وارد نشود بصورت لینک نمایش داده می شود</small>
                 </div>
 
                 <div className={'form-group'}>
-                    
+
                     <button className={'btn btn-primary'} onClick={()=>{
                         this.save();
                     }}>ذخیره</button>
+
+                    <button className={'btn btn-info'} onClick={()=>{
+                        this.factoryReset();
+                    }}>بازگشت به کارخانه</button>
 
                 </div>
 
@@ -138,6 +160,16 @@ class SocialChannelsPage extends Component {
                     </div>
                 </Row>
             </>   );
+    }
+
+    factoryReset() {
+
+
+
+        this.setState({
+            helpDeskApi:'/HelpDeskApi/Search',
+            helpDeskUrlLink:'mohammad.jafariyan7@gmail.com',
+        });
     }
 }
 

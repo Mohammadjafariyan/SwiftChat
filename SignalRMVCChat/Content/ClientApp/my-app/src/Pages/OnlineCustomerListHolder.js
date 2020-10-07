@@ -106,7 +106,6 @@ export default class OnlineCustomerListHolder extends Component {
     newCustomerOnlineCallback(res) {
 
         if (res.Content.OnlineTp != CurrentUserInfo.UserType) {
-            debugger;
             console.log(res)
             console.log(`res.Content.Type!=CurrentUserInfo.UserType res.Content.Type= ${res.Content.Type}!=${CurrentUserInfo.UserType}`)
             return;
@@ -142,7 +141,7 @@ export default class OnlineCustomerListHolder extends Component {
 
     customerSendToAdminCallback(res) {
 
-        debugger;
+        //debugger;
 
         let CustomerId = res.Content.CustomerId;
         let Message = res.Content.Message;

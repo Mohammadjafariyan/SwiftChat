@@ -822,18 +822,13 @@ color:@pluginCustomized.TopHeaderRightColor !important;
                     height: 42px !important;
                     }
                     
-                    .gapOnTheFlyMessage a{
-                    text-decoration: none;
-                    color: black;
-                    }
+                   
                     
                     .gapTopFloor{
                 
                     }
                     
-                    .gapOnTheFlyMessage a:hover{
-cursor: pointer;                    
-                    }
+                  
                             
 </style>
 
@@ -870,9 +865,9 @@ cursor: pointer;
 <div class="gapHelpDeskModal" id="gapHelpDeskModal" style="display: none;">
     <div class="gapHelpDeskModalSearchForm">
         
-            <input id="gapHelpDeskSearch" placeholder="جستجو در مرکز پشتیبانی ما" dir="rtl" onkeydown="gapHelpDeskSearchChanged(this,'@pluginCustomized.HelpDeskApi')"> 
-               <i class="fa fa-search" aria-hidden="true"></i>
-  </div>
+        <input id="gapHelpDeskSearch" placeholder="جستجو در مرکز پشتیبانی ما" dir="rtl" onkeydown="gapHelpDeskSearchChanged(this,'@pluginCustomized.HelpDeskApi')"> 
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
     <ul class="gapHelpDeskLinks" >
         @*<li  >
             <a href="https://help.crisp.chat/en/article/how-to-use-dollarcrisp-javascript-sdk-10ud15y/" target="_blank" rel="noopener noreferrer" data-active="false" class="crisp-joczs8 crisp-1fmeyoi" data-cshid="dbb46ff6-95dc-ec00-d1bc-ed3f16deaaa5">
@@ -892,21 +887,34 @@ cursor: pointer;
         
 
     </ul>
-  <div class="gapHelpDeskModalBottom">
-      <a style="float: left;color: #1b1e21" href="#" onclick="closeGapHelpDeskModal()"  rel="noopener noreferrer" data-active="false"  >
-          <span >بستن پنل</span>
-      </a>
+    <div class="gapHelpDeskModalBottom">
+        <a style="float: left;color: #1b1e21" href="#" onclick="closeGapHelpDeskModal()"  rel="noopener noreferrer" data-active="false"  >
+            <span >بستن پنل</span>
+        </a>
       
-      @if (string.IsNullOrEmpty(pluginCustomized.HelpDeskUrlLink) == false)
-      {
-          <a style="float: right;color: dodgerblue" href="@pluginCustomized.HelpDeskUrlLink" target="_blank" rel="noopener noreferrer" data-active="false"  >
-              <span >باز کردن مرکز پشتیبانی</span>
-          </a>
+        @if (string.IsNullOrEmpty(pluginCustomized.HelpDeskUrlLink) == false)
+        {
+            <a style="float: right;color: dodgerblue" href="@pluginCustomized.HelpDeskUrlLink" target="_blank" rel="noopener noreferrer" data-active="false"  >
+                <span >باز کردن مرکز پشتیبانی</span>
+            </a>
             
-      }
+        }
      
-  </div>
+    </div>
 </div>
+<div class="gapHelpDeskModal" id="gapModal" style="display: none;">
+   
+    <div id="gapModalBody">
+        
+    </div>
+    <div class="gapHelpDeskModalBottom">
+        <a style="float: left;color: #1b1e21" href="#" onclick="closeGapModal()"  rel="noopener noreferrer" data-active="false"  >
+            <span >بستن پنل</span>
+        </a>
+      
+    </div>
+</div>
+
 
 <div class="onTheFly" id="onTheFly">
 
@@ -1117,6 +1125,7 @@ cursor: pointer;
         @*voice recorder*@
         
         
+        @*
         <div class="wrapper">
         
               <header>
@@ -1126,7 +1135,9 @@ cursor: pointer;
               <section class="main-controls">
                 <canvas class="visualizer" height="60px"></canvas>
                 <div id="buttons">
-                  <button class="record">Record</button>
+                    <button class="record">Record</button>
+                    $1$<button class="VIDEOrecord">VIDEOrecord</button>#1#
+                    
                   <button class="stop">Stop</button>
                 </div>
               </section>
@@ -1146,7 +1157,7 @@ cursor: pointer;
               <p>Web dictaphone is built using <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia">getUserMedia</a> and the <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder_API">MediaRecorder API</a>, which provides an easier way to capture Media streams.</p>
         
               <p>Icon courtesy of <a href="http://findicons.com/search/microphone">Find Icons</a>. Thanks to <a href="http://soledadpenades.com/">Sole</a> for the Oscilloscope code!</p>
-            </aside>
+            </aside>*@
         
         @*voice recorder end*@
     </div>
@@ -1261,7 +1272,9 @@ cursor: pointer;
           
             </div>
             <div class="col-md-7">
-                <b id="gapOnTheFlyMessageText" >                سوالی دارید ؟ در خدمت شما هستیم</b>
+                <b id="gapOnTheFlyMessageText" >                
+                    سوالی دارید ؟ در خدمت شما هستیم
+                    </b>
                 <br/>
                 <small>پشتیبانی آنلاین می باشد</small>
             </div>

@@ -25,6 +25,11 @@ import FormDataPage from "./FormDataPage";
 import {AutomaticSendPage} from "../Components/Chat";
 
 import { Toast } from 'primereact/toast';
+import {Message} from "primereact/message";
+import Spinner from "react-bootstrap/Spinner";
+import {Button} from "primereact/button";
+import HelpDeskPage from "./HelpDeskPage";
+import SaveArticle from "../Components/SaveArticle";
 
 
 
@@ -34,6 +39,11 @@ export default class LayoutPage extends Component {
         this.state={isLogin:false};
         CurrentUserInfo.LayoutPage = this;
 
+
+    }
+
+    showConstantMsg(msg,type,callback){
+        this.setState({constantMsg: msg,constantMsgType:type,constantMsgCallback:callback});
 
     }
 
@@ -97,12 +107,11 @@ export default class LayoutPage extends Component {
                 return (
                     <div>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
-                        <Toast ref={(el) => this.toast = el} />
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
 
                         <Menu/>
-                        {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
-            {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
-
+                        <MessageAlerts />
+                        
             <ChatPage />
                 </div>
     )
@@ -111,14 +120,13 @@ export default class LayoutPage extends Component {
             {
               return( 
                   <div>
-                      <Toast ref={(el) => this.toast = el} />
+                      <Toast  position="bottom-left"ref={(el) => this.toast = el} />
                       <Menu/>
-                {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
-                {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
-    
-                
-                
-                <FakeServerMonitor></FakeServerMonitor>
+                      <MessageAlerts/>
+
+
+
+                      <FakeServerMonitor></FakeServerMonitor>
                 
                 
                 </div>
@@ -132,10 +140,9 @@ export default class LayoutPage extends Component {
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
 
-                        <Toast ref={(el) => this.toast = el} />
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
                         <Menu/>
-                        {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
-                        {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
+                        <MessageAlerts/>
 
                         <FormCreatorPage></FormCreatorPage>
                     </>)
@@ -145,11 +152,10 @@ export default class LayoutPage extends Component {
                 return (
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
-                        <Toast ref={(el) => this.toast = el} />
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
 
                         <Menu/>
-                        {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
-                        {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
+                        <MessageAlerts/>
 
                         <AutomaticSendPage></AutomaticSendPage>
                     </>)
@@ -162,10 +168,9 @@ export default class LayoutPage extends Component {
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
 
-                        <Toast ref={(el) => this.toast = el} />
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
                         <Menu/>
-                        {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
-                        {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
+                        <MessageAlerts/>
 
                         <ProfilePage></ProfilePage>
                     </>)
@@ -176,10 +181,9 @@ export default class LayoutPage extends Component {
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
 
-                        <Toast ref={(el) => this.toast = el} />
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
                         <Menu/>
-                        {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
-                        {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
+                        <MessageAlerts/>
 
                         <FormDataPage></FormDataPage>
                     </>)
@@ -190,14 +194,35 @@ export default class LayoutPage extends Component {
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
 
-                        <Toast ref={(el) => this.toast = el} />
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
                         <Menu/>
-                        {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
-                        {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
+                        <MessageAlerts/>
 
                         <SocialChannelsPage></SocialChannelsPage>
                     </>)
             }
+
+            else if (DataHolder.currentPage === "HelpDeskPage") {
+
+                return (
+                    <>
+                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Menu/>
+                        <MessageAlerts/>
+
+                        {!DataHolder.subPage &&
+                        <HelpDeskPage></HelpDeskPage>}
+
+                        {DataHolder.subPage==='SaveArticle' &&
+                        <SaveArticle/>}
+
+                        
+                    </>)
+            }
+
+            
 
             
             else if (DataHolder.currentPage === "CustomerList") {
@@ -206,10 +231,9 @@ export default class LayoutPage extends Component {
                     <>
                         {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
 
-                        <Toast ref={(el) => this.toast = el} />
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
                         <Menu/>
-                        {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
-                        {this.state.msg && <div className="alert alert-info">{this.state.msg}</div>}
+                        <MessageAlerts/>
 
                         {DataHolder.filterType==='WaitingForAnswer' && 
                         <WaitingForAnswer/>} 
@@ -250,8 +274,8 @@ export default class LayoutPage extends Component {
         }else{
             return (
                 <div>
-                    <Toast ref={(el) => this.toast = el} />
-                    {this.state.err && <div className="alert alert-danger">{this.state.err}</div>}
+                    <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                    <MessageAlerts/>
 
                     <LoginPage parent={this}/>
                 </div>
@@ -269,7 +293,44 @@ export function _showError(msgf){
 
 }
 
+
+
+
+export function _showConstantMsg(msgf,type,callback){
+    CurrentUserInfo.LayoutPage.showConstantMsg(msgf,type,callback)
+
+}
+
 export function _showMsg(msg){
     CurrentUserInfo.LayoutPage.showMsg(msg)
 
+}
+
+
+export function MessageAlerts(props){
+    
+    return <>
+        {CurrentUserInfo. LayoutPage.state.err && <div className="alert alert-danger">{CurrentUserInfo.LayoutPage.state.err}</div>}
+        {CurrentUserInfo.LayoutPage.state.msg && <div className="alert alert-info">{CurrentUserInfo.LayoutPage.state.msg}</div>}
+{/*
+        {CurrentUserInfo.LayoutPage.state.constantMsg && <Message severity={CurrentUserInfo.LayoutPage.state.constantMsgType ? CurrentUserInfo.LayoutPage.state.constantMsgType : 'success' }  text={CurrentUserInfo.LayoutPage.state.constantMsg} />}
+*/}
+        {CurrentUserInfo.LayoutPage.state.constantMsg &&
+        <div className={"alert alert-" +(CurrentUserInfo.LayoutPage.state.constantMsgType ? CurrentUserInfo.LayoutPage.state.constantMsgType : 'success') }>
+
+
+            <Button icon="pi pi-times" onClick={()=>{
+                if (CurrentUserInfo.LayoutPage.state.constantMsgCallback)
+                    CurrentUserInfo.LayoutPage.state.constantMsgCallback()
+            }} className="p-button-rounded p-button-text p-button-plain" />
+
+            
+            {CurrentUserInfo.LayoutPage.state.constantMsg}
+
+            <Spinner animation="grow" variant="info" />
+            
+            
+        </div>}
+        
+        </>
 }

@@ -15,7 +15,40 @@ class dispatcher {
         }
         console.log('dispatcher===>',res.Name)
         switch (res.Name) {
+
             
+            case "screenRecordAdminShareRequestCallback":
+                if (CurrentUserInfo.ShowMyScreen){
+                    CurrentUserInfo.ShowMyScreen.screenRecordAdminShareRequestCallback(res);
+                }
+
+                break;
+
+            case "screenRecordCustomerCloseCallback":
+                if (CurrentUserInfo.ScreenRecordShowerSendRequest){
+                    CurrentUserInfo.ScreenRecordShowerSendRequest.screenRecordCustomerCloseCallback(res);
+                }
+
+                break;
+
+            case "screenRecordAccessRequestSuccessCallback":
+                if (CurrentUserInfo.ScreenRecordShowerSendRequest){
+                    CurrentUserInfo.ScreenRecordShowerSendRequest.screenRecordAccessRequestSuccessCallback(res);
+                }
+
+                break;
+            case "screenRecordAccessRequestFailCallback":
+                if (CurrentUserInfo.ScreenRecordShowerSendRequest){
+                    CurrentUserInfo.ScreenRecordShowerSendRequest.screenRecordAccessRequestFailCallback(res);
+                }
+
+                break;
+            case "screenRecordSaveCallback":
+                if (CurrentUserInfo.ScreenRecordShower){
+                    CurrentUserInfo.ScreenRecordShower.screenRecordSaveCallback(res);
+                }
+                
+                break;
             
             case 'saveFormDataCallback':
                 /*لیست کامپونت های فرم ها در این ابجکت نگه داری می شود|*/
@@ -68,7 +101,7 @@ class dispatcher {
 
                 break;
             case 'customerGetFormSingleCallback':
-                debugger
+         //       debugger
                 if (CurrentUserInfo.FormCreatorPage) {
                     CurrentUserInfo.FormCreatorPage.getFormSingleCallback(res);
                 }
@@ -118,6 +151,12 @@ class dispatcher {
 
                 if (CurrentUserInfo.SocialChannelsPage) {
                     CurrentUserInfo.SocialChannelsPage.getSocialChannelsInfoCallback(res)
+                }
+
+
+
+                if (CurrentUserInfo.SendFromHelpDesk) {
+                    CurrentUserInfo.SendFromHelpDesk.getSocialChannelsInfoCallback(res)
                 }
                 break;
 

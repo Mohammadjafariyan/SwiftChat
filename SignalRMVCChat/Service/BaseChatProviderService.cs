@@ -85,7 +85,8 @@ namespace SignalRMVCChat.Service
         }
 
         public virtual MyEntityResponse<int> AdminSendToCustomer
-            (int accountId, int customerId, string typedMessage, int mySocketId, int gapFileUniqId,int uniqId,int? formId=null)
+            (int accountId, int customerId, string typedMessage, int mySocketId, int gapFileUniqId,int uniqId,int? formId=null,
+            ChatContentType ChatContentType=ChatContentType.Normal)
         {
             return Save(new Chat
             {
@@ -97,13 +98,14 @@ namespace SignalRMVCChat.Service
                 SenderMySocketId = mySocketId,
                 gapFileUniqId = gapFileUniqId,
                 UniqId= uniqId,
-                formId = formId
+                formId = formId,
+                ChatContentType=formId.HasValue ? ChatContentType.Form : ChatContentType 
             });
         }
 
         public virtual MyEntityResponse<int> CustomerSendToAdmin(int? accountId, int customerId, string typedMessage,
             int mySocketId,
-            int gapFileUniqId,int uniqId,int? formid=null)
+            int gapFileUniqId, int uniqId, int? formid = null, ChatContentType ChatContentType=ChatContentType.Normal)
         {
             return Save(new Chat
             {
@@ -115,7 +117,9 @@ namespace SignalRMVCChat.Service
                 SenderMySocketId = mySocketId,
                 gapFileUniqId = gapFileUniqId,
                 UniqId = uniqId,
-                formId = formid
+                formId = formid,
+                ChatContentType=formid.HasValue ? ChatContentType.Form : ChatContentType 
+
             });
         }
 

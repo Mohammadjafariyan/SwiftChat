@@ -18,7 +18,7 @@ namespace SignalRMVCChat.Controllers
             };
             for (int i = 0; i < 100; i++)
             {
-                data.Add(new {title="این یک لینک نمونه است ؟ ",link="#" + new Random().Next(0,99)});
+                data.Add(new {Id=i++,title="این یک لینک نمونه است ؟ ",link="#" + new Random().Next(0,99),});
             }
 
 

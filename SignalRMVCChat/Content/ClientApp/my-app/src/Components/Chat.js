@@ -12,7 +12,8 @@ import CustomerTags from "./CustomerTags";
 import FormShowerInChat from "./FormShowerInChat";
 import {_showError} from "../Pages/LayoutPage";
 import MarkAsResovled from "./MarkAsResovled";
-
+import ScreenRecordShower from "./ScreenRecordShower";
+import DOMPurify from 'dompurify';
 export default class Chat extends Component {
     constructor(arg) {
         super(arg);
@@ -114,7 +115,7 @@ export default class Chat extends Component {
 
     LoadForms(){
         
-        debugger;
+        //debugger;
         if (!this.state.chats || this.state.chats.length==0)
             return ;
         
@@ -212,7 +213,7 @@ export default class Chat extends Component {
 
     userAddedToTagsCallback(res) {
 
-        debugger
+        //debugger
         if (!res || !res.Content || !res.Content.EntityList) {
             CurrentUserInfo.LayoutPage.showError('دیتای خوانده شده برای برچسب های کاربر نال است')
             return;
@@ -265,6 +266,8 @@ export default class Chat extends Component {
                             )}
                             <ChatPannel chats={this.state.chats} parent={this}/>
                         </div>
+                        
+                        
 
                         <ChatForm
                             onPaste={(e) => {
@@ -642,9 +645,13 @@ export function ChatPannel(props) {
                         {el.formId  && <FormShowerInChat chatId={el.Id} chatUniqId={el.UniqId} formId={el.formId} ></FormShowerInChat>}
 
                         {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
-                        {!el.MultimediaContent && <p key={el.Message}>{el.Message}</p>}
+                        {!el.MultimediaContent && <p key={el.Message}
+
+                                                     dangerouslySetInnerHTML={{__html: el.Message}}
+                        /> }
 
 
+                    
 
                         <IsDelivered DeliverDateTime={el.DeliverDateTime}/>
 
@@ -672,7 +679,9 @@ export function ChatPannel(props) {
                         {el.formId  && <FormShowerInChat chatId={el.Id} formName={el.formName}  chatUniqId={el.UniqId} formId={el.formId} elements={el.elements}></FormShowerInChat>}
                         
                         {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
-                        {!el.MultimediaContent && <p key={el.Message}>{el.Message}</p>}
+                        {!el.MultimediaContent && <p key={el.Message}
+                                                    
+                        > {el.Message} </p>}
                     </div>
                 </div>
             );

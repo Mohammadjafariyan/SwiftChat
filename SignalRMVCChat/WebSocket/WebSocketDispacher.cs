@@ -1,5 +1,7 @@
 ﻿using System;
 using SignalRMVCChat.DependencyInjection;
+using SignalRMVCChat.WebSocket.Call.AdminScreenRecord;
+using SignalRMVCChat.WebSocket.Call.ScreenRecord;
 using SignalRMVCChat.WebSocket.FormCreator;
 using SignalRMVCChat.WebSocket.Profile;
 using SignalRMVCChat.WebSocket.SocialChannels;
@@ -51,25 +53,51 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+                #region screenRecord
+
+                case "ScreenRecordAdminShare":
+                    return new ScreenRecordAdminShareSocketHandler();
+                    break;
+                case "ScreenRecordAdminShareRequest":
+                    return new ScreenRecordAdminShareRequestSocketHandler();
+                    break;
+                case "ScreenRecordCustomerClose":
+                    return new ScreenRecordCustomerCloseSocketHandler();
+                    break;
+                case "ScreenRecordAdminClose":
+                    return new ScreenRecordAdminCloseSocketHandler();
+                    break;
+
+                case "SetScreenRecordAccessRequestIsAccepted":
+                    return new SetScreenRecordAccessRequestIsAcceptedSocketHandler();
+                    break;
+                case "ScreenRecordAccessRequest":
+                    return new ScreenRecordAccessRequestSocketHandler();
+                    break;
+                case "ScreenRecordSave":
+                    return new ScreenRecordSaveSocketHandler();
+                    break;
+
+                #endregion
 
                 #region Form Creator
 
                 // نمایش فرم به کاربر در مواقع رفرش صفحه و ..
                 case "CustomerGetFormSingle":
                     return new CustomerGetFormSingleSocketHandler();
-                break;
-                
-                
+                    break;
+
+
                 // ارسال فرم به کاربر
                 case "AdminSendFormToCustomer":
                     return new AdminSendFormToCustomerSocketHandler();
-                break;
-                
+                    break;
+
                 // حذف فرم
                 case "DeleteForm":
                     return new DeleteFormSocketHandler();
                     break;
-                
+
                 // فرم های تعریف شده
                 case "GetCreatedForms":
                     return new GetCreatedFormsSocketHandler();
@@ -79,12 +107,12 @@ namespace SignalRMVCChat.WebSocket
                 case "GetFormData":
                     return new GetFormDataSocketHandler();
                     break;
-                
+
                 // یک فرم
                 case "GetFormSingle":
                     return new GetFormSingleSocketHandler();
                     break;
-                
+
                 // ذخیره یک فرم جدید
                 case "SaveForm":
                     return new SaveFormSocketHandler();
@@ -95,9 +123,8 @@ namespace SignalRMVCChat.WebSocket
                     return new SaveFormDataSocketHandler();
                     break;
 
-
                 #endregion
-                
+
                 #region Typing:
 
                 case "GetSocialChannelsInfo":
@@ -106,8 +133,8 @@ namespace SignalRMVCChat.WebSocket
                 case "SaveSocialChannelsInfo":
                     return new SaveSocialChannelsInfoSocketHandler();
                     break;
-                
-                
+
+
                 case "CustomerStartTyping":
                     return new CustomerStartTypingSocketHandler();
                     break;

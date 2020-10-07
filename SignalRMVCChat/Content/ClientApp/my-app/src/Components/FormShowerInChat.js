@@ -35,7 +35,7 @@ class FormShowerInChat extends Component {
 
     ///این ممتد در واقع باید بیرون از این کلاس می بود
     saveFormDataCallback(res){
-        debugger
+        //debugger
         console.log('FormShowerInChat->saveFormDataCallback:')
 
         console.log(res)
@@ -74,7 +74,7 @@ class FormShowerInChat extends Component {
 
     getFormSingleCallback(res) {
         
-        debugger
+       // debugger
 
         if (!res || !res.Content) {
             CurrentUserInfo.LayoutPage.showError('اطلاعات بازگشتی از سرور نال است');

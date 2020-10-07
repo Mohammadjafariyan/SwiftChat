@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using Engine.SysAdmin.Service;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Migrations;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Models.GapChatContext;
@@ -59,6 +60,6 @@ namespace SignalRMVCChat.Areas.security.Models
         public DbSet<Setting> Settings { get; set; }
         public DbSet<MyAccountPlans> MyAccountPlans { get; set; }
         public DbSet<MyAccountPayment> MyAccountPayments { get; set; }
-        public DbSet<SignalRMVCChat.Service.Customer> Customers { get; set; }
+        public DbSet<SignalRMVCChat.Models.Customer> Customers { get; set; }
     }
 }

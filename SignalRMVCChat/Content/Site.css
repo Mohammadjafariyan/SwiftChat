@@ -1,6 +1,31 @@
 ﻿/*pace:*/
 
 
+.gapMsg  a:not([href]):not([class]):hover,.gapMsg a:hover{
+    color: #04aecd !important;
+    cursor: pointer;
+}
+
+
+.gapMsg a:not([href]):not([class]),.gapMsg a{
+    color: #09e2ca !important;
+}
+
+
+.gapOnTheFlyMessageText    a:not([href]):not([class]) , .gapOnTheFlyMessageText a{
+    color: #04aecd !important;
+    cursor: pointer;
+    text-decoration: none;
+
+}
+.gapOnTheFlyMessageText  a:not([href]):not([class]):hover  , .gapOnTheFlyMessageText a:hover{
+    color: #09e2ca !important;
+    text-decoration: none;
+
+
+}
+
+
 .card-block{
     
     overflow: auto !important;

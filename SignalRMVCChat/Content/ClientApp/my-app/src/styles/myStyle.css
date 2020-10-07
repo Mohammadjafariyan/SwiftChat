@@ -88,6 +88,16 @@
     display: none;
 }
 
+a:not([href]):not([class]):hover,a:hover{
+    color: #04aecd !important;
+    cursor: pointer;
+}
+
+
+a:not([href]):not([class]),a{
+    color: #09e2ca !important;
+}
+
 
 @media screen and (max-width: 1366px) {
   

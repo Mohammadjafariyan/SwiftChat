@@ -8,6 +8,8 @@ import '../styles/myStyle.css';
 import SubMenu from './SubMenu';
 import {Container, Row, Col, Badge} from 'react-bootstrap';
 import {MyGlobal} from "../Help/MyGlobal";
+import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 export default class Menu extends Component {
     constructor(arg) {
         super(arg);
@@ -51,50 +53,62 @@ export default class Menu extends Component {
   <Col>
 
 
-            <div>
-                <button className={'btn btn-default ' +(DataHolder.currentPage==='ProfilePage' ? ' active ' : '')} type="button"
+            <div aria-label="Basic example">
+
+                    
+                <Button variant="light" className={'btn btn-default ' +(DataHolder.currentPage==='ProfilePage' ? ' bg-primary text-white ' : '')} type="button"
                         onClick={() => {
                             this.setPage('ProfilePage');
                         }}>
 
 
                     پروفایل
-                </button>
+                </Button>
 
-                
-                <button className={'btn btn-default ' +(DataHolder.currentPage==='FormDataPage' ? ' active ' : '')} type="button"
+
+                <Button variant="light" className={'btn btn-default ' +(DataHolder.currentPage==='FormDataPage' ? ' bg-primary text-white ' : '')} type="button"
                         onClick={() => {
                             this.setPage('FormDataPage');
                         }}>
 
 
-                    اطلاعات کاربران  
-                </button>
-                <button id={'formCreatorButton'} className={'btn btn-default ' +(DataHolder.currentPage==='FormCreator' ? ' active ' : '')} type="button"
+                    اطلاعات کاربران
+                </Button>
+
+                <Button variant="light" className={'btn btn-default ' +(DataHolder.currentPage==='HelpDeskPage' ? ' bg-primary text-white ' : '')} type="button"
+                        onClick={() => {
+                            this.setPage('HelpDeskPage');
+                            DataHolder.subPage=null;
+                        }}>
+
+
+                    Help Desk  مقالات
+                </Button>
+                <Button variant="light" id={'formCreatorButton'} className={'btn btn-default ' +(DataHolder.currentPage==='FormCreator' ? ' bg-primary text-white ' : '')} type="button"
                         onClick={() => {
                             this.setPage('FormCreator');
                         }}>
 
 
                     فرم ساز
-                </button>
+                </Button>
                 
-                <button className={'btn btn-default ' +(DataHolder.currentPage==='SocialChannels' ? ' active ' : '')} type="button"
+                <Button variant="light" className={'btn btn-default ' +(DataHolder.currentPage==='SocialChannels' ? ' bg-primary text-white ' : '')} type="button"
                         onClick={() => {
                             this.setPage('SocialChannels');
                         }}>
 
 
                     شبکه های اجتماعی
-                </button>
-                <button className={'btn btn-default ' + (DataHolder.currentPage==='AutomaticSend' ? ' active ' : '')} type="button"
+                </Button>
+                <Button variant="light" className={'btn btn-default ' + (DataHolder.currentPage==='AutomaticSend' ? ' bg-primary text-white ' : '')} type="button"
                     onClick={() => {
                         this.setPage('AutomaticSend');
                     }}>
                     ارسال های اتوماتیک
-                    </button>
+                    </Button>
 
-                <button className={'btn btn-default ' + (!DataHolder.currentPage ? ' active ' : '')} type="button"
+                <Button variant="light" className={'btn btn-default ' + (!DataHolder.currentPage ? ' bg-primary text-white ' : '')} type="button"
                         onClick={() => {
                             this.setPage(null);
                         }}>
@@ -102,17 +116,17 @@ export default class Menu extends Component {
                     <ShowPlusCount Count={this.state.TotalNewChatReceived}></ShowPlusCount>
 
                     اتاق چت
-                </button>
+                </Button>
                        
                        
                        
                 {MyGlobal.isTestingEnvirement &&  
-                        <button className={'btn btn-default ' + (!DataHolder.currentPage ? ' active ' : '')} type="button"
+                        <Button variant="light" className={'btn btn-default ' + (!DataHolder.currentPage ? ' bg-primary text-white ' : '')} type="button"
                     onClick={() => {
                         this.setPage('FakeServerMonitor');
                     }}>
                    FakeServerMonitor
-                        </button>
+                        </Button>
 
                 }
                 <hr/>

@@ -13,18 +13,23 @@ namespace SignalRMVCChat.WebSocket
 
         public async virtual Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
         {
+            await InitAsync(request,currMySocketReq);
+
+            return await  Task.FromResult(new MyWebSocketResponse());
+        }
+
+        protected async Task InitAsync(string request, MyWebSocketRequest currMySocketReq)
+        {
             _logService.LogFunc(request);
 
-             _request = MyWebSocketRequest.Deserialize(request);
+            _request = MyWebSocketRequest.Deserialize(request);
 
             if (_request == null)
             {
                 Throw("درخواست نال است");
             }
-
-            return await  Task.FromResult(new MyWebSocketResponse());
         }
-        
+
         public virtual void Throw(string msg)
         {
             _logService.LogFunc(msg);
@@ -40,6 +45,7 @@ namespace SignalRMVCChat.WebSocket
         {
             try
             {
+             
                 if (_request.Body==null)
                 {
                     Throw("ورودی های اشتباه");
@@ -58,7 +64,7 @@ namespace SignalRMVCChat.WebSocket
             
                 var val= param.Convert<T>();
           
-                if (required && val?.Equals(default(T))==true)
+                if (required && (val?.Equals(default(T))==true && !(val is bool)))
                 {
                     Throw(msg);
                 }

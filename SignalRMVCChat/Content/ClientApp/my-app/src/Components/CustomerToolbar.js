@@ -14,6 +14,8 @@ import CustomerData from "./CustomerData";
 import PrimengModal from "./SendFromHelpDeskModal";
 import SendFromHelpDesk from "./SendFromHelpDesk";
 import {Dialog} from "primereact/dialog";
+import ScreenRecordShower from "./ScreenRecordShower";
+import ScreenRecordShowerSendRequest from "./ScreenRecordShowerSendRequest";
 
 class CustomerToolbar extends Component {
 
@@ -92,13 +94,21 @@ class CustomerToolbar extends Component {
              
            
            <LastPagesVisited/>
-           
-           
-           <PrimengModal title={'انتخاب از مقالات مرکز پشتیبانی'}>
-               <SendFromHelpDesk></SendFromHelpDesk>
 
 
-           </PrimengModal>
+                <PrimengModal title={'انتخاب از مقالات مرکز پشتیبانی'} ok={true}>
+                    <SendFromHelpDesk></SendFromHelpDesk>
+
+
+                </PrimengModal>
+
+                <PrimengModal title={'نمایش برخط مانیتور بازدیدکننده'} currName={'ScreenRecordShowerSendRequest'} ok={false}>
+
+                    <ScreenRecordShowerSendRequest/>
+
+                </PrimengModal>
+
+                
             </div>
         );
     }

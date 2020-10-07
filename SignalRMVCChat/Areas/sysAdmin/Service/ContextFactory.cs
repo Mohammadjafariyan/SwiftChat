@@ -14,7 +14,7 @@ namespace Engine.SysAdmin.Service
 
         public static MyContextBase GetContext(string name)
         {
-            if (System.Diagnostics.Debugger.IsAttached)
+          //  if (System.Diagnostics.Debugger.IsAttached)
             {
              
                 var connection = Effort.DbConnectionFactory.CreatePersistent("1");

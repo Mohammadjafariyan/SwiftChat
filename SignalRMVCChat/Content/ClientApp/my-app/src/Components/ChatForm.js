@@ -21,12 +21,19 @@ export default class ChatForm extends Component {
 
         return false;
     }
+    
+    
+    addText(text){
+        let prev=this.state.text ? this.state.text : '';
+        this.setState({text:prev+" "+text})
+    }
+    
 
     render() {
         return (<div>
 
             <form onSubmit={this.submit}>
-                <input onKeyPress={() => {
+                <input style={{direction:'rtl'}} onKeyPress={() => {
 
 
                     bindIsTyping();
@@ -43,6 +50,7 @@ export default class ChatForm extends Component {
                         this.props.onPaste(e);
                     }}
 
+                       type={'textarea'}
                 />
 
 

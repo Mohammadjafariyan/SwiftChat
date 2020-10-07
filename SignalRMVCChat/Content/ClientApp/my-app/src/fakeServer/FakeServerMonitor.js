@@ -247,7 +247,7 @@ export default class FakeServerMonitor extends Component {
                     for (let i = 0; i < 20; i++) {
                         formData.push({Email:"Email-"+Math.random() + "@gmail.com"})
                     }
-                    debugger
+                 //   debugger
 
                     _dispatcher.dispatch({
                         Name: 'getFormDataCallback', Content: {
