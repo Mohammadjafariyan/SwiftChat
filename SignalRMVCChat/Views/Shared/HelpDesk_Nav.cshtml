@@ -1,0 +1,102 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.Models.HelpDesk
+@model dynamic
+
+
+@{
+
+  HelpDesk helpDesk = new HelpDesk
+  {
+    HeaderText = "مرکز پشتیبانی"
+  };
+  if (TempData["helpDesk"]!=null)
+  {
+    helpDesk=TempData["helpDesk"] as HelpDesk;
+  }
+
+  if (helpDesk==null)
+  {
+    helpDesk = new HelpDesk
+    {
+      HeaderText = "مرکز پشتیبانی"
+    };
+  }
+
+  List<Language> languages = new List<Language>();
+  if (TempData["Languages"] !=null)
+  {
+    languages=TempData["languages"] as List<Language>;
+  }
+  if (languages==null)
+  {
+    languages = new List<Language>();
+  }
+
+  Language selectedLanguage = languages?.Where(l => l.Id == helpDesk?.LanguageId).FirstOrDefault();
+
+  if (selectedLanguage==null)
+  {
+    selectedLanguage=new Language
+    {
+      nativeName = "زبان"
+    };
+  }
+  
+  string primary = "btn-primary";
+  string color = "white";
+  if (string.IsNullOrEmpty(helpDesk.BgColor)==false)
+  {
+    primary = "";
+    color = MyGlobal.ContrastColor(helpDesk.BgColor).Name;
+  }
+}
+
+
+
+<div class="row justify-content-center" style="margin-top: 10px;">
+  <div class="col-md-6">
+    <a class="nav-link text-white" style="font-size: 25px !important;" href="@Request.Url.AbsoluteUri">
+      @helpDesk.HeaderText
+      |
+      <i class="fa fa-leaf" aria-hidden="true"></i>
+
+    </a>
+  </div>
+
+  <div class="col-md-4 nav-item text-white">
+    <div class="row">
+      <div class="dropdown">
+        <a class="btn  nav-link @primary  dropdown-toggle " id="dropdownMenuButton" data-toggle="dropdown"
+           
+           
+           aria-haspopup="true" aria-expanded="false" href="#" style="font-size: 16px !important;background-color: #@helpDesk.BgColor;color: @color">
+
+          Eng|@selectedLanguage.nativeName
+          <i class="fa fa-language" aria-hidden="true"></i>
+
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          
+          @foreach (var l in languages)
+          {
+
+            <a  class="dropdown-item" href="/HelpDesk/Index?websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@l.alpha2Code">@l.Name - @l.nativeName</a>
+          }
+        </div>
+      </div>
+      <a class="btn @primary nav-link " href="/" target="_blank" style="font-size: 16px !important;background-color: #@helpDesk.BgColor;color: @color">
+
+        بروبه وبسایت
+        <i class="fa fa-rocket" aria-hidden="true"></i>
+
+
+      </a>
+    </div>
+
+
+  </div>
+
+
+</div>
+
+

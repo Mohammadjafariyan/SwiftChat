@@ -8,6 +8,8 @@ import {DataHolder} from "../Help/DataHolder";
 import Button from "react-bootstrap/Button";
 import Satistification from "./Satistification";
 import MarkAsResovled from "./MarkAsResovled";
+import {UserInformationService} from "./Service/UserInformationService";
+import {_showError} from "../Pages/LayoutPage";
 
 class CustomerInfo extends Component {
     state = {};
@@ -17,6 +19,22 @@ class CustomerInfo extends Component {
         
         CurrentUserInfo.CustomerInfo=this;
     }
+
+    saveUserInfoCallback(res){
+        if (!res || !res.Content) {
+
+_showError(' مقدار بازگشتی از سرور نال است ');
+            return;
+        }
+        if (!DataHolder.selectedCustomer){
+            return ;
+        }
+
+        DataHolder.selectedCustomer[res.Content.PropertyName]=res.Content.PropertyValue;
+        
+        this.setState({tmp:Math.random()});
+    }
+    
 
     render() {
         if (!DataHolder.selectedCustomer)
@@ -81,10 +99,11 @@ class CustomerInfo extends Component {
                                               {
                                                   CurrentUserInfo.CustomersPage.setState({tmp: Math.random()})
                                               }
-                                              
+
                                           }} onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     this.setState({editingName: false})
+                                    UserInformationService.SaveUserInfo('Name')
 
                                 }
                             }}/>}
@@ -103,15 +122,19 @@ class CustomerInfo extends Component {
                             </Form.Label>
                             }
                             {this.state.editingEmail &&
-                            <Form.Control type="email" placeholder="محل قرار گرفتن ایمیل کاربر" value={DataHolder.selectedCustomer.Email}
+                            <Form.Control type="email" placeholder="محل قرار گرفتن ایمیل کاربر" 
+                                          value={DataHolder.selectedCustomer.Email}
                                           onChange={(e) => {
                                               DataHolder.selectedCustomer.Email = e.target.value;
                                               this.setState({tmp: Math.random()})
                                           }} onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     this.setState({editingEmail: false})
+                                    UserInformationService.SaveUserInfo('Email')
 
                                 }
+
+
                             }}/>}
 
 
@@ -135,6 +158,7 @@ class CustomerInfo extends Component {
                                           }} onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     this.setState({editingPhone: false})
+                                    UserInformationService.SaveUserInfo('Phone')
 
                                 }
                             }}/>}
@@ -149,7 +173,12 @@ class CustomerInfo extends Component {
                             
                             
                             
-                            <Button variant={'primary'}>
+                            <Button variant={'primary'} onClick={()=>{
+
+                                
+                                DataHolder.Back=null;
+                                CurrentUserInfo.Menu.setPage("CustomerProfilePage")
+                            }}>
                                 <Badge variant={'primary'}>
                                     
                                     <i className={'fa fa-user'}></i>

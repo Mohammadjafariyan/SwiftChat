@@ -11,6 +11,8 @@ using SignalRMVCChat.Areas.Customer.Service;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Migrations;
+using SignalRMVCChat.Models.ET;
+using SignalRMVCChat.Models.HelpDesk;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.SysAdmin.Service;
 using TelegramBotsWebApplication;
@@ -222,6 +224,13 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #endregion
 
+            
+            #region CustomerProfile
+            modelBuilder.Entity<Customer>().HasMany(r => r.CustomerDatas)
+                .WithRequired(o => o.Customer)
+                .HasForeignKey(o => o.CustomerId);
+
+            #endregion
 
             #region Image
 
@@ -274,7 +283,58 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #endregion
 
+            #region HelpDesk
+            modelBuilder.Entity<Language>()
+                .HasMany(r => r.HelpDesks)
+                .WithRequired(o => o.Language)
+                .HasForeignKey(o => o.LanguageId);
+            
+            modelBuilder.Entity<HelpDesk.HelpDesk>()
+                .HasMany(r => r.Categories)
+                .WithRequired(o => o.HelpDesk)
+                .HasForeignKey(o => o.HelpDeskId);
+            
+            modelBuilder.Entity<HelpDesk.HelpDesk>()
+                .HasRequired(r => r.MyWebsite)
+                .WithMany(o => o.HelpDesks)
+                .HasForeignKey(o => o.MyWebsiteId);
 
+            
+            modelBuilder.Entity<Category>()
+                .HasMany(r => r.Articles)
+                .WithRequired(o => o.Category)
+                .HasForeignKey(o => o.CategoryId);
+            
+            
+            modelBuilder.Entity<Article>()
+                .HasMany(r => r.ArticleVisits)
+                .WithRequired(o => o.Article)
+                .HasForeignKey(o => o.ArticleId);
+
+            modelBuilder.Entity<Article>()
+                .HasRequired(r => r.ArticleContent)
+                .WithRequiredPrincipal(o => o.Article);
+            
+            
+            #endregion
+            
+            
+            #region EventTrigger
+
+        
+            modelBuilder.Entity<MyWebsite>()
+                .HasMany(r => r.EventTriggers)
+                .WithRequired(o => o.MyWebsite)
+                .HasForeignKey(o => o.MyWebsiteId);
+            
+            
+            modelBuilder.Entity<MyAccount>()
+                .HasMany(r => r.EventTriggers)
+                .WithRequired(o => o.MyAccount)
+                .HasForeignKey(o => o.MyAccountId);
+
+            #endregion
+            
             base.OnModelCreating(modelBuilder);
         }
 
@@ -287,6 +347,34 @@ namespace SignalRMVCChat.Models.GapChatContext
 
         #endregion
 
+
+        #region EventTrigger
+
+        
+        public DbSet<EventTrigger> EventTriggers { get; set; }
+
+        #endregion
+
+        #region CustomerProfile
+        public DbSet<CustomerData> CustomerDatas { get; set; }
+
+        
+
+        #endregion
+
+        #region HelpDesk
+        
+
+        public DbSet<HelpDesk.HelpDesk> HelpDesks { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryImage> CategoryImages { get; set; }
+
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<Article> Articles { get; set; }
+        public DbSet<ArticleContent> ArticleContents { get; set; }
+        public DbSet<ArticleVisit> ArticleVisits { get; set; }
+
+        #endregion
 
         public DbSet<AppAdmin> AppAdmins { get; set; }
         public DbSet<Image> Images { get; set; }

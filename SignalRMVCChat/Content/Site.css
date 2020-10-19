@@ -6,6 +6,11 @@
     cursor: pointer;
 }
 
+.vl {
+    border-left: 6px solid #d3d7dd;
+    height: 100%;
+}
+
 
 .gapMsg a:not([href]):not([class]),.gapMsg a{
     color: #09e2ca !important;

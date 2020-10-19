@@ -16,7 +16,180 @@ class dispatcher {
         console.log('dispatcher===>',res.Name)
         switch (res.Name) {
 
+            /*========== eventTrigger==========*/
+            case "eventTriggerGetAllCallback":
+                if (CurrentUserInfo.EventTriggerIndex){
+                    CurrentUserInfo.EventTriggerIndex.eventTriggerGetAllCallback(res);
+                }
+                break;
+            /*===========eventTrigger end============*/
             
+            
+            /*========== rating==========*/
+
+            
+            case "getRatingCallback":
+                if (CurrentUserInfo.Satistification){
+                    CurrentUserInfo.Satistification.getRatingCallback(res);
+                }
+                break;
+                /*===========rating end============*/
+            
+            /*===========customer data===============*/
+            case "saveKeyCallback":
+                if (CurrentUserInfo.CustomerData){
+                    CurrentUserInfo.CustomerData.saveKeyCallback(res);
+                }
+                break;
+
+            case "deleteKeyCallback":
+                if (CurrentUserInfo.CustomerData){
+                    CurrentUserInfo.CustomerData.deleteKeyCallback(res);
+                }
+                break;
+                
+
+            case "getCustomerDataListCallback":
+                if (CurrentUserInfo.CustomerData){
+                    CurrentUserInfo.CustomerData.getCustomerDataListCallback(res);
+                }
+                break;
+
+            case "saveUserInfoCallback":
+                if (CurrentUserInfo.CustomerInfo){
+                    CurrentUserInfo.CustomerInfo.saveUserInfoCallback(res);
+                }
+                break;
+
+                
+                /*============= customer data end =============*/
+            
+            
+            /*=============language=============*/
+
+            
+
+            case "selectHelpDeskCallback":
+                if (CurrentUserInfo.DefinedLanguages){
+                    CurrentUserInfo.DefinedLanguages.selectHelpDeskCallback(res);
+                }
+                break;
+
+            case "removeHelpDeskCallback":
+                if (CurrentUserInfo.RemoveLanguage){
+                    CurrentUserInfo.RemoveLanguage.removeHelpDeskCallback(res);
+                }
+                break;
+                
+            case "language_GetCurrentHelpDesk_SelectedLanguageCallback":
+                if (CurrentUserInfo.LanguageHolder){
+                    CurrentUserInfo.LanguageHolder.language_GetCurrentHelpDesk_SelectedLanguageCallback(res);
+                }
+
+                if (CurrentUserInfo.HelpDeskPage){
+                    CurrentUserInfo.HelpDeskPage.language_GetCurrentHelpDesk_SelectedLanguageCallback(res);
+                }
+
+
+                if (CurrentUserInfo.GoToHelpCenter) {
+                    CurrentUserInfo.GoToHelpCenter.language_GetCurrentHelpDesk_SelectedLanguageCallback(res)
+                }
+
+
+                break;
+            case "create_HelpDesk_Callback":
+                if (CurrentUserInfo.LanguageHolder){
+                    CurrentUserInfo.LanguageHolder.create_HelpDesk_Callback(res);
+                }
+
+                break;
+            case "getDefinedLanguagesCallback":
+                if (CurrentUserInfo.DefinedLanguages){
+                    CurrentUserInfo.DefinedLanguages.getDefinedLanguagesCallback(res);
+                }
+
+                break;
+
+
+                
+                /*===============language END============*/
+
+                
+                
+                
+          
+            /*======= helpDeskSetting==========*/
+
+            case "helpDeskGetByIdCallback":
+                if (CurrentUserInfo.HelpDeskSetting){
+                    CurrentUserInfo.HelpDeskSetting.helpDeskGetByIdCallback(res);
+                }
+
+                break;  case "helpDeskSaveDetailCallback":
+                if (CurrentUserInfo.HelpDeskSetting){
+                    CurrentUserInfo.HelpDeskSetting.helpDeskSaveDetailCallback(res);
+                }
+
+                break;
+            /*======= helpDeskSettin
+            
+            
+            
+             */
+                /*=============article===========*/
+
+            case "articleSaveCallback":
+                if (CurrentUserInfo.SaveArticle){
+                    CurrentUserInfo.SaveArticle.articleSaveCallback(res);
+                }
+
+                break;
+            case "articleGetByIdCallback":
+                if (CurrentUserInfo.SaveArticle){
+                    CurrentUserInfo.SaveArticle.articleGetByIdCallback(res);
+                }
+
+                break;
+            case "articleDeleteByIdCallback":
+                if (CurrentUserInfo.HelpDeskPage){
+                    CurrentUserInfo.HelpDeskPage.articleDeleteByIdCallback(res);
+                }
+
+                break;
+
+                
+                
+                /*============article END=============*/
+                
+            
+            /*===========category===================*/
+
+            case "category_Get_List_Callback":
+                if (CurrentUserInfo.CategoryIndex){
+                    CurrentUserInfo.CategoryIndex.category_Get_List_Callback(res);
+                }
+
+                if (CurrentUserInfo.SaveArticle){
+                    CurrentUserInfo.SaveArticle.category_Get_List_Callback(res);
+                }
+
+                break;
+            case "category_Save_Callback":
+                if (CurrentUserInfo.CategorySave){
+                    CurrentUserInfo.CategorySave.category_Save_Callback(res);
+                }
+
+                break;
+            case "category_Delete_Callback":
+                if (CurrentUserInfo.CategoryDelete){
+                    CurrentUserInfo.CategoryDelete.category_Delete_Callback(res);
+                }
+
+                break;
+                
+                
+            /*===========category END===================*/
+
             case "screenRecordAdminShareRequestCallback":
                 if (CurrentUserInfo.ShowMyScreen){
                     CurrentUserInfo.ShowMyScreen.screenRecordAdminShareRequestCallback(res);
@@ -152,6 +325,7 @@ class dispatcher {
                 if (CurrentUserInfo.SocialChannelsPage) {
                     CurrentUserInfo.SocialChannelsPage.getSocialChannelsInfoCallback(res)
                 }
+
 
 
 

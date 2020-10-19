@@ -2,7 +2,13 @@
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.WebSocket.Call.AdminScreenRecord;
 using SignalRMVCChat.WebSocket.Call.ScreenRecord;
+using SignalRMVCChat.WebSocket.CustomerProfile;
+using SignalRMVCChat.WebSocket.EventTrigger;
 using SignalRMVCChat.WebSocket.FormCreator;
+using SignalRMVCChat.WebSocket.HelpDesk;
+using SignalRMVCChat.WebSocket.HelpDesk.Article;
+using SignalRMVCChat.WebSocket.HelpDesk.Category;
+using SignalRMVCChat.WebSocket.HelpDesk.Language;
 using SignalRMVCChat.WebSocket.Profile;
 using SignalRMVCChat.WebSocket.SocialChannels;
 using SignalRMVCChat.WebSocket.Typing;
@@ -53,6 +59,104 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+
+                    
+                #region CustomerProfile
+                case "DeleteKey":
+                    return new DeleteKeySocketHandler();
+                    break; 
+                    
+                case "SaveKey":
+                    return new SaveKeySocketHandler();
+                    break; 
+                
+                case "GetCustomerDataList":
+                    return new GetCustomerDataListSocketHandler();
+                    break; 
+                    
+                case "GetRating":
+                    return new GetRatingSocketHandler();
+                    break;  
+                case "GetLastVisitedPages":
+                    return new GetLastVisitedPagesSocketHandler();
+                    break;  
+                    
+                case "SaveUserInfo":
+                    return new SaveUserInfoSocketHandler();
+                    break;  
+                #endregion
+                
+                #region HelpDesk
+                case "HelpDeskGetById":
+                    return new HelpDeskGetByIdSocketHandler();
+                    break;  
+                case "HelpDeskSaveDetail":
+                    return new HelpDeskSaveDetailSocketHandler();
+                    break;  
+                    
+
+                #region Article
+                
+                case  "EventTriggerGetAll":
+                    return new EventTriggerGetAllSocketHandler();
+                break;
+
+                case "ArticleSave":
+                    return new ArticleSaveSocketHandler();
+                    break;  
+                    
+                case "ArticleGetById":
+                    return new ArticleGetByIdSocketHandler();
+                    break;  
+                    
+                case "ArticleDeleteById":
+                    return new ArticleDeleteByIdSocketHandler();
+                    break;  
+
+                #endregion
+                    
+                case "SelectHelpDesk":
+                    return new SelectHelpDeskSocketHandler();
+                    break; 
+                case "RemoveHelpDesk":
+                    return new RemoveHelpDeskSocketHandler();
+                    break; 
+                case "CreateHelpDesk":
+                    return new CreateHelpDeskSocketHandler();
+                    break; 
+                
+                #region Language
+                case "GetDefinedLanguages":
+                    return new GetDefinedLanguagesSocketHandler();
+                    break; 
+                
+                    
+                case "Language_Get_List":
+                    return new LanguageGetListSocketHandler();
+                    break; 
+                case "Language_GetCurrentHelpDesk_SelectedLanguage":
+                    return new LanguageGetCurrentHelpDeskSelectedLanguageSocketHandler();
+                    break; 
+
+                    
+                    
+                #endregion
+                
+                case "Category_Get_List":
+                    return new CategoryGetListSocketHandler();
+                    break; 
+                case "Category_Delete":
+                    return new CategoryDeleteSocketHandler();
+                    break;  
+                case "Category_Save":
+                    return new CategorySaveSocketHandler();
+                    break;
+                case "CategoryGetById":
+                    return new CategoryGetByIdSocketHandler();
+                    break;
+                
+                #endregion
+                
                 #region screenRecord
 
                 case "ScreenRecordAdminShare":

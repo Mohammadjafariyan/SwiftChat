@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using OpenQA.Selenium.DevTools.Debugger;
 using SignalRMVCChat.Areas.Customer;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
@@ -149,6 +150,31 @@ namespace SignalRMVCChat.WebSocket
                             var title = _request.Body.Title;
                             var description = _request.Body.Description;
 
+                            
+                            /*header infos:*/
+
+                            var browser= currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["User-Agent"];
+                            var language= currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["Accept-Language"];
+
+                            string countryLanguage = "";
+                            /*en-US,en;q=0.9*/
+                            if (string.IsNullOrEmpty(language)==false)
+                            {
+                                try
+                                {
+                                    var parts= language.Split(',')[0].Split('-');
+                                  
+                                    language = parts[0];
+                                    countryLanguage = parts[1];
+                                }
+                                catch (Exception e)
+                                {
+                                   //ignore
+                                }
+                            }
+                            /*end*/
+                            
+                            
                             // ذخیره
                             var customerTrackerService = Injector.Inject<CustomerTrackerService>();
                             var track = new CustomerTrackInfo
@@ -175,6 +201,11 @@ namespace SignalRMVCChat.WebSocket
                                 city=inforByIp.city,
                                 latitude=inforByIp.latitude,
                                 longitude=inforByIp.longitude,
+                                
+                                
+                                Browser=browser,
+                                Language=language,
+                                CountryLanguage=countryLanguage
                                 
                             };
                             customerTrackerService.Save(track);

@@ -41,8 +41,23 @@ class PrimengModal extends Component {
     renderFooter(name) {
         return (
             <div>
-                <Button label="لغو" icon="pi pi-times" onClick={() => this.onHide(name)} className="p-button-text"/>
-                {this.state.ok && <Button label="تایید" icon="pi pi-check" onClick={() => this.onHide(name)} autoFocus/>}
+                {!this.props.noCancel &&  <Button label="لغو" icon="pi pi-times" onClick={() => this.onHide(name)} className="p-button-text"/>}
+                {this.state.ok && <Button label="تایید" icon="pi pi-check" onClick={() => {
+
+                    if (this.props.onOk) {
+                        this.props.onOk(
+                            () => {
+// اگر بخواهد مدال را ببندد این متد را فراخوانی میکند
+                                this.onHide(name)
+
+                            }
+                        )
+                    } else {
+                        this.onHide(name)
+
+                    }
+                }
+                } autoFocus/>}
             </div>
         );
     }
@@ -67,10 +82,12 @@ class PrimengModal extends Component {
 
         this.setState(state);
     }
+
     hide() {
         this.onHide('displayBasic');
 
     }
+
     show() {
         this.onClick('displayBasic');
     }

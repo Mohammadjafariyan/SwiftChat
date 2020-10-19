@@ -30,10 +30,14 @@ import Spinner from "react-bootstrap/Spinner";
 import {Button} from "primereact/button";
 import HelpDeskPage from "./HelpDeskPage";
 import SaveArticle from "../Components/SaveArticle";
+import LanguageHolder from "../Components/HelpDesk/Language/LanguageHolder";
+import Container from "react-bootstrap/Container";
+import CustomerProfilePage from "./CustomerProfilePage";
 
 
 
 export default class LayoutPage extends Component {
+    toastRunning=0;
     constructor(props){
         super(props);
         this.state={isLogin:false};
@@ -69,15 +73,22 @@ export default class LayoutPage extends Component {
     showMsg(msg) {
         if (msg) {
 
-            if (this.toast) {
+            if (this.toast && this.toastRunning<3 && this.toastRunning>=0) {
+                this.toastRunning++;
                 this.toast.show({severity: 'info', summary: 'پیغام', detail: msg});
-            } else {
+                
+            } 
                 this.setState({msg: msg});
                 setTimeout(() => {
                     this.setState({msg: null});
 
-                }, 2000)
-            }
+                    this.toastRunning--;
+                    if (this.toastRunning<=0)
+                    {
+                        this.toastRunning=0;
+                    }
+
+                }, 3000)
         }
     }
 
@@ -161,8 +172,8 @@ export default class LayoutPage extends Component {
                     </>)
             }
 
-            
-        else if (DataHolder.currentPage === "ProfilePage") {
+
+            else if (DataHolder.currentPage === "ProfilePage") {
 
                 return (
                     <>
@@ -173,6 +184,20 @@ export default class LayoutPage extends Component {
                         <MessageAlerts/>
 
                         <ProfilePage></ProfilePage>
+                    </>)
+            }
+
+            else if (DataHolder.currentPage === "CustomerProfilePage") {
+
+                return (
+                    <>
+                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Menu/>
+                        <MessageAlerts/>
+
+                        <CustomerProfilePage></CustomerProfilePage>
                     </>)
             }
             else if (DataHolder.currentPage === "FormDataPage") {
@@ -212,11 +237,16 @@ export default class LayoutPage extends Component {
                         <Menu/>
                         <MessageAlerts/>
 
-                        {!DataHolder.subPage &&
-                        <HelpDeskPage></HelpDeskPage>}
+                       
+                            <Container>
+                                <LanguageHolder onSelect={(countryCode)=>{
 
-                        {DataHolder.subPage==='SaveArticle' &&
-                        <SaveArticle/>}
+                                }}/>
+                            </Container>
+
+                        <HelpDeskPage></HelpDeskPage>
+
+                  
 
                         
                     </>)

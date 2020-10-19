@@ -2,8 +2,11 @@
 import {DataHolder} from "../Help/DataHolder";
 import Badge from "react-bootstrap/Badge";
 import {CurrentUserInfo} from "../Help/Socket";
+import {UserInformationService} from "./Service/UserInformationService";
 
 class MarkAsResovled extends Component {
+    
+    
     render() {
         if (!DataHolder.selectedCustomer){
             return  <></>;
@@ -28,6 +31,9 @@ class MarkAsResovled extends Component {
                         DataHolder.selectedCustomer.IsResolved=false;
                     }
                     this.setState({IsResolved:false});
+
+                    UserInformationService.SaveUserInfo('IsResolved')
+
 
                 }}
                     className={"card  "}>

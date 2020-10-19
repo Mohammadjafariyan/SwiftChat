@@ -10,6 +10,7 @@ namespace SignalRMVCChat.WebSocket
     {
         protected LogService _logService = Injector.Inject<LogService>();
         protected   MyWebSocketRequest _request;
+        protected MyWebSocketRequest _currMySocketReq;
 
         public async virtual Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
         {
@@ -24,7 +25,9 @@ namespace SignalRMVCChat.WebSocket
 
             _request = MyWebSocketRequest.Deserialize(request);
 
-            if (_request == null)
+            _currMySocketReq = currMySocketReq;
+
+            if (_request == null )
             {
                 Throw("درخواست نال است");
             }

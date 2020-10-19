@@ -1,6 +1,4 @@
-﻿import {DataHolder} from "../ClientApp/my-app/src/Help/DataHolder";
-import {_showError} from "../ClientApp/my-app/src/Pages/LayoutPage";
-
+﻿
 var url = '@@@';
 var baseUrl = "#baseUrl#";
 var token = "#token#";
@@ -1099,8 +1097,18 @@ class BasePlugin {
 
             var deliverdSign = gapMe && arr[i].DeliverDateTime;
 
+
+          let dateExist=  Array.from(getDoc().querySelectorAll('.gapHline'))
+                .find(el => el.textContent.indexOf(arr[i].Date)>=0);
+
+            console.log('dateExist === > ', dateExist)
+            console.log('arr[i].Date === > ', arr[i].Date)
+
+            if(dateExist){
+                dateExist.style.color="#ddd";
+            }
             /*نمایش جداگانه تاریخ چت ها*/
-            if (!prevChatDate) {
+            if ( !prevChatDate) {
                 html += `<h6 style=" width: 100%;     height: 1px;
    text-align: center; 
    border-bottom: 1px solid #ddd; 
@@ -1112,14 +1120,14 @@ class BasePlugin {
             } else {
 
                 // تاریخ عوض شده یا نه ؟
-                if (prevChatDate === arr[i].Date) {
+                if (prevChatDate === arr[i].Date ) {
 
                 } else {
                     html += `<h6 style=" width: 100%;     height: 1px;
    text-align: center; 
    border-bottom: 1px solid #ddd; 
    line-height: 0.1em;
-   margin: 10px 0 20px;" ><span style=" background:#fff; 
+   margin: 10px 0 20px;" ><span  class="gapHline" style=" background:#fff; 
     padding:0 10px">${arr[i].Date} </span></h6>`
                     prevChatDate = arr[i].Date;
                 }
@@ -4647,11 +4655,21 @@ function gapChatSubmit() {
 
 
 function getSocialChannelsInfoCallback(res) {
+
+    let helpDeskApi = res.Content.helpDeskApi;
+    if (helpDeskApi && helpDeskApi.indexOf('?') >= 0) {
+
+        helpDeskApi += '&websiteToken=' + websiteToken
+    } else {
+        helpDeskApi += '?websiteToken=' + websiteToken
+    }
+
+
     const info = {
         email: res.Content.email,
         telegram: res.Content.telegram,
         whatsapp: res.Content.whatsapp,
-        helpDeskApi: res.Content.helpDeskApi,
+        helpDeskApi: helpDeskApi,
         helpDeskUrlLink: res.Content.helpDeskUrlLink,
     };
 
@@ -5821,7 +5839,7 @@ function vC_AdminSpeakCallback(res) {
 function vc_CustomerCallInit() {
 
     if (!CurrentUserInfo.targetId) {
-        _showError("ادمین یافت نشد می توانید صفحه را از نو باز کنید تا اشکالات احتمالی حل شود");
+        alert("ادمین یافت نشد می توانید صفحه را از نو باز کنید تا اشکالات احتمالی حل شود");
         return;
     }
 

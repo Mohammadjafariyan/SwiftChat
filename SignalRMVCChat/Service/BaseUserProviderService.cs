@@ -35,6 +35,8 @@ namespace SignalRMVCChat.Service
                     TotalUnRead = QueryTotalUnRead(c, requesterId, type, request),
 
                     LastTrackInfo = type == MySocketUserType.Customer ? c.Customer.LastTrackInfo : null,
+                    Email=c.Customer?.Email,
+                    Phone=c.Customer?.Phone
 
                 };
             }).ToList();

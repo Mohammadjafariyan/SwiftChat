@@ -75,7 +75,7 @@ export default class Menu extends Component {
                     اطلاعات کاربران
                 </Button>
 
-                <Button variant="light" className={'btn btn-default ' +(DataHolder.currentPage==='HelpDeskPage' ? ' bg-primary text-white ' : '')} type="button"
+                <Button id={'HelpDeskArticles'} variant="light" className={'btn btn-default ' +(DataHolder.currentPage==='HelpDeskPage' ? ' bg-primary text-white ' : '')} type="button"
                         onClick={() => {
                             this.setPage('HelpDeskPage');
                             DataHolder.subPage=null;

@@ -6,13 +6,20 @@ import Admins from './../Components/Admins';
 
 import './../styles/myStyle.css';
 import CustomerToolbar from "../Components/CustomerToolbar";
+import CustomerProfile from "../Components/CustomerProfile";
 export default class ChatPage extends Component {
-  render() {
+    constructor(props) {
+        super(props);
+        this.state={};
+    }
+
+    render() {
     return (
      <div className="container">
          
          
          
+       
          
           <div className="row">
 

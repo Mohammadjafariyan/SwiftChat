@@ -258,7 +258,7 @@ export default class Customers extends Component {
 }
 const showTotalUnRead = function (el) {
     if (el.NewMessageCount){
-        return  <Badge variant="info">{el.NewMessageCount}+</Badge>
+        return  <Badge  variant="info">{el.NewMessageCount}+</Badge>
 
     }else{
         return  <></>
@@ -285,6 +285,8 @@ export function ShowOnlineUsers(props){
         }
         return <li key={el.Id} onClick={(e) =>
         {
+            
+            
             if(props.onClick){
 
                 props.onClick(el);
@@ -306,6 +308,12 @@ export function ShowOnlineUsers(props){
                 if (DataHolder.selectedCustomer) {
                     props.parent.GetUserAddedToTags(DataHolder.selectedCustomer.Id);
                 }
+
+
+                if (CurrentUserInfo.ChatPage) {
+                    CurrentUserInfo.ChatPage.setState({chats: []});
+                }
+
                 //CurrentUserInfo.CustomersPage.placeOnTop(arr);
 
                 CurrentUserInfo.ChatPage.setState({ scroll: false });
@@ -320,6 +328,9 @@ export function ShowOnlineUsers(props){
             
             <WhileWriting IsTyping={el.IsTyping}></WhileWriting>
 
+            
+            <ShowFlag el={el}/>
+          
            
 {/*
             {el.TotalUnRead && <i className="MsgCount">..</i>}
@@ -329,19 +340,39 @@ export function ShowOnlineUsers(props){
             
             {
                 el.OnlineStatus === 0 &&
-                <i className="gapStat" style={{backgroundColor: 'green'}}></i>
+                <i className="gapStat float-right" style={{backgroundColor: 'green'}}></i>
     }
     {
         el.OnlineStatus === 1 &&
-                <i className="gapStat" style={{ backgroundColor: 'grey' }}></i >
+                <i className="gapStat float-right" style={{ backgroundColor: 'grey' }}></i >
     }
     {
         el.OnlineStatus === 2 &&
-                <i className="gapStat" style={{ backgroundColor: 'orange' }}></i >
+                <i className="gapStat float-right" style={{ backgroundColor: 'orange' }}></i >
     }
 
 
     </li>
     })
 
+}
+
+
+export const ShowFlag=(props)=>{
+  return <>  {props.el.LastTrackInfo && props.el.LastTrackInfo.country_code &&
+    <Badge pill variant="light">
+        <img style={{width:'30px', height:'30px'}}
+            src={`https://www.countryflags.io/${props.el.LastTrackInfo.country_code}/flat/64.png`}/>
+    </Badge>
+    }
+
+    {(!props.el.LastTrackInfo || !props.el.LastTrackInfo.country_code) &&
+
+
+    <Badge pill variant="light">
+        <img style={{width:'30px', height:'30px'}}
+            src={`https://www.countryflags.io/ir/flat/64.png`}/>
+    </Badge>
+    }
+    </>
 }

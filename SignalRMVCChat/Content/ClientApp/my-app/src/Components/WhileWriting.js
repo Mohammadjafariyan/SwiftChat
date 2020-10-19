@@ -16,7 +16,7 @@ class WhileWriting extends Component {
     
     render() {
         return (
-            <div>
+            <>
                 {this.props.IsTyping &&  <div id="gapwhileWriting">
                     <span className="lds-ellipsis">
                 
@@ -29,7 +29,7 @@ class WhileWriting extends Component {
                 </div> }
                
 
-            </div>
+            </>
         );
     }
 }

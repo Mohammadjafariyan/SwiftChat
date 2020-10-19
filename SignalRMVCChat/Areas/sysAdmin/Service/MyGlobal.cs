@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Web;
 using MD.PersianDateTime;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,10 +16,38 @@ using TelegramBotsWebApplication.Service;
 
 namespace SignalRMVCChat.Areas.sysAdmin.Service
 {
+    public static class UrlExtensions
+    {
+        public static string SetUrlParameter(this string url, string paramName, string value)
+        {
+            return new Uri(url).SetParameter(paramName, value).ToString();
+        }
+
+        public static Uri SetParameter(this Uri url, string paramName, string value)
+        {           
+            var queryParts = HttpUtility.ParseQueryString(url.Query);
+            queryParts[paramName] = value;
+            return new Uri(url.AbsoluteUriExcludingQuery() + '?' + queryParts.ToString());
+        }
+
+        public static string AbsoluteUriExcludingQuery(this Uri url)
+        {
+            return url.AbsoluteUri.Split('?').FirstOrDefault() ?? String.Empty;
+        }
+    }
     public class MyGlobal
     {
         
-       
+        public static Color ContrastColor(string color)
+        {
+            Color iColor=Color.FromName(color);   
+            ;
+            // Calculate the perceptive luminance (aka luma) - human eye favors green color... 
+            double luma = ((0.299 * iColor.R) + (0.587 * iColor.G) + (0.114 * iColor.B)) / 255;
+
+            // Return black for bright colors, white for dark colors
+            return luma > 0.5 ? Color.Black : Color.White;
+        }
         public static object GetPropValue(object src, string propName)
         {
             

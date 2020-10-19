@@ -1,0 +1,190 @@
+﻿@model SignalRMVCChat.Service.HelpDesk.CategoryArticlesViewModel
+
+
+@{
+    ViewBag.Title = "مرکز پشتیبانی";
+    Layout = "../Shared/_HelpDesk_Layout.cshtml";
+}
+
+
+<style>
+.card-text{
+color: black;
+
+}
+
+.card-text:hover{
+color: black;
+text-decoration: none;
+}
+
+.cat a {
+font-size: 13px !important;
+}
+
+.card-text h5{
+font-size: 18px !important;
+
+}
+
+.card-text p{
+font-size: 13px !important;
+
+}
+.cat li {
+    font-size: 13.5px;
+    line-height: 18px;
+    letter-spacing: .4px;
+    padding: 5px 0;
+    
+
+}
+
+.cat a{
+color: #141414;
+
+}
+
+.popularity-text{
+padding: 5px;
+}
+.popularity{
+border-left: 1px solid #dddfe2;
+
+}
+.popularity-bulbs{
+display: flex;
+padding: 5px;
+
+}
+
+.text{
+    display: flex;
+    line-height: 1.5em;
+    height: 3em;
+    overflow: hidden;
+    
+    padding-left: 10px;
+}
+    .popularity-bulb-single{
+    background-color: blue;
+    width: 3px;
+    height: 20px;
+    margin: 2px;
+    
+    }
+    
+    .card{
+   margin-bottom: 30px;
+   }
+</style>
+
+<div class="row " style=" background-color: white;padding: 20px">
+
+
+    <div class="container">
+
+        <div class="row">
+        
+                    
+                    <div class="col">
+        
+        
+                        <a href="/HelpDesk/Index?websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]" class="btn btn-light">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            بازگشت
+                        </a>
+        
+                    </div>
+        
+                    <div class="col" style="border-right: 2px solid #d3d7dd;padding-top: 7px">
+        
+                        
+                    </div><div class="col-md-4">
+                        <a href="/HelpDesk/Detail?categoryTitle=@Model.Category.Title&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]" class="btn btn-primary">@Model.Category.Title</a>
+                        <b>مقالات مربوط به</b>
+        
+                    </div>
+        
+                    
+                    
+        
+                </div>
+
+    </div>
+
+</div>
+
+
+<div class="container" style="padding-right: 10%;
+                                  padding-left: 10%;">
+
+        
+        <div class="row" style="margin-top: 50px">
+        
+                <div class="col-md-9">
+                  
+                    @for (int i = 0; i < Model.Articles.Count; i++)
+                    {
+                          <div class="card" style="color: black;text-align: center">
+                        <div class="card-body">
+                            <a  class="card-text"  href="/HelpDesk/Article?title=@Model.Articles[i].Title&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]">
+                                <h5 >
+                                    
+                                    <b>@Model.Articles[i].Title</b>
+                                </h5>
+                                
+                              
+                              <div style="display: flex;">
+                                                          <div class="text">
+                                                              <p>@Html.Raw(Model.Articles[i].Summary)</p>
+                                                          </div>
+                                                          <div class="popularity" style="/* padding-left: 20px; *//* padding-left: 10px; */">
+                                                              
+                                                              
+                                                              <div class="popularity-text">
+                                                                  very popular
+                                                              </div>
+                                                              <div class="popularity-bulbs">
+                                                                  
+                                                                  <div class="popularity-bulb-single"></div>
+                                                                  <div class="popularity-bulb-single"></div>
+                                                                  <div class="popularity-bulb-single"></div>
+                                                              <div class="popularity-bulb-single"></div></div>
+                                                              
+                                                          </div>
+                                                      </div>
+        
+                            </a>
+                        </div>
+                    </div>
+                    }
+        
+        
+                </div>
+                <div class="col-md-3" style="text-align: right;
+        border-left: 2px solid #dddfe2">
+        
+                    <h5 style="padding-bottom: 10px">
+                        <b>دسته بندی ها</b>
+                    </h5>
+                    <ul class="cat" style="text-decoration: none;list-style-type: none;">
+        
+                        @foreach (var rel in Model.Cateogies)
+                                      {
+                                          
+                                          <li>
+                                            <a href="/HelpDesk/Detail?categoryTitle=@rel.Title&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]" class="btn btn-primary">
+                                                  <b>@rel.Title</b>
+                                              </a>
+                                          </li>
+                                      }
+        
+                    </ul>
+        
+                </div>
+        
+            </div>
+
+
+</div>

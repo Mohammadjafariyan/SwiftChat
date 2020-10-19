@@ -1,3 +1,62 @@
+.floatLeft{
+
+    margin-top: 10px;
+}
+.floatRight{
+    float: right;
+}
+
+.smallLink{
+    font-size: 14px !important;
+    margin-top: 5px;
+}
+
+.text-summary2{
+    display: flex;
+    line-height: 1.5em;
+    overflow: hidden;
+
+    padding-left: 10px;
+    
+    padding-top:14px !important;
+}
+
+.centered{
+
+
+    padding-right: 10% !important;
+    padding-left: 10% !important;
+}
+.modal-90w {
+    width: 90% !important;
+    max-width: none!important;
+}
+.modal-big-h-w{
+    
+    height: 40vh;
+    
+    padding-left: 35%;
+}
+
+
+.small{
+    color: #a0a1a2;
+    direction: rtl;
+    
+}
+
+.text-summary{
+    line-height: 1.5em;
+    height: 3em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+.p-datatable .p-datatable-header{
+    background: none !important;
+}
+
 .fullWidth{
     width: 100%;
 }
@@ -22,6 +81,11 @@
     .listGroup {
 
         height: 40vh
+    }
+
+    .nativeName {
+
+       display: none;
     }
 
 }

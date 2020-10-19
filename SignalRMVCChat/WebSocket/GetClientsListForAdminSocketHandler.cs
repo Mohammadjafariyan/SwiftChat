@@ -199,7 +199,9 @@ namespace SignalRMVCChat.WebSocket
                         Message=c.LastMessage,
                         NewMessageCount=c.NewMessageCount,
                         Time=MyAccount.CalculateOnlineTime(c.CreationDateTime),
-                        CustomerTags=c.CustomerTagsForClientTemp
+                        CustomerTags=c.CustomerTagsForClientTemp,
+                        Email=c.Email,
+                        Phone=c.Phone
 
                     }).ToList();
 
@@ -247,6 +249,8 @@ namespace SignalRMVCChat.WebSocket
                     LastTrackInfo = c.LastTrackInfo,
                     OnlineStatus = c.OnlineStatus,
 
+                    Email = c.Email,
+                    Phone = c.Phone,
                     LastMessage = c.Chats.Where(ch => ch.ChatType != ChatType.AutomaticSend)
                         .OrderByDescending(ch => ch.CreateDateTime).LastOrDefault(),
 

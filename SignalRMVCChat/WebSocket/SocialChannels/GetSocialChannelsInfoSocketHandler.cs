@@ -30,6 +30,7 @@ namespace SignalRMVCChat.WebSocket.SocialChannels
                     whatsapp = pluginCustomized.Whatsapp,
                     helpDeskApi = pluginCustomized.HelpDeskApi,
                     helpDeskUrlLink = pluginCustomized.HelpDeskUrlLink,
+                    
                 }
             });
         }

@@ -55,6 +55,7 @@ class CustomerToolbar extends Component {
                 <CustomerInfo/>
 
                 <OtherTools/>
+                <UserDeviceInfo/>
                 <div
                     className={"card adminsPanel" + (CurrentUserInfo.LayoutPage.state.focusForSelectingAdmin ? ' showSingle ' : '')}>
                     <div className="card-header">
@@ -88,7 +89,6 @@ class CustomerToolbar extends Component {
                 </div>
 
                 <CustomerData/>
-                <UserDeviceInfo/>
                 
                 <UserTags/>
              

@@ -1,0 +1,39 @@
+﻿@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Models.HelpDesk.HelpDesk>
+
+@{
+    ViewBag.Title = "لیست مرکز های پشتیبانی ایجاد شده";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h4 style="text-align: center">لیست مرکز های پشتیبانی ایجاد شده</h4>
+
+
+@Html.Partial("~/Areas/sysAdmin/Views/Shared/pagingPartial.cshtml")
+<table class="table">
+    <thead>
+    <tr>
+        <th>زبان</th>
+        <th>نام محلی زبان</th>
+        <th>عنوان</th>
+        <th>عملیات</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var record in Model.EntityList)
+    {
+        <tr>
+            <td>@record.Language.Name </td>
+            <td>@record.Language.nativeName</td>
+            <td>@record.HeaderText</td>
+            <td>
+                <a href="/HelpDesk/Index?websiteBaseUrl=@record.MyWebsite.BaseUrl&lang=@record.Language.alpha2Code">
+                    مشاهده وب سایت
+                </a>
+            </td>
+        </tr>
+    }
+
+    </tbody>
+</table>
+@Html.Partial("~/Areas/sysAdmin/Views/Shared/pagingPartial.cshtml")

@@ -30,6 +30,7 @@ namespace SignalRMVCChat.Service
                     }
                     else
                     {
+                        pageNumber--;
                         _chats = _chats.Skip(pageNumber * 10).Take(10);
                     }
 

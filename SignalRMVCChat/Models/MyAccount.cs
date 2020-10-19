@@ -6,6 +6,7 @@ using SignalRMVCChat.Service;
 using SignalRMVCChat.SysAdmin.Service;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 using System.ComponentModel.DataAnnotations.Schema;
+using SignalRMVCChat.Models.ET;
 
 namespace SignalRMVCChat.Models
 {
@@ -162,6 +163,9 @@ namespace SignalRMVCChat.Models
         
         public List<Form> Forms { get; set; }
         public bool HasRootPrivilages { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public List<EventTrigger> EventTriggers { get; set; }
     }
 
     public enum PlanType

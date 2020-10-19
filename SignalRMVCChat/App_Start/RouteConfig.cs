@@ -24,6 +24,9 @@ namespace SignalRMVCChat
             );
             
             
+            routes.MapMvcAttributeRoutes();
+
+            
         }
     }
 }

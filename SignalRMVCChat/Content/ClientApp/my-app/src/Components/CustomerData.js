@@ -11,7 +11,13 @@ class CustomerData extends Component {
     state = {};
 
 
-    getCustomerDataList(res) {
+    constructor(props) {
+        super(props);
+        CurrentUserInfo.CustomerData=this;
+    }
+
+
+    getCustomerDataListCallback(res) {
         if (!res || !res.Content) {
             return;
         }
@@ -119,17 +125,34 @@ class CustomerData extends Component {
                                     </form>
                                 </td>
 
-                                {this.state.customerDataList &&
-                                this.state.customerDataList.map((data, i, arr) => {
-
-
-                                    return <tr>
-                                        <td>{data.Key}</td>
-                                        <td>{data.Value}</td>
-                                    </tr>
-                                })}
+                            
 
                             </tr>
+                            {this.state.customerDataList &&
+                            this.state.customerDataList.map((data, i, arr) => {
+
+
+                                return <tr>
+                                    <td>
+
+                                        <i className={'text-danger float-left fa fa-times'} onClick={()=>{
+                                            this.deleteKey(data.Id)
+                                        }}></i>
+                                        
+                                        
+                                        {data.Key}
+                                    
+                                    
+                                    </td>
+                                    <td>{data.Value}
+                                    
+                                    
+                              
+                                        
+                                    
+                                    </td>
+                                </tr>
+                            })}
                             </tbody>
                         </Table>
 
@@ -139,11 +162,29 @@ class CustomerData extends Component {
             </div>
         );
     }
-    
 
-    addCustomerDataCallback(res){
+
+    deleteKey(id){
+        this.setState({sending:true});
+        _showMsg('در حال حذف کلید')
+        MyCaller.Send('DeleteKey', {
+            id: id,
+            customerId:DataHolder.selectedCustomer.Id
+        })
+    }
+
+    deleteKeyCallback(res){
         this.setState({sending:false});
-        
+        _showMsg('کلید حذف شد')
+
+        this.componentDidMount();
+    }
+
+
+    saveKeyCallback(res){
+        this.setState({sending:false});
+        _showMsg('کلید جدید ذخیره شد')
+
         this.componentDidMount();
     }
     AddCustomerData() {
@@ -165,7 +206,8 @@ class CustomerData extends Component {
 
         MyCaller.Send('SaveKey', {
             Key: this.state.key,
-            Value: this.state.Value
+            Value: this.state.value,
+            customerId:DataHolder.selectedCustomer.Id
         })
     }
 }

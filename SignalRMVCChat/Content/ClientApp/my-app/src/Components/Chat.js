@@ -88,9 +88,9 @@ export default class Chat extends Component {
 
         }
 
-        if (!arr || !arr.length) {
+       /* if (!arr || !arr.length) {
             this.setState({chats: []})
-        }
+        }*/
         /*   CustomerToAccount=1,
                 AccountToCustomer=2,
                 AccountToAccount=3,
@@ -106,6 +106,16 @@ export default class Chat extends Component {
             }
             this.addChat(element, true);
         }
+
+      let chatsSorted=  this.state.chats.sort((c1,c2)=>{
+            if (c1.Id>=c2.Id){
+                return  1;
+            }else if (c1.Id<=c2.Id){
+                return  -1;
+            }
+            return 0;
+        })
+        this.setState({chats:chatsSorted})
 
         /*if (arr && arr.length == 0) {
                 this.setState({ chats: arr})

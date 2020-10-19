@@ -257,7 +257,7 @@ class VoiceCall extends Component {
 
             MyCaller.Send('VC_AdminIsAcceptOrReject',
                 {
-                    msg: msg, err: null, isAccepted: true, customerId: DataHolder.selectedCustomerForCall.Id,
+                   err: null, isAccepted: true, customerId: DataHolder.selectedCustomerForCall.Id,
                     chatId: DataHolder.selectedCustomerForCallChatId
                 });
 
@@ -278,7 +278,6 @@ class VoiceCall extends Component {
 
         MyCaller.Send('VC_AdminIsAcceptOrReject',
             {
-                msg: msg,
                 err: null,
                 isAccepted: false,
                 customerId: customerId ? customerId : DataHolder.selectedCustomerForCall.Id,
@@ -353,7 +352,7 @@ class VoiceCall extends Component {
 export default VoiceCall;
 
 
-let streamrecorder, webcamstream, mediaRecorder, inCalling = false;
+let streamrecorder, webcamstream, mediaRecorder, inCalling = false,chunks=[];
 
 function startRecording() {
     inCalling = true;
@@ -405,7 +404,7 @@ function ACCESS_TO_VOICE(successCallback, failCallback) {
         function success(localAudioStream) {
             // Do something with audio stream
 
-            webcamstream = stream;
+            webcamstream = localAudioStream;
             voiceData = [];
             successCallback(localAudioStream)
 

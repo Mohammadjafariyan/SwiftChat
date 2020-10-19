@@ -1,7 +1,7 @@
 ﻿import React, {Component, useState} from 'react';
 import SendFromHelpDesk from "../Components/SendFromHelpDesk";
 import {Button} from "primereact/button";
-import {CurrentUserInfo} from "../Help/Socket";
+import {CurrentUserInfo,MyCaller} from "../Help/Socket";
 import {_showError, _showMsg} from "./LayoutPage";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -10,12 +10,102 @@ import Modal from "react-bootstrap/Modal";
 import {Toast} from "primereact/toast";
 import Col from "react-bootstrap/Col";
 
+
+import '../styles/myStyle.css'
+import CategoryLayout from "../Components/HelpDesk/Category/CategoryLayout";
+import {TabPanel, TabView} from "primereact/tabview";
+import LanguageHolder from "../Components/HelpDesk/Language/LanguageHolder";
+import SaveArticle from "../Components/SaveArticle";
+import HelpDeskSetting from "../Components/HelpDesk/HelpDeskSetting/HelpDeskSetting";
+
+
+
+export function _getHelpDesk(){
+
+    if (CurrentUserInfo.HelpDeskPage){
+      return   CurrentUserInfo.HelpDeskPage.getHelpDesk();
+    }
+   return  null;//{helpDeskId:null,language: {}}
+}
+
+
+export function _setHelpDesk(helpdeskId, selectedLanguage){
+
+    if (selectedLanguage && selectedLanguage.name){
+        selectedLanguage.Name=selectedLanguage.name;
+    }
+    if (CurrentUserInfo.HelpDeskPage){
+        CurrentUserInfo.HelpDeskPage.setHelpDesk(helpdeskId,selectedLanguage);
+    }else{
+        _showError("CurrentUserInfo.HelpDeskPage is null")
+    }
+    
+}
+
+
 class HelpDeskPage extends Component {
-    state={};
+    state={activeIndex:1,
+   };
     constructor(arg) {
         super(arg);
 
         CurrentUserInfo.HelpDeskPage = this;
+  
+
+    }
+
+    setHelpDesk(helpdeskId, selectedLanguage) {
+
+        this.helpdeskId=helpdeskId;
+        this.selectedLanguage=selectedLanguage;
+        
+        this.setState({helpdeskId,selectedLanguage});
+        
+        this.reset();
+
+    }
+
+    getHelpDesk(){
+        let language=this.selectedLanguage;
+        if (!language){
+            language={};
+        }
+        return {helpDeskId:this.helpdeskId,language:language}
+    }
+    reset(){
+        
+        
+        if (CurrentUserInfo.CategoryIndex){
+            CurrentUserInfo.CategoryIndex.componentDidMount();
+        }
+
+        if (CurrentUserInfo.SendFromHelpDesk){
+            CurrentUserInfo.SendFromHelpDesk.componentDidMount();
+        }
+
+        if (CurrentUserInfo.RemoveLanguage){
+            CurrentUserInfo.RemoveLanguage.setState({tmp:Math.random()});
+        }
+
+        if (CurrentUserInfo.AddLanguage){
+            CurrentUserInfo.AddLanguage.setState({tmp:Math.random()});
+            //  CurrentUserInfo.AddLanguage.componentDidMount();
+        }
+
+        if (CurrentUserInfo.DefinedLanguages){
+            CurrentUserInfo.DefinedLanguages.componentDidMount();
+        }
+        this.setState({tmp:Math.random()})
+
+    }
+    
+ 
+    
+    
+    
+
+    language_GetCurrentHelpDesk_SelectedLanguageCallback(res){
+        this.setState({TMP:Math.random()})
     }
 
     buttons(rowData) {
@@ -39,30 +129,38 @@ class HelpDeskPage extends Component {
             }}/>
         </React.Fragment>
     }
+   
 
     render() {
+       
+
         return (
             <div>
 
-                <Container>
+                <Container className={"centered"}>
+                    <br/>
 
-                    <Row dir={'rtl'}>
+                    <TabView activeIndex={this.state.activeIndex} onTabChange={(e) => this.setState({activeIndex: e.index})}>
+                        <TabPanel header="دسته بندی ها">
+                            <CategoryLayout/>
+                        </TabPanel>
+                        <TabPanel header="مقالات">
+                            {!DataHolder.subPage &&
+                            this.showArticles()
+                            }
 
-                        <Button label="مقاله جدید" icon={'pi pi-plus'}
-                                className="p-button-primary" onClick={() => {
+                            {DataHolder.subPage==='SaveArticle' &&
+                            <SaveArticle/>}
+                        </TabPanel>
 
-
-                                    this.setState({deleteModal:true})
-                          //  DataHolder.subPage = 'SaveArticle';
-
-                          //  CurrentUserInfo.LayoutPage.setState({tmp: Math.random()});
-                        }}/>
-                    </Row>
-                    <Row>
-                        <SendFromHelpDesk actionButtons={r => this.buttons(r)}>
-
-                        </SendFromHelpDesk>
-                    </Row>
+                        <TabPanel header="تنظیمات">
+                        
+                            <HelpDeskSetting/>
+                        </TabPanel>
+                        
+                    </TabView>
+                    
+                  
 
                 </Container>
 
@@ -132,6 +230,12 @@ class HelpDeskPage extends Component {
             ) });
     }
 
+    articleDeleteByIdCallback(res){
+
+        CurrentUserInfo.SendFromHelpDesk.readArticles(CurrentUserInfo.SendFromHelpDesk.state.helpDeskApi);
+        
+    }
+
     deleteArticle() {
         if (!DataHolder.HelpDeskRowDataSelected) {
             _showError('هیچ مقاله ای برای حذف انتخاب نشده است');
@@ -140,7 +244,38 @@ class HelpDeskPage extends Component {
 
         _showMsg("در حال حذف مقاله")
 
-        MyCaller.Send('HD_DeleteById', {id: DataHolder.HelpDeskRowDataSelected.Id})
+        MyCaller.Send('ArticleDeleteById', {id: DataHolder.HelpDeskRowDataSelected.Id})
+
+        DataHolder.HelpDeskRowDataSelected=null;
+    }
+
+    showArticles() {
+        return <>
+            <Row dir={'rtl'}>
+
+                <Button label="مقاله جدید" icon={'pi pi-plus'}
+                        className="p-button-primary" onClick={() => {
+
+
+                    this.setState({deleteModal:true})
+                    //  DataHolder.subPage = 'SaveArticle';
+
+                    //  CurrentUserInfo.LayoutPage.setState({tmp: Math.random()});
+
+                    DataHolder.subPage = 'SaveArticle';
+
+                    //   DataHolder.HelpDeskRowDataSelected = rowData;
+
+                    CurrentUserInfo.LayoutPage.setState({tmp: Math.random()});
+                }}/>
+            </Row>
+            <br/>
+
+            <Row>
+                <SendFromHelpDesk actionButtons={r => this.buttons(r)}>
+
+                </SendFromHelpDesk>
+            </Row></>
     }
 }
 
