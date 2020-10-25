@@ -60,7 +60,31 @@ namespace SignalRMVCChat.WebSocket
             switch (request.Name)
             {
 
+
+                #region EventTrigger
                     
+                           
+                case "EventFired":
+                    return new EventFiredSocketHandler();
+                    break; 
+
+                case "GetEventTriggers":
+                    return new GetEventTriggersSocketHandler();
+                    break; 
+                
+                case "EventTriggerSave":
+                    return new EventTriggerSaveSocketHandler();
+                    break; 
+                case "EventTriggerDelete":
+                    return new EventTriggerDeleteSocketHandler();
+                    break; 
+                    
+                case "EventTriggerGetById":
+                    return new EventTriggerGetByIdSocketHandler();
+                    break; 
+                    
+                    
+                #endregion
                 #region CustomerProfile
                 case "DeleteKey":
                     return new DeleteKeySocketHandler();

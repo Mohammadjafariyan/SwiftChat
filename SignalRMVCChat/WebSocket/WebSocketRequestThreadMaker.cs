@@ -103,7 +103,7 @@ namespace SignalRMVCChat.WebSocket
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine(exception);
+                    // console.WriteLine(exception);
                     //ignore
                 }
             }

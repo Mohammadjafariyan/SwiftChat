@@ -7,7 +7,7 @@ class EventTriggerSave extends Component {
     render() {
         return (
             <div>
-                {!DataHolder.selectedEventTrigger && this.showMessage()}
+                {!DataHolder.selectedEventTrigger  && this.showMessage()}
                 {DataHolder.selectedEventTrigger && <EventTriggerForm/>}
                 
                 
@@ -22,9 +22,7 @@ return<></>
         
         
         return   <Card
-            bg={'Warning'}
-            text={'text-light'}
-            style={{ width: '18rem' }}
+            bg={'warning'}
         >
             <Card.Header>What is a Trigger and how can it be useful?</Card.Header>
             <Card.Body>
@@ -40,7 +38,7 @@ return<></>
                             className="cap-font-sans-semibold">avoid churn on your website</strong> and message leaving
                             customers.</p>
 
-                        <!-- ngIf: _is_empty -->
+                     
                     </div>
                 </Card.Text>
             </Card.Body>

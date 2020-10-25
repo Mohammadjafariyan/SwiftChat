@@ -11749,6 +11749,11 @@ yaml@^1.7.2:
   dependencies:
     "@babel/runtime" "^7.8.7"
 
+yamlparser@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/yamlparser/-/yamlparser-0.0.2.tgz#32393e6afc70c8ca066b6650ac6738b481678ebc"
+  integrity sha1-Mjk+avxwyMoGa2ZQrGc4tIFnjrw=
+
 yargs-parser@^13.1.2:
   version "13.1.2"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-13.1.2.tgz#130f09702ebaeef2650d54ce6e3e5706f7a4fb38"

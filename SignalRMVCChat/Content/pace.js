@@ -60,7 +60,7 @@
             try {
                 return JSON.parse(c)
             } catch (f) {
-                return d = f, "undefined" != typeof console && null !== console ? console.error("Error parsing inline pace options", d) : void 0
+                return d = f, "undefined" != typeof console && null !== console ? consoleerror("Error parsing inline pace options", d) : void 0
             }
         }
     }, g = function () {

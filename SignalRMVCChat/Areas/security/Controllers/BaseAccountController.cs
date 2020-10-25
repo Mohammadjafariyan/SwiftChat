@@ -219,16 +219,16 @@ namespace SignalRMVCChat.Areas.security.Controllers
                 await AppRoleService.CreateAsync(role);
             }
 
-            /*var s = new SuperAdminSeed();
+            var s = new SuperAdminSeed();
 
-            int adminId = (s.CreateSuperAdminIfNotExist().Result).Single;*/
+            int adminId = (s.CreateSuperAdminIfNotExist().Result).Single;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> RegisterAdmin()
         {
-            if (!System.Diagnostics.Debugger.IsAttached)
+            if (!SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
             {
                 return Content("ثبت نام ادمین وب سایت تنها در حالت دیباگ امکان پذیر است با پشتیبانی تماس بگیرید");
             }
@@ -241,7 +241,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RegisterAdmin(RegisterViewModel model)
         {
-            if (!System.Diagnostics.Debugger.IsAttached)
+            if (!SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
             {
                 return Content("ثبت نام ادمین وب سایت تنها در حالت دیباگ امکان پذیر است با پشتیبانی تماس بگیرید");
             }

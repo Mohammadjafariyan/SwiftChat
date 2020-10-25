@@ -6,12 +6,19 @@ import Col from "react-bootstrap/Col";
 import EventTriggerSave from "../Components/EventTriggers/EventTriggerSave";
 
 import { MyCaller,CurrentUserInfo } from './../Help/Socket';
+import Spinner from "react-bootstrap/cjs/Spinner";
+import {DataHolder} from "../Help/DataHolder";
 
 class EventTriggersPage extends Component {
     state={};
     constructor(props) {
         super(props);
         CurrentUserInfo.EventTriggersPage=this;
+    }
+    
+    
+    componentWillUnmount() {
+        DataHolder.selectedEventTrigger=null;
     }
 
     render() {
@@ -24,10 +31,27 @@ class EventTriggersPage extends Component {
                             <EventTriggerIndex/>
                         </Col>
                         <Col md={10}>
+                            {!this.state.loading
+                            &&
                             <EventTriggerSave/>
+                            }
+                            
+                            {this.state.loading && 
+                            
+                           <>
+                               <Spinner animation="border" role="status">
+                                   <span className="sr-only">لطفا منتظر بمانید ....</span>
+                               </Spinner>
+                               <span className="sr-only">لطفا منتظر بمانید ....</span>
+
+                           </>}
                         </Col>
                     </Row>
                 </Container>
+                
+                
+                <hr/>
+               {/* <img src={`${process.env.PUBLIC_URL}/Content/HelpImages/event_triggers.png`} />*/}
                 
               
             </div>

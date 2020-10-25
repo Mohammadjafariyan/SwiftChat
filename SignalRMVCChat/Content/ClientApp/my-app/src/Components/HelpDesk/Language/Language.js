@@ -89,15 +89,19 @@ class Language extends Component {
             <div>
 
 
+                {!this.props.noTitle &&
                 <h5>
-                    
+
                     یک زبان به مرکز پشتیبانی اضافه کنید
 
                     <i className={'fa fa-plus'}></i>
-                </h5>
+                </h5>}
 
-                {this.state.countries && <Dropdown value={this.state.selectedCountry} options={this.state.countries} onChange={this.onCountryChange} optionLabel="name" filter showClear filterBy="name" placeholder="انتخاب یک کشور و زبان"
-                                                   valueTemplate={this.selectedCountryTemplate} itemTemplate={this.countryOptionTemplate} />
+                {this.state.countries && 
+                    
+
+                        <Dropdown style={{position:this.props.noTitle ? 'absolute':''}} value={this.state.selectedCountry} options={this.state.countries} onChange={this.onCountryChange} optionLabel="name" filter showClear filterBy="name" placeholder="انتخاب یک کشور و زبان"
+                                  valueTemplate={this.selectedCountryTemplate} itemTemplate={this.countryOptionTemplate} />
                 }
                 
             </div>

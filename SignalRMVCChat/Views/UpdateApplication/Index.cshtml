@@ -1,8 +1,35 @@
-﻿@model dynamic
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@model dynamic
 
 @{
     ViewBag.Title = "title";
-    Layout = "_Layout";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>title</h2>
+<h2>برای بارگیری ورژن جدید کلیک کنید</h2>
+
+<br/>
+
+<h2 style="text-align: left;
+               direction: ltr;">current version : @MyGlobal.Version</h2>
+
+<p style="text-align: left;
+                  direction: ltr;">directory:@Environment.CurrentDirectory</p>
+<br/>
+
+<form method="get" action="/UpdateApplication/Update">
+    
+    <input class="form-control" name="command" cols="50" rows="5" />
+    
+    <button type="submit" class="btn btn-default" href="/UpdateApplication/Update">بارگیری</button>
+</form>
+
+
+<h3>
+    Output: 
+</h3>
+
+<pre style="text-align: left;
+                       direction: ltr;">
+@Html.Raw(TempData["output"])
+</pre>

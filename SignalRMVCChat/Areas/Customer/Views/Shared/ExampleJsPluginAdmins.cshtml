@@ -8,13 +8,31 @@
 @{
     
     
+    if (Model!=null)
+    {
+        
+    }
     
-    var url = MyGlobal.GetBaseUrl(Request.Url);
+    
+    string url = MyGlobal.GetBaseUrl(Request.Url);
+    
+    
+    
 
     var myWebsiteService = Injector.Inject<MyWebsiteService>();
 
-    var website = myWebsiteService.GetQuery().FirstOrDefault(m => m.BaseUrl.Contains(url) || url.Contains(m.BaseUrl));
+    MyWebsite website = null;
 
+
+    if (Model!=null && !string.IsNullOrEmpty(Model.BaseUrl))
+    {
+        website = Model;
+    }
+    else
+    {    website= myWebsiteService.GetQuery().FirstOrDefault(m => m.BaseUrl.Contains(url) || url.Contains(m.BaseUrl));
+
+        
+    }
     /*if (website == null)
     {
         website = new MyWebsite(url);

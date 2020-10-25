@@ -78,7 +78,7 @@ namespace SignalRMVCChat.WebsocketTests
             }
             catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);
-                Console.WriteLine(e);
+                // console.WriteLine(e);
                 await DeliverTest();
             }
         }

@@ -38,7 +38,7 @@ namespace SignalRMVCChat.Models
             
             
             return
-                 System.Diagnostics.Debugger.IsAttached ? "DefaultConnectionDebug" 
+                 SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached ? "DefaultConnectionDebug" 
                      : "DefaultConnection";
         }
 

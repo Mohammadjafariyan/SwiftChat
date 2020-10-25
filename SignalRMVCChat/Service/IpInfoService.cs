@@ -64,7 +64,7 @@ longitude: -121.91031646728516*/
                     }
                     else
                     {
-                        Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+                        // console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
                     }
                 }
             }

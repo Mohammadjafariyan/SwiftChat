@@ -14,7 +14,7 @@ namespace Engine.SysAdmin.Service
 
         public static MyContextBase GetContext(string name)
         {
-          //  if (System.Diagnostics.Debugger.IsAttached)
+            if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
             {
              
                 var connection = Effort.DbConnectionFactory.CreatePersistent("1");
@@ -39,7 +39,8 @@ namespace Engine.SysAdmin.Service
                 return new GapChatContext();
             }
 
-            
+            return new GapChatContext();
+
 
             var context= Injector.Inject<MyContextBase>();
             return context;

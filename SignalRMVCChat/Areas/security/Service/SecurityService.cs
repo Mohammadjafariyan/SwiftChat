@@ -32,10 +32,10 @@ namespace SignalRMVCChat.Areas.security.Service
                throw new Exception("نام کاربری یا رمز عبور اشتباه است");
            }
            
-           if (!string.IsNullOrEmpty(user.Token))
+           /*if (!string.IsNullOrEmpty(user.Token))
            {
                return user;
-           }
+           }*/
            
            string tokn= GenerateToken(user);
 
@@ -58,7 +58,10 @@ namespace SignalRMVCChat.Areas.security.Service
         {
             var token = EncryptionHelper.Decrypt(userToken);
             int id=int.Parse(token.Split('_')[0]);
-            DateTime date=DateTime.Parse(token.Split('_')[1]);
+
+
+            var strr = token.Split('_')[1];
+            DateTime date=DateTime.Parse(strr);
             string username=token.Split('_')[2];
 
             return new AppLoginViewModel

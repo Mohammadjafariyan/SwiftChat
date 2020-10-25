@@ -6,6 +6,9 @@ import {InputText} from "primereact/inputtext";
 import {MyInput} from "../../Utilities/Utility";
 
 import {CurrentUserInfo, MyCaller} from "../../../Help/Socket";
+import {_showError} from "../../../Pages/LayoutPage";
+import {SetEventTrigger} from "../EventTriggerForm";
+import {DataHolder} from "../../../Help/DataHolder";
 
 class EtFormInformation extends Component {
     state={};
@@ -13,6 +16,25 @@ class EtFormInformation extends Component {
     constructor(props) {
         super(props);
         CurrentUserInfo.EtFormInformation=this;
+    }
+    setName(Name){
+        this.setState({Name})
+    }
+    getName(){
+        return this.state.Name;
+    }
+    
+    isValid(){
+        if (!DataHolder.selectedEventTrigger.Name)
+        {
+            _showError('عنوان خالی است')
+            return false
+        }
+        return true
+    }
+    
+    componentDidMount() {
+        SetEventTrigger(DataHolder.selectedEventTrigger);
     }
 
     render() {
@@ -26,8 +48,8 @@ class EtFormInformation extends Component {
                             تنظیمات عمومی 
                         </span>
                         
-                        <small className={'float-left text-light'}>
-                            نام Event Trigger را وارد نمایید
+                        <small className={'float-left '} style={{color:'#6c757d',direction:'rtl'}}>
+                            نام راه انداز رویداد یا (Event Trigger) را وارد نمایید
                         </small>
                         
                     </Card.Header>
@@ -35,7 +57,7 @@ class EtFormInformation extends Component {
                         {/*<Card.Title>{variant} Card Title </Card.Title>*/}
                         <Card.Text>
 
-                            <MyInput title={'نام Event Trigger'} name={'Name'} parent={this}/>
+                            <MyInput title={'Event Trigger نام '} name={'Name'} parent={this}/>
                         </Card.Text>
                     </Card.Body>
                 </Card>

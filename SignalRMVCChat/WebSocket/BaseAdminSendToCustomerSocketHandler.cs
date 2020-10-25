@@ -150,6 +150,8 @@ namespace SignalRMVCChat.WebSocket
 
 
             var _ChatObject = chatProviderService.GetById((int) chat.Single).Single;
+
+           
             // اگر از جای دیگری هم وصل شده باشد این پیغام را در جای دیگر هم نشان بده
             await MySocketManagerService.NotifySelf(MySocketUserType.Admin, _ChatObject, currMySocketReq.MyWebsite.Id,
                 currMySocketReq);

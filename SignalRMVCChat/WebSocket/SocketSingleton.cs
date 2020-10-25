@@ -35,11 +35,11 @@ namespace SignalRMVCChat.WebSocket
                 
                 socket.OnOpen = () =>
                 {
-                    Console.WriteLine("Open!");
+                    // console.WriteLine("Open!");
                 };
                 socket.OnClose = () =>
                 {
-                    Console.WriteLine("Close!");
+                    // console.WriteLine("Close!");
                     
                     
                 };
@@ -108,10 +108,10 @@ namespace SignalRMVCChat.WebSocket
                     var i = client.Receive(buffer); // wait for client to send a message
 
                     // once the message is received decode it in different formats
-                    Console.WriteLine(Convert.ToBase64String(buffer).Substring(0, i));                    
+                    // console.WriteLine(Convert.ToBase64String(buffer).Substring(0, i));                    
 
-                    Console.WriteLine("\n\nPress enter to send data to client");
-                    Console.Read();
+                    // console.WriteLine("\n\nPress enter to send data to client");
+                    console.Read();
 
                     var subA = SubArray<byte>(buffer, 0, i);
                     client.Send(subA);

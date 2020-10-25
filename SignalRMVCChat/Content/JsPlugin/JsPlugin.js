@@ -1,5 +1,4 @@
-﻿
-var url = '@@@';
+﻿var url = '@@@';
 var baseUrl = "#baseUrl#";
 var token = "#token#";
 var baseUrlForapi = "#baseUrlForapi#";
@@ -7,6 +6,504 @@ var websiteToken = "#websiteToken#";
 var debugMode = true;
 let shadow;
 
+
+/*=========================================== event Trigger ==================================================*/
+
+class EventTriggerManager {
+    eventTriggerBeans = [];
+    isInited = false;
+
+    eventTriggers = [];
+
+    isInitialized() {
+        return this.isInited;
+    }
+
+    getEventTriggers() {
+        MyCaller.Send('GetEventTriggers')
+    }
+
+    getEventTriggersCallback(res) {
+        if (!res || !res.Content || !res.Content) {
+            alert('دیتای بازگشتی نال است')
+        }
+
+        this.isInited = true;
+
+        this.eventTriggers = [];
+
+        this.eventTriggerBeans = res.Content;
+
+        this.Execute();
+
+
+    }
+
+
+    Execute() {
+        if (!this.eventTriggerBeans || !this.eventTriggerBeans.length)
+            return;
+
+
+        for (let i = 0; i < this.eventTriggerBeans.length; i++) {
+            this.eventTriggers.push(new EventTrigger(this.eventTriggerBeans[i]))
+        }
+
+        for (let i = 0; i < this.eventTriggerBeans.length; i++) {
+            this.eventTriggers[i].ConfigEvents();
+        }
+
+
+    }
+
+
+}
+
+
+class EventTrigger {
+    bean;
+
+    //for testing purposes
+    firedEvent;
+
+    constructor(bean) {
+        this.bean = bean;
+    }
+
+    tryCatch(callback) {
+
+        try {
+            callback();
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    ConfigEvents() {
+
+        this.tryCatch(() => {
+            this.configOnExitTab();
+
+        })
+        this.tryCatch(() => {
+            this.configClickOnLink();
+
+        })
+
+        this.tryCatch(() => {
+            this.configOnQueryParameters();
+
+        })
+
+        this.tryCatch(() => {
+            this.configOnSpecificPages();
+
+        })
+
+        this.tryCatch(() => {
+            this.configUserCustomEvents();
+
+        })
+
+    }
+
+    /*-------------------------private configs:*/
+
+    configOnExitTab() {
+        if (!this.bean || !this.bean.EventOnExitTab)
+            return;
+
+        const parent = this;
+
+        function addEvent(obj, evt, fn) {
+            if (obj.addEventListener) {
+                obj.addEventListener(evt, fn, false);
+            }
+            else if (obj.attachEvent) {
+                obj.attachEvent("on" + evt, fn);
+            }
+        }
+        addEvent(document, "mouseleave", function (e) {
+            e = e ? e : window.event;
+            var from = e.relatedTarget || e.toElement;
+            if (!from || from.nodeName == "HTML") {
+
+                parent.fireEvent('beforeunload');
+
+                //.... do_this
+            }
+        });
+     /*   window.onbeforeunload = onExit;
+
+
+        function onExit(event) {
+
+             let message=parent.bean.localizedMessages[0].textArea;
+            var e = event || window.event;
+            if (e) {
+                e.returnValue =message;
+                e.preventDefault();
+            }
+            setTimeout(()=>{
+                parent.fireEvent('beforeunload');
+            },100);
+
+
+return message;
+        }*/
+
+        /*   window.addEventListener('beforeunload', () => {
+   
+   
+               this.fireEvent('beforeunload');
+   
+           })*/
+
+
+    }
+
+    configClickOnLink() {
+
+        if (!this.bean || !this.bean.EventOnLinkClick)
+            return;
+
+        if (!this.bean.links || !this.bean.links.length) {
+            alert('لینک های تعریف شده خالی هستند و یا نال است');
+            return;
+        }
+
+
+        // links defined in admin side
+        for (let i = 0; i < this.bean.links.length; i++) {
+
+            let selector = this.bean.links[i].Name;
+
+
+            // select in dom
+            let findedLinks = document.querySelectorAll(selector);
+
+            if (!findedLinks)
+                continue;
+          
+            for (let j = 0; j < findedLinks.length; j++) {
+                findedLinks[j].addEventListener('click', () => {
+
+                    this.fireEvent('click ' + findedLinks[j].innerText);
+
+                })
+            }
+
+        }
+
+   
+
+    }
+
+
+    configOnSpecificPages() {
+
+        if (!this.bean || !this.bean.EventSpecificPages)
+            return;
+
+        if (!this.bean.pages || !this.bean.pages.length) {
+            alert('پارامتر های تعریف شده خالی هستند و یا نال است');
+            return;
+        }
+
+
+        for (let i = 0; i < this.bean.pages.length; i++) {
+
+
+            ///DEFINED PARAMETERS
+            let name = this.bean.pages[i].Name;
+
+
+            let tupple = getSplitted(name)
+
+            let splitted = tupple.splitted;
+            name = tupple.name;
+
+            var currentURL = window.location.href,
+                // create a regular expression that will match all pages under user
+                usersPattern = new RegExp(name);
+
+
+            let URLParts = getSplitted(currentURL).splitted
+
+            let notEqualAny = false;
+            if (URLParts && URLParts.length > 0) {
+                for (let j = 0; j < URLParts.length; j++) {
+
+
+                    if (j >= splitted.length) {
+                        continue;
+                    }
+
+                    name = splitted[j];
+                    name = name.split("**").join("NNNNNNNNNNNNNNNNNNNNNNNNNNNN")
+                    name = name.split("*").join("MMMMMMMMMMMMMM")
+
+                    name = name.split("NNNNNNNNNNNNNNNNNNNNNNNNNNNN").join(".*")
+                    name = name.split("MMMMMMMMMMMMMM").join(".*")
+
+
+                    if (name.indexOf("!") >= 0) {
+
+                        let notEqualpart = name.replace('!', '');
+
+                        if (notEqualpart === URLParts[j]) {
+
+                            break;
+                            notEqualAny = true;
+
+                        }
+
+                        continue;
+
+                    }
+
+                    var pattern = new RegExp(name);
+                    if (pattern.test(URLParts[j])) {
+                    } else {
+                        notEqualAny = true;
+
+                    }
+
+                }
+            }
+
+            if (!notEqualAny) {
+                this.firedEvent = "configOnSpecificPagesFired";
+                this.fireEvent('configOnSpecificPages');
+                break;
+
+            } else {
+
+            }
+
+        }
+
+
+    }
+
+    configOnQueryParameters() {
+
+        if (!this.bean || !this.bean.EventAddressParameters)
+            return;
+
+        if (!this.bean.pageParameters || !this.bean.pageParameters.length) {
+            alert('پارامتر های تعریف شده خالی هستند و یا نال است');
+            return;
+        }
+
+
+        const fire = () => {
+
+
+            for (let i = 0; i < this.bean.pageParameters.length; i++) {
+
+
+                ///DEFINED PARAMETERS
+                let name = this.bean.pageParameters[i].Name;
+                let secondName = this.bean.pageParameters[i].SecondName;
+
+
+                //GET VLAUE FROM QUERY STRING
+                let value = getParameterByName(name);
+
+                if (value == null)
+                    continue;
+
+                // IF EQUALS FIRE
+                if (value === secondName) {
+
+                    this.firedEvent = "configOnQueryParametersFired";
+                    this.fireEvent('configOnQueryParametersFired');
+                }
+
+            }
+
+        }
+
+        //call and check if any exist
+        fire();
+
+        RegisterOnUrlChange(() => {
+            fire();
+        })
+
+
+    }
+
+    configUserCustomEvents() {
+        if (!this.bean || !this.bean.EventUserCustomName)
+            return;
+
+        if (!this.bean.userEventNames || !this.bean.userEventNames.length) {
+            alert('پارامتر های تعریف شده خالی هستند و یا نال است');
+            return;
+        }
+        for (let i = 0; i < this.bean.userEventNames.length; i++) {
+
+
+            window.addEventListener(this.bean.userEventNames[i], () => {
+
+                this.fireEvent('configUserCustomEvents');
+
+            })
+
+
+        }
+
+
+    }
+
+
+    /*-------------------------private actions:*/
+
+    Action() {
+
+        if (this.bean.IsOpenChatBox) {
+
+            this.openChat();
+
+        }
+
+        if (this.bean.IsShowMessageEnabled) {
+
+           // this.showMessage();
+        }
+
+
+        if (this.bean.IsPlayASound) {
+            this.playSound();
+
+        }
+
+
+    }
+
+
+    showMessage() {
+        if (!this.bean.localizedMessages || !this.bean.localizedMessages.length) {
+            return;
+        }
+
+
+        for (let i = 0; i < this.bean.localizedMessages.length; i++) {
+
+            // IF NOT CHAT OPEN , SHOW ON THE FLY
+           /* if (this.bean.IsOpenChatBox) {
+                showNewOnTheFlyMessage(this.bean.localizedMessages[i].textArea)
+            } else {
+
+
+                let res = {
+                    Content: {
+                        Message: this.bean.localizedMessages[i].textArea
+                    }
+                };
+
+                CurrentUserInfo.plugin.adminSendToCustomerCallback(res, false);
+
+            }*/
+
+        }
+
+
+        if (getDoc().querySelector('#dot').style.display !== 'none') {
+            getDoc().querySelector('#dot').click();
+        }
+    }
+
+    openChat() {
+
+        if (getDoc().querySelector('#dot').style.display !== 'none') {
+            getDoc().querySelector('#dot').click();
+        }
+    }
+
+    playSound() {
+
+    }
+
+
+    /*-------------------------fire Event:*/
+
+    fireEvent(name) {
+
+        
+        /*fire once*/
+        if (!this.firedEvents){
+            this.firedEvents=[];
+        }
+        if (!this.firedEvents.find(f=>f===name)){
+            this.firedEvents.push(name)
+        }else{
+            return;
+        }
+        /*END*/
+
+
+        this.Action();
+        
+        debugger;
+
+        MyCaller.Send('EventFired', {name: name,id:this.bean.Id})
+
+    }
+
+    eventFiredSaveCallback(res){
+        
+    }
+
+    /*-------------------------device:*/
+
+
+    isMobileOrDesktop() {
+
+    }
+
+}
+
+
+function RegisterOnUrlChange(callback) {
+
+    (function (history) {
+        const pushState = history.pushState;
+        history.pushState = function (state) {
+            if (typeof history.onpushstate == "function") {
+                history.onpushstate({state: state});
+            }
+            callback();
+            return pushState.apply(history, arguments);
+        }
+    })(window.history);
+}
+
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function getSplitted(s) {
+    let url = s.toString();
+
+    url = url.replace('http://', '')
+    url = url.replace('https://', '')
+
+    let name = url;
+    let splitted = url.split('/')
+
+    return {splitted, name};
+}
+
+const _EventTriggerManager = new EventTriggerManager();
+/*=========================================== END ==================================================*/
 
 let Logger = function (msg) {
     try {
@@ -134,6 +631,9 @@ function socketConnect(responseText) {
                 dragElement(getDoc().getElementById("onTheFly"));
                 CurrentUserInfo.plugin = new CustomerPlugin();
                 CurrentUserInfo.plugin.bind(getDoc().getElementById("onTheFly"))
+
+                CurrentUserInfo.plugin.Register();
+
             } else {
                 CurrentUserInfo.plugin = new AdminPlugin();
                 CurrentUserInfo.plugin.bind(getDoc().getElementById("onTheFly"))
@@ -678,6 +1178,7 @@ class BasePlugin {
                 if (CurrentUserInfo.IsCustomer) {
 
                     res.Content.AccountId = res.Content.MyAccountId;
+                    res.Content.Chat=res.Content;
 
                     CurrentUserInfo.plugin.adminSendToCustomerCallback(res, true);
                 } else {
@@ -835,7 +1336,7 @@ class BasePlugin {
     registerCallback(res) {
 
 
-        getDoc().querySelector('#dot').style.display = 'none';
+       // getDoc().querySelector('#dot').style.display = 'none';
 
 
         var gapContent = getDoc().querySelector('#gap_onlines');
@@ -877,14 +1378,20 @@ class BasePlugin {
         gapContent.innerHTML = gapContent.innerHTML + _html;
 
 
-        if (CurrentUserInfo.IsCustomer) {
+    /*    if (CurrentUserInfo.IsCustomer) {
             CurrentUserInfo.commonDomManager.toggleSelectChat();
 
-        }
+        }*/
         CurrentUserInfo.plugin.bindAfterRegister()
         //res ==> MyDataTableResponse<MyAccount>
 
         // CurrentUserInfo.plugin.readChat(CurrentUserInfo.targetId);
+
+
+        if (_EventTriggerManager.isInitialized() === false) {
+            _EventTriggerManager.getEventTriggers();
+
+        }
 
         return _html;
     }
@@ -1098,17 +1605,17 @@ class BasePlugin {
             var deliverdSign = gapMe && arr[i].DeliverDateTime;
 
 
-          let dateExist=  Array.from(getDoc().querySelectorAll('.gapHline'))
-                .find(el => el.textContent.indexOf(arr[i].Date)>=0);
+            let dateExist = Array.from(getDoc().querySelectorAll('.gapHline'))
+                .find(el => el.textContent.indexOf(arr[i].Date) >= 0);
 
             console.log('dateExist === > ', dateExist)
             console.log('arr[i].Date === > ', arr[i].Date)
 
-            if(dateExist){
-                dateExist.style.color="#ddd";
+            if (dateExist) {
+                dateExist.style.color = "#ddd";
             }
             /*نمایش جداگانه تاریخ چت ها*/
-            if ( !prevChatDate) {
+            if (!prevChatDate) {
                 html += `<h6 style=" width: 100%;     height: 1px;
    text-align: center; 
    border-bottom: 1px solid #ddd; 
@@ -1120,7 +1627,7 @@ class BasePlugin {
             } else {
 
                 // تاریخ عوض شده یا نه ؟
-                if (prevChatDate === arr[i].Date ) {
+                if (prevChatDate === arr[i].Date) {
 
                 } else {
                     html += `<h6 style=" width: 100%;     height: 1px;
@@ -3069,6 +3576,10 @@ class dispatcher {
         }
         switch (res.Name) {
 
+            case 'getEventTriggersCallback' :
+                _EventTriggerManager.getEventTriggersCallback(res);
+                break;
+
             case 'screenRecordAdminShareCallback':
                 screenRecordAdminShareCallback(res);
                 break;
@@ -4781,6 +5292,8 @@ let gapDeskApiCaller = function (url, data, callback) {
 
         // درخواست html ها
         xhttp.open("POST", url, true);
+        xhttp.setRequestHeader('Content-type', 'application/json')
+
         xhttp.send(JSON.stringify(data));
     } catch (e) {
         console.error(e);
@@ -4792,7 +5305,7 @@ let gapDeskApiCaller = function (url, data, callback) {
 function gapHelpDeskSearchChanged(THIS, api) {
     getDoc().querySelector('.gapHelpDeskLinks').innerHTML = '<p style="text-align: center">در حال خواندن اطلاعات</p>';
     let searchTerm = THIS.value;
-    gapDeskApiCaller(api, {searchTerm: searchTerm}, function (responseText) {
+    gapDeskApiCaller(api, {searchTerm: searchTerm,websiteToken:websiteToken}, function (responseText) {
 
         if (!responseText) {
 
@@ -5549,7 +6062,7 @@ function VOICE_CALL_INIT() {
 
 }
 
- const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
 
@@ -5879,3 +6392,6 @@ function cC_AdminInAnotherCallingCallback(res) {
     voiceElem.parentNode.append(createElementFromHTML(`<p>پشتیبانی در حال مکالمه است لطفا منتظر بمانید</p>`))
 
 }
+
+
+

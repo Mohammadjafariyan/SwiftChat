@@ -34,7 +34,7 @@ namespace SignalRMVCChat.Areas.security.Service
             var user = GetQuery().FirstOrDefault(q => q.UserName == userUserName);
 
             
-            Console.Write($"exceptionOnNotExist={exceptionOnNotExist}");
+            //console.Write($"exceptionOnNotExist={exceptionOnNotExist}");
             if (user==null && exceptionOnNotExist)
             {
                 throw new Exception("نام کاربری یا رمز عبور اشتباه است");

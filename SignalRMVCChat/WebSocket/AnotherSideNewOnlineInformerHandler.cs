@@ -46,8 +46,8 @@ namespace SignalRMVCChat.WebSocket
                 }
                 catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);
-                    Console.Write("\n");
-                    Console.Write(e);
+                    // console.Write("\n");
+                    // console.Write(e);
                 }
             }
         }

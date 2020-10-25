@@ -160,7 +160,7 @@ namespace SignalRMVCChat.WebsocketTests
             }
             catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);
-                Console.WriteLine(e);
+                // console.WriteLine(e);
             }
 
             var myWebsite = new MyWebsite
@@ -194,7 +194,7 @@ namespace SignalRMVCChat.WebsocketTests
             }
             catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);
-                Console.WriteLine(e);
+                // console.WriteLine(e);
                 throw;
             }*/
         }

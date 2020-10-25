@@ -38,7 +38,7 @@ namespace SignalRMVCChat.Service
         {
             if (customers.Count == 0)
             {
-                if (System.Diagnostics.Debugger.IsAttached)
+                if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
                 {
                     throw new Exception("کاستومر یافت نشد");
                 }
@@ -60,7 +60,7 @@ namespace SignalRMVCChat.Service
                     }
                     catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);
-                        Console.WriteLine(e);
+                        // console.WriteLine(e);
                         //ignore
                     }
                 }
@@ -98,7 +98,7 @@ namespace SignalRMVCChat.Service
                 }
                 catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);
-                    Console.WriteLine(e);
+                    // console.WriteLine(e);
                     //ignore
                 }
             }
@@ -111,13 +111,17 @@ namespace SignalRMVCChat.Service
                 Name = "newSendPMByMeInAnotherPlaceCallback",
                 Content = chat
             };
-            if (type==MySocketUserType.Admin)
+            if (type==MySocketUserType.Admin && request.MySocket.MyAccountId.HasValue)
             {
                 await SendToAdmin(request.MySocket.MyAccountId.Value, websiteId, resp);
             }
             else
             {
-                await SendToCustomer(request.MySocket.CustomerId.Value, websiteId, resp);
+                if ( request.MySocket.CustomerId.HasValue)
+                {
+                    await SendToCustomer(request.MySocket.CustomerId.Value, websiteId, resp);
+
+                }
             }
             
         }

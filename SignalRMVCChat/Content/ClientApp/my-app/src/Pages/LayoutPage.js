@@ -33,6 +33,7 @@ import SaveArticle from "../Components/SaveArticle";
 import LanguageHolder from "../Components/HelpDesk/Language/LanguageHolder";
 import Container from "react-bootstrap/Container";
 import CustomerProfilePage from "./CustomerProfilePage";
+import EventTriggersPage from "./Event_TriggersPage";
 
 
 
@@ -144,8 +145,8 @@ export default class LayoutPage extends Component {
                 )
             }
 
-            
-        else if (DataHolder.currentPage === "FormCreator") {
+
+            else if (DataHolder.currentPage === "FormCreator") {
 
                 return (
                     <>
@@ -156,6 +157,20 @@ export default class LayoutPage extends Component {
                         <MessageAlerts/>
 
                         <FormCreatorPage></FormCreatorPage>
+                    </>)
+            }
+
+            else if (DataHolder.currentPage === "EventTrigger") {
+
+                return (
+                    <>
+                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Menu/>
+                        <MessageAlerts/>
+
+                        <EventTriggersPage></EventTriggersPage>
                     </>)
             }
             else if (DataHolder.currentPage === "AutomaticSend") {

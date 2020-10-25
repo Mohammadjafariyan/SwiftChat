@@ -28,7 +28,7 @@ namespace SignalRMVCChat.Models.GapChatContext
 
         public GapChatContext() : base(MySpecificGlobal.GetConnectionString())
         {
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
             {
                 if (MyGlobal.IsUnitTestEnvirement == true)
                     Database.SetInitializer(new DropCreateDatabaseAlways<GapChatContext>());
@@ -174,11 +174,11 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             modelBuilder.Entity<AppRole>().HasMany(r => r.AppUsers)
                 .WithOptional(o => o.AppRole)
-                .HasForeignKey(o => o.AppRoleId);
+                .HasForeignKey(o => o.AppRoleId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AppRole>().HasMany(r => r.AppAdmins)
                 .WithOptional(o => o.AppRole)
-                .HasForeignKey(o => o.AppRoleId);
+                .HasForeignKey(o => o.AppRoleId).WillCascadeOnDelete(false);
 
 
             #region Ticket
@@ -186,13 +186,13 @@ namespace SignalRMVCChat.Models.GapChatContext
             modelBuilder.Entity<AppUser>()
                 .HasMany(r => r.Tickets)
                 .WithRequired(o => o.AppUser)
-                .HasForeignKey(o => o.AppUserId);
+                .HasForeignKey(o => o.AppUserId).WillCascadeOnDelete(false);
 
 
             modelBuilder.Entity<Ticket>()
                 .HasMany(r => r.MyFiles)
                 .WithRequired(o => o.Ticket)
-                .HasForeignKey(o => o.TicketId);
+                .HasForeignKey(o => o.TicketId).WillCascadeOnDelete(false);
 
             #endregion
 
@@ -203,7 +203,7 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             modelBuilder.Entity<ChatAutomatic>().HasOptional(r => r.MyAccount)
                 .WithMany(o => o.ChatAutomatics)
-                .HasForeignKey(o => o.MyAccountId);
+                .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
 
             #endregion
 
@@ -212,15 +212,15 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             modelBuilder.Entity<Tag>().HasMany(r => r.CustomerTags)
                 .WithRequired(o => o.Tag)
-                .HasForeignKey(o => o.TagId);
+                .HasForeignKey(o => o.TagId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Customer>().HasMany(r => r.CustomerTags)
                 .WithRequired(o => o.Customer)
-                .HasForeignKey(o => o.CustomerId);
+                .HasForeignKey(o => o.CustomerId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Tag>().HasRequired(r => r.MyAccount)
                 .WithMany(o => o.Tags)
-                .HasForeignKey(o => o.MyAccountId);
+                .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
 
             #endregion
 
@@ -228,7 +228,7 @@ namespace SignalRMVCChat.Models.GapChatContext
             #region CustomerProfile
             modelBuilder.Entity<Customer>().HasMany(r => r.CustomerDatas)
                 .WithRequired(o => o.Customer)
-                .HasForeignKey(o => o.CustomerId);
+                .HasForeignKey(o => o.CustomerId).WillCascadeOnDelete(false);
 
             #endregion
 
@@ -236,7 +236,7 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             modelBuilder.Entity<Image>().HasMany(r => r.MyAccounts)
                 .WithOptional(o => o.ProfileImage)
-                .HasForeignKey(o => o.ProfileImageId);
+                .HasForeignKey(o => o.ProfileImageId).WillCascadeOnDelete(false);
 
             #endregion
 
@@ -244,17 +244,17 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             modelBuilder.Entity<Form>().HasMany(r => r.Elements)
                 .WithRequired(o => o.Form)
-                .HasForeignKey(o => o.FormId);
+                .HasForeignKey(o => o.FormId).WillCascadeOnDelete(false);
 
 
             modelBuilder.Entity<Form>().HasRequired(r => r.MyAccount)
                 .WithMany(o => o.Forms)
-                .HasForeignKey(o => o.MyAccountId);
+                .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
 
 
             modelBuilder.Entity<Form>().HasRequired(r => r.MyWebsite)
                 .WithMany(o => o.Forms)
-                .HasForeignKey(o => o.MyWebsiteId);
+                .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
 
             #endregion
 
@@ -263,23 +263,23 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             modelBuilder.Entity<FormValue>().HasRequired(r => r.Customer)
                 .WithMany(o => o.FormValues)
-                .HasForeignKey(o => o.CustomerId);
+                .HasForeignKey(o => o.CustomerId).WillCascadeOnDelete(false);
 
 
             modelBuilder.Entity<FormValue>().HasRequired(r => r.FormElement)
                 .WithMany(o => o.FormValues)
-                .HasForeignKey(o => o.FormElementId);
+                .HasForeignKey(o => o.FormElementId).WillCascadeOnDelete(false);
 
 
             modelBuilder.Entity<FormValue>().HasRequired(r => r.Form)
                 .WithMany(o => o.FormValues)
-                .HasForeignKey(o => o.FormId);
+                .HasForeignKey(o => o.FormId).WillCascadeOnDelete(false);
 
             
             modelBuilder.Entity<FormValue>()
                 .HasRequired(r => r.Chat)
                 .WithMany(o => o.FormValues)
-                .HasForeignKey(o => o.ChatId);
+                .HasForeignKey(o => o.ChatId).WillCascadeOnDelete(false);
 
             #endregion
 
@@ -287,33 +287,33 @@ namespace SignalRMVCChat.Models.GapChatContext
             modelBuilder.Entity<Language>()
                 .HasMany(r => r.HelpDesks)
                 .WithRequired(o => o.Language)
-                .HasForeignKey(o => o.LanguageId);
+                .HasForeignKey(o => o.LanguageId).WillCascadeOnDelete(false);
             
             modelBuilder.Entity<HelpDesk.HelpDesk>()
                 .HasMany(r => r.Categories)
                 .WithRequired(o => o.HelpDesk)
-                .HasForeignKey(o => o.HelpDeskId);
+                .HasForeignKey(o => o.HelpDeskId).WillCascadeOnDelete(false);
             
             modelBuilder.Entity<HelpDesk.HelpDesk>()
                 .HasRequired(r => r.MyWebsite)
                 .WithMany(o => o.HelpDesks)
-                .HasForeignKey(o => o.MyWebsiteId);
+                .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
 
             
             modelBuilder.Entity<Category>()
                 .HasMany(r => r.Articles)
                 .WithRequired(o => o.Category)
-                .HasForeignKey(o => o.CategoryId);
+                .HasForeignKey(o => o.CategoryId).WillCascadeOnDelete(false);
             
             
             modelBuilder.Entity<Article>()
                 .HasMany(r => r.ArticleVisits)
                 .WithRequired(o => o.Article)
-                .HasForeignKey(o => o.ArticleId);
+                .HasForeignKey(o => o.ArticleId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Article>()
                 .HasRequired(r => r.ArticleContent)
-                .WithRequiredPrincipal(o => o.Article);
+                .WithRequiredPrincipal(o => o.Article).WillCascadeOnDelete(false);
             
             
             #endregion
@@ -325,13 +325,13 @@ namespace SignalRMVCChat.Models.GapChatContext
             modelBuilder.Entity<MyWebsite>()
                 .HasMany(r => r.EventTriggers)
                 .WithRequired(o => o.MyWebsite)
-                .HasForeignKey(o => o.MyWebsiteId);
+                .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
             
             
             modelBuilder.Entity<MyAccount>()
                 .HasMany(r => r.EventTriggers)
                 .WithRequired(o => o.MyAccount)
-                .HasForeignKey(o => o.MyAccountId);
+                .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
 
             #endregion
             

@@ -20,7 +20,8 @@
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.3",
     "universal-cookie": "^4.0.3",
-    "useragent": "^2.3.0"
+    "useragent": "^2.3.0",
+    "yamlparser": "^0.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

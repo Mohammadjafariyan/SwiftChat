@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.Service.EventTrigger;
 using SignalRMVCChat.WebSocket.Base;
 
 namespace SignalRMVCChat.WebSocket.EventTrigger
@@ -14,5 +15,8 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
         {
             return getQuery.Where(q => q.MyWebsiteId == currMySocketReq.MyWebsite.Id);
         }
+        
+        
+        
     }
 }

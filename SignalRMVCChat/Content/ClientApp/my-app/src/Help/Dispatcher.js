@@ -22,6 +22,21 @@ class dispatcher {
                     CurrentUserInfo.EventTriggerIndex.eventTriggerGetAllCallback(res);
                 }
                 break;
+
+            case "eventTriggerSaveCallback":
+                if (CurrentUserInfo.EventTriggerIndex){
+                    CurrentUserInfo.EventTriggerIndex.eventTriggerSaveCallback(res);
+                }
+                break;
+
+
+            case "eventTriggerDeleteCallback":
+                if (CurrentUserInfo.EventTriggerIndex){
+                    CurrentUserInfo.EventTriggerIndex.eventTriggerDeleteCallback(res);
+                }
+                break;
+
+                
             /*===========eventTrigger end============*/
             
             

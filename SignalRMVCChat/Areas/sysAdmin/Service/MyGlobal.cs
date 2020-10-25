@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -37,7 +38,16 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
     }
     public class MyGlobal
     {
-        
+
+        public static bool IsAttached
+        {
+            get
+            {
+               // return false;
+                return Debugger.IsAttached;
+            }
+        }
+
         public static Color ContrastColor(string color)
         {
             Color iColor=Color.FromName(color);   
@@ -447,6 +457,8 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
         }
 
         public static bool IsUnitTestEnvirementNoSeed = false;
+        public static string Version = "0.0.1." + (VersionPublishDateTime.HasValue ?  MyGlobal.ToIranianDateWidthTime(VersionPublishDateTime.Value) : "") ;
+        public static DateTime? VersionPublishDateTime = null ;
     }
 
     public class DateFromToDateViewModel

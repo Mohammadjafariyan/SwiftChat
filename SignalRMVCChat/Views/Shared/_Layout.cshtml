@@ -133,7 +133,7 @@
                 <ul class="footer-links list-inline">
                     <li> <a style="color: white" class="scrollTo" href="/Account/AdminLogin">ورود به سیستم</a></li>
                     
-                    @if (System.Diagnostics.Debugger.IsAttached)
+                    @if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
                     {
                         <li><a style="color: white"  href="/Account/RegisterAdmin">ثبت نام ادمین</a></li>
                     }

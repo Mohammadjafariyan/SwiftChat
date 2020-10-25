@@ -1,4 +1,11 @@
-﻿$HEADER$namespace $NAMESPACE$
+﻿using TelegramBotsWebApplication.Areas.Admin.Service;
+
+namespace SignalRMVCChat.Service.EventTrigger
 {
-  public class $CLASS$ {$END$}
+    public class EventTriggerService:GenericService<Models.ET.EventTrigger>
+    {
+        public EventTriggerService() : base(null)
+        {
+        }
+    }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
@@ -74,6 +75,7 @@ namespace SignalRMVCChat.Models
         
         
    
+        
 
 
         public static string GetAddress(CustomerTrackInfo firstOrDefault)
@@ -90,5 +92,24 @@ namespace SignalRMVCChat.Models
 
 
         public List<CustomerData> CustomerDatas { get; set; }
+        
+        
+        
+        public string firedEventForCustomerJson { get; set; }
+
+        [NotMapped]
+        public List<FiredEventForCustomer> FiredEventForCustomers
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(firedEventForCustomerJson))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<List<FiredEventForCustomer>>(firedEventForCustomerJson);
+            }
+            set { firedEventForCustomerJson = JsonConvert.SerializeObject(value); }
+        }
     }
 }

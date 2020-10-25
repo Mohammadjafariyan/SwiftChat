@@ -34,6 +34,7 @@ namespace SignalRMVCChat.WebSocket.Base
             {
                 
                 Name = Callback,
+                Content = record
 
             });
         }

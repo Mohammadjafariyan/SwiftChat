@@ -1,9 +1,19 @@
+
+.notValid{
+    border:1px solid red;
+}
 .floatLeft{
 
     margin-top: 10px;
 }
 .floatRight{
     float: right;
+}
+
+.MySwitcher{
+
+    padding-top: 30px;
+    padding-bottom: 50px;
 }
 
 .smallLink{

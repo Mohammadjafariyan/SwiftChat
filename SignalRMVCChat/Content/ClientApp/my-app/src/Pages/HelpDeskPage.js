@@ -25,7 +25,7 @@ export function _getHelpDesk(){
     if (CurrentUserInfo.HelpDeskPage){
       return   CurrentUserInfo.HelpDeskPage.getHelpDesk();
     }
-   return  null;//{helpDeskId:null,language: {}}
+   return  {};//{helpDeskId:null,language: {}}
 }
 
 
