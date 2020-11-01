@@ -270,8 +270,11 @@ class SendFromHelpDesk extends Component {
 
     statusTemplate(rowData) {
 
-        if (rowData.status === 1) {
+        if (rowData.status === 2) {
             return <span className={'text-success'}>منتشر شده</span>
+        }
+        if (rowData.status === 0) {
+            return <span className={'text-success'}>پیش نمایش</span>
         }
         return <span className={'text-warning'}>مخفی</span>
 

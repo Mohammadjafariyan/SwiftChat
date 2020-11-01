@@ -12,6 +12,9 @@ using SignalRMVCChat.WebSocket.HelpDesk.Language;
 using SignalRMVCChat.WebSocket.Profile;
 using SignalRMVCChat.WebSocket.SocialChannels;
 using SignalRMVCChat.WebSocket.Typing;
+using SignalRMVCChat.WebSocket.LiveAssist;
+using SignalRMVCChat.WebSocket.Rate;
+using SignalRMVCChat.WebSocket.UsersSeparation;
 
 namespace SignalRMVCChat.WebSocket
 {
@@ -60,10 +63,58 @@ namespace SignalRMVCChat.WebSocket
             switch (request.Name)
             {
 
+                #region Rate
+
+                case "AdminSendRatingRequest":
+                    return new AdminSendRatingRequestSocketHandler();
+                    break;
+                case "CustomerRate":
+                    return new CustomerRateSocketHandler();
+                    break;
+                #endregion
+
+                #region UsersSeparation
+                    
+                    
+                case "CustomerSaveUsersSeparationValues":
+                    return new CustomerSaveUsersSeparationValuesSocketHandler();
+                    break;
+                
+                case "CustomerGetUsersSeparationConfig":
+                    return new CustomerGetUsersSeparationConfigSocketHandler();
+                    break;
+                case "GetUsersSeparationForm":
+                    return new GetUsersSeparationFormSocketHandler();
+                    break;
+                case "SaveUsersSeparationForm":
+                    return new SaveUsersSeparationFormSocketHander();
+                    break;
+                #endregion
+
+                #region LiveAssist 
+
+                case "LiveAssistRequest":
+                    return new LiveAssistRequestSocketHandler();
+                    break;
+
+                case "LiveAssistSendDoc":
+                    return new LiveAssistSendDocSocketHandler();
+                    break;
+
+                case "LiveAssistFireEvent":
+                    return new LiveAssistFireEventSocketHandler();
+                    break;
+                    
+                case "LiveAssistFireEventByAdmin":
+                    return new LiveAssistFireEventByAdminSocketHandler();
+                    break;
+                    
+                    
+                #endregion
 
                 #region EventTrigger
-                    
-                           
+
+
                 case "EventFired":
                     return new EventFiredSocketHandler();
                     break; 

@@ -19,18 +19,19 @@ namespace SignalRMVCChat.WebSocket.CustomerProfile
                 Throw("ادمین کنونی کد ندارد");
             }
 
-            int RatingCount = 0;
+            /*int RatingCount = 0;
             if (record.RatingCount.ContainsKey(_currMySocketReq.MySocket.MyAccountId.Value))
             {
                 RatingCount= record.RatingCount[_currMySocketReq.MySocket.MyAccountId.Value];
-            }
+            }*/
             
             return await Task.FromResult(new MyWebSocketResponse
             {
                 Name = Callback,
                 Content = new
                 {
-                    RatingCount=RatingCount
+                    RatingCount=record.RatingCount?.Keys,
+                    CustomerId=record.Id,
                 }
 
             });

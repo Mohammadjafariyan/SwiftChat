@@ -38,6 +38,7 @@ namespace SignalRMVCChat.Models.ET
             set { localizedMessagesJson = JsonConvert.SerializeObject(value); }
         }
 
+        [JsonIgnore]
         public string localizedMessagesJson { get; set; }
         
         /*------------------------------Behaviours------------------------------ */
@@ -62,6 +63,7 @@ namespace SignalRMVCChat.Models.ET
         }
 
 
+        [JsonIgnore]
         public string CountiesJson { get; set; }
 
 
@@ -77,6 +79,7 @@ namespace SignalRMVCChat.Models.ET
         public int delay { get; set; }
 
 
+        [JsonIgnore]
         public string linksJson { get; set; }
 
         [NotMapped]
@@ -94,6 +97,7 @@ namespace SignalRMVCChat.Models.ET
             set { linksJson = JsonConvert.SerializeObject(value); }
         }
 
+        [JsonIgnore]
         public string pagesJson { get; set; }
 
         [NotMapped]
@@ -111,6 +115,7 @@ namespace SignalRMVCChat.Models.ET
             set { pagesJson = JsonConvert.SerializeObject(value); }
         }
 
+        [JsonIgnore]
         public string pageParametersJson { get; set; }
 
         [NotMapped]
@@ -128,6 +133,7 @@ namespace SignalRMVCChat.Models.ET
             set { pageParametersJson = JsonConvert.SerializeObject(value); }
         }
 
+        [JsonIgnore]
         public string userEventNamesJson { get; set; }
 
         [NotMapped]

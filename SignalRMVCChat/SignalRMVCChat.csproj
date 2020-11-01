@@ -368,6 +368,7 @@
     <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\fakeUserInfoController.cs" />
     <Compile Include="Controllers\HelpDeskApiController.cs" />
     <Compile Include="Controllers\HelpDeskController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -414,6 +415,7 @@
     <Compile Include="Models\PluginCustomized.cs" />
     <Compile Include="Models\Setting.cs" />
     <Compile Include="Models\Tag.cs" />
+    <Compile Include="Models\UsersSeparation\UsersSeparation.cs" />
     <Compile Include="Models\ViewModels\Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AdminModeChatProviderService.cs" />
@@ -450,6 +452,7 @@
     <Compile Include="Service\SettingService.cs" />
     <Compile Include="Service\SocketsSingleton.cs" />
     <Compile Include="Service\TagService.cs" />
+    <Compile Include="Service\UsersSeparation\UsersSeparationService.cs" />
     <Compile Include="Service\ViewRendererForHubsService.cs" />
     <Compile Include="Test\IntegrationTests\CreateAccountForPluginsProcess.cs" />
     <Compile Include="Test\SelectPlanInFront\SignUpForPlanTests.cs" />
@@ -499,17 +502,17 @@
     <Compile Include="WebSocket\Base\GetByIdSocketHandler.cs" />
     <Compile Include="WebSocket\Base\ListSocketHandler.cs" />
     <Compile Include="WebSocket\Base\SaveSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\AdminScreenRecord\ScreenRecordAdminShareRequestSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\AdminScreenRecord\ScreenRecordAdminShareSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\BaseCallSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\ScreenRecord\BaseScreenRecordAccessRequestSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\ScreenRecord\BaseScreenRecordSaveSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\ScreenRecord\BaseScreenRecordSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\ScreenRecord\ScreenRecordAccessRequestSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\ScreenRecord\ScreenRecordAdminCloseSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\ScreenRecord\ScreenRecordCustomerCloseSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\ScreenRecord\ScreenRecordSaveSocketHandler.cs" />
-    <Compile Include="WebSocket\Call\ScreenRecord\SetScreenRecordAccessRequestIsAcceptedSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\AdminScreenRecord\ScreenRecordAdminShareRequestSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\AdminScreenRecord\ScreenRecordAdminShareSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\BaseCallSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\ScreenRecord\BaseScreenRecordAccessRequestSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\ScreenRecord\BaseScreenRecordSaveSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\ScreenRecord\BaseScreenRecordSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\ScreenRecord\ScreenRecordAccessRequestSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\ScreenRecord\ScreenRecordAdminCloseSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\ScreenRecord\ScreenRecordCustomerCloseSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\ScreenRecord\ScreenRecordSaveSocketHandler.cs" />
+    <Compile Include="WebSocket\Base\Call\ScreenRecord\SetScreenRecordAccessRequestIsAcceptedSocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\DeleteKeySocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\GetCustomerDataListSocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\GetLastVisitedPagesSocketHandler.cs" />
@@ -564,6 +567,10 @@
     <Compile Include="WebSocket\HelpDesk\Language\SelectHelpDeskSocketHandler.cs" />
     <Compile Include="WebSocket\HelpDesk\RemoveLanguageSocketHandler.cs" />
     <Compile Include="WebSocket\ISocketHandler.cs" />
+    <Compile Include="WebSocket\LiveAssist\LiveAssistFireEventByAdminSocketHandler.cs" />
+    <Compile Include="WebSocket\LiveAssist\LiveAssistFireEventSocketHandler.cs" />
+    <Compile Include="WebSocket\LiveAssist\LiveAssistRequestSocketHandler.cs" />
+    <Compile Include="WebSocket\LiveAssist\LiveAssistSendDocSocketHandler.cs" />
     <Compile Include="WebSocket\LoadReadyPmSocketHandler.cs" />
     <Compile Include="WebSocket\MultimediaDeliverdHandler.cs" />
     <Compile Include="WebSocket\MultimediaPmSendSocketHandler.cs" />
@@ -573,6 +580,8 @@
     <Compile Include="WebSocket\NewTagAddSocketHandler.cs" />
     <Compile Include="WebSocket\Profile\GetMyProfileSocketHandler.cs" />
     <Compile Include="WebSocket\Profile\SaveMyProfileSocketHandler.cs" />
+    <Compile Include="WebSocket\Rate\AdminSendRatingRequestSocketHandler.cs" />
+    <Compile Include="WebSocket\Rate\CustomerRateSocketHandler.cs" />
     <Compile Include="WebSocket\ReadChatSocketHandler.cs" />
     <Compile Include="WebSocket\SaveAutomaticSendChatsSocketHandler.cs" />
     <Compile Include="WebSocket\SearchHandler.cs" />
@@ -594,6 +603,11 @@
     <Compile Include="WebSocket\Typing\BaseTypingSocketHandler.cs" />
     <Compile Include="WebSocket\Typing\CustomerStartTypingSocketHandler.cs" />
     <Compile Include="WebSocket\Typing\CustomerStopTypingSocketHandler.cs" />
+    <Compile Include="WebSocket\UsersSeparation\BaseGetUsersSeparationFormSocketHandler.cs" />
+    <Compile Include="WebSocket\UsersSeparation\CustomerGetUsersSeparationConfigSocketHandler.cs" />
+    <Compile Include="WebSocket\UsersSeparation\CustomerSaveUsersSeparationValuesSocketHandler.cs" />
+    <Compile Include="WebSocket\UsersSeparation\GetUsersSeparationFormSocketHandler.cs" />
+    <Compile Include="WebSocket\UsersSeparation\SaveUsersSeparationForm.cs" />
     <Compile Include="WebSocket\WebSocketDispacher.cs" />
     <Compile Include="WebSocket\WebSocketRequestThreadMaker.cs" />
   </ItemGroup>
@@ -2081,6 +2095,10 @@
     <Content Include="Content\ClientApp\my-app\src\Components\HelpDesk\Language\ConfirmModal.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\HelpDesk\Language\RemoveLanguage.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\LastPagesVisited.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\LiveAssist\LiveAssistInitialize.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\LiveAssist\LiveAssistLayout.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\LiveAssist\LiveAssistShower.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\Map\MyMap.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\MarkAsResovled.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\Menu.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\Modal.js" />
@@ -2098,7 +2116,11 @@
     <Content Include="Content\ClientApp\my-app\src\Components\TagList.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\TagSingleCustomer.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\UserDeviceInfo.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\UsersSeparation\UsersSeparationData.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\UsersSeparation\UsersSeparationForm.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\UsersSeparation\UsersSeparationLayout.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\UserTags.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\Utilities\AdminLiveAssistService.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\Utilities\Utility.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\VoiceCall.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\VoiceCallRunner.js" />
@@ -2125,7 +2147,9 @@
     <Content Include="Content\ClientApp\my-app\src\Pages\FormDataPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\HelpDeskPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\LayoutPage.js" />
+    <Content Include="Content\ClientApp\my-app\src\Pages\LiveAssistPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\LoginPage.js" />
+    <Content Include="Content\ClientApp\my-app\src\Pages\MapPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\NotChatted.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\NotChattedLeftCustomerListPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\OnlineCustomerListHolder.js" />
@@ -2150,6 +2174,7 @@
     <Content Include="Content\fonts\primeicons.woff" />
     <Content Include="Content\fonts\Sahel.ttf" />
     <Content Include="Content\HelpDesk.css" />
+    <Content Include="Content\HelpImages\article.png" />
     <Content Include="Content\HelpImages\chatPanelBgcolor.png" />
     <Content Include="Content\HelpImages\circleHeight.png" />
     <Content Include="Content\HelpImages\circleHelpDesk.png" />
@@ -2185,7 +2210,10 @@
     <Content Include="Content\JsPlugin\Tests\JsPluginFakeServer.js" />
     <Content Include="Content\JsPlugin\Tests\JsPluginTest.js" />
     <Content Include="Content\JsPlugin\Tests\unittest\eventTrigger.test.js" />
+    <Content Include="Content\JsPlugin\Tests\unittest\LiveAssist.test.html" />
+    <Content Include="Content\JsPlugin\Tests\unittest\LiveAssist.test.js" />
     <Content Include="Content\JsPlugin\Tooltip.css" />
+    <Content Include="Content\music\alert.mp3" />
     <Content Include="Content\pace.js" />
     <Content Include="Content\paterns\patterns.png" />
     <Content Include="Content\persianDatepicker-default.css" />
@@ -2324,6 +2352,7 @@
     <Content Include="Views\Account\RegisterAdmin.cshtml" />
     <Content Include="Views\HelpDesk\Article.cshtml" />
     <Content Include="Views\HelpDesk\Detail.cshtml" />
+    <Content Include="Views\HelpDesk\Error.cshtml" />
     <Content Include="Views\HelpDesk\Index.cshtml" />
     <Content Include="Views\Home\Docs.cshtml" />
     <Content Include="Views\Shared\AllAdminsPartial.cshtml" />
@@ -2390,8 +2419,8 @@
     <Folder Include="Areas\HubPartials\Models\" />
     <Folder Include="Areas\HubPartials\Views\HubHelper\" />
     <Folder Include="Areas\HubPartials\Views\Shared\" />
-    <Folder Include="Content\ClientApp\my-app\public" />
-    <Folder Include="Content\ClientApp\my-app\src\Content" />
+    <Folder Include="Content\ClientApp\my-app\public\" />
+    <Folder Include="Content\ClientApp\my-app\src\Content\" />
     <Folder Include="Test\UpgradePlanTests\" />
     <Folder Include="Views\Client\" />
     <Folder Include="Views\Scripts\" />

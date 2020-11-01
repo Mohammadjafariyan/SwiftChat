@@ -1,0 +1,56 @@
+﻿@model Engine.SysAdmin.Models.ErrorViewModel
+
+
+@{
+    ViewBag.Title = "مرکز پشتیبانی";
+    Layout = "../Shared/_HelpDesk_Layout.cshtml";
+}
+
+
+<style>
+    .header-color{
+        
+    }
+    
+    h4{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    }
+    
+    .acard{
+     margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .card {text-align: center;
+    
+    }
+    
+    .acard img{
+    margin-left: 16%;
+    }
+</style>
+
+<div >
+    
+   
+    
+    <div class="container" style="background-color: #f5f8fb">
+        
+        
+        
+        @if (Model != null)
+        {
+            
+            <h4 style="color: red">
+                        <i class="fa fa-frown-o" style="font-size: 86px !important;"></i>
+<br/>
+                @Model.Msg
+            </h4>
+        }
+        
+              
+    </div>
+     
+</div>

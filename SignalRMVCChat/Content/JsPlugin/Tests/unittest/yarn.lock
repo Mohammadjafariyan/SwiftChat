@@ -1750,6 +1750,11 @@ diff-sequences@^26.5.0:
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-26.5.0.tgz#ef766cf09d43ed40406611f11c6d8d9dd8b2fefd"
   integrity sha512-ZXx86srb/iYy6jG71k++wBN9P9J05UNQ5hQHQd9MtMPvcqXPx/vKU69jfHV637D00Q2gSgPk2D+jSx3l1lDW/Q==
 
+dom-event-to-json@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/dom-event-to-json/-/dom-event-to-json-1.0.1.tgz#a65e4e2e186b1b13de7a239e5973083d88401352"
+  integrity sha1-pl5OLhhrGxPeeiOeWXMIPYhAE1I=
+
 domexception@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/domexception/-/domexception-2.0.1.tgz#fb44aefba793e1574b0af6aed2801d057529f304"

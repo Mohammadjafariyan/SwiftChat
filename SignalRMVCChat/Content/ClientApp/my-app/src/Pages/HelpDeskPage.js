@@ -132,6 +132,10 @@ class HelpDeskPage extends Component {
    
 
     render() {
+        
+        if (!_getHelpDesk().helpDeskId){
+            return  <></>
+        }
        
 
         return (

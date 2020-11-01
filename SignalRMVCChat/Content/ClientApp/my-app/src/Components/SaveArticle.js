@@ -14,7 +14,15 @@ import {Dropdown} from "primereact/dropdown";
 
 class SaveArticle extends Component {
 
-    state = {}
+    state = {
+        
+        /*Publish=2,Hidden=1,Draft=0*/
+        ArticleStatusList:[
+            {Title:'انتشار',Value:2},
+            {Title:'مخفی',Value:1},
+            {Title:'پیش نویس',Value:0},
+        ]
+    }
 
     constructor(ar) {
         super(ar);
@@ -34,8 +42,11 @@ class SaveArticle extends Component {
         DataHolder.HelpDeskRowDataSelected = res.Content;
 
         this.preSelectHelpDesk();
+        
+        
+       let ArticleStatus= this.state.ArticleStatusList.find(f=>f.Value===DataHolder.HelpDeskRowDataSelected.ArticleStatus);
 
-        this.setState({tmp: Math.random()});
+        this.setState({tmp: Math.random(),ArticleStatus:ArticleStatus});
 
 
     }
@@ -228,8 +239,22 @@ class SaveArticle extends Component {
 
 
                         </Col>
-                    </Row>
+                        <Col>
+                            <label>انتخاب دسته بندی</label>
+                            <br/>
+                            <Dropdown value={this.state.ArticleStatus}
+                                      options={this.state.ArticleStatusList}
+                                      onChange={(e) => {
 
+                                          this.setState({ArticleStatus: e.value});
+                                          DataHolder.HelpDeskRowDataSelected.ArticleStatus= e.value.Value
+
+                                      }} optionLabel="Title" placeholder="نحوه انتشار"/>
+
+
+                        </Col>
+                    </Row>
+                    
                     <br/>
                     <Row>
                         <Button variant={'primary'} onClick={() => {

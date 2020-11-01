@@ -97,7 +97,7 @@ class PrimengModal extends Component {
             <div>
                 {/*<Button label="Show" icon="pi pi-external-link" onClick={() => this.onClick('displayBasic')} />*/}
 
-                <Dialog maximizable modal header={this.props.title} visible={this.state.displayBasic}
+                <Dialog maximized={this.props.maximized} maximizable modal header={this.props.title} visible={this.state.displayBasic}
                         style={{width: '80vw'}} footer={this.renderFooter('displayBasic')}
                         onHide={() => this.onHide('displayBasic')}>
 

@@ -1,9 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Http.Results;
 using System.Web.Mvc;
+using Engine.SysAdmin.Models;
 using SignalRMVCChat.Areas.security;
+using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
+using SignalRMVCChat.Models;
 using SignalRMVCChat.Models.HelpDesk;
 using SignalRMVCChat.Service.HelpDesk;
+using SignalRMVCChat.Service.HelpDesk.Article;
 
 namespace SignalRMVCChat.Controllers
 {
@@ -26,6 +33,57 @@ namespace SignalRMVCChat.Controllers
           TempData["Languages"] = helpDeskHomeView.Languages;
             
             return View("Index",helpDeskHomeView);
+        }
+        
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            filterContext.ExceptionHandled = true;
+
+            //Log the error!!
+            // _Logger.Error(filterContext.Exception);
+            string msg= MyGlobal.RecursiveExecptionMsg(filterContext.Exception);
+            // OR 
+            var vm= new ViewDataDictionary(filterContext.Controller.ViewData)
+            {
+                Model = new ErrorViewModel
+                {
+                    Msg = msg
+                } // set the model
+            };
+            ViewData["Error"] = msg;
+            filterContext.Result = new ViewResult
+            {
+                ViewName = "~/Views/HelpDesk/Error.cshtml",
+                ViewData = vm
+            };
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> SendFeedback(string text, string websiteBaseUrl, string lang,string title)
+        {
+            
+            var article=  await HelpDeskService.GetHelpDeskArticle(title,websiteBaseUrl, lang);
+
+
+            if (article.Article.Comments==null)
+            {
+                article.Article.Comments=new List<Comment>();
+            }
+            
+            article.Article.Comments.Add(new Comment
+            {
+              Text  = text,
+            });
+
+
+
+            var articleService= Injector.Inject<ArticleService>();
+            articleService.Save(article.Article);
+
+
+            
+            return new HttpStatusCodeResult(200);
         }
         
         [HttpGet()]
@@ -66,8 +124,27 @@ namespace SignalRMVCChat.Controllers
             
             var content=  await HelpDeskService.GetHelpDeskImage(id);
 
+            if (content==null)
+            {
+                return base.File(System.IO.File.ReadAllBytes(Server.MapPath("~/Content/HelpImages/article.png")), "image/png");;
 
-            return base.File(content, "image/jpeg");;
+            }
+
+            try
+            {
+
+                string base64 = content.Split(',')[1];
+            
+                byte[] bytes = Convert.FromBase64String(base64);
+
+
+                return base.File(bytes, "image/jpeg");;
+            }
+            catch (Exception e)
+            {
+                return base.File(System.IO.File.ReadAllBytes(Server.MapPath("~/Content/HelpImages/article.png")), "image/png");;
+
+            }
         }
         
         

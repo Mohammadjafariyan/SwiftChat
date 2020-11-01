@@ -36,7 +36,17 @@ namespace TelegramBotsWebApplication.ActionFilters
                         throw new Exception("دسترسی ندارید");
                     }
                 }
-                
+
+
+                try
+                {
+                    SecurityService.GetCurrentUser();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("کاربر یافت نشد مجددا وارد شوید");
+                }
+
             }
             catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);

@@ -1,4 +1,5 @@
-﻿using SignalRMVCChat.Areas.security.Models;
+﻿using System.Web.Mvc;
+using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.security.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.SysAdmin.Service;
@@ -15,6 +16,10 @@ namespace SignalRMVCChat.Areas.security.Controllers
             AppRoleService = Injector.Inject<AppRoleService>();
         }
         
+        public override ActionResult LoginError(dynamic model)
+        {
+            return View("~/Areas/Security/Views/Account/Login.cshtml",model);
+        }
         protected override dynamic CreateUser(RegisterViewModel model)
         {
             return new AppUser()

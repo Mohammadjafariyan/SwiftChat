@@ -6,8 +6,335 @@ var websiteToken = "#websiteToken#";
 var debugMode = true;
 let shadow;
 
+/*=========================================== live assist ==================================================*/
+
+function traverse(eventData, seenObjects, currentDepth, maxDepth) {
+    if (currentDepth >= maxDepth) return '[object Object]';
+
+    const json = {};
+
+    for (let key in eventData) {
+        const value = eventData[key];
+
+        switch (Object.prototype.toString.call(value)) {
+            case '[object String]':
+            case '[object Number]':
+            case '[object Boolean]':
+                json[key] = value;
+                break;
+
+            case '[object Null]':
+                json[key] = null;
+                break;
+
+            case '[object Function]':
+                json[key] = '[Function: ' + (value.name || 'anonymous') + ']';
+                break;
+
+            case '[object Object]':
+            case '[object Array]':
+            case '[object HTMLCollection]':
+            case '[object HTMLDocument]':
+            case '[object HTMLBodyElement]':
+            case '[object HTMLInputElement]':
+            case '[object HTMLDivElement]':
+            case '[object NamedNodeMap]':
+            case '[object NodeList]':
+            case '[object DOMTokenList]':
+            case '[object DOMStringMap]':
+            case '[object CSSStyleDeclaration]':
+            case '[object ValidityState]':
+            case '[object Arguments]':
+                if (seenObjects.indexOf(value) >= 0) {
+                    json[key] = '[object Circular]';
+                } else {
+                    seenObjects.push(value);
+                    json[key] = traverse(
+                        value,
+                        seenObjects,
+                        currentDepth + 1,
+                        maxDepth
+                    );
+                }
+                break;
+            case '[object Symbol]':
+                json[key] = '[object Symbol]';
+                break;
+            default:
+                json[key] = '[unhandled typeof]';
+        }
+    }
+
+    return json;
+}
+
+const parse = (eventData, depth) => {
+    const maxDepth = depth || 4;
+    const seenObjects = [eventData]; // start with itself
+
+    return traverse(eventData, seenObjects, 0, maxDepth);
+};
+
+class SenderLiveAssistService {
+
+
+    html;
+
+    liveAssistRequestCallback(RES) {
+
+        if (!RES.Content.MyAccountId) {
+            alert('کد ادمین صحیح ارسال نشده است')
+            return;
+        }
+
+        let html = document.querySelector('html').outerHTML;
+
+        let base64 = btoa(unescape(encodeURIComponent(html)));
+
+        this.html = html;
+
+        var width = getWidth();
+
+        var height = getHeight();
+
+        CurrentUserInfo.MyAccountId = RES.Content.MyAccountId;
+        MyCaller.Send("LiveAssistSendDoc", {
+            MyAccountId: RES.Content.MyAccountId, htmlbase64: base64,
+            width: width, height: height
+        });
+
+
+        this.ConfigUserBehaviour();
+
+    }
+
+
+    fireEvent(type, e) {
+        let ev = getMousePos(e);
+
+
+        this.firedEvents = e;
+
+        let scroll = this.getScroll();
+
+        MyCaller.Send("LiveAssistFireEvent", {
+            MyAccountId: CurrentUserInfo.MyAccountId, x: ev.x, y: ev.y, event: JSON.stringify(parse(e)),
+            type: type,
+            sx: scroll.sx,
+            sy: scroll.sy
+
+
+        });
+    }
+
+    getScroll() {
+        if (window.pageYOffset != undefined) {
+            return {sx: pageXOffset, sy: pageYOffset};
+        } else {
+            var sx, sy, d = document,
+                r = d.documentElement,
+                b = d.body;
+            sx = r.scrollLeft || b.scrollLeft || 0;
+            sy = r.scrollTop || b.scrollTop || 0;
+            return {sx, sy};
+        }
+    }
+
+    ConfigUserBehaviour() {
+
+        let html = document.querySelector('html');
+
+        html.addEventListener('mousemove', (e) => {
+
+
+            this.fireEvent('mousemove', e)
+        })
+
+        html.addEventListener('click', (e) => {
+            this.fireEvent('click', e)
+
+        })
+
+        window.addEventListener('scroll', (e) => {
+            this.fireEvent('scroll', e)
+
+        })
+
+        html.addEventListener('keydown', (e) => {
+            this.fireEvent('keydown', e)
+
+        })
+
+        html.addEventListener('focus', (e) => {
+            this.fireEvent('focus', e)
+
+        })
+
+
+    }
+}
+
+class ReceiverLiveAssistService {
+
+    html
+
+    isValid(data, name) {
+        if (!data || !data.Content || !data.Content[name]) {
+            console.error('data is null : LiveAssistSendDocCallback')
+            return false;
+        }
+
+        return true;
+    }
+
+    LiveAssistSendDocCallback(data) {
+        if (!this.isValid(data, 'htmlbase64')) {
+            return;
+        }
+
+
+        let html = atob(data.Content.htmlbase64);
+
+        this.html = html;
+
+    }
+
+    getMagicBrowser() {
+        return document;
+    }
+
+    LiveAssistFireEventCallback(data) {
+        if (!this.isValid(data, 'Event')) {
+            return;
+        }
+        let _event = JSON.parse(data.Content.Event);
+
+        this.firedEvents = _event;
+
+        if (!this._LiveAssistShower) {
+
+            this._LiveAssistShower = new LiveAssistShower();
+
+        }
+
+        if (data.Content.sx != null && data.Content.sy != null) {
+
+            window.scrollTo(data.Content.sx, data.Content.sy)
+        }
+
+        this._LiveAssistShower.fireMouseEventAndReRender(data.Content)
+
+
+        if (data.Content.type === 'click') {
+
+            const x = data.Content.x;
+            const y = data.Content.y;
+
+            let spinner = getDoc().querySelector('.pulsating-circle');
+
+            spinner.style.left = `${x}px`;
+            spinner.style.top = `${y}px`;
+
+            spinner.style.display = 'block';
+
+            if (!this.isTimeOutSet) {
+                this.isTimeOutSet = true;
+
+                setTimeout(() => {
+                    spinner.style.display = 'none';
+                    this.isTimeOutSet = false;
+                }, 1000);
+            }
+
+
+        }
+
+
+        //   this.getMagicBrowser().dispatchEvent(_event)
+
+
+        /*  switch (data.Content.type){
+              case 'mousemove':
+  
+                  break;
+              case 'click':
+                  break;
+              case 'wheel':
+                  break;
+              case 'keydown':
+                  break;
+          }*/
+
+
+    }
+
+}
+
+function getMousePos(e) {
+    return {
+        x: e.clientX + document.body.scrollLeft,
+        y: e.clientY + document.body.scrollTop
+    };
+}
+
+class LiveAssistShower {
+    el = getDoc().querySelector('.mouse');
+
+    fireMouseEventAndReRender(mouseEvent) {
+
+        this.mouseEvent = mouseEvent;
+
+        // Ask the browser to call render to start our animation
+        requestAnimationFrame((a) => {
+            this.render(a)
+        });
+
+    }
+
+    getMousePos(e) {
+        return {
+            x: e.clientX + document.body.scrollLeft,
+            y: e.clientY + document.body.scrollTop
+        }
+    }
+
+    // The render function is called on every frame
+    render(a) {
+        // The a variable is the amount of milliseconds since we started our script
+
+        // Get a noise value based on the elapsed time
+        // This noise algorithm is returning values between [-1, 1] so we need to map them to [0, 1] by adding one to the value and dividing it by 2
+        //  const noiseX = (noise.simplex2(0, a*0.0005) + 1) / 2;
+        // We get another noise value for the y axis but because we don't want the same value than x, we need to use another value for the first parameter
+        //  const noiseY = (noise.simplex2(1, a*0.0005) + 1) / 2;
+
+        // Convert the noise values from [0, 1] to the size of the window
+
+
+        const x = this.mouseEvent.x;// this.getMousePos(this.mouseEvent).x;//noiseX * window.innerWidth;
+        const y = this.mouseEvent.y;//this.getMousePos(this.mouseEvent).y;//noiseY * window.innerHeight;
+
+        // Apply the x & y coordinates on our element
+        this.el.style.transform = `translate(${x}px, ${y}px)`;
+        this.el.style.display=null;
+
+        // Call the render function once the browser is ready to make it an infinite loop
+    }
+
+}
+
+
+let _SenderLiveAssistService = new SenderLiveAssistService();
+let _ReceiverLiveAssistService = new ReceiverLiveAssistService();
+
+
+/*===========================================  END ==================================================*/
 
 /*=========================================== event Trigger ==================================================*/
+
+function detectMob() {
+    return ((window.innerWidth <= 800) && (window.innerHeight <= 600));
+}
 
 class EventTriggerManager {
     eventTriggerBeans = [];
@@ -81,6 +408,16 @@ class EventTrigger {
 
     ConfigEvents() {
 
+        if (!this.bean.RunInMobileDevices && detectMob()) {
+            return;
+
+        }
+
+        if (!this.bean.RunInDesktopDevices && !detectMob()) {
+            return;
+        }
+
+
         this.tryCatch(() => {
             this.configOnExitTab();
 
@@ -118,11 +455,11 @@ class EventTrigger {
         function addEvent(obj, evt, fn) {
             if (obj.addEventListener) {
                 obj.addEventListener(evt, fn, false);
-            }
-            else if (obj.attachEvent) {
+            } else if (obj.attachEvent) {
                 obj.attachEvent("on" + evt, fn);
             }
         }
+
         addEvent(document, "mouseleave", function (e) {
             e = e ? e : window.event;
             var from = e.relatedTarget || e.toElement;
@@ -133,24 +470,24 @@ class EventTrigger {
                 //.... do_this
             }
         });
-     /*   window.onbeforeunload = onExit;
-
-
-        function onExit(event) {
-
-             let message=parent.bean.localizedMessages[0].textArea;
-            var e = event || window.event;
-            if (e) {
-                e.returnValue =message;
-                e.preventDefault();
-            }
-            setTimeout(()=>{
-                parent.fireEvent('beforeunload');
-            },100);
-
-
-return message;
-        }*/
+        /*   window.onbeforeunload = onExit;
+   
+   
+           function onExit(event) {
+   
+                let message=parent.bean.localizedMessages[0].textArea;
+               var e = event || window.event;
+               if (e) {
+                   e.returnValue =message;
+                   e.preventDefault();
+               }
+               setTimeout(()=>{
+                   parent.fireEvent('beforeunload');
+               },100);
+   
+   
+   return message;
+           }*/
 
         /*   window.addEventListener('beforeunload', () => {
    
@@ -184,7 +521,7 @@ return message;
 
             if (!findedLinks)
                 continue;
-          
+
             for (let j = 0; j < findedLinks.length; j++) {
                 findedLinks[j].addEventListener('click', () => {
 
@@ -195,7 +532,6 @@ return message;
 
         }
 
-   
 
     }
 
@@ -252,10 +588,9 @@ return message;
                         let notEqualpart = name.replace('!', '');
 
                         if (notEqualpart === URLParts[j]) {
-
-                            break;
                             notEqualAny = true;
 
+                            break;
                         }
 
                         continue;
@@ -266,6 +601,7 @@ return message;
                     if (pattern.test(URLParts[j])) {
                     } else {
                         notEqualAny = true;
+                        break;
 
                     }
 
@@ -371,7 +707,7 @@ return message;
 
         if (this.bean.IsShowMessageEnabled) {
 
-           // this.showMessage();
+            // this.showMessage();
         }
 
 
@@ -393,20 +729,20 @@ return message;
         for (let i = 0; i < this.bean.localizedMessages.length; i++) {
 
             // IF NOT CHAT OPEN , SHOW ON THE FLY
-           /* if (this.bean.IsOpenChatBox) {
-                showNewOnTheFlyMessage(this.bean.localizedMessages[i].textArea)
-            } else {
-
-
-                let res = {
-                    Content: {
-                        Message: this.bean.localizedMessages[i].textArea
-                    }
-                };
-
-                CurrentUserInfo.plugin.adminSendToCustomerCallback(res, false);
-
-            }*/
+            /* if (this.bean.IsOpenChatBox) {
+                 showNewOnTheFlyMessage(this.bean.localizedMessages[i].textArea)
+             } else {
+ 
+ 
+                 let res = {
+                     Content: {
+                         Message: this.bean.localizedMessages[i].textArea
+                     }
+                 };
+ 
+                 CurrentUserInfo.plugin.adminSendToCustomerCallback(res, false);
+ 
+             }*/
 
         }
 
@@ -425,6 +761,9 @@ return message;
 
     playSound() {
 
+        var audio = new Audio(`${baseUrlForapi}/Content/music/alert.mp3`);
+        audio.play();
+
     }
 
 
@@ -432,29 +771,29 @@ return message;
 
     fireEvent(name) {
 
-        
+
         /*fire once*/
-        if (!this.firedEvents){
-            this.firedEvents=[];
+        if (!this.firedEvents) {
+            this.firedEvents = [];
         }
-        if (!this.firedEvents.find(f=>f===name)){
+        if (!this.firedEvents.find(f => f === name)) {
             this.firedEvents.push(name)
-        }else{
+        } else {
             return;
         }
         /*END*/
 
 
         this.Action();
-        
+
         debugger;
 
-        MyCaller.Send('EventFired', {name: name,id:this.bean.Id})
+        MyCaller.Send('EventFired', {name: name, id: this.bean.Id})
 
     }
 
-    eventFiredSaveCallback(res){
-        
+    eventFiredSaveCallback(res) {
+
     }
 
     /*-------------------------device:*/
@@ -1178,7 +1517,7 @@ class BasePlugin {
                 if (CurrentUserInfo.IsCustomer) {
 
                     res.Content.AccountId = res.Content.MyAccountId;
-                    res.Content.Chat=res.Content;
+                    res.Content.Chat = res.Content;
 
                     CurrentUserInfo.plugin.adminSendToCustomerCallback(res, true);
                 } else {
@@ -1336,7 +1675,7 @@ class BasePlugin {
     registerCallback(res) {
 
 
-       // getDoc().querySelector('#dot').style.display = 'none';
+        // getDoc().querySelector('#dot').style.display = 'none';
 
 
         var gapContent = getDoc().querySelector('#gap_onlines');
@@ -1378,10 +1717,10 @@ class BasePlugin {
         gapContent.innerHTML = gapContent.innerHTML + _html;
 
 
-    /*    if (CurrentUserInfo.IsCustomer) {
-            CurrentUserInfo.commonDomManager.toggleSelectChat();
-
-        }*/
+        /*    if (CurrentUserInfo.IsCustomer) {
+                CurrentUserInfo.commonDomManager.toggleSelectChat();
+    
+            }*/
         CurrentUserInfo.plugin.bindAfterRegister()
         //res ==> MyDataTableResponse<MyAccount>
 
@@ -1392,6 +1731,9 @@ class BasePlugin {
             _EventTriggerManager.getEventTriggers();
 
         }
+        
+        MyCaller.Send('CustomerGetUsersSeparationConfig');
+
 
         return _html;
     }
@@ -1709,6 +2051,9 @@ class BasePlugin {
 
 
         }
+
+
+        testDo();
 
 
         //     getDoc().getElementById('chatPanel').innerHTML = html;
@@ -3230,6 +3575,9 @@ class DomManager {
     bindDotOnClick() {
 
         getDoc().querySelector('#dot').onclick = function () {
+            
+            
+            
 
             getDoc().querySelector('#gapOnTheFlyMessage').style.display = 'none'
 
@@ -3575,6 +3923,40 @@ class dispatcher {
             console.error(res.Message);
         }
         switch (res.Name) {
+
+            
+            /*============================ Rating ===========================*/
+            case 'adminSendRatingRequestCallback':
+                adminSendRatingRequestCallback(res);
+                break;
+
+            /*============================ END ===========================*/
+
+                
+                
+                
+                
+            /*============================ Users Separation ===========================*/
+            case 'customerGetUsersSeparationConfigCallback':
+                customerGetUsersSeparationConfigCallback(res);
+                break;
+
+
+            /*============================ END ===========================*/
+
+
+            /*============================ live Assist ===========================*/
+
+
+            case 'LiveAssistFireEventByAdminCallback':
+                _ReceiverLiveAssistService.LiveAssistFireEventCallback(res);
+                break;
+
+            case 'liveAssistRequestCallback':
+                _SenderLiveAssistService.liveAssistRequestCallback(res);
+                break;
+
+            /*====================== END ===========================*/
 
             case 'getEventTriggersCallback' :
                 _EventTriggerManager.getEventTriggersCallback(res);
@@ -5127,14 +5509,27 @@ function adminStopTypingCallback() {
 }
 
 
+let CustomerStartTypingSent = false;
+
 function bindIsTyping() {
     var searchTimeout;
-    getDoc().querySelector('#gapChatInput').onkeypress = function () {
-        if (searchTimeout != undefined) clearTimeout(searchTimeout);
+    getDoc().querySelector('#gapChatInput').onchange = function () {
+        if (searchTimeout !== undefined) clearTimeout(searchTimeout);
 
+        let strg = getDoc().querySelector('#gapChatInput').value;
 
-        searchTimeout = setTimeout(callServerScript, 1000);
-        MyCaller.Send('CustomerStartTyping');
+        if (strg || strg.trim() === '') {
+            //   if (strg || strg.trim() === '' && !CustomerStartTypingSent) {
+            MyCaller.Send('CustomerStartTyping', {text: strg});
+            CustomerStartTypingSent = true;
+
+        } else {
+
+            CustomerStartTypingSent = false;
+
+            callServerScript();
+        }
+        // searchTimeout = setTimeout(callServerScript, 1000);
     };
 
 }
@@ -5305,7 +5700,7 @@ let gapDeskApiCaller = function (url, data, callback) {
 function gapHelpDeskSearchChanged(THIS, api) {
     getDoc().querySelector('.gapHelpDeskLinks').innerHTML = '<p style="text-align: center">در حال خواندن اطلاعات</p>';
     let searchTerm = THIS.value;
-    gapDeskApiCaller(api, {searchTerm: searchTerm,websiteToken:websiteToken}, function (responseText) {
+    gapDeskApiCaller(api, {searchTerm: searchTerm, websiteToken: websiteToken}, function (responseText) {
 
         if (!responseText) {
 
@@ -6393,5 +6788,197 @@ function cC_AdminInAnotherCallingCallback(res) {
 
 }
 
+
+function getWidth() {
+    return Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.documentElement.clientWidth
+    );
+}
+
+function getHeight() {
+    return Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.documentElement.clientHeight
+    );
+}
+
+
+/*---------------------------------------------Users Separation-------------------------------------*/
+
+
+function customerGetUsersSeparationConfigCallback(res) {
+    if (!res || !res.Content) {
+        return;
+    }
+
+    let usersSeparation = {
+        enabled: res.Content.enabled,
+        type: res.Content.type,
+        RestApiUrl: res.Content.RestApiUrl,
+        params: res.Content.params,
+        UrlPattern: res.Content.UrlPattern,
+        Id: res.Content.Id
+    };
+
+
+    if (usersSeparation.type === 'rest-api-type') {
+
+
+        if (usersSeparation.RestApiUrl && usersSeparation.params && usersSeparation.params.length) {
+
+            fetch(usersSeparation.RestApiUrl).then(
+                response => response.json() // .json(), etc.
+                // same as function(response) {return response.text();}
+            ).then(
+                res => {
+                    if (res) {
+                        for (let i = 0; i < usersSeparation.params.length; i++) {
+
+                            usersSeparation.params[i].paramValue = res[usersSeparation.params[i].paramName];
+
+                        }
+                        
+                        CustomerSaveUsersSeparationValues(usersSeparation);
+                    }
+
+
+                }
+            );
+
+
+            ``
+        }
+
+    } else {
+
+        if (!usersSeparation.params || usersSeparation.params.length) {
+            return;
+        }
+
+        for (let i = 0; i < usersSeparation.params.length; i++) {
+
+
+            if (usersSeparation.params[i].paramType === 'param-type-rest') {
+
+            } else {
+
+                let param = document.querySelector(usersSeparation.params[i].paramName);
+
+                if (param) {
+                    let value = param.value;
+
+                    if (!value) {
+                        value = param.value.innerText;
+                    }
+
+
+                    usersSeparation.params[i].paramValue = value;
+
+                } else {
+                    usersSeparation.params[i].paramValue = "پارامتر یافت نشد";
+
+                }
+
+
+            }
+
+        }
+
+    }
+
+
+}
+
+
+function CustomerSaveUsersSeparationValues(usersSeparation){
+    
+    
+    MyCaller.Send("CustomerSaveUsersSeparationValues",usersSeparation);
+}
+
+/*--------------------------------------------- END -------------------------------------*/
+
+
+
+/*--------------------------------------------- rating -------------------------------------*/
+
+function adminSendRatingRequestCallback(res){
+   /* if (getDoc().querySelector('#gapComment'))
+        return ;*/
+
+    let html=`
+    <div id="gapComment" style="margin:20px;border-radius: 5px 5px 5px 5px;background-color: white;
+    padding:20px;border:1px solid black">
+    <h3>
+    <i class="fa fa-comment" aria-hidden="true"></i>
+
+    از این که از خدمات ما استفاده کردید از شما متشکریم  </h3>
+    <p>با ارسال بازخورد ما را در ارائه هرچه بهتر خدمات یاری فرمایید</p>
+    
+    <button onclick="gapComment(6,this)" style="background-color: greenyellow;border-radius: 5px 5px 5px 5px;border:none;padding:5px">عالی</button>
+    <button onclick="gapComment(3,this)" style="background-color: #0df3a3;border-radius: 5px 5px 5px 5px;border:none;padding:5px">خوب</button>
+    <button onclick="gapComment(2,this)" style="background-color: yellow;border-radius: 5px 5px 5px 5px;border:none;padding:5px">بد نبود</button>
+    <button  onclick="gapComment(1,this)" style="background-color: red;border-radius: 5px 5px 5px 5px;border:none;padding:5px"> بد</button>
+    
+    <i style="font-size: 25px;float:left" class="fa fa-paper-plane" aria-hidden="true"></i>
+
+</div>
+    `;
+
+
+
+    if (getDoc().querySelector('#dot').style.display === 'none') {
+        getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
+
+    }else{
+        getDoc().querySelector('#gapOnTheFlyMessageText').innerHTML=html;
+        getDoc().querySelector('#gapOnTheFlyMessage').style.display=null;
+    }
+
+}
+
+function gapComment(rate,el){
+    
+    
+    MyCaller.Send("CustomerRate",{rate});
+    let html=`
+   
+    <h3>
+    
+    <i style="font-size: 25px;color:#0df3a3" class="fa fa-smile-o" aria-hidden="true"></i>
+
+    بازخورد شما دریافت شد متشکریم
+    
+    <i style="font-size: 25px;" class="fa fa-check" aria-hidden="true"></i>
+
+    </h3>
+  
+
+    `;
+
+    if (getDoc().querySelector('#dot').style.display === 'none') {
+       html+=`    <i style="font-size: 25px;float:left" class="fa fa-comment" aria-hidden="true"></i>`;
+
+    }else{
+        html+=`    <i style="font-size: 25px;" class="fa fa-comment" aria-hidden="true"></i>`;
+    }
+
+   el.parentNode.innerHTML=html;
+
+}
+
+
+
+function testDo(){
+
+  //  adminSendRatingRequestCallback();
+}
 
 

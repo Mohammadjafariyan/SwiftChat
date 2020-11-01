@@ -36,7 +36,8 @@ namespace SignalRMVCChat.Service
 
                     LastTrackInfo = type == MySocketUserType.Customer ? c.Customer.LastTrackInfo : null,
                     Email=c.Customer?.Email,
-                    Phone=c.Customer?.Phone
+                    Phone=c.Customer?.Phone,
+                    UsersSeparationParams=c.Customer?.UsersSeparationParams
 
                 };
             }).ToList();

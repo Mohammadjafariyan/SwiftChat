@@ -8,6 +8,12 @@ class GoToHelpCenter extends Component {
         super(r);
         CurrentUserInfo.GoToHelpCenter=this;
     }
+    
+    
+    componentDidMount() {
+        MyCaller.Send("Language_GetCurrentHelpDesk_SelectedLanguage")
+
+    }
 
     language_GetCurrentHelpDesk_SelectedLanguageCallback(res){
         

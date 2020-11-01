@@ -1,332 +1,393 @@
-import {CurrentUserInfo} from './Socket';
-import {cookieManager} from './CookieManager';
-import LoginPage from './../Pages/LoginPage';
+import {CurrentUserInfo} from "./Socket";
+import {cookieManager} from "./CookieManager";
+import LoginPage from "./../Pages/LoginPage";
 import {DataHolder} from "./DataHolder";
 import {FormShowerInChatHolder} from "../Components/FormShowerInChat";
 
 class dispatcher {
-
     dispatch(res) {
-        if (res.Type == -1)//error
-        {
+        if (res.Type == -1) {
+            //error
             console.error(res.Message);
-
-
         }
-        console.log('dispatcher===>',res.Name)
+        console.log("dispatcher===>", res.Name);
         switch (res.Name) {
+
+            /* ===============Users Separation =============== */
+            case "getUsersSeparationFormCallback":
+                if (CurrentUserInfo.UsersSeparationForm) {
+                    CurrentUserInfo.UsersSeparationForm.getUsersSeparationFormCallback(res);
+                }
+                break;
+            case "saveUsersSeparationFormCallback":
+                if (CurrentUserInfo.UsersSeparationForm) {
+                    CurrentUserInfo.UsersSeparationForm.saveUsersSeparationFormCallback(res);
+                }
+                break;
+
+
+            /* =============== END =============== */
+            /* =============== live Assist =============== */
+            case "liveAssistSendDocCallback":
+                if (CurrentUserInfo.LiveAssistShower) {
+                    CurrentUserInfo.LiveAssistShower.liveAssistSendDocCallback(res);
+                }
+                break;
+
+            case "liveAssistFireEventCallback":
+                if (CurrentUserInfo.LiveAssistShower) {
+                    CurrentUserInfo.LiveAssistShower.liveAssistFireEventCallback(res);
+                }
+                break;
 
             /*========== eventTrigger==========*/
             case "eventTriggerGetAllCallback":
-                if (CurrentUserInfo.EventTriggerIndex){
+                if (CurrentUserInfo.EventTriggerIndex) {
                     CurrentUserInfo.EventTriggerIndex.eventTriggerGetAllCallback(res);
                 }
                 break;
 
             case "eventTriggerSaveCallback":
-                if (CurrentUserInfo.EventTriggerIndex){
+                if (CurrentUserInfo.EventTriggerIndex) {
                     CurrentUserInfo.EventTriggerIndex.eventTriggerSaveCallback(res);
                 }
                 break;
 
-
             case "eventTriggerDeleteCallback":
-                if (CurrentUserInfo.EventTriggerIndex){
+                if (CurrentUserInfo.EventTriggerIndex) {
                     CurrentUserInfo.EventTriggerIndex.eventTriggerDeleteCallback(res);
                 }
                 break;
 
-                
             /*===========eventTrigger end============*/
-            
-            
+
             /*========== rating==========*/
 
-            
             case "getRatingCallback":
-                if (CurrentUserInfo.Satistification){
+                if (CurrentUserInfo.Satistification) {
                     CurrentUserInfo.Satistification.getRatingCallback(res);
                 }
                 break;
-                /*===========rating end============*/
-            
+            /*===========rating end============*/
+
+
+
+
+
+                /*========== rating==========*/
+
+            case "getLastVisitedPagesCallback":
+                if (CurrentUserInfo.LastPagesVisited) {
+                    CurrentUserInfo.LastPagesVisited.getLastVisitedPagesCallback(res);
+                }
+                break;
+                /*========== END==========*/
+
+
+
+                
+                
+                
+                
+                
+                
+
             /*===========customer data===============*/
             case "saveKeyCallback":
-                if (CurrentUserInfo.CustomerData){
+                if (CurrentUserInfo.CustomerData) {
                     CurrentUserInfo.CustomerData.saveKeyCallback(res);
                 }
                 break;
 
             case "deleteKeyCallback":
-                if (CurrentUserInfo.CustomerData){
+                if (CurrentUserInfo.CustomerData) {
                     CurrentUserInfo.CustomerData.deleteKeyCallback(res);
                 }
                 break;
-                
 
             case "getCustomerDataListCallback":
-                if (CurrentUserInfo.CustomerData){
+                if (CurrentUserInfo.CustomerData) {
                     CurrentUserInfo.CustomerData.getCustomerDataListCallback(res);
                 }
                 break;
 
             case "saveUserInfoCallback":
-                if (CurrentUserInfo.CustomerInfo){
+                if (CurrentUserInfo.CustomerInfo) {
                     CurrentUserInfo.CustomerInfo.saveUserInfoCallback(res);
                 }
                 break;
 
-                
-                /*============= customer data end =============*/
-            
-            
+            /*============= customer data end =============*/
+
             /*=============language=============*/
 
-            
-
             case "selectHelpDeskCallback":
-                if (CurrentUserInfo.DefinedLanguages){
+                if (CurrentUserInfo.DefinedLanguages) {
                     CurrentUserInfo.DefinedLanguages.selectHelpDeskCallback(res);
                 }
                 break;
 
             case "removeHelpDeskCallback":
-                if (CurrentUserInfo.RemoveLanguage){
+                if (CurrentUserInfo.RemoveLanguage) {
                     CurrentUserInfo.RemoveLanguage.removeHelpDeskCallback(res);
                 }
                 break;
-                
+
             case "language_GetCurrentHelpDesk_SelectedLanguageCallback":
-                if (CurrentUserInfo.LanguageHolder){
-                    CurrentUserInfo.LanguageHolder.language_GetCurrentHelpDesk_SelectedLanguageCallback(res);
+                if (CurrentUserInfo.LanguageHolder) {
+                    CurrentUserInfo.LanguageHolder.language_GetCurrentHelpDesk_SelectedLanguageCallback(
+                        res
+                    );
                 }
 
-                if (CurrentUserInfo.HelpDeskPage){
-                    CurrentUserInfo.HelpDeskPage.language_GetCurrentHelpDesk_SelectedLanguageCallback(res);
+                if (CurrentUserInfo.HelpDeskPage) {
+                    CurrentUserInfo.HelpDeskPage.language_GetCurrentHelpDesk_SelectedLanguageCallback(
+                        res
+                    );
                 }
-
 
                 if (CurrentUserInfo.GoToHelpCenter) {
-                    CurrentUserInfo.GoToHelpCenter.language_GetCurrentHelpDesk_SelectedLanguageCallback(res)
+                    CurrentUserInfo.GoToHelpCenter.language_GetCurrentHelpDesk_SelectedLanguageCallback(
+                        res
+                    );
                 }
-
 
                 break;
             case "create_HelpDesk_Callback":
-                if (CurrentUserInfo.LanguageHolder){
+                if (CurrentUserInfo.LanguageHolder) {
                     CurrentUserInfo.LanguageHolder.create_HelpDesk_Callback(res);
                 }
 
                 break;
             case "getDefinedLanguagesCallback":
-                if (CurrentUserInfo.DefinedLanguages){
+                if (CurrentUserInfo.DefinedLanguages) {
                     CurrentUserInfo.DefinedLanguages.getDefinedLanguagesCallback(res);
                 }
 
                 break;
 
+            /*===============language END============*/
 
-                
-                /*===============language END============*/
-
-                
-                
-                
-          
             /*======= helpDeskSetting==========*/
 
             case "helpDeskGetByIdCallback":
-                if (CurrentUserInfo.HelpDeskSetting){
+                if (CurrentUserInfo.HelpDeskSetting) {
                     CurrentUserInfo.HelpDeskSetting.helpDeskGetByIdCallback(res);
                 }
 
-                break;  case "helpDeskSaveDetailCallback":
-                if (CurrentUserInfo.HelpDeskSetting){
+                break;
+            case "helpDeskSaveDetailCallback":
+                if (CurrentUserInfo.HelpDeskSetting) {
                     CurrentUserInfo.HelpDeskSetting.helpDeskSaveDetailCallback(res);
                 }
 
                 break;
             /*======= helpDeskSettin
-            
-            
-            
-             */
-                /*=============article===========*/
+                  
+                  
+                  
+                   */
+            /*=============article===========*/
 
             case "articleSaveCallback":
-                if (CurrentUserInfo.SaveArticle){
+                if (CurrentUserInfo.SaveArticle) {
                     CurrentUserInfo.SaveArticle.articleSaveCallback(res);
                 }
 
                 break;
             case "articleGetByIdCallback":
-                if (CurrentUserInfo.SaveArticle){
+                if (CurrentUserInfo.SaveArticle) {
                     CurrentUserInfo.SaveArticle.articleGetByIdCallback(res);
                 }
 
                 break;
             case "articleDeleteByIdCallback":
-                if (CurrentUserInfo.HelpDeskPage){
+                if (CurrentUserInfo.HelpDeskPage) {
                     CurrentUserInfo.HelpDeskPage.articleDeleteByIdCallback(res);
                 }
 
                 break;
 
-                
-                
-                /*============article END=============*/
-                
-            
+            /*============article END=============*/
+
             /*===========category===================*/
 
+                
+
+            case "category_GetById_Callback":
+                if (CurrentUserInfo.CategorySave) {
+                    CurrentUserInfo.CategorySave.category_GetById_Callback(res);
+                }
             case "category_Get_List_Callback":
-                if (CurrentUserInfo.CategoryIndex){
+                if (CurrentUserInfo.CategoryIndex) {
                     CurrentUserInfo.CategoryIndex.category_Get_List_Callback(res);
                 }
 
-                if (CurrentUserInfo.SaveArticle){
+                if (CurrentUserInfo.SaveArticle) {
                     CurrentUserInfo.SaveArticle.category_Get_List_Callback(res);
                 }
 
                 break;
             case "category_Save_Callback":
-                if (CurrentUserInfo.CategorySave){
+                if (CurrentUserInfo.CategorySave) {
                     CurrentUserInfo.CategorySave.category_Save_Callback(res);
                 }
 
                 break;
             case "category_Delete_Callback":
-                if (CurrentUserInfo.CategoryDelete){
+                if (CurrentUserInfo.CategoryDelete) {
                     CurrentUserInfo.CategoryDelete.category_Delete_Callback(res);
                 }
 
                 break;
-                
-                
+
             /*===========category END===================*/
 
             case "screenRecordAdminShareRequestCallback":
-                if (CurrentUserInfo.ShowMyScreen){
-                    CurrentUserInfo.ShowMyScreen.screenRecordAdminShareRequestCallback(res);
+                if (CurrentUserInfo.ShowMyScreen) {
+                    CurrentUserInfo.ShowMyScreen.screenRecordAdminShareRequestCallback(
+                        res
+                    );
                 }
 
                 break;
 
             case "screenRecordCustomerCloseCallback":
-                if (CurrentUserInfo.ScreenRecordShowerSendRequest){
-                    CurrentUserInfo.ScreenRecordShowerSendRequest.screenRecordCustomerCloseCallback(res);
+                if (CurrentUserInfo.ScreenRecordShowerSendRequest) {
+                    CurrentUserInfo.ScreenRecordShowerSendRequest.screenRecordCustomerCloseCallback(
+                        res
+                    );
                 }
 
                 break;
 
             case "screenRecordAccessRequestSuccessCallback":
-                if (CurrentUserInfo.ScreenRecordShowerSendRequest){
-                    CurrentUserInfo.ScreenRecordShowerSendRequest.screenRecordAccessRequestSuccessCallback(res);
+                if (CurrentUserInfo.ScreenRecordShowerSendRequest) {
+                    CurrentUserInfo.ScreenRecordShowerSendRequest.screenRecordAccessRequestSuccessCallback(
+                        res
+                    );
                 }
 
                 break;
             case "screenRecordAccessRequestFailCallback":
-                if (CurrentUserInfo.ScreenRecordShowerSendRequest){
-                    CurrentUserInfo.ScreenRecordShowerSendRequest.screenRecordAccessRequestFailCallback(res);
+                if (CurrentUserInfo.ScreenRecordShowerSendRequest) {
+                    CurrentUserInfo.ScreenRecordShowerSendRequest.screenRecordAccessRequestFailCallback(
+                        res
+                    );
                 }
 
                 break;
             case "screenRecordSaveCallback":
-                if (CurrentUserInfo.ScreenRecordShower){
+                if (CurrentUserInfo.ScreenRecordShower) {
                     CurrentUserInfo.ScreenRecordShower.screenRecordSaveCallback(res);
                 }
-                
+
                 break;
-            
-            case 'saveFormDataCallback':
+
+            case "saveFormDataCallback":
                 /*لیست کامپونت های فرم ها در این ابجکت نگه داری می شود|*/
                 if (FormShowerInChatHolder) {
-
-
                     /*form.AfterMessage,
-                                formId,
-                                chatId,
-                                FormValues*/
+                                          formId,
+                                          chatId,
+                                          FormValues*/
 
-                    let FormShowerInChat=  FormShowerInChatHolder[res.Content.formId+''+res.Content.UniqId];
+                    let FormShowerInChat =
+                        FormShowerInChatHolder[
+                        res.Content.formId + "" + res.Content.UniqId
+                            ];
 
-                    if (FormShowerInChat){
+                    if (FormShowerInChat) {
                         FormShowerInChat.saveFormDataCallback(res);
                     }
                 }
                 break;
-            
-            case 'deleteFormCallback':
+
+            case "deleteFormCallback":
                 if (CurrentUserInfo.FormCreatorPage) {
                     CurrentUserInfo.FormCreatorPage.deleteFormCallback(res);
                 }
                 break;
-            case 'saveFormCallback':
+            case "saveFormCallback":
                 if (CurrentUserInfo.FormCreatorPage) {
                     CurrentUserInfo.FormCreatorPage.saveFormCallback(res);
                 }
                 break;
-            case 'getFormDataCallback':
+            case "getFormDataCallback":
                 if (CurrentUserInfo.FormDataTable) {
                     CurrentUserInfo.FormDataTable.getFormDataCallback(res);
                 }
                 break;
 
-            case 'getFormSingleCallback':
+            case "getFormSingleCallback":
                 if (CurrentUserInfo.FormCreatorPage) {
-                    CurrentUserInfo.FormCreatorPage.getFormSingleCallback({Content:res.Content.form});
+                    CurrentUserInfo.FormCreatorPage.getFormSingleCallback({
+                        Content: res.Content.form,
+                    });
                 }
 
                 /*لیست کامپونت های فرم ها در این ابجکت نگه داری می شود|*/
                 if (FormShowerInChatHolder) {
+                    let FormShowerInChat =
+                        FormShowerInChatHolder[
+                        res.Content.form.Id + "" + res.Content.UniqId
+                            ];
 
-                    let FormShowerInChat=  FormShowerInChatHolder[res.Content.form.Id+''+res.Content.UniqId];
-
-                    if (FormShowerInChat){
-                        FormShowerInChat.getFormSingleCallback({Content:res.Content.form});
+                    if (FormShowerInChat) {
+                        FormShowerInChat.getFormSingleCallback({
+                            Content: res.Content.form,
+                        });
                     }
                 }
 
                 break;
-            case 'customerGetFormSingleCallback':
-         //       debugger
+            case "customerGetFormSingleCallback":
+                //       debugger
                 if (CurrentUserInfo.FormCreatorPage) {
                     CurrentUserInfo.FormCreatorPage.getFormSingleCallback(res);
                 }
 
                 /*لیست کامپونت های فرم ها در این ابجکت نگه داری می شود|*/
                 if (FormShowerInChatHolder) {
-                 
-                  let FormShowerInChat=  FormShowerInChatHolder[res.Content.form.Id+''+res.Content.UniqId];
-                
-                  if (FormShowerInChat){
-                      FormShowerInChat.getFormSingleCallback({Content:res.Content.form});
-                  }
+                    let FormShowerInChat =
+                        FormShowerInChatHolder[
+                        res.Content.form.Id + "" + res.Content.UniqId
+                            ];
+
+                    if (FormShowerInChat) {
+                        FormShowerInChat.getFormSingleCallback({
+                            Content: res.Content.form,
+                        });
+                    }
                 }
 
                 break;
 
-            case 'customerStartTypingCallback':
-
+            case "customerStartTypingCallback":
                 if (CurrentUserInfo.OnlineCustomerListHolder) {
-                    CurrentUserInfo.OnlineCustomerListHolder.customerStartTypingCallback(res)
+                    CurrentUserInfo.OnlineCustomerListHolder.customerStartTypingCallback(
+                        res
+                    );
                 }
 
                 if (CurrentUserInfo.MyHeader) {
-                    CurrentUserInfo.MyHeader.customerStartTypingCallback(res)
+                    CurrentUserInfo.MyHeader.customerStartTypingCallback(res);
                 }
 
-
                 if (CurrentUserInfo.CustomersPage) {
-                    CurrentUserInfo.CustomersPage.customerStartTypingCallback(res)
+                    CurrentUserInfo.CustomersPage.customerStartTypingCallback(res);
+                }
+
+                if (CurrentUserInfo.ChatPage) {
+                    CurrentUserInfo.ChatPage.customerStartTypingCallback(res);
                 }
 
 
                 break;
 
-            case 'getCreatedFormsCallback':
+            case "getCreatedFormsCallback":
                 if (CurrentUserInfo.CreatedForms) {
-                    CurrentUserInfo.CreatedForms.getCreatedFormsCallback(res)
+                    CurrentUserInfo.CreatedForms.getCreatedFormsCallback(res);
                 }
 
                 if (CurrentUserInfo.CustomerToolbar) {
@@ -336,40 +397,37 @@ class dispatcher {
                 break;
 
             case "getSocialChannelsInfoCallback":
-
                 if (CurrentUserInfo.SocialChannelsPage) {
-                    CurrentUserInfo.SocialChannelsPage.getSocialChannelsInfoCallback(res)
+                    CurrentUserInfo.SocialChannelsPage.getSocialChannelsInfoCallback(res);
                 }
 
-
-
-
                 if (CurrentUserInfo.SendFromHelpDesk) {
-                    CurrentUserInfo.SendFromHelpDesk.getSocialChannelsInfoCallback(res)
+                    CurrentUserInfo.SendFromHelpDesk.getSocialChannelsInfoCallback(res);
                 }
                 break;
 
-
-            case 'saveSocialChannelsInfoCallback':
+            case "saveSocialChannelsInfoCallback":
                 if (CurrentUserInfo.SocialChannelsPage) {
-                    CurrentUserInfo.SocialChannelsPage.saveSocialChannelsInfoCallback(res)
+                    CurrentUserInfo.SocialChannelsPage.saveSocialChannelsInfoCallback(
+                        res
+                    );
                 }
 
                 break;
             case "customerStopTypingCallback":
-
                 if (CurrentUserInfo.OnlineCustomerListHolder) {
-                    CurrentUserInfo.OnlineCustomerListHolder.customerStopTypingCallback(res)
+                    CurrentUserInfo.OnlineCustomerListHolder.customerStopTypingCallback(
+                        res
+                    );
                 }
 
                 if (CurrentUserInfo.MyHeader) {
-                    CurrentUserInfo.MyHeader.customerStopTypingCallback(res)
+                    CurrentUserInfo.MyHeader.customerStopTypingCallback(res);
                 }
 
                 if (CurrentUserInfo.CustomersPage) {
-                    CurrentUserInfo.CustomersPage.customerStopTypingCallback(res)
+                    CurrentUserInfo.CustomersPage.customerStopTypingCallback(res);
                 }
-
 
                 break;
             case "forwardChatSuccessCallback":
@@ -381,8 +439,9 @@ class dispatcher {
                 break;
 
             case "getAutomaticSendChatsSocketHandlerCallback":
-
-                CurrentUserInfo.AutomaticSendPage.getAutomaticSendChatsSocketHandlerCallback(res);
+                CurrentUserInfo.AutomaticSendPage.getAutomaticSendChatsSocketHandlerCallback(
+                    res
+                );
                 break;
             case "successCallback":
                 CurrentUserInfo.LayoutPage.showMsg(res.Message);
@@ -390,27 +449,30 @@ class dispatcher {
 
                 break;
 
-
             case "ClearCookie":
-
-
                 //cookieManager.removeItem('customerToken')
-                cookieManager.removeItem('adminToken')
-                console.log('ClearCookie==>adminToken===>', cookieManager.getItem('adminToken'))
+                cookieManager.removeItem("adminToken");
+                console.log(
+                    "ClearCookie==>adminToken===>",
+                    cookieManager.getItem("adminToken")
+                );
                 CurrentUserInfo.customerToken = null;
 
-                CurrentUserInfo.LayoutPage.setState({tmp: Math.random(), isClearCookie: true})
+                CurrentUserInfo.LayoutPage.setState({
+                    tmp: Math.random(),
+                    isClearCookie: true,
+                });
 
                 //window.location.reload();
                 break;
             case "newSendPMByMeInAnotherPlaceCallback":
                 CurrentUserInfo.ChatPage.newSendPMByMeInAnotherPlaceCallback(res);
                 break;
-              
+
             case "readChatCallback":
                 CurrentUserInfo.ChatPage.readChatCallback(res);
                 CurrentUserInfo.ChatPage.LoadForms(res);
-                
+
                 break;
             case "adminLoginCallback":
                 CurrentUserInfo.LoginPage.adminLoginCallback(res);
@@ -419,32 +481,29 @@ class dispatcher {
             case "getClientsListForAdminCallback":
                 // CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);
 
-
                 if (!DataHolder.currentPage) {
                     if (CurrentUserInfo.CustomersPage) {
                         CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);
                     }
-
                 } else {
-
                     if (CurrentUserInfo.OnlineCustomerListHolder) {
-                        CurrentUserInfo.OnlineCustomerListHolder.getClientsListForAdminCallback(res);
+                        CurrentUserInfo.OnlineCustomerListHolder.getClientsListForAdminCallback(
+                            res
+                        );
                     }
                 }
 
-
                 /*else{
- 
-                 CurrentUserInfo.LayoutPage.showError('dispatcher CurrentUserInfo.OnlineCustomerListHolder is null');
- 
-                }*/
+         
+                         CurrentUserInfo.LayoutPage.showError('dispatcher CurrentUserInfo.OnlineCustomerListHolder is null');
+         
+                        }*/
                 break;
             case "adminSendToCustomerCallback":
                 //CurrentUserInfo.ChatPage.adminSendToCustomerCallback(res);
                 break;
             case "adminSendToCustomerFailCallback":
-                if (res.Message)
-                    CurrentUserInfo.LayoutPage.showError(res.Message);
+                if (res.Message) CurrentUserInfo.LayoutPage.showError(res.Message);
                 // CurrentUserInfo.plugin.adminSendToCustomerFailCallback(res);
                 break;
 
@@ -456,8 +515,9 @@ class dispatcher {
                     CurrentUserInfo.CustomersPage.customerSendToAdminCallback(res);
 
                 if (CurrentUserInfo.OnlineCustomerListHolder)
-                    CurrentUserInfo.OnlineCustomerListHolder.customerSendToAdminCallback(res);
-
+                    CurrentUserInfo.OnlineCustomerListHolder.customerSendToAdminCallback(
+                        res
+                    );
 
                 break;
             case "msgDeliveredCallback":
@@ -466,16 +526,15 @@ class dispatcher {
             case "multimediaPmSendCallback":
                 CurrentUserInfo.ChatPage.multimediaPmSendCallback(res);
 
-
                 if (CurrentUserInfo.OnlineCustomerListHolder)
-                    CurrentUserInfo.OnlineCustomerListHolder.multimediaPmSendCallback(res);
+                    CurrentUserInfo.OnlineCustomerListHolder.multimediaPmSendCallback(
+                        res
+                    );
 
                 break;
             case "multimediaDeliveredCallback":
                 CurrentUserInfo.ChatPage.multimediaDeliveredCallback(res);
                 break;
-
-
 
             //new Accont or Customer
             case "newAccountOnlineCallback":
@@ -486,32 +545,29 @@ class dispatcher {
                 //todo:server add coiunt of new  users
                 if (CurrentUserInfo.CustomersPage) {
                     CurrentUserInfo.CustomersPage.newCustomerOnlineCallback(res);
-
                 }
 
-
                 if (CurrentUserInfo.OnlineCustomerListHolder) {
-                    CurrentUserInfo.OnlineCustomerListHolder.newCustomerOnlineCallback(res);
-
+                    CurrentUserInfo.OnlineCustomerListHolder.newCustomerOnlineCallback(
+                        res
+                    );
                 }
                 break;
 
             //end
 
-
-            case 'totalUserCountsChangedCallback':
-
+            case "totalUserCountsChangedCallback":
                 CurrentUserInfo.SubMenu.totalUserCountsChangedCallback(res);
                 CurrentUserInfo.Menu.totalUserCountsChangedCallback(res);
 
                 if (CurrentUserInfo.OnlineCustomerListHolder) {
-                    CurrentUserInfo.OnlineCustomerListHolder.totalUserCountsChangedCallback(res);
-
+                    CurrentUserInfo.OnlineCustomerListHolder.totalUserCountsChangedCallback(
+                        res
+                    );
                 }
                 if (CurrentUserInfo.CustomersPage) {
-                    CurrentUserInfo.CustomersPage.totalUserCountsChangedCallback(res)
+                    CurrentUserInfo.CustomersPage.totalUserCountsChangedCallback(res);
                 }
-
 
                 break;
 
@@ -520,8 +576,9 @@ class dispatcher {
                 CurrentUserInfo.CustomersPage.customerOnlineAgainCallback(res);
 
                 if (CurrentUserInfo.OnlineCustomerListHolder) {
-                    CurrentUserInfo.OnlineCustomerListHolder.customerOnlineAgainCallback(res);
-
+                    CurrentUserInfo.OnlineCustomerListHolder.customerOnlineAgainCallback(
+                        res
+                    );
                 }
 
                 //   CurrentUserInfo.plugin.customerOnlineAgainCallback(res);
@@ -531,8 +588,9 @@ class dispatcher {
                 //  CurrentUserInfo.plugin.customerOfflineAgainCallback(res);
 
                 if (CurrentUserInfo.OnlineCustomerListHolder) {
-                    CurrentUserInfo.OnlineCustomerListHolder.customerOfflineAgainCallback(res);
-
+                    CurrentUserInfo.OnlineCustomerListHolder.customerOfflineAgainCallback(
+                        res
+                    );
                 }
                 break;
             //end
@@ -546,20 +604,22 @@ class dispatcher {
                 break;
             //end
 
-
             case "getCustomerActivityDetailCallback":
                 CurrentUserInfo.CustomersPage.getCustomerActivityDetailCallback(res);
                 break;
 
-
             case "searchHandlerCallback":
                 /* customerlist,
-                                    sendMsgList,
-                                    receiveMsgList*/
-                ;
-                CurrentUserInfo.CustomersPage.searchHandlerCallback(res.Content.customerlist);
+                                            sendMsgList,
+                                            receiveMsgList*/
+                CurrentUserInfo.CustomersPage.searchHandlerCallback(
+                    res.Content.customerlist
+                );
                 //CurrentUserInfo.AdminsPage.searchHandlerCallback(res.customerlist);
-                CurrentUserInfo.ChatPage.searchHandlerCallback(res.Content.sendMsgList, res.Content.receiveMsgList);
+                CurrentUserInfo.ChatPage.searchHandlerCallback(
+                    res.Content.sendMsgList,
+                    res.Content.receiveMsgList
+                );
                 break;
 
             case "loadReadyPmCallback":
@@ -571,54 +631,53 @@ class dispatcher {
             case "EditMessageCallback":
                 CurrentUserInfo.ChatPage.EditMessageCallback(res);
                 break;
-            case 'getVisitedPagesForCurrentSiteCallback':
-                CurrentUserInfo.SepratePerPage.getVisitedPagesForCurrentSiteCallback(res);
+            case "getVisitedPagesForCurrentSiteCallback":
+                CurrentUserInfo.SepratePerPage.getVisitedPagesForCurrentSiteCallback(
+                    res
+                );
                 break;
 
-            case"getAllTagsForCurrentAdminCallback":
-
+            case "getAllTagsForCurrentAdminCallback":
                 if (CurrentUserInfo.TagList) {
                     CurrentUserInfo.TagList.getAllTagsForCurrentAdminCallback(res);
                 }
 
                 break;
 
-            case 'deleteTagFormUserTagsByIdCallback':
-
+            case "deleteTagFormUserTagsByIdCallback":
                 if (CurrentUserInfo.CustomerTags) {
                     CurrentUserInfo.CustomerTags.deleteTagFormUserTagsByIdCallback(res);
                 }
 
                 break;
-            case 'deleteTagByIdCallback':
-
+            case "deleteTagByIdCallback":
                 if (CurrentUserInfo.TagList) {
                     CurrentUserInfo.TagList.deleteTagByIdCallback(res);
                 }
 
                 break;
 
-            case 'getMyProfileCallback':
+            case "getMyProfileCallback":
                 if (CurrentUserInfo.ProfilePage) {
                     CurrentUserInfo.ProfilePage.getMyProfileCallback(res);
                 }
                 break;
-            case 'saveMyProfileCallback':
+            case "saveMyProfileCallback":
                 if (CurrentUserInfo.ProfilePage) {
                     CurrentUserInfo.ProfilePage.saveMyProfileCallback(res);
                 }
                 break;
-            case 'userAddedToTagsCallback':
+            case "userAddedToTagsCallback":
                 if (CurrentUserInfo.ChatPage) {
                     CurrentUserInfo.ChatPage.userAddedToTagsCallback(res);
-
                 }
-
 
                 // باعث loop می شود لذا if گذاشته ایم
                 if (DataHolder.currentPage) {
                     if (CurrentUserInfo.OnlineCustomerListHolder) {
-                        CurrentUserInfo.OnlineCustomerListHolder.userAddedToTagsCallback(res);
+                        CurrentUserInfo.OnlineCustomerListHolder.userAddedToTagsCallback(
+                            res
+                        );
                     }
                 }
 
@@ -632,36 +691,28 @@ class dispatcher {
                 break;
             default:
                 if (res && res.Message) {
-
                     console.error(res.Message);
 
                     CurrentUserInfo.LayoutPage.showError(res.Message);
 
-
-                    if (res.Message.indexOf('کانکشکن متفاوت') >= 0) {
+                    if (res.Message.indexOf("کانکشکن متفاوت") >= 0) {
                         /*cookieManager.removeItem('customerToken')
-                        cookieManager.removeItem('adminToken')
-                        CurrentUserInfo.customerToken=null;
-                        _currentAdminInfo.adminToken=null;*/
-
+                                    cookieManager.removeItem('adminToken')
+                                    CurrentUserInfo.customerToken=null;
+                                    _currentAdminInfo.adminToken=null;*/
                         /*   if (debugMode){
-                               alert('اتصال مجدد')
-                           }
-                           cookieManager.removeItem('customerToken')
-                           cookieManager.removeItem('adminToken')
-                           CurrentUserInfo.customerToken=null;
-                           _currentAdminInfo.adminToken=null;
-                           startUp();*/
+                                           alert('اتصال مجدد')
+                                       }
+                                       cookieManager.removeItem('customerToken')
+                                       cookieManager.removeItem('adminToken')
+                                       CurrentUserInfo.customerToken=null;
+                                       _currentAdminInfo.adminToken=null;
+                                       startUp();*/
                     }
                 }
                 break;
-
         }
-
     }
-
 }
 
 export const _dispatcher = new dispatcher();
-
-

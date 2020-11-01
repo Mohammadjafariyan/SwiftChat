@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Configuration;
 using System.Text;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
@@ -37,6 +39,10 @@ namespace SignalRMVCChat.Models.HelpDesk
                
         public int HelpDeskId { get; set; }
         public HelpDesk HelpDesk { get; set; }
+
+
+        [NotMapped]
+        public string Content { get; set; }
     }
     
     public class Article:BaseEntity
@@ -82,7 +88,36 @@ namespace SignalRMVCChat.Models.HelpDesk
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         public string Summary { get; set; }
+        
+        
+        
+        
+        
+        
+        
+        [NotMapped]
+        public List<Comment> Comments
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(CommentJson))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<List<Comment>>(CommentJson);
+            }
+            set { CommentJson = JsonConvert.SerializeObject(value); }
+        }
+
+        [JsonIgnore]
+        public string CommentJson { get; set; }
+        
+        
     }
+    
+    
+    
 
     public class Language:BaseEntity
     {
@@ -98,6 +133,8 @@ namespace SignalRMVCChat.Models.HelpDesk
     public class HelpDesk:BaseEntity
     {
 
+
+        public string GoToWebsiteUrl { get; set; }
         public string HeaderText { get; set; }
 
 
@@ -147,7 +184,7 @@ namespace SignalRMVCChat.Models.HelpDesk
 
         public Category Category { get; set; }
 
-        public byte[] Content { get; set; }
+        public string Content { get; set; }
 
         public string ImageExtention { get; set; }
 

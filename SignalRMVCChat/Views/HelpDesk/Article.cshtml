@@ -1,4 +1,5 @@
-﻿@model SignalRMVCChat.Service.HelpDesk.ArticleViewModel
+﻿@using SignalRMVCChat.Models.HelpDesk
+@model SignalRMVCChat.Service.HelpDesk.ArticleViewModel
 
 @{
     ViewBag.Title = "title";
@@ -6,6 +7,27 @@
 }
 
 
+
+@{
+    HelpDesk helpDesk = new HelpDesk
+    {
+        HeaderText = "مرکز پشتیبانی",
+    };
+    if (TempData["helpDesk"]!=null)
+    {
+        helpDesk=TempData["helpDesk"] as HelpDesk;
+    }
+
+    if (helpDesk==null)
+    {
+        helpDesk = new HelpDesk
+        {
+            HeaderText = "مرکز پشتیبانی",
+            BgColor = "blue"
+
+        };
+    }
+}
 <style>
 .cat a {
 font-size: 13px !important;
@@ -189,7 +211,7 @@ padding: 5px;
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">
-                   ارسال بازخورد
+                    ارسال بازخورد
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -197,14 +219,89 @@ padding: 5px;
             </div>
             <div class="modal-body">
                 
-                <textarea placeholder="بگید در مورد این مقاله چی فکر می کنید ؟
+                
+                <h3 style="text-align: center;color: #@helpDesk.BgColor" id="callbackMsg"></h3>
+                <textarea id="text" placeholder="بگید در مورد این مقاله چی فکر می کنید ؟
 " style="width: 100%;height: 100%;border: none;direction: rtl;text-align: right" class="form-control"></textarea>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">لغو</button>
-                <button type="button" class="btn btn-primary">ارسال بازخورد من</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button onclick="sendFeedback()" type="button" class="btn btn-primary" id="send">ارسال بازخورد من</button>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<script>
+function sendFeedback(){
+    
+    let text=$('#text').val();
+    
+    
+    fetch('/HelpDesk/SendFeedback', {
+                method: "POST", headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                                                 text: text,
+                                                 websiteBaseUrl:'@TempData["websiteBaseUrl"]',
+                                                 lang:'@TempData["lang"]',
+                                                 title:'@Model.Article.Title'
+                                             },),
+                // -- or --
+                // body : JSON.stringify({
+                // user : document.getElementById('user').value,
+                // ...
+                // })
+            }).then(
+              response => response.text() // .json(), etc.
+              // same as function(response) {return response.text();}
+          ).then(
+           response => {
+               
+               $('#callbackMsg').text("باتشکر بازخورد شما دریافت شد")
+               $('#text').hide()
+               
+               $('#send').hide();
+
+                  //$('#exampleModal').modal('toggle');
+
+               }// .json(), etc.
+           // same as function(response) {return response.text();}
+       ).catch(function (err){
+           
+               $('#submitButton button').prop('disabled', false);
+           
+            $('#callbackMsg').text("باتشکر بازخورد شما دریافت شد")
+            console.error(err);
+                    //   showError('خطایی رخ داد' + err.responseText);
+           })
+    
+/*      $.ajax({
+        url: '/HelpDesk/SendFeedback',
+        data: {
+            text: text,
+            websiteBaseUrl:'@TempData["websiteBaseUrl"]',
+            lang:'@TempData["lang"]',
+            title:'@Model.Article.Title'
+        },
+        method: 'post',
+        success: function (res) {
+
+            showSuccess("باتشکر بازخورد شما دریافت شد");
+        },
+        error: function (err) {
+            $('#submitButton button').prop('disabled', false);
+
+            console.error(err);
+            showError('خطایی رخ داد' + err.responseText);
+        }
+
+    })*/
+    
+    }
+</script>

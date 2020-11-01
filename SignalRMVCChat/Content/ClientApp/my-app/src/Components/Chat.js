@@ -14,17 +14,51 @@ import {_showError} from "../Pages/LayoutPage";
 import MarkAsResovled from "./MarkAsResovled";
 import ScreenRecordShower from "./ScreenRecordShower";
 import DOMPurify from 'dompurify';
+import WhileWriting from "./WhileWriting";
+
 export default class Chat extends Component {
     constructor(arg) {
         super(arg);
 
-        this.state = {};
+        this.state = {chats:[]};
         CurrentUserInfo.ChatPage = this;
         this.submit = this.submit.bind(this);
     }
 
 
     componentDidMount() {
+
+
+    }
+
+
+    //نمایش در حال تایپ کاربر
+    customerStartTypingCallback(res) {
+        // اگر پیامی نبود برگرد
+        if (!res || !res.Content || !res.Content.text) {
+            return;
+        }
+
+
+        let chat;
+        var i = this.state.chats.findIndex((c) => c.IsTyping);
+      
+        if (i>=0) {
+
+
+            this.state.chats[i].Message=res.Content.text;
+            
+            this.setState({rndom:Math.random()})
+            
+        } else {
+           
+            chat={Message: res.Content.text};
+            chat.IsReceive = true;
+            chat.IsTyping=true;
+
+            this.addChat(chat,true);
+
+        }
 
 
     }
@@ -88,9 +122,9 @@ export default class Chat extends Component {
 
         }
 
-       /* if (!arr || !arr.length) {
-            this.setState({chats: []})
-        }*/
+        /* if (!arr || !arr.length) {
+             this.setState({chats: []})
+         }*/
         /*   CustomerToAccount=1,
                 AccountToCustomer=2,
                 AccountToAccount=3,
@@ -107,15 +141,15 @@ export default class Chat extends Component {
             this.addChat(element, true);
         }
 
-      let chatsSorted=  this.state.chats.sort((c1,c2)=>{
-            if (c1.Id>=c2.Id){
-                return  1;
-            }else if (c1.Id<=c2.Id){
-                return  -1;
+        let chatsSorted = this.state.chats.sort((c1, c2) => {
+            if (c1.Id >= c2.Id) {
+                return 1;
+            } else if (c1.Id <= c2.Id) {
+                return -1;
             }
             return 0;
         })
-        this.setState({chats:chatsSorted})
+        this.setState({chats: chatsSorted})
 
         /*if (arr && arr.length == 0) {
                 this.setState({ chats: arr})
@@ -123,33 +157,34 @@ export default class Chat extends Component {
     }
 
 
-    LoadForms(){
-        
+    LoadForms() {
+
         //debugger;
-        if (!this.state.chats || this.state.chats.length==0)
-            return ;
-        
-        if (!DataHolder.selectedCustomer){
+        if (!this.state.chats || this.state.chats.length == 0)
+            return;
+
+        if (!DataHolder.selectedCustomer) {
             _showError('کاربر را مجددا انتخاب کنید');
-            return ;
+            return;
         }
 
 
-        let forms= this.state.chats.filter(c=>c.formId );
+        let forms = this.state.chats.filter(c => c.formId);
 
 
         for (let i = 0; i < forms.length; i++) {
-            MyCaller.Send('CustomerGetFormSingle', {formId: forms[i].formId, chatId: forms[i].Id,
-            customerId:DataHolder.selectedCustomer.Id})
+            MyCaller.Send('CustomerGetFormSingle', {
+                formId: forms[i].formId, chatId: forms[i].Id,
+                customerId: DataHolder.selectedCustomer.Id
+            })
         }
-        
+
     }
 
 
-     customerGetFormSingleCallback(res) {
-        
-        
-        
+    customerGetFormSingleCallback(res) {
+
+
     }
 
     adminSendToCustomerCallback(res) {
@@ -193,8 +228,13 @@ export default class Chat extends Component {
                 });
             }*/
 
+
+        
+
+
         chat.IsReceive = true;
         this.addChat(chat, true);
+        
 
         MyCaller.Send("AdminReceivedMsg", {
             chatId: res.Content.ChatId,
@@ -239,9 +279,9 @@ export default class Chat extends Component {
 
 
         this.setState({tmp: Math.random()});
-        
-        if (CurrentUserInfo.CustomerTags){
-            CurrentUserInfo.CustomerTags.setState({tmp:Math.random()})
+
+        if (CurrentUserInfo.CustomerTags) {
+            CurrentUserInfo.CustomerTags.setState({tmp: Math.random()})
         }
 
     }
@@ -276,8 +316,7 @@ export default class Chat extends Component {
                             )}
                             <ChatPannel chats={this.state.chats} parent={this}/>
                         </div>
-                        
-                        
+
 
                         <ChatForm
                             onPaste={(e) => {
@@ -369,6 +408,9 @@ export default class Chat extends Component {
         if (!chats || !chats.length) {
             chats = [];
         }
+
+        /// اگر در حال تایپ باشد ُ  از حالت تایپ در بیاور 
+        chats=chats.filter((c) => !c.IsTyping);
 
         return chats;
     }
@@ -652,16 +694,15 @@ export function ChatPannel(props) {
                     <div className="card-body" style={{wordBreak: 'break-all', display: 'flex', direction: 'rtl'}}>
 
 
-                        {el.formId  && <FormShowerInChat chatId={el.Id} chatUniqId={el.UniqId} formId={el.formId} ></FormShowerInChat>}
+                        {el.formId &&
+                        <FormShowerInChat chatId={el.Id} chatUniqId={el.UniqId} formId={el.formId}></FormShowerInChat>}
 
                         {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
                         {!el.MultimediaContent && <p key={el.Message}
 
                                                      dangerouslySetInnerHTML={{__html: el.Message}}
-                        /> }
+                        />}
 
-
-                    
 
                         <IsDelivered DeliverDateTime={el.DeliverDateTime}/>
 
@@ -685,13 +726,17 @@ export function ChatPannel(props) {
                             {el.Delay && <p dir="rtl"> بعد از {el.Delay}دقیقه </p>}
                         </div>
                     )}
-                    <div className="card-body" style={{wordBreak: 'break-all', display: 'flex', direction: 'ltr'}}>
-                        {el.formId  && <FormShowerInChat chatId={el.Id} formName={el.formName}  chatUniqId={el.UniqId} formId={el.formId} elements={el.elements}></FormShowerInChat>}
-                        
+                    <div className="card-body" style={{wordBreak: 'break-all', direction: 'ltr'}}>
+                        {el.formId && <FormShowerInChat chatId={el.Id} formName={el.formName} chatUniqId={el.UniqId}
+                                                        formId={el.formId} elements={el.elements}></FormShowerInChat>}
+
                         {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
                         {!el.MultimediaContent && <p key={el.Message}
-                                                    
+
                         > {el.Message} </p>}
+                        
+                        
+                        {el.IsTyping && <div className={'float-right'}> <WhileWriting IsTyping={el.IsTyping}></WhileWriting></div> }
                     </div>
                 </div>
             );
@@ -806,42 +851,34 @@ function createElementFromHTML(htmlString) {
 }
 
 
-
-
-
-
-
-
 export class AutomaticSendPage extends Chat {
-    constructor(arg){
+    constructor(arg) {
         super(arg);
 
-        this.state={};
-        CurrentUserInfo.AutomaticSendPage=this;
+        this.state = {};
+        CurrentUserInfo.AutomaticSendPage = this;
     }
 
 
-
-
-    successCallback(res){
-        this.setState({sending:false});
+    successCallback(res) {
+        this.setState({sending: false});
     }
 
-    getAutomaticSendChatsSocketHandlerCallback(res){
+    getAutomaticSendChatsSocketHandlerCallback(res) {
 
-        this.setState({sending:false});
+        this.setState({sending: false});
 
 
-        if (!res || !res.Content){
+        if (!res || !res.Content) {
             CurrentUserInfo.LayoutPage.showError('پیام های اتوماتیک خوانده شده صحیح نیست');
 
             return;
         }
-        let arr= res.Content;
+        let arr = res.Content;
 
-        if (arr && arr.length>0){
-            this.setState({chats:arr});
-        }else{
+        if (arr && arr.length > 0) {
+            this.setState({chats: arr});
+        } else {
 
         }
     }
@@ -850,11 +887,6 @@ export class AutomaticSendPage extends Chat {
     componentDidMount() {
         MyCaller.Send("GetAutomaticSendChatsSocketHandler");
     }
-
-
-
-
-
 
 
     render() {
@@ -873,11 +905,13 @@ export class AutomaticSendPage extends Chat {
                                 <li>از طرف ادمین های مخصوص هر بخش سایت پیغام ارسال می شود</li>
                             </ul>
                         </div>
-                        <ChatPannel chats={this.state.chats}   onDelete={(chat)=>{
+                        <ChatPannel chats={this.state.chats} onDelete={(chat) => {
 
-                            this.state.chats.splice(this.state.chats.indexOf(chat),1);
-                            this.setState({temp:Math.random(),
-                                chats:this.state.chats})
+                            this.state.chats.splice(this.state.chats.indexOf(chat), 1);
+                            this.setState({
+                                temp: Math.random(),
+                                chats: this.state.chats
+                            })
                         }}/>
 
                     </div>
@@ -892,14 +926,14 @@ export class AutomaticSendPage extends Chat {
                                    onChange={(e) => {
                                        if (e.target.value > 60 || e.target.value <= 0) {
                                            CurrentUserInfo.LayoutPage.showError('زمان تاخیر فقط مابین 1 الی 60 مورد قبول است');
-                                           if(e.target.value>60){
+                                           if (e.target.value > 60) {
                                                this.setState({delay: 60});
-                                           }else{
+                                           } else {
                                                this.setState({delay: 1});
 
                                            }
 
-                                       }else{
+                                       } else {
                                            this.setState({delay: e.target.value})
 
                                        }
@@ -907,7 +941,8 @@ export class AutomaticSendPage extends Chat {
                                    }
                             />
 
-                            <small id="emailHelp" className="form-text text-muted">مدت زمانی که کاربر وارد سایت شده است اما
+                            <small id="emailHelp" className="form-text text-muted">مدت زمانی که کاربر وارد سایت شده است
+                                اما
                                 هیچ پشتیبانی دریافت نکرده است </small>
                         </div>
                         <div className="form-group">
@@ -918,7 +953,7 @@ export class AutomaticSendPage extends Chat {
                                 }} upload={(e) => {
                                 this.uploadFile(e);
                             }} onSubmit={(e) => {
-                                return    this.submit(e)
+                                return this.submit(e)
                             }} onChange={(e) => {
                                 let multiMedia = showMultimedia(e.target.value);
 
@@ -928,7 +963,6 @@ export class AutomaticSendPage extends Chat {
                                     this.setState({text: ""});
                                 }
                             }}
-
 
 
                             />
@@ -962,35 +996,36 @@ export class AutomaticSendPage extends Chat {
                             />
                         </form>*/}
                         </div>
-                        <button onClick={()=>{
+                        <button onClick={() => {
 
                             this.saveAutomaticSendChats()
 
-                        }} type="submit" disabled={this.state.sending} className="btn btn-primary">ثبت </button>
+                        }} type="submit" disabled={this.state.sending} className="btn btn-primary">ثبت
+                        </button>
                     </div>
 
                 </div>
-
 
 
             </div>
         )
     }
 
-    saveAutomaticSendChats(){
-        if(!this.state.chats || !this.state.chats.length){
+    saveAutomaticSendChats() {
+        if (!this.state.chats || !this.state.chats.length) {
             CurrentUserInfo.LayoutPage.showError('هیچ پیغامی ثبت نشده است ');
             return;
         }
 
 
-        this.setState({sending:true});
+        this.setState({sending: true});
 
 
-        MyCaller.Send("SaveAutomaticSendChatsSocketHandler",{
-            chats:this.state.chats
+        MyCaller.Send("SaveAutomaticSendChatsSocketHandler", {
+            chats: this.state.chats
         });
     }
+
     showAdmins() {
         if (!this.state.admins)
             return <></>;
@@ -1004,7 +1039,7 @@ export class AutomaticSendPage extends Chat {
                     this.state.admins.map((el, i, arr) => {
 
                         return <tr key={el.Id} className="arow" onClick={() => {
-                            this.setState({selectedAdmin:el})
+                            this.setState({selectedAdmin: el})
                         }}>
                             <td>{el.Name}</td>
                         </tr>
@@ -1019,9 +1054,8 @@ export class AutomaticSendPage extends Chat {
         let chats = this.getChats();
 
 
-        chat.Delay=this.state.delay ? this.state.delay : 1;
-        chat.DeliverDateTime=new Date();
-
+        chat.Delay = this.state.delay ? this.state.delay : 1;
+        chat.DeliverDateTime = new Date();
 
 
         chats.push(chat);
@@ -1039,7 +1073,7 @@ export class AutomaticSendPage extends Chat {
 
         chat.UniqId = chats.length + 1;
 
-        this.setState({ chats: chats });
+        this.setState({chats: chats});
 
 
         if (!this.state.scroll) {
@@ -1049,14 +1083,15 @@ export class AutomaticSendPage extends Chat {
         }
 
     }
+
     submit(e) {
         e.preventDefault();
         if (!this.state.text) return false;
-        CurrentUserInfo.ChatPage.setState({ scroll: false });
+        CurrentUserInfo.ChatPage.setState({scroll: false});
 
-        this.addChat({ Message: this.state.text },true);
+        this.addChat({Message: this.state.text}, true);
 
-        this.setState({ text: "" });
+        this.setState({text: ""});
         return false;
     }
 

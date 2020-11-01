@@ -1,4 +1,37 @@
 
+.usData{
+    overflow: auto;
+ /*   word-break: break-all;
+    direction: ltr;*/
+}
+.marginTop{
+    margin-top: 10vh;
+}
+.p-field-radiobutton label{
+
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+
+.scallSmall{
+    zoom: 0.6;
+    -moz-transform: scale(0.5);
+}
+
+#shadowRoot{
+    
+    height: 100vh;
+    overflow: auto;
+    
+}
+.fakeMouse{
+width: 100%;
+height: 100%;
+    position: relative;
+    z-index: 6;
+
+}
 .notValid{
     border:1px solid red;
 }

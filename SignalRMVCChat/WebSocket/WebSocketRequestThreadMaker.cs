@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -51,24 +52,28 @@ namespace SignalRMVCChat.WebSocket
                     await socket.Send(body);
                 }
 
-
-                try
+                request.Name=request.Name ?? "";
+                
+                if (request.Name.Contains("LiveAssist")==false)
                 {
-                    await new AutomaticChatSenderHandler().ExecuteAsync(result, request);
-                }
-                catch (Exception e)
-                {
-                    //todo:log 
-                }
+                    try
+                    {
+                        await new AutomaticChatSenderHandler().ExecuteAsync(result, request);
+                    }
+                    catch (Exception e)
+                    {
+                        //todo:log 
+                    }
 
                 
-                try
-                {
-                    await new TotalUserCountsChangedSocketHandler().ExecuteAsync(result, request);
-                }
-                catch (Exception e)
-                {
-                    //todo:log 
+                    try
+                    {
+                        await new TotalUserCountsChangedSocketHandler().ExecuteAsync(result, request);
+                    }
+                    catch (Exception e)
+                    {
+                        //todo:log 
+                    }
                 }
 
 
@@ -85,16 +90,25 @@ namespace SignalRMVCChat.WebSocket
             {
                 LogService.Log(e, result);
 
+                // Get stack trace for the exception with source file information
+                var st = new StackTrace(e, true);
+                // Get the top stack frame
+                var frame = st.GetFrame(0);
+                // Get the line number from the stack frame
+                var line = frame.GetFileLineNumber();
+                var method = frame.GetMethod().ToString();
+                var file =frame.GetFileName();
+                 file = Path.GetFileName(file);
 /*0930 948 3176 */
                 var errJson = new MyWebSocketResponse
                 {
-                    Message = MyGlobal.RecursiveExecptionMsg(e),
+                    Message = MyGlobal.RecursiveExecptionMsg(e) + "\n" + file+":"+method+":"+line,
                     Type = MyWebSocketResponseType.Fail
                 }.Serilize();
 
                 if (MyGlobal.IsUnitTestEnvirement)
                 {
-                    DoChat(result, socket);
+                    await DoChat(result, socket);
                 }
 
                 try

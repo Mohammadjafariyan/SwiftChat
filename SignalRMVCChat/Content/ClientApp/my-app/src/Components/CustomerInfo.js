@@ -188,6 +188,9 @@ _showError(' مقدار بازگشتی از سرور نال است ');
                             </Button>
                         </Form.Group>
                         
+                        {(!DataHolder.selectedCustomer || !DataHolder.selectedCustomer.UsersSeparationParams)  && 
+                        <small>کاربر عضو نیست</small>}
+                        
                         
                         <Satistification/>
 

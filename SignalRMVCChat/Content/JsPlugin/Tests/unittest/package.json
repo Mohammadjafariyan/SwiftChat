@@ -11,5 +11,8 @@
     "plugins": [
       "@babel/plugin-transform-modules-commonjs"
     ]
+  },
+  "dependencies": {
+    "dom-event-to-json": "^1.0.1"
   }
 }

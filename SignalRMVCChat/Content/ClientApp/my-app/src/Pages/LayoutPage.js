@@ -28,12 +28,15 @@ import { Toast } from 'primereact/toast';
 import {Message} from "primereact/message";
 import Spinner from "react-bootstrap/Spinner";
 import {Button} from "primereact/button";
-import HelpDeskPage from "./HelpDeskPage";
+import HelpDeskPage, {_getHelpDesk} from "./HelpDeskPage";
 import SaveArticle from "../Components/SaveArticle";
 import LanguageHolder from "../Components/HelpDesk/Language/LanguageHolder";
 import Container from "react-bootstrap/Container";
 import CustomerProfilePage from "./CustomerProfilePage";
 import EventTriggersPage from "./Event_TriggersPage";
+import LiveAssistPage from "./LiveAssistPage";
+import UsersSeparationLayout from "../Components/UsersSeparation/UsersSeparationLayout";
+import MapPage from "./MapPage";
 
 
 
@@ -71,12 +74,12 @@ export default class LayoutPage extends Component {
     
       
     }
-    showMsg(msg) {
+    showMsg(msg,TYPE) {
         if (msg) {
 
             if (this.toast && this.toastRunning<3 && this.toastRunning>=0) {
                 this.toastRunning++;
-                this.toast.show({severity: 'info', summary: 'پیغام', detail: msg});
+                this.toast.show({severity: TYPE ?TYPE: 'info', summary: 'پیغام', detail: msg});
                 
             } 
                 this.setState({msg: msg});
@@ -128,23 +131,40 @@ export default class LayoutPage extends Component {
                 </div>
     )
             }else if(DataHolder.currentPage ==='FakeServerMonitor')
-            
+
             {
-              return( 
-                  <div>
-                      <Toast  position="bottom-left"ref={(el) => this.toast = el} />
-                      <Menu/>
-                      <MessageAlerts/>
+                return(
+                    <div>
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Menu/>
+                        <MessageAlerts/>
 
 
 
-                      <FakeServerMonitor></FakeServerMonitor>
-                
-                
-                </div>
+                        <FakeServerMonitor></FakeServerMonitor>
+
+
+                    </div>
                 )
             }
+            else if(DataHolder.currentPage ==='usersSeparation')
 
+            {
+                return(
+                    <div>
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Menu/>
+                        <MessageAlerts/>
+
+
+
+                        <UsersSeparationLayout></UsersSeparationLayout>
+
+
+                    </div>
+                )
+            }
+            
 
             else if (DataHolder.currentPage === "FormCreator") {
 
@@ -252,18 +272,57 @@ export default class LayoutPage extends Component {
                         <Menu/>
                         <MessageAlerts/>
 
-                       
-                            <Container>
-                                <LanguageHolder onSelect={(countryCode)=>{
 
-                                }}/>
-                            </Container>
+                        <Container>
+                            <LanguageHolder onSelect={(countryCode)=>{
+
+                            }}/>
+                        </Container>
+
 
                         <HelpDeskPage></HelpDeskPage>
 
-                  
 
-                        
+
+
+                    </>)
+            }
+            else if (DataHolder.currentPage === "Map") {
+
+                return (
+                    <>
+                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Menu/>
+                        <MessageAlerts/>
+
+
+
+
+                        <MapPage></MapPage>
+
+
+
+
+                    </>)
+            }
+            else if (DataHolder.currentPage === "LiveAssistPage") {
+
+                return (
+                    <>
+                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Menu/>
+                        <MessageAlerts/>
+
+
+                        <LiveAssistPage></LiveAssistPage>
+
+
+
+
                     </>)
             }
 
@@ -346,8 +405,8 @@ export function _showConstantMsg(msgf,type,callback){
 
 }
 
-export function _showMsg(msg){
-    CurrentUserInfo.LayoutPage.showMsg(msg)
+export function _showMsg(msg,TYPE){
+    CurrentUserInfo.LayoutPage.showMsg(msg,TYPE)
 
 }
 

@@ -6,38 +6,44 @@ import {MyCaller, CurrentUserInfo} from './../Help/Socket';
 import {_showError} from "../Pages/LayoutPage";
 
 class LastPagesVisited extends Component {
-    state={}
-    
-    componentDidMount() {
-        if (!DataHolder.selectedCustomer){
-            return ;
-        }
-        MyCaller.Send("GetLastVisitedPages",{customerId:DataHolder.selectedCustomer.Id})
+    state = {}
+
+    constructor(props) {
+        super(props);
+        CurrentUserInfo.LastPagesVisited = this;
     }
 
-    getLastVisitedPagesCallback(res){
+
+    componentDidMount() {
+        if (!DataHolder.selectedCustomer) {
+            return;
+        }
+        MyCaller.Send("GetLastVisitedPages", {customerId: DataHolder.selectedCustomer.Id})
+    }
+
+    getLastVisitedPagesCallback(res) {
         if (!res || !res.Content) {
             _showError("دیتای بازگشتی از سرور نال است")
             return;
         }
 
-        if (!DataHolder.selectedCustomer){
-            return ;
+        if (!res.Content.length)
+            return;
+
+        if (!DataHolder.selectedCustomer) {
+            return;
         }
-        
-        if (res.Content.CustomerId===DataHolder.selectedCustomer.Id)
-        {
-            this.setState({list:res.Content.EntityList})
+
+        if (res.Content[0].CustomerId === DataHolder.selectedCustomer.Id) {
+            this.setState({list: res.Content})
         }
 
     }
-    
 
 
     render() {
 
-        if (!DataHolder.selectedCustomer)
-        {
+        if (!DataHolder.selectedCustomer) {
             return <></>;
         }
 
@@ -48,25 +54,24 @@ class LastPagesVisited extends Component {
                 <div
                     className={"card "}>
                     <div className="card-header">
-                        آخرین صفحات بازدید 
+                        آخرین صفحات بازدید
                     </div>
 
-                    <div className="card-body" style={{display:'flex',textAlign:'center'}}>
+                    <div className="card-body" style={{display: 'flex', textAlign: 'center'}}>
 
                         <Table striped bordered hover>
                             <thead>
                             <tr>
-                                <th><small>میزان بازدید</small></th>
                                 <th><small>عنوان صفحه</small></th>
                             </tr>
                             </thead>
                             <tbody>
-                            {this.state.list && this.state.list.map((l,i,arr)=>{
-                                
-                                return <tr>
-                                    <td>{l.Count}</td>
-                                    <td>{l.Title}</td>
-                                    
+                            {this.state.list && this.state.list.map((l, i, arr) => {
+
+                                return <tr key={i}>
+
+                                    <td><a target={'_blank'} href={l.Url}>{l.PageTitle}</a></td>
+
                                 </tr>
                             })}
                             </tbody>

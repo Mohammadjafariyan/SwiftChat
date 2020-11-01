@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using SignalRMVCChat.Areas.security.Models;
@@ -17,9 +18,14 @@ namespace SignalRMVCChat.Areas.security.Service
             return MyIdentityResult.Succeeded;
         }
 
-      
 
-      
+        public override IQueryable<AppAdmin> GetQuery()
+        {
+           return Impl.db.Set<BaseAppUser>().OfType<AppAdmin>().AsNoTracking().AsQueryable();
+          //  return base.GetQuery().OfType<AppAdmin>();
+        }
+
+
         public  AppAdmin GetByUsername(string userUserName,bool exceptionOnNotExist=false)
         {
             var user = GetQuery().FirstOrDefault(q => q.UserName == userUserName);

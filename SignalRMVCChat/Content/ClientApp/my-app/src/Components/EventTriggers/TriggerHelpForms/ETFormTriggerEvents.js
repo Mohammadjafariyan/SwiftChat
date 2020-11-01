@@ -239,6 +239,8 @@ class EtFormTriggerEvents extends Component {
                                                       onConfirm={(pages) => {
 
                                                           DataHolder.selectedEventTrigger['pages'] = pages;
+                                                          
+                                                          console.log('DataHolder.selectedEventTrigger>>>',DataHolder.selectedEventTrigger)
                                                           this.setState({pages})
                                                       }}
                                 />
@@ -272,7 +274,7 @@ class EtFormTriggerEvents extends Component {
                             <MySwitcher
                                 onChange={(checked) => this.setEnabled(checked, 'S_EventUserCustomName', 'S_EventDelay')}
                                 disabled={this.Isdisabled('S_EventUserCustomName')}
-                                title={'در event خاص شما'} name={'EventUserCustomName'} parent={this}>
+                                title={' خاص شما event در '} name={'EventUserCustomName'} parent={this}>
 
 
                                 <FormInModalWithTable name={'userEventNames'} parent={this}
@@ -296,6 +298,7 @@ class EtFormTriggerEvents extends Component {
 
                             <hr/>
                             <MySwitcher
+                                onChange={(checked) => this.setEnabled(checked, 'S_EventDelay')}
                                 disabled={this.Isdisabled('S_EventDelay')}
                                 title={'بعد از تاخیر ( زمان)'} name={'EventDelay'} parent={this}>
 

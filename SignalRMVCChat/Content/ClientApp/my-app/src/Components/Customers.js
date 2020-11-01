@@ -1,17 +1,18 @@
-import React, { Component } from 'react'
-import { MyCaller, CurrentUserInfo } from './../Help/Socket';
-import { DataHolder} from './../Help/DataHolder';
+import React, {Component} from 'react'
+import {MyCaller, CurrentUserInfo} from './../Help/Socket';
+import {DataHolder} from './../Help/DataHolder';
 
-import  './../styles/myStyle.css';
-import {Badge} from "react-bootstrap";
+import './../styles/myStyle.css';
+import {Badge, Spinner} from "react-bootstrap";
 import WhileWriting from "./WhileWriting";
+import {TabPanel, TabView} from "primereact/tabview";
 
 export default class Customers extends Component {
-    constructor(arg){
+    constructor(arg) {
         super(arg);
 
-        this.state={};
-        CurrentUserInfo.CustomersPage=this;
+        this.state = {};
+        CurrentUserInfo.CustomersPage = this;
     }
 
 
@@ -44,8 +45,8 @@ export default class Customers extends Component {
         this.customerTypingCallback(res, false)
     }
 
-    totalUserCountsChangedCallback(res){
-        if (!res.Content.CustomerList || !res.Content.CustomerList.length){
+    totalUserCountsChangedCallback(res) {
+        if (!res.Content.CustomerList || !res.Content.CustomerList.length) {
 
             console.log('res.CustomerList is null or empty');
             return;
@@ -58,23 +59,23 @@ export default class Customers extends Component {
         }
 
         for (let i = 0; i < res.Content.CustomerList.length; i++) {
-            let CustomerId= res.Content.CustomerList[i].CustomerId;
-            let TotalNewChatSentByCustomer= res.Content.CustomerList[i].TotalNewChatSentByCustomer;
-            let OnlineStatus= res.Content.CustomerList[i].OnlineStatus;
+            let CustomerId = res.Content.CustomerList[i].CustomerId;
+            let TotalNewChatSentByCustomer = res.Content.CustomerList[i].TotalNewChatSentByCustomer;
+            let OnlineStatus = res.Content.CustomerList[i].OnlineStatus;
 
 
-            let j= arr.findIndex(f=>f.Id===CustomerId);
+            let j = arr.findIndex(f => f.Id === CustomerId);
 
-            if (j!==-1){
-                arr[j].OnlineStatus=OnlineStatus;
-                arr[j].NewMessageCount=TotalNewChatSentByCustomer;
+            if (j !== -1) {
+                arr[j].OnlineStatus = OnlineStatus;
+                arr[j].NewMessageCount = TotalNewChatSentByCustomer;
             }
 
         }
 
-        this.setState({arr:arr,tmp:Math.random()})
+        this.setState({arr: arr, tmp: Math.random()})
     }
-    
+
     customerSendToAdminCallback(res) {
         let CustomerId = res.Content.CustomerId;
         let Message = res.Content.Message;
@@ -102,14 +103,15 @@ export default class Customers extends Component {
         if (i != -1) {
 
             this.state.arr[i].TotalUnRead = TotalReceivedMesssages;
-            this.setState({ arr: this.state.arr });
+            this.setState({arr: this.state.arr});
         }
 
     }
 
     clearSearch() {
-        this.setState({ arr: this.prevCustomersList });
+        this.setState({arr: this.prevCustomersList});
     }
+
     searchHandlerCallback(searchCustomersList) {
         this.prevCustomersList = this.state.arr;
 
@@ -122,16 +124,16 @@ export default class Customers extends Component {
             customerList.push(tmp);
         }
 
-        this.setState({ arr: customerList });
+        this.setState({arr: customerList});
 
     }
 
-    componentWillMount() {
+    componentDidMount() {
 
         CurrentUserInfo.UserType = 'CustomersChattedWithMe';
 
 
-        CurrentUserInfo.selectedTagId=null;
+        CurrentUserInfo.selectedTagId = null;
         CurrentUserInfo.gapIsOnlyOnly = null;
         CurrentUserInfo.currentUsersIsAdmins = null;
 
@@ -140,8 +142,19 @@ export default class Customers extends Component {
             userType: CurrentUserInfo.UserType
         });
     }
+    
+    getCustomersChattedWithMe(){
+        this.setState({loading:true});
 
-    getCustomerActivityDetailCallback(res){
+        CurrentUserInfo.UserType = 'CustomersChattedWithMe';
+
+        MyCaller.Send("GetClientsListForAdmin", {
+            userType: CurrentUserInfo.UserType
+        });
+        
+    }
+
+    getCustomerActivityDetailCallback(res) {
         //todo:
     }
 
@@ -155,14 +168,15 @@ export default class Customers extends Component {
 
         CurrentUserInfo.LayoutPage.showMsg('در حال خواندن اطلاعات چت');
 
-        MyCaller.Send("ReadChat", { targetId: DataHolder.selectedCustomer.Id, pageNumber: 1 });
+        MyCaller.Send("ReadChat", {targetId: DataHolder.selectedCustomer.Id, pageNumber: 1});
 
     }
 
     getClientsListForAdminCallback(res) {
 
+        this.setState({loading:false});
 
-        if(!res || !res.Content || !res.Content.EntityList){
+        if (!res || !res.Content || !res.Content.EntityList) {
             CurrentUserInfo.LayoutPage.showError('getClientsListForAdminCallback returns null');
             return;
         }
@@ -171,20 +185,16 @@ export default class Customers extends Component {
         arr = res.Content.EntityList;
 
 
-        
         if (DataHolder.selectedCustomer) {
 
-            
 
-            if(!arr.find(f=>f.Id==DataHolder.selectedCustomer.Id)){
-             arr.push(DataHolder.selectedCustomer)
-            this.readChat();
-            }else{
-
+            if (!arr.find(f => f.Id == DataHolder.selectedCustomer.Id)) {
+                arr.push(DataHolder.selectedCustomer)
+                this.readChat();
+            } else {
 
 
-
-            this.readChat();
+                this.readChat();
 
 
                 if (DataHolder.selectedCustomer) {
@@ -192,24 +202,23 @@ export default class Customers extends Component {
                 }
             }
 
-           this.placeOnTop(arr);
+            this.placeOnTop(arr);
         }
 
-        this.setState({arr:arr});
+        this.setState({arr: arr});
 
     }
-
-
 
 
     GetUserAddedToTags(target) {
         MyCaller.Send("GetUserAddedToTags", {target: target});
     }
 
-    
-    
-    placeOnTop(arr){
-        arr.sort((x,y)=>{ return x.Id == DataHolder.selectedCustomer.Id ? -1 :1; });
+
+    placeOnTop(arr) {
+        arr.sort((x, y) => {
+            return x.Id == DataHolder.selectedCustomer.Id ? -1 : 1;
+        });
 
     }
 
@@ -222,7 +231,7 @@ export default class Customers extends Component {
     }
 
     newCustomerOnlineCallback(res) {
-        
+
         let arr = this.state.arr;
         if (!arr) {
             arr = [];
@@ -232,10 +241,10 @@ export default class Customers extends Component {
         if (i != -1) {
             arr[i] = res.Content;
         } else {
-          //  arr.push(res.Content);
+            //  arr.push(res.Content);
         }
 
-        this.setState({ arr: arr });
+        this.setState({arr: arr});
 
     }
 
@@ -243,68 +252,125 @@ export default class Customers extends Component {
     render() {
         return (
             <div>
-                <div className="card " >
-  <div className="card-header">
-    کاربران آنلاین
-  </div>
-  <ul className="list-group list-group-flush">
-                        {this.state.arr && this.state.arr.length &&  <ShowOnlineUsers arr={this.state.arr} parent={this}/>}
-   
-  </ul>
-</div>
+                <div className="card ">
+                <TabView className="tabview-custom" activeIndex={this.state.activeIndex}
+                         onTabChange={(e) => {
+
+
+                             this.setState({activeIndex: e.index});
+                             
+                             if (e.index===2){
+                                 
+                                 this.getSharedChatBoxUsers();
+                             }else{
+                                 this.getCustomersChattedWithMe();
+                             }
+                         }}>
+                    <TabPanel header="من" leftIcon="pi pi-user">
+
+                        <h6>با من چت کرده اند</h6>
+
+                        {this.state.loading &&
+                        <Spinner animation="border" role="status">
+                            <span className="sr-only">در حال خواندن اطلاعات...</span>
+                        </Spinner>}
+                        
+                        
+                        {this.state.arr && this.state.arr.length &&
+                        <ShowOnlineUsers arr={this.state.arr} parent={this}/>}
+                        
+                    </TabPanel>
+                    <TabPanel header="مشترک" rightIcon="pi pi-users ">
+                    
+                       <h6>چت باکس مشترک</h6>
+
+
+                        {this.state.loading &&
+                        <Spinner animation="border" role="status">
+                            <span className="sr-only">در حال خواندن اطلاعات...</span>
+                        </Spinner>}
+
+                        {this.state.arr && this.state.arr.length &&
+                        <ShowOnlineUsers arr={this.state.arr} parent={this}/>}
+                    </TabPanel>
+                 
+                </TabView>
+                </div>
+
+                {/*    <div className="card ">
+                    <div className="card-header">
+                        کاربران آنلاین
+                    </div>
+
+                    <ul className="list-group list-group-flush">
+
+                        {this.state.arr && this.state.arr.length &&
+                        <ShowOnlineUsers arr={this.state.arr} parent={this}/>}
+
+                    </ul>
+                </div>*/}
             </div>
         )
     }
+
+    getSharedChatBoxUsers() {
+        this.setState({loading:true});
+        CurrentUserInfo.UserType = 'SharedChatBox';
+
+
+        MyCaller.Send("GetClientsListForAdmin", {
+            userType: CurrentUserInfo.UserType
+        });
+    }
 }
 const showTotalUnRead = function (el) {
-    if (el.NewMessageCount){
-        return  <Badge  variant="info">{el.NewMessageCount}+</Badge>
+    if (el.NewMessageCount) {
+        return <Badge variant="info">{el.NewMessageCount}+</Badge>
 
-    }else{
-        return  <></>
+    } else {
+        return <></>
 
     }
 }
-export function ShowOnlineUsers(props){
-    
-    if (!props.arr || props.arr.length===0){
+
+export function ShowOnlineUsers(props) {
+
+    if (!props.arr || props.arr.length === 0) {
         return <></>
     }
 
-    
+
     return props.arr.map((el, i, arr) => {
 
-        let isSelected=false;
-        
-        if (props.isAdmins){
-            isSelected= DataHolder.selectedAdmin && el.Id == DataHolder.selectedAdmin.Id ? 'selectedUserInList' : '';
+        let isSelected = false;
 
-        }else{
-            isSelected= DataHolder.selectedCustomer && el.Id == DataHolder.selectedCustomer.Id ? 'selectedUserInList' : '';
+        if (props.isAdmins) {
+            isSelected = DataHolder.selectedAdmin && el.Id == DataHolder.selectedAdmin.Id ? 'selectedUserInList' : '';
+
+        } else {
+            isSelected = DataHolder.selectedCustomer && el.Id == DataHolder.selectedCustomer.Id ? 'selectedUserInList' : '';
 
         }
-        return <li key={el.Id} onClick={(e) =>
-        {
-            
-            
-            if(props.onClick){
+        return <li key={el.Id} onClick={(e) => {
+
+
+            if (props.onClick) {
 
                 props.onClick(el);
-            }else{
-                CurrentUserInfo.currentUsersIsAdmins=false;
+            } else {
+                CurrentUserInfo.currentUsersIsAdmins = false;
 
                 el.TotalUnRead = 0;
                 DataHolder.selectedCustomer = el;
-                props.parent.setState({ temp: Math.random() });
+                props.parent.setState({temp: Math.random()});
                 props.parent.readChat();
 
 
-                
-                if (CurrentUserInfo.CustomerToolbar){
-                    CurrentUserInfo.CustomerToolbar.setState({ temp: Math.random() })
+                if (CurrentUserInfo.CustomerToolbar) {
+                    CurrentUserInfo.CustomerToolbar.setState({temp: Math.random()})
                 }
 
-              //  debugger
+                //  debugger
                 if (DataHolder.selectedCustomer) {
                     props.parent.GetUserAddedToTags(DataHolder.selectedCustomer.Id);
                 }
@@ -316,63 +382,62 @@ export function ShowOnlineUsers(props){
 
                 //CurrentUserInfo.CustomersPage.placeOnTop(arr);
 
-                CurrentUserInfo.ChatPage.setState({ scroll: false });
+                CurrentUserInfo.ChatPage.setState({scroll: false});
             }
-          
+
 
         }}
-        className = { 'list-group-item userInList '+isSelected }  key= { el.Id } >
+                   className={'list-group-item userInList ' + isSelected} key={el.Id}>
             {showTotalUnRead(el)}
             {el.Name}
-            
-            
+
+
             <WhileWriting IsTyping={el.IsTyping}></WhileWriting>
 
-            
+
             <ShowFlag el={el}/>
-          
-           
-{/*
+
+
+            {/*
             {el.TotalUnRead && <i className="MsgCount">..</i>}
 */}
-           
-           
-            
+
+
             {
                 el.OnlineStatus === 0 &&
                 <i className="gapStat float-right" style={{backgroundColor: 'green'}}></i>
-    }
-    {
-        el.OnlineStatus === 1 &&
-                <i className="gapStat float-right" style={{ backgroundColor: 'grey' }}></i >
-    }
-    {
-        el.OnlineStatus === 2 &&
-                <i className="gapStat float-right" style={{ backgroundColor: 'orange' }}></i >
-    }
+            }
+            {
+                el.OnlineStatus === 1 &&
+                <i className="gapStat float-right" style={{backgroundColor: 'grey'}}></i>
+            }
+            {
+                el.OnlineStatus === 2 &&
+                <i className="gapStat float-right" style={{backgroundColor: 'orange'}}></i>
+            }
 
 
-    </li>
+        </li>
     })
 
 }
 
 
-export const ShowFlag=(props)=>{
-  return <>  {props.el.LastTrackInfo && props.el.LastTrackInfo.country_code &&
+export const ShowFlag = (props) => {
+    return <>  {props.el.LastTrackInfo && props.el.LastTrackInfo.country_code &&
     <Badge pill variant="light">
-        <img style={{width:'30px', height:'30px'}}
-            src={`https://www.countryflags.io/${props.el.LastTrackInfo.country_code}/flat/64.png`}/>
+        <img style={{width: '30px', height: '30px'}}
+             src={`https://www.countryflags.io/${props.el.LastTrackInfo.country_code}/flat/64.png`}/>
     </Badge>
     }
 
-    {(!props.el.LastTrackInfo || !props.el.LastTrackInfo.country_code) &&
+        {(!props.el.LastTrackInfo || !props.el.LastTrackInfo.country_code) &&
 
 
-    <Badge pill variant="light">
-        <img style={{width:'30px', height:'30px'}}
-            src={`https://www.countryflags.io/ir/flat/64.png`}/>
-    </Badge>
-    }
+        <Badge pill variant="light">
+            <img style={{width: '30px', height: '30px'}}
+                 src={`https://www.countryflags.io/ir/flat/64.png`}/>
+        </Badge>
+        }
     </>
 }

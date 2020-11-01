@@ -100,7 +100,7 @@ namespace SignalRMVCChat.Service.HelpDesk
             return query;
         }
 
-        public async Task<byte[]> GetHelpDeskImage(int id)
+        public async Task<string> GetHelpDeskImage(int id)
         {
             return await CategoryImageService.GetQuery()
                 .Where(c => c.Id == id).Select(c => c.Content)

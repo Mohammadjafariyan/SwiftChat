@@ -15,6 +15,8 @@ import {InputTextarea} from "primereact/inputtextarea";
 import {InputNumber} from "primereact/inputnumber";
 import {_showError, _showMsg} from "../../../Pages/LayoutPage";
 import {_getHelpDesk} from "../../../Pages/HelpDeskPage";
+import {FileUpload} from "primereact/fileupload";
+import Card from "react-bootstrap/Card";
 class CategorySave extends Component {
     state={};
     showHeader(){
@@ -68,6 +70,8 @@ class CategorySave extends Component {
         }
 
     }
+    
+    
 
 
 
@@ -159,23 +163,57 @@ class CategorySave extends Component {
                         </Col>
                     </Row>
 
+                    
                     <Row  className={'p-fluid p-grid p-formgrid'}>
-                        <Col>
-                     
-                        </Col>
 
-                        <Col>
-                            <label>
-                                رنگ دسته بندی
-                            </label>
-                            <div className="p-field p-col-12 p-md-3">
+                        <Card style={{width:'100%'}} >
+                            <Card.Header className={'bg-info text-white'}>تصویر و رنگ</Card.Header>
+                            <Card.Body>
+                              <Row>
+                                  <Col>
+
+                                      {DataHolder.selectedCategory && DataHolder.selectedCategory.Content &&
+                                      <img width={150} height={150} src={DataHolder.selectedCategory.Content} alt={''}/>}
+
+                                      <FileUpload mode="basic" name="demo[]"
+
+                                                  onSelect={(event)=>{
+                                                      if (event.files && event.files[0]) {
+                                                          let reader = new FileReader();
+
+                                                          reader.onload = (e)=> {
+
+                                                              DataHolder.selectedCategory.Content=e.target.result;
+                                                              this.setState({Content:e.target.result});
+
+                                                          }
+
+                                                          reader.readAsDataURL(event.files[0]); // convert to base64 string
+                                                      }
+                                                  }}
+                                                  accept="image/*" maxFileSize={1000000}
+                                                  chooseLabel="آپلود تصویر دسته بندی"/>
+
+                                  </Col>
+
+                                  <Col>
+                                      <label>
+                                          رنگ دسته بندی
+                                      </label>
+                                      <div className="p-field p-col-12 p-md-3">
+
+                                          <ColorPicker value={DataHolder.selectedCategory.BgColor} onChange={(e) =>{
+                                              DataHolder.selectedCategory.BgColor= e.value;
+                                              this.setState({BgColor:e.value})
+                                          }} />
+                                      </div>
+                                  </Col>
+                              </Row>
+                                
                                
-                                <ColorPicker value={DataHolder.selectedCategory.BgColor} onChange={(e) =>{
-                                    DataHolder.selectedCategory.BgColor= e.value;
-                                    this.setState({BgColor:e.value})
-                                }} />
-                            </div>
-                        </Col>
+                            </Card.Body>
+                        </Card>
+                      
                     </Row>
                 </Container>
                 

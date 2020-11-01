@@ -61,7 +61,15 @@ class OtherTools extends Component {
                                 </Badge>
                             </h1>
 
-                            <h1 aria-label="نمایش در نقشه" data-microtip-position="top" role="tooltip">
+                            <h1 aria-label="نمایش در نقشه" data-microtip-position="top" role="tooltip"  onClick={() => {
+
+
+                                DataHolder.Back=null;
+                                CurrentUserInfo.Menu.setPage('Map')
+
+                                //CurrentUserInfo.Modals['LiveAssistModal'].show();
+
+                            }}>
                                 <Badge variant={'light'}>
                                     <a href='#'> <i className={'fa fa-map-marker bigIcon'}></i></a>
                                 </Badge>
@@ -70,8 +78,8 @@ class OtherTools extends Component {
                             <h1 aria-label="نمایش برخط مانیتور کاربر" data-microtip-position="top" role="tooltip"
                                 onClick={() => {
 
-                                    this.openCustomerScreenViewer();
 
+                                    this.openCustomerScreenViewer();
 
                                 }}>
                                 <Badge variant={'light'}>
@@ -79,7 +87,16 @@ class OtherTools extends Component {
                                 </Badge>
                             </h1>
 
-                            <h1 aria-label="مرورگر مشترک" data-microtip-position="top" role="tooltip">
+                            <h1 aria-label="مرورگر مشترک یا کمک بر خط " data-microtip-position="top" role="tooltip"
+                                onClick={() => {
+
+                                    
+                                    DataHolder.Back=null;
+                                    CurrentUserInfo.Menu.setPage('LiveAssistPage')
+
+                                    //CurrentUserInfo.Modals['LiveAssistModal'].show();
+
+                                }}>
                                 <Badge variant={'light'}>
                                     <a href='#'> <i className={'fa fa-window-restore bigIcon'}></i></a>
                                 </Badge>

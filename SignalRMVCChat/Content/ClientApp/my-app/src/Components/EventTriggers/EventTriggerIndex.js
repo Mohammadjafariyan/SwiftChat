@@ -29,6 +29,8 @@ class EventTriggerIndex extends Component {
         DataHolder.selectedEventTrigger.Id=res.Id;
 
         _showMsg("با موفقیت ذخیره شد")
+        
+        this.componentDidMount();
 
     }
 
@@ -102,6 +104,14 @@ class EventTriggerIndex extends Component {
                          <div className={'float-right'}>
                              <InputSwitch checked={l.IsEnabled}
                                           onChange={(e) =>{
+                                              
+                                              
+                                              if (!l.Id){
+                                                 
+                                                  _showError(" را زخیره کنید   (Event Trigger) لطفا ابتدا این رویداد ")
+                                                  return ;
+                                              }
+                                              
                                               if (!l.IsEnabled){
                                                   l.IsEnabled=true;
                                               }else{

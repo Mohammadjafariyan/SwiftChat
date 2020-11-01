@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -27,6 +28,12 @@ namespace SignalRMVCChat.Areas.security.Service
         }
 
       
+        
+        public override IQueryable<AppUser> GetQuery()
+        {
+            return Impl.db.Set<BaseAppUser>().OfType<AppUser>().AsNoTracking().AsQueryable();
+            //  return base.GetQuery().OfType<AppAdmin>();
+        }
 
       
         public  AppUser GetByUsername(string userUserName,bool exceptionOnNotExist=false)

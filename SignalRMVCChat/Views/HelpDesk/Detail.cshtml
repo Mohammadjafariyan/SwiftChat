@@ -128,7 +128,7 @@ padding: 5px;
                     {
                           <div class="card" style="color: black;text-align: center">
                         <div class="card-body">
-                            <a  class="card-text"  href="/HelpDesk/Article?title=@Model.Articles[i].Title&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]">
+                            <a  class="card-text" style=""  href="/HelpDesk/Article?title=@Model.Articles[i].Title&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]">
                                 <h5 >
                                     
                                     <b>@Model.Articles[i].Title</b>
@@ -136,7 +136,7 @@ padding: 5px;
                                 
                               
                               <div style="display: flex;">
-                                                          <div class="text">
+                                                          <div class="text" style="width: 80%;">
                                                               <p>@Html.Raw(Model.Articles[i].Summary)</p>
                                                           </div>
                                                           <div class="popularity" style="/* padding-left: 20px; *//* padding-left: 10px; */">

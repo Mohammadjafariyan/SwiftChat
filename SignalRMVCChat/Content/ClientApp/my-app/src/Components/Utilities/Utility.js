@@ -23,7 +23,7 @@ export const MyInput=(props)=>{
     
     return <>
         <label className={'float-right'}>{props.title}</label>
-        <InputText  placeholder={props.placeholder} className={'float-left'} style={{width:'100%'}} value={val} onChange={(e) => {
+        <InputText {...props} placeholder={props.placeholder} className={'float-left'} style={{width:'100%'}} value={val} onChange={(e) => {
             setVal( e.target.value);
             
             if (props.parent &&  props.parent.setState) {
@@ -84,6 +84,38 @@ export const MySwitcher=(props)=>{
     </div>
 }
 
+
+
+export const MyInputG=(props)=>{
+
+    const [val,setVal]= useState();
+
+
+    React.useEffect(() => {
+        setVal(props.parent.state[props.name]);
+    }, [props.parent.state[props.name]])
+
+    return <>
+        <label className={'float-right'}>{props.title}</label>
+        <InputText {...props} placeholder={props.placeholder} className={'float-left ' + props.className} style={{width:'100%'}} value={val} onChange={(e) => {
+            setVal( e.target.value);
+
+            if (props.parent &&  props.parent.setState) {
+                props.parent.state[props.name]=e.target.value;
+                props.parent.setState({tmp:Math.random()});
+            }
+
+            if (DataHolder.selectedEventTrigger && !props.noEventHandler) {
+                DataHolder.selectedEventTrigger[props.name]=e.target.value;
+            }
+
+
+            if (props.onChange) {
+                props.onChange(e.target.value);
+            }
+        }} />
+    </>
+}
 
 
 export const AddLocalizedMessage=(props)=>{

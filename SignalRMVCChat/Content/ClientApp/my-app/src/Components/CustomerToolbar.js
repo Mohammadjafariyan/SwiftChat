@@ -16,6 +16,8 @@ import SendFromHelpDesk from "./SendFromHelpDesk";
 import {Dialog} from "primereact/dialog";
 import ScreenRecordShower from "./ScreenRecordShower";
 import ScreenRecordShowerSendRequest from "./ScreenRecordShowerSendRequest";
+import LiveAssistLayout from "./LiveAssist/LiveAssistLayout";
+import UsersSeparationData from "./UsersSeparation/UsersSeparationData";
 
 class CustomerToolbar extends Component {
 
@@ -55,6 +57,8 @@ class CustomerToolbar extends Component {
                 <CustomerInfo/>
 
                 <OtherTools/>
+                <UsersSeparationData/>
+
                 <UserDeviceInfo/>
                 <div
                     className={"card adminsPanel" + (CurrentUserInfo.LayoutPage.state.focusForSelectingAdmin ? ' showSingle ' : '')}>
@@ -93,7 +97,8 @@ class CustomerToolbar extends Component {
                 <UserTags/>
              
            
-           <LastPagesVisited/>
+                {DataHolder.selectedCustomer && <LastPagesVisited/> }
+           
 
 
                 <PrimengModal title={'انتخاب از مقالات مرکز پشتیبانی'} ok={true}>
@@ -103,10 +108,17 @@ class CustomerToolbar extends Component {
                 </PrimengModal>
 
                 <PrimengModal title={'نمایش برخط مانیتور بازدیدکننده'} currName={'ScreenRecordShowerSendRequest'} ok={false}>
-
+                   
                     <ScreenRecordShowerSendRequest/>
 
                 </PrimengModal>
+
+              {/*  <PrimengModal title={'مرورگر مشترک'} currName={'LiveAssistModal'} ok={false}
+                              maximized={true}>
+
+                    <LiveAssistLayout/>
+
+                </PrimengModal>*/}
 
                 
             </div>

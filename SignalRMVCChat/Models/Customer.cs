@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using SignalRMVCChat.Models.ET;
+using SignalRMVCChat.Models.UsersSeparation;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
@@ -111,5 +112,30 @@ namespace SignalRMVCChat.Models
             }
             set { firedEventForCustomerJson = JsonConvert.SerializeObject(value); }
         }
+
+
+
+        
+        [NotMapped]
+        public List<UsersSeparationParam> UsersSeparationParams
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(UsersSeparationParamsJson))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<List<UsersSeparationParam>>(UsersSeparationParamsJson);
+            }
+            set { UsersSeparationParamsJson = JsonConvert.SerializeObject(value); }
+        }
+
+        [JsonIgnore]
+        public string UsersSeparationParamsJson { get; set; }
+
+        public int? UsersSeparationId { get; set; }
+
+        public UsersSeparation.UsersSeparation UsersSeparation { get; set; }
     }
 }

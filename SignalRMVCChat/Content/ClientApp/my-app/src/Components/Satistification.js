@@ -1,10 +1,12 @@
 ﻿import React, {Component} from 'react';
 import {MyCaller,CurrentUserInfo} from "../Help/Socket";
-import {_showError} from "../Pages/LayoutPage";
+import {_showError, _showMsg} from "../Pages/LayoutPage";
 import {DataHolder} from "../Help/DataHolder";
+import {Inplace, InplaceContent, InplaceDisplay} from "primereact/inplace";
+import Button from "react-bootstrap/Button";
 
 class Satistification extends Component {
-    state={ratingCount:0}
+    state={ratingCount:[]}
 
     constructor(props) {
         super(props);
@@ -32,6 +34,9 @@ class Satistification extends Component {
 
         if (res.Content.CustomerId===DataHolder.selectedCustomer.Id)
         {
+            
+            if (res.Content.IsNew)
+            _showMsg("بازخورد کاربر دریافت شد",'success')
             this.setState({ratingCount:res.Content.RatingCount})
         }
 
@@ -49,21 +54,27 @@ class Satistification extends Component {
         }
         
         return (
-            <div aria-label="رضایتمندی" data-microtip-position="top" role="tooltip">
+            
+            <>
+                <Inplace closable active={this.state.active} onToggle={(e) => this.setState({active: e.value})}>
+                    <InplaceDisplay>
+                        <div aria-label="رضایتمندی ، برای ارسال کلیک کنید   " data-microtip-position="top" role="tooltip">
 
 
-                {stars.map((val,i,arr)=>{
-                    
-                    if (i<this.state.ratingCount){
-                        return                <i style={{color:'#f8d007'}} className="fa fa-star" aria-hidden="true"></i>
+                            {stars.map((val,i,arr)=>{
 
-                    }else{
-                        return                 <i style={{color:'black'}} className="fa fa-star" aria-hidden="true"></i>
-;
-                    }
-                })}
-                
-{/*
+                                if (i<this.state.ratingCount.length){
+                                    return                <i style={{color:'#f8d007'}} className="fa fa-star" aria-hidden="true"></i>
+
+                                }else{
+                                    return                 <i style={{color:'black'}} className="fa fa-star" aria-hidden="true"></i>
+                                        ;
+                                }
+                            })}
+
+
+                            <small>:رضایتمندی</small>
+                            {/*
                 <i style={{color:'#f8d007'}} className="fa fa-star" aria-hidden="true"></i>
                 <i style={{color:'#f8d007'}} className="fa fa-star" aria-hidden="true"></i>
                 <i style={{color:'#f8d007'}} className="fa fa-star" aria-hidden="true"></i>
@@ -72,8 +83,39 @@ class Satistification extends Component {
                 <i style={{color:'black'}} className="fa fa-star" aria-hidden="true"></i>
                 <i style={{color:'black'}} className="fa fa-star" aria-hidden="true"></i>*/}
 
-            </div>
+                        </div>
+
+                    </InplaceDisplay>
+                    <InplaceContent>
+
+                        <Button variant={'info'} onClick={()=>{
+                            
+                            this.sendRatingRequest();
+
+                        }}>
+
+<small>درخواست نظر سنجی
+</small>                  
+                        </Button>
+
+                    </InplaceContent>
+                </Inplace>
+
+                
+                
+                </>
         );
+    }
+
+    sendRatingRequest() {
+        
+        
+        this.setState({active:false});
+        _showMsg("\n" +
+            "درخواست نظر سنجی از کاربر ارسال شد")
+        MyCaller.Send('AdminSendRatingRequest',{
+            customerId:DataHolder.selectedCustomer.Id
+        })
     }
 }
 

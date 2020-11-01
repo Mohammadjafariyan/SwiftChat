@@ -25,3 +25,24 @@ class CustomerProfile extends Component {
 }
 
 export default CustomerProfile;
+
+
+
+
+
+export const BackButton=()=>{
+    
+    return   <div>
+        <Button variant={'light'} onClick={()=>{
+
+
+            CurrentUserInfo.Menu.setPage(DataHolder.Back)
+        }}>
+            <i className={'fa fa-arrow-left'}></i>
+
+            بازگشت
+
+        </Button>
+    </div>
+    
+}

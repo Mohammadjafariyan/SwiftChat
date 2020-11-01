@@ -9,6 +9,7 @@ import {CurrentUserInfo, MyCaller} from "../../../Help/Socket";
 import {Input} from "../../FormInputs";
 import {Button} from "primereact/button";
 import {_showError, _showMsg} from "../../../Pages/LayoutPage";
+import Card from "react-bootstrap/Card";
 
 class HelpDeskSetting extends Component {
     state={};
@@ -54,6 +55,7 @@ class HelpDeskSetting extends Component {
             id:_getHelpDesk().helpDeskId,
             HeaderText:this.state.HelpDesk.HeaderText,
             BgColor:this.state.HelpDesk.BgColor,
+            GoToWebsiteUrl:this.state.HelpDesk.GoToWebsiteUrl
         })
 
     }
@@ -71,7 +73,7 @@ class HelpDeskSetting extends Component {
                     <Col>
 
                         <Input value={this.state.HelpDesk.HeaderText}
-                               type={'text'} name={'عنوان دسته بندی'}
+                               type={'text'} name={'عنوان مرکز پشتیبانی یا هدر'}
 
                                onChange={(e)=>{
                                    this.state.HelpDesk.HeaderText=e.target.value;
@@ -83,9 +85,7 @@ class HelpDeskSetting extends Component {
                     </Col>
 
                     <Col>
-                        <label>
-                            رنگ دسته بندی
-                        </label>
+                        <label>رنگ مرکز پشتیبانی</label>
                         <div className="p-field p-col-12 p-md-3">
 
                             <ColorPicker value={this.state.HelpDesk.BgColor} onChange={(e) =>{
@@ -94,6 +94,20 @@ class HelpDeskSetting extends Component {
                                 this.setState({BgColor:e.value})
                             }} />
                         </div>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col>
+                        <Input value={this.state.HelpDesk.GoToWebsiteUrl}
+                               type={'text'} name={'آدرس لینک بروبه وب سایت'}
+
+                               onChange={(e)=>{
+                                   this.state.HelpDesk.GoToWebsiteUrl=e.target.value;
+                                   this.setState({tmp:Math.random()});
+                               }}
+
+                               placeholder={''}></Input>
                     </Col>
                 </Row>
                 

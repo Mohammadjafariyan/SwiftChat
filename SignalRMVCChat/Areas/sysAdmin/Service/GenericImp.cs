@@ -18,7 +18,7 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
             db= ContextFactory.GetContext(contextName);
         }
 
-        protected readonly MyContextBase db;
+        public readonly MyContextBase db;
         public virtual List<T> GetMocklist()
         {
             return  new List<T>();

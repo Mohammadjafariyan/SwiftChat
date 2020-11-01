@@ -31,6 +31,12 @@ namespace SignalRMVCChat.Areas.security.Service
            {
                throw new Exception("نام کاربری یا رمز عبور اشتباه است");
            }
+
+
+           if (!string.Equals(user.Password,userPassword))
+           {
+               throw new Exception("نام کاربری یا رمز عبور اشتباه است");
+           }
            
            /*if (!string.IsNullOrEmpty(user.Token))
            {

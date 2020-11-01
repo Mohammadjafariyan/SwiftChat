@@ -18,6 +18,8 @@ namespace SignalRMVCChat.WebSocket.Typing
                 Throw("ادمین مجاز به فراخوانی این متد نیست");
             }
 
+            var text= GetParam<string>("text", false, "null");
+
             try
             {
                 await MySocketManagerService.SendToAllAdmins(currMySocketReq.MyWebsite.Id,
@@ -26,7 +28,8 @@ namespace SignalRMVCChat.WebSocket.Typing
                         Name = CallbackName,
                         Content = new
                         {
-                            targetCustomerId = currMySocketReq.MySocket.CustomerId
+                            targetCustomerId = currMySocketReq.MySocket.CustomerId,
+                            text
                         }
                     });
             }

@@ -7,6 +7,7 @@ using SignalRMVCChat.SysAdmin.Service;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 using System.ComponentModel.DataAnnotations.Schema;
 using SignalRMVCChat.Models.ET;
+using SignalRMVCChat.Models.UsersSeparation;
 
 namespace SignalRMVCChat.Models
 {
@@ -166,6 +167,10 @@ namespace SignalRMVCChat.Models
         public string Email { get; set; }
         public string Phone { get; set; }
         public List<EventTrigger> EventTriggers { get; set; }
+        public List<UsersSeparation.UsersSeparation> UsersSeparations { get; set; }
+        
+        [NotMapped]
+        public List<UsersSeparationParam> UsersSeparationParams { get; set; }
     }
 
     public enum PlanType

@@ -122,10 +122,10 @@ export default class MyHeader extends Component {
 
 
                 <ForwardChat></ForwardChat>
-
+{/*
                 {DataHolder.selectedCustomer && DataHolder.selectedCustomer.IsTyping &&
                 <WhileWriting IsTyping={DataHolder.selectedCustomer.IsTyping}></WhileWriting>
-                }
+                }*/}
 
                 <div className="form-group">
 

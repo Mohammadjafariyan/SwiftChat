@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using SignalRMVCChat.Models.HelpDesk;
 using SignalRMVCChat.Service.HelpDesk;
 using SignalRMVCChat.WebSocket.Base;
 
@@ -41,6 +42,13 @@ namespace SignalRMVCChat.WebSocket.HelpDesk.Category
             {
                 Throw("زبان ارسال نشده است");
             }
+            
+            
+            record.CategoryImage=new CategoryImage
+            {
+                Content = record.Content
+            };
+            
 
             return record;
         }

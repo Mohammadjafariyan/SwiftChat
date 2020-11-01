@@ -103,7 +103,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string requestUrl=null)
+        public virtual async Task<ActionResult> Login(LoginViewModel model, string requestUrl=null)
         {
             try
             {
@@ -122,7 +122,6 @@ namespace SignalRMVCChat.Areas.security.Controllers
                 // To enable password failures to trigger account lockout, change to shouldLockout: true
                 var result = SecurityService.SignInAsync(model.Email, model.Password);
 
-                Response.Cookies.Add(new HttpCookie("gaptoken", result.Token));
 
 
                 var appRoleService = Injector.Inject<AppRoleService>();
@@ -131,8 +130,11 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
                 if (isSuperAdmin)
                 {
-                    return RedirectToAction("Index", "AdminDashboard", new {area = "Admin"});
+                    throw new Exception("ادمین اصلی مجاز به ورود به این بخش نیست");
+                 //   return RedirectToAction("Index", "AdminDashboard", new {area = "Admin"});
                 }
+                
+                Response.Cookies.Add(new HttpCookie("gaptoken", result.Token));
 
 
                 if (string.IsNullOrEmpty(requestUrl) == false)
@@ -146,8 +148,13 @@ namespace SignalRMVCChat.Areas.security.Controllers
             catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);
                 ModelState.AddModelError("", MyGlobal.RecursiveExecptionMsg(e));
-                return View(model);
+                return LoginError(model);
             }
+        }
+
+        public virtual ActionResult LoginError(dynamic model)
+        {
+            return View("",model);
         }
 
         //
@@ -205,7 +212,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
         public virtual async Task CreateRolesIfNotExist()
         {
-            if (!AppRoleService.RoleExists("admin"))
+            /*if (!AppRoleService.RoleExists("admin"))
             {
                 var role = new AppRole();
                 role.Name = "admin";
@@ -221,7 +228,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
             var s = new SuperAdminSeed();
 
-            int adminId = (s.CreateSuperAdminIfNotExist().Result).Single;
+            int adminId = (s.CreateSuperAdminIfNotExist().Result).Single;*/
         }
 
         [HttpGet]

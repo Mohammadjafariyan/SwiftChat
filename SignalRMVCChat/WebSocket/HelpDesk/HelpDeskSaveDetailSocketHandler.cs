@@ -18,6 +18,8 @@ namespace SignalRMVCChat.WebSocket.HelpDesk
 
             inDbRecord.HeaderText = record.HeaderText;
             inDbRecord.BgColor = record.BgColor;
+            inDbRecord.GoToWebsiteUrl = record.GoToWebsiteUrl;
+            
 
 
             return inDbRecord;

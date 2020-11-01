@@ -27,6 +27,13 @@
 
 <style>
 
+ svg {
+            width: 40px;
+            top: 0;
+            left: 0;
+            position: fixed;
+        }
+
 
 .gapMsgAlert{
 background-color: @pluginCustomized.TopHeaderRightColor;
@@ -832,6 +839,14 @@ color:@pluginCustomized.TopHeaderRightColor !important;
                             
 </style>
 
+<div>
+    
+    <div class="pulsating-circle" style="display: none"></div>
+    <svg style="z-index: 999999999999;display: none" viewBox="11.8 9 16 22" class="mouse"><path d="M20,21l4.5,8l-3.4,2l-4.6-8.1L12,29V9l16,12H20z"></path></svg>
+
+</div>
+
+
 <div class="bigPanel" id="bigPanel">
 
 
@@ -1221,8 +1236,7 @@ color:@pluginCustomized.TopHeaderRightColor !important;
             <input hidden="hidden" id="gapFileUniqId" name="gapFileContent"/>
             <input hidden="hidden" id="gapFileExtention" name="gapFileExtention"/>
 
-        <textarea onkeyup="textAreaAdjust(this)" style="overflow:hidden" placeholder="پیغام خود را بنویسید" id="gapChatInput">
-        </textarea>
+        <textarea onkeyup="textAreaAdjust(this)" style="overflow:hidden" placeholder="پیغام خود را بنویسید" id="gapChatInput"></textarea>
 
             <input id="gapInpSub" type="submit" hidden="hidden"/>
         </form>

@@ -1,10 +1,33 @@
-﻿@model SignalRMVCChat.Service.HelpDesk.HelpDeskHomeViewModel
+﻿@using SignalRMVCChat.Models.HelpDesk
+@model SignalRMVCChat.Service.HelpDesk.HelpDeskHomeViewModel
 
 @{
     ViewBag.Title = "مرکز پشتیبانی";
     Layout = "../Shared/_HelpDesk_Layout.cshtml";
 }
 
+
+
+@{
+    HelpDesk helpDesk = new HelpDesk
+    {
+        HeaderText = "مرکز پشتیبانی",
+    };
+    if (TempData["helpDesk"]!=null)
+    {
+        helpDesk=TempData["helpDesk"] as HelpDesk;
+    }
+
+    if (helpDesk==null)
+    {
+        helpDesk = new HelpDesk
+        {
+            HeaderText = "مرکز پشتیبانی",
+            BgColor = "blue"
+
+        };
+    }
+}
 
 <style>
     .header-color{
@@ -87,7 +110,8 @@
                                              src="/HelpDesk/CategoryImage?id=@Model.Categories[i].Id" alt="Card image cap">
 
                                     <div class="card-body">
-                                        <a href="/HelpDesk/Detail?categoryTitle=@Model.Categories[i].Title&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]" class="btn btn-primary">@Model.Categories[i].Title</a>
+                                        <a href="/HelpDesk/Detail?categoryTitle=@Model.Categories[i].Title&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]" 
+                                           class="btn text-white" style="background-color: #@Model.Categories[i].BgColor">@Model.Categories[i].Title</a>
                                         <p style="margin-top: 11px;" class="card-text">@Model.Categories[i].Description</p>
                                     </div>
                                 </div>

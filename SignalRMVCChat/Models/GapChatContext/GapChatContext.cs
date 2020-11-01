@@ -181,6 +181,9 @@ namespace SignalRMVCChat.Models.GapChatContext
                 .HasForeignKey(o => o.AppRoleId).WillCascadeOnDelete(false);
 
 
+            modelBuilder.Entity<AppUser>().ToTable("AppUser");
+            modelBuilder.Entity<AppAdmin>().ToTable("AppAdmin");
+
             #region Ticket
 
             modelBuilder.Entity<AppUser>()
@@ -335,8 +338,39 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #endregion
             
+            #region UsersSeparation
+
+
+        
+            modelBuilder.Entity<MyWebsite>()
+                .HasMany(r => r.UsersSeparations)
+                .WithRequired(o => o.MyWebsite)
+                .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
+
+        
+            modelBuilder.Entity<MyAccount>()
+                .HasMany(r => r.UsersSeparations)
+                .WithRequired(o => o.MyAccount)
+                .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UsersSeparation.UsersSeparation>()
+                .HasMany(r => r.Customers)
+                .WithOptional(o => o.UsersSeparation)
+                .HasForeignKey(o => o.UsersSeparationId).WillCascadeOnDelete(false);
+
+
+            #endregion
+            
             base.OnModelCreating(modelBuilder);
         }
+
+
+        #region UsersSeparation
+
+        public DbSet<UsersSeparation.UsersSeparation> UsersSeparations { get; set; }
+
+
+        #endregion
 
 
         #region form
@@ -376,7 +410,6 @@ namespace SignalRMVCChat.Models.GapChatContext
 
         #endregion
 
-        public DbSet<AppAdmin> AppAdmins { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -398,7 +431,8 @@ namespace SignalRMVCChat.Models.GapChatContext
         #region Security
 
         public DbSet<MyFile> MyFiles { get; set; }
-        public DbSet<AppUser> AppUsers { get; set; }
+      
+        public DbSet<BaseAppUser> AppUsers { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<AppRole> AppRoles { get; set; }
         public DbSet<Log> Logs { get; set; }

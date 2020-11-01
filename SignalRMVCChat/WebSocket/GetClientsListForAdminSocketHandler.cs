@@ -85,6 +85,11 @@ namespace SignalRMVCChat.WebSocket
                             
                             break;*/
                         
+                        case "SharedChatBox":
+                            query = chatProviderService.GetTotalChatted(null, new DateFromToDateViewModel(), null,
+                                    customers);
+
+                            break;
                         case  "SeparatePerPageCustomerListPage":
                             
                             query = chatProviderService.SeparatePerPageCustomerListPage(_request.Body?.selectedPage?.ToString(),currMySocketReq,customers);;
@@ -201,8 +206,8 @@ namespace SignalRMVCChat.WebSocket
                         Time=MyAccount.CalculateOnlineTime(c.CreationDateTime),
                         CustomerTags=c.CustomerTagsForClientTemp,
                         Email=c.Email,
-                        Phone=c.Phone
-
+                        Phone=c.Phone,
+                        UsersSeparationParams=c.UsersSeparationParams
                     }).ToList();
 
 
@@ -259,6 +264,7 @@ namespace SignalRMVCChat.WebSocket
 
 
                     Time=MyGlobal.ToIranianDateWidthTime(c.CreationDateTime),
+                    UsersSeparationParams=c.UsersSeparationParams
 
 
                 }).ToList();
@@ -303,6 +309,9 @@ namespace SignalRMVCChat.WebSocket
         {
             switch (type)
             {
+                case "SharedChatBox":
+
+                    break;
                 case "SeparatePerPageCustomerListPage":
                     break;
                 case "CustomersChattedWithMe":
