@@ -32,7 +32,7 @@ export default class Admins extends Component {
     }
 
 
-    componentWillMount() {
+    componentDidMount() {
 
 
         MyCaller.Send('GetAdminsList')

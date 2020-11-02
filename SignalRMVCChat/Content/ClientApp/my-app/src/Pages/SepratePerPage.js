@@ -13,7 +13,7 @@ export default class SepratePerPage extends Component {
     CurrentUserInfo.SepratePerPage = this;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     changeUserTypes('GetVisitedPagesForCurrentSite');
 
     /* let arr = [];

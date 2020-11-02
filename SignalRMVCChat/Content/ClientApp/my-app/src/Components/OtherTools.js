@@ -113,7 +113,7 @@ class OtherTools extends Component {
                                     }}>
                                     <Badge variant={'light'}>
                                         <a href='#'>
-                                            <i className="fa fa-file-text-o bigIcon" aria-hidden="true"></i>
+                                            <i className="fa fa-file-text bigIcon" aria-hidden="true"></i>
                                         </a>
 
                                     </Badge>

@@ -32,7 +32,7 @@ export default class TagList extends Component {
     }
 
 
-    componentWillMount() {
+    componentDidMount() {
         this.getAllTagsForCurrentAdmin();
 
         /*

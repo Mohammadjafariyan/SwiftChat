@@ -20,12 +20,13 @@ import 'primeicons/primeicons.css';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import B4AdminLayout from "./External/B4Admin/B4AdminLayout";
 
 function App() {
   return (
     <div className="App">
       
-      <LayoutPage/>
+      <B4AdminLayout/>
 
 
         {MyGlobal.isTestingEnvirement && <div className="onthefly">

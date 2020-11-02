@@ -10,6 +10,7 @@ import Satistification from "./Satistification";
 import MarkAsResovled from "./MarkAsResovled";
 import {UserInformationService} from "./Service/UserInformationService";
 import {_showError} from "../Pages/LayoutPage";
+import BlockUser from "./BlockUser/BlockUser";
 
 class CustomerInfo extends Component {
     state = {};
@@ -193,6 +194,9 @@ _showError(' مقدار بازگشتی از سرور نال است ');
                         
                         
                         <Satistification/>
+                        
+                        
+                        <BlockUser/>
 
                     </div>
                 </div>

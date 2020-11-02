@@ -111,7 +111,7 @@ export default class OnlineCustomerList extends Component {
                                         }
                                     }}
                                 >
-                                    شروع چت
+                                    شروع گفتگو
                                 </Card.Link>
                             </Card.Body>
                             <Card.Footer>

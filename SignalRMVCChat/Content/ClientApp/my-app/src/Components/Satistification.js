@@ -64,10 +64,10 @@ class Satistification extends Component {
                             {stars.map((val,i,arr)=>{
 
                                 if (i<this.state.ratingCount.length){
-                                    return                <i style={{color:'#f8d007'}} className="fa fa-star" aria-hidden="true"></i>
+                                    return                <i key={i} style={{color:'#f8d007'}} className="fa fa-star" aria-hidden="true"></i>
 
                                 }else{
-                                    return                 <i style={{color:'black'}} className="fa fa-star" aria-hidden="true"></i>
+                                    return                 <i key={i} style={{color:'black'}} className="fa fa-star" aria-hidden="true"></i>
                                         ;
                                 }
                             })}

@@ -1,4 +1,32 @@
+a:hover{
+    cursor: pointer;
+}
 
+.selected{
+    
+}
+
+.IsResolved{
+    border:1px solid greenyellow !important;;
+}
+
+.UnIsResolved{
+    border:1px solid red !important;
+
+}
+
+.iconSize18{
+    font-size: 18px !important;
+}
+
+.onlyoffline{
+    margin-top: 12px;
+    margin-left: 9px;
+}
+
+.sidebar-heading{
+    text-align: center !important;
+}
 .usData{
     overflow: auto;
  /*   word-break: break-all;
@@ -195,13 +223,13 @@ height: 100%;
     display: none;
 }
 
-a:not([href]):not([class]):hover,a:hover{
+a:not([href]):not([class]):hover{
     color: #04aecd !important;
     cursor: pointer;
 }
 
 
-a:not([href]):not([class]),a{
+a:not([href]):not([class]){
     color: #09e2ca !important;
 }
 

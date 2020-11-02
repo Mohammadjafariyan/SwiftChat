@@ -184,26 +184,29 @@ export default class Customers extends Component {
         var arr = [];
         arr = res.Content.EntityList;
 
-
-        if (DataHolder.selectedCustomer) {
-
-
-            if (!arr.find(f => f.Id == DataHolder.selectedCustomer.Id)) {
-                arr.push(DataHolder.selectedCustomer)
-                this.readChat();
-            } else {
+        if (!this.props.noReadChat)
+        {
+            if (DataHolder.selectedCustomer) {
 
 
-                this.readChat();
+                if (!arr.find(f => f.Id == DataHolder.selectedCustomer.Id)) {
+                    arr.push(DataHolder.selectedCustomer)
+                    this.readChat();
+                } else {
 
 
-                if (DataHolder.selectedCustomer) {
-                    this.GetUserAddedToTags(DataHolder.selectedCustomer.Id);
+                    this.readChat();
+
+
+                    if (DataHolder.selectedCustomer) {
+                        this.GetUserAddedToTags(DataHolder.selectedCustomer.Id);
+                    }
                 }
-            }
 
-            this.placeOnTop(arr);
+                this.placeOnTop(arr);
+            }
         }
+    
 
         this.setState({arr: arr});
 
@@ -351,7 +354,7 @@ export function ShowOnlineUsers(props) {
             isSelected = DataHolder.selectedCustomer && el.Id == DataHolder.selectedCustomer.Id ? 'selectedUserInList' : '';
 
         }
-        return <li key={el.Id} onClick={(e) => {
+        return <li   key={el.Id} onClick={(e) => {
 
 
             if (props.onClick) {
@@ -379,6 +382,10 @@ export function ShowOnlineUsers(props) {
                 if (CurrentUserInfo.ChatPage) {
                     CurrentUserInfo.ChatPage.setState({chats: []});
                 }
+                
+                if (CurrentUserInfo.MyMap && el && el.LastTrackInfo ){
+                    CurrentUserInfo.MyMap.AddMarker(el.LastTrackInfo.latitude,el.LastTrackInfo.longitude,el)
+                }
 
                 //CurrentUserInfo.CustomersPage.placeOnTop(arr);
 
@@ -387,7 +394,7 @@ export function ShowOnlineUsers(props) {
 
 
         }}
-                   className={'list-group-item userInList ' + isSelected} key={el.Id}>
+                   className={`list-group-item  ${isSelected ? 'bg-info text-white' :''} ${el.IsResolved ? 'IsResolved' : 'UnIsResolved'} userInList ` + isSelected} key={el.Id}>
             {showTotalUnRead(el)}
             {el.Name}
 

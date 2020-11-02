@@ -95,7 +95,7 @@ class CustomerData extends Component {
 
                                                     </InputGroup.Text>
                                                 </InputGroup.Prepend>
-                                                <FormControl autocomplete="on"
+                                                <FormControl autoComplete="on"
                                                              placeholder="مقدار"
                                                              aria-label="Username"
                                                              aria-describedby="basic-addon1"
@@ -107,7 +107,7 @@ class CustomerData extends Component {
                                                                  this.setState({value: e.target.value})
                                                              }}
                                                 />
-                                                <FormControl autocomplete="on"
+                                                <FormControl autoComplete="on"
                                                              placeholder="کلید"
                                                              aria-label="Username"
                                                              value={this.state.key}

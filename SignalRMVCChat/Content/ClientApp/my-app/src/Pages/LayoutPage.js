@@ -96,7 +96,8 @@ export default class LayoutPage extends Component {
         }
     }
 
-    componentWillMount(){
+   
+    componentDidMount(){
         if(MyGlobal.isTestingEnvirement){
             cookieManager.setItem("adminToken","sdlflksdf")
             this.setState({isLogin:true});

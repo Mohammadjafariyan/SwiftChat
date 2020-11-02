@@ -6,8 +6,13 @@ import MyMap from "../Components/Map/MyMap";
 import {Container} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import {CurrentUserInfo} from "../Help/Socket";
+import MyMapHolder from "../Components/Map/MyMapHolder";
 
 class MapPage extends Component {
+   
+
+  
     render() {
         return (
             <div>
@@ -20,12 +25,12 @@ class MapPage extends Component {
                     <Row >
 
                         <Col md={9}>
-                            <MyMap/>
+                            <MyMapHolder/>
 
                         </Col>
                         
                         <Col md={3}>
-                            <Customers />
+                            <Customers noReadChat={true} />
                         </Col>
 
                     </Row>
@@ -36,5 +41,7 @@ class MapPage extends Component {
         );
     }
 }
+
+
 
 export default MapPage;

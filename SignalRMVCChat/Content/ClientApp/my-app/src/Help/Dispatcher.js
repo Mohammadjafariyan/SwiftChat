@@ -491,6 +491,18 @@ class dispatcher {
                             res
                         );
                     }
+                    
+                    
+                    
+                    if (DataHolder.currentPage==='Map'){
+                        if (CurrentUserInfo.CustomersPage) {
+                            CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);
+                        }
+                        
+                        if (CurrentUserInfo.MyMapHolder){
+                            CurrentUserInfo.MyMapHolder.getClientsListForAdminCallback(res);
+                        }
+                    }
                 }
 
                 /*else{
@@ -558,7 +570,15 @@ class dispatcher {
 
             case "totalUserCountsChangedCallback":
                 CurrentUserInfo.SubMenu.totalUserCountsChangedCallback(res);
+                CurrentUserInfo.B4AdminSubMenu.totalUserCountsChangedCallback(res);
+
                 CurrentUserInfo.Menu.totalUserCountsChangedCallback(res);
+                CurrentUserInfo.B4AdminMainMenu.totalUserCountsChangedCallback(res);
+                
+                if (CurrentUserInfo.B4AdminNavbar)
+                CurrentUserInfo.B4AdminNavbar.totalUserCountsChangedCallback(res);
+
+                
 
                 if (CurrentUserInfo.OnlineCustomerListHolder) {
                     CurrentUserInfo.OnlineCustomerListHolder.totalUserCountsChangedCallback(

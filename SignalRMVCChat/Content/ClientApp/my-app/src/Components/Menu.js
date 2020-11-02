@@ -65,11 +65,21 @@ export default class Menu extends Component {
                     پروفایل
                 </Button>
 
-                
+
                 <Button variant="light" id={'usersSeparation'} className={'btn btn-default ' +(DataHolder.currentPage==='usersSeparation' ? ' bg-primary text-white ' : '')} type="button"
                         onClick={() => {
                             this.setPage('usersSeparation');
                         }}>تفکیک کاربران عضو</Button>
+
+                <Button variant="light" id={'Map'} className={'btn btn-default ' +(DataHolder.currentPage==='Map' ? ' bg-primary text-white ' : '')} type="button"
+                        onClick={() => {
+                            this.setPage('Map');
+                        }}>
+                    <i className={'fa fa-map-marker'} aria-hidden="true"></i>
+
+                    نمایش در نقشه
+                
+                </Button>
                 
                 
                 <Button variant="light" className={'btn btn-default ' +(DataHolder.currentPage==='FormDataPage' ? ' bg-primary text-white ' : '')} type="button"
