@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Service;
@@ -19,6 +20,13 @@ namespace SignalRMVCChat.WebSocket
             return await  Task.FromResult(new MyWebSocketResponse());
         }
 
+        protected virtual T Parse<T>(string request, MyWebSocketRequest currMySocketReq)
+        {
+            string json=JsonConvert.SerializeObject(_request.Body);
+            var record= JsonConvert.DeserializeObject<T>(json);
+
+            return record;
+        }
         protected async Task InitAsync(string request, MyWebSocketRequest currMySocketReq)
         {
             _logService.LogFunc(request);

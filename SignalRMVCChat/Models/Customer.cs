@@ -137,5 +137,7 @@ namespace SignalRMVCChat.Models
         public int? UsersSeparationId { get; set; }
 
         public UsersSeparation.UsersSeparation UsersSeparation { get; set; }
+        public bool IsBlocked { get; set; }
+        public List<RemindMe.RemindMe> RemindMes { get; set; }
     }
 }

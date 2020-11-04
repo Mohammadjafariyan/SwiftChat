@@ -171,6 +171,9 @@ namespace SignalRMVCChat.Models
         
         [NotMapped]
         public List<UsersSeparationParam> UsersSeparationParams { get; set; }
+
+        public List<RemindMe.RemindMe> RemindMes { get; set; }
+        public List<ReadyPm.ReadyPm> ReadyPms { get; set; }
     }
 
     public enum PlanType

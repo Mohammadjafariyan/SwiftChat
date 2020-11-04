@@ -47,10 +47,33 @@ namespace SignalRMVCChat.Service
         protected virtual async Task<IQueryable<Chat>> GetUserAndAdminChatsHelper(int? accountId, int customerId,
             int currentUserIsAdminorCustomer, Func<IQueryable<Chat>, IQueryable<Chat>> filter)
         {
-            var chats = GetQuery().Where(q => q.CustomerId == customerId &&
+            var chatsQuery = GetQuery().Where(q => q.CustomerId == customerId &&
                                               q.MyAccountId == accountId)
-                .OrderByDescending(o => o.Id).ToList().AsQueryable();
+                .OrderByDescending(o => o.Id).AsQueryable();
 
+
+            #region  filter chat types
+
+            /*----------------------- filter chat types---------------------------------*/
+            if ((MySocketUserType) currentUserIsAdminorCustomer == MySocketUserType.Admin)
+            {
+                
+            }
+            else
+            {
+                chatsQuery=  chatsQuery.Where(q => q.ChatType != ChatType.PrivateNote &&
+                                                  q.ChatType != ChatType.AutomaticSend);
+            }
+            
+            
+            
+            /*----------------------- END---------------------------------*/
+
+            #endregion
+        
+
+            
+            var chats=chatsQuery.ToList().AsQueryable();
             
             chats = filter(chats);
 

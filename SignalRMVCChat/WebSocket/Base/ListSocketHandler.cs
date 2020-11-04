@@ -38,7 +38,7 @@ namespace SignalRMVCChat.WebSocket.Base
 
         protected virtual IQueryable<T> FilterAccess(IQueryable<T> getQuery, MyWebSocketRequest request, MyWebSocketRequest currMySocketReq)
         {
-            throw new System.NotImplementedException();
+            return getQuery;
         }
 
     }

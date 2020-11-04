@@ -8,6 +8,7 @@ import LayoutPage from "../../Pages/LayoutPage";
 import B4AdminBody from "./B4AdminBody";
 import B4AdminMenu from "./B4AdminMenu";
 import B4AdminNavbar from "./B4AdminNavbar";
+import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
 
 const B4AdminLayoutScripts=()=>{
     useScript('/Content/B4Admin/jquery/jquery.min.js')
@@ -19,10 +20,30 @@ const B4AdminLayoutScripts=()=>{
 
 }
 class B4AdminLayout extends Component {
-    
+    state={};
+
+    constructor(props) {
+        super(props);
+        CurrentUserInfo.B4AdminLayout=this;
+    }
+
+
     componentDidMount() {
 
+        MyCaller.Send('GetMyProfile')
 
+
+
+    }
+
+    getMyProfileCallback(res){
+        if (!res || !res.Content){
+            CurrentUserInfo.LayoutPage.showError('res is null for profile');
+            return ;
+        }
+       // CurrentUserInfo.LayoutPage.showMsg('اطلاعات پروفایل خوانده شد');
+
+        this.setState({currentUser:res.Content});
     }
 
     render() {
@@ -68,7 +89,7 @@ class B4AdminLayout extends Component {
                         <footer className="sticky-footer bg-white">
                             <div className="container my-auto">
                                 <div className="copyright text-center my-auto">
-                                    <span>Copyright &copy; Your Website 2020</span>
+                                    <span>تمامی حقوق محفوظ است &copy; gapchat.ashpazerooz.ir 2020</span>
                                 </div>
                             </div>
                         </footer>

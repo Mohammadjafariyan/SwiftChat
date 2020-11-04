@@ -413,6 +413,8 @@
     <Compile Include="Models\OnlineStatus.cs" />
     <Compile Include="Models\Plan.cs" />
     <Compile Include="Models\PluginCustomized.cs" />
+    <Compile Include="Models\ReadyPm\ReadyPm.cs" />
+    <Compile Include="Models\RemindMe\RemindMe.cs" />
     <Compile Include="Models\Setting.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\UsersSeparation\UsersSeparation.cs" />
@@ -449,6 +451,8 @@
     <Compile Include="Service\PlanException.cs" />
     <Compile Include="Service\PlanService.cs" />
     <Compile Include="Service\PluginCustomizedService.cs" />
+    <Compile Include="Service\ReadyPm\ReadyPmService.cs" />
+    <Compile Include="Service\RemindMe\RemindMeService.cs" />
     <Compile Include="Service\SettingService.cs" />
     <Compile Include="Service\SocketsSingleton.cs" />
     <Compile Include="Service\TagService.cs" />
@@ -513,6 +517,7 @@
     <Compile Include="WebSocket\Base\Call\ScreenRecord\ScreenRecordCustomerCloseSocketHandler.cs" />
     <Compile Include="WebSocket\Base\Call\ScreenRecord\ScreenRecordSaveSocketHandler.cs" />
     <Compile Include="WebSocket\Base\Call\ScreenRecord\SetScreenRecordAccessRequestIsAcceptedSocketHandler.cs" />
+    <Compile Include="WebSocket\BlockUser\ChangeCustomerBlockStatusSocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\DeleteKeySocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\GetCustomerDataListSocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\GetLastVisitedPagesSocketHandler.cs" />
@@ -578,11 +583,18 @@
     <Compile Include="WebSocket\MyWebSocketResponse.cs" />
     <Compile Include="WebSocket\MyWebSocketResponseType.cs" />
     <Compile Include="WebSocket\NewTagAddSocketHandler.cs" />
+    <Compile Include="WebSocket\PrivateNote\AdminPrivateNoteSendToAdminSocketHandler.cs" />
     <Compile Include="WebSocket\Profile\GetMyProfileSocketHandler.cs" />
     <Compile Include="WebSocket\Profile\SaveMyProfileSocketHandler.cs" />
     <Compile Include="WebSocket\Rate\AdminSendRatingRequestSocketHandler.cs" />
     <Compile Include="WebSocket\Rate\CustomerRateSocketHandler.cs" />
     <Compile Include="WebSocket\ReadChatSocketHandler.cs" />
+    <Compile Include="WebSocket\ReadyPm\GetReadyPmsListSocketHandler.cs" />
+    <Compile Include="WebSocket\ReadyPm\RemoveReadyPmSocketHandler.cs" />
+    <Compile Include="WebSocket\ReadyPm\SaveReadyPmsSocketHandler.cs" />
+    <Compile Include="WebSocket\RemindMe\DeleteRemindMeSocketHandler.cs" />
+    <Compile Include="WebSocket\RemindMe\GetRemindMeListSocketHandler.cs" />
+    <Compile Include="WebSocket\RemindMe\SaveRemindMeSocketHandler.cs" />
     <Compile Include="WebSocket\SaveAutomaticSendChatsSocketHandler.cs" />
     <Compile Include="WebSocket\SearchHandler.cs" />
     <Compile Include="WebSocket\SelectCustomerForChatSocketHandler.cs" />
@@ -2069,6 +2081,10 @@
     <Content Include="Content\ClientApp\my-app\src\Components\BlockUser\BlockUser.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\Chat.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\ChatForm.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\ChatForm\ChatFormTypeSwitch.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\ChatForm\ReadyPms.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\ChatForm\RemindMe.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\ChatForm\SelectAdmin.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\CustomerData.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\CustomerInfo.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\CustomerProfile.js" />

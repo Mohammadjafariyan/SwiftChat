@@ -6,6 +6,21 @@ a:hover{
     
 }
 
+.p-tabmenu.p-component{
+direction: rtl;    
+}
+.p-component.p-editor-container{
+    overflow: hidden;
+}
+
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link{
+    padding:6px !important;
+}
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link .p-menuitem-icon{
+    margin-right: 0px !important; 
+font-size: 11px !important;
+    padding: 0px;
+}
 .IsResolved{
     border:1px solid greenyellow !important;;
 }
@@ -332,6 +347,13 @@ display: flex;
     cursor: pointer
 }
 
+.p-fieldset.p-fieldset-toggleable .p-fieldset-legend{
+    display: none;
+}
+
+.p-tabview-nav{
+    direction: rtl;
+}
 
 .noMargin {
     margin: 0px;
@@ -341,8 +363,8 @@ display: flex;
 
 .chatPanel{
     max-height: 500px;
-    overflow: auto
-    ;
+    overflow: auto;
+    min-height: 200px;
 }
 
 .post{

@@ -227,8 +227,9 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #endregion
 
-            
+
             #region CustomerProfile
+
             modelBuilder.Entity<Customer>().HasMany(r => r.CustomerDatas)
                 .WithRequired(o => o.Customer)
                 .HasForeignKey(o => o.CustomerId).WillCascadeOnDelete(false);
@@ -278,7 +279,7 @@ namespace SignalRMVCChat.Models.GapChatContext
                 .WithMany(o => o.FormValues)
                 .HasForeignKey(o => o.FormId).WillCascadeOnDelete(false);
 
-            
+
             modelBuilder.Entity<FormValue>()
                 .HasRequired(r => r.Chat)
                 .WithMany(o => o.FormValues)
@@ -287,28 +288,29 @@ namespace SignalRMVCChat.Models.GapChatContext
             #endregion
 
             #region HelpDesk
+
             modelBuilder.Entity<Language>()
                 .HasMany(r => r.HelpDesks)
                 .WithRequired(o => o.Language)
                 .HasForeignKey(o => o.LanguageId).WillCascadeOnDelete(false);
-            
+
             modelBuilder.Entity<HelpDesk.HelpDesk>()
                 .HasMany(r => r.Categories)
                 .WithRequired(o => o.HelpDesk)
                 .HasForeignKey(o => o.HelpDeskId).WillCascadeOnDelete(false);
-            
+
             modelBuilder.Entity<HelpDesk.HelpDesk>()
                 .HasRequired(r => r.MyWebsite)
                 .WithMany(o => o.HelpDesks)
                 .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
 
-            
+
             modelBuilder.Entity<Category>()
                 .HasMany(r => r.Articles)
                 .WithRequired(o => o.Category)
                 .HasForeignKey(o => o.CategoryId).WillCascadeOnDelete(false);
-            
-            
+
+
             modelBuilder.Entity<Article>()
                 .HasMany(r => r.ArticleVisits)
                 .WithRequired(o => o.Article)
@@ -317,37 +319,33 @@ namespace SignalRMVCChat.Models.GapChatContext
             modelBuilder.Entity<Article>()
                 .HasRequired(r => r.ArticleContent)
                 .WithRequiredPrincipal(o => o.Article).WillCascadeOnDelete(false);
-            
-            
+
             #endregion
-            
-            
+
+
             #region EventTrigger
 
-        
             modelBuilder.Entity<MyWebsite>()
                 .HasMany(r => r.EventTriggers)
                 .WithRequired(o => o.MyWebsite)
                 .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
-            
-            
+
+
             modelBuilder.Entity<MyAccount>()
                 .HasMany(r => r.EventTriggers)
                 .WithRequired(o => o.MyAccount)
                 .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
 
             #endregion
-            
+
             #region UsersSeparation
 
-
-        
             modelBuilder.Entity<MyWebsite>()
                 .HasMany(r => r.UsersSeparations)
                 .WithRequired(o => o.MyWebsite)
                 .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
 
-        
+
             modelBuilder.Entity<MyAccount>()
                 .HasMany(r => r.UsersSeparations)
                 .WithRequired(o => o.MyAccount)
@@ -358,9 +356,45 @@ namespace SignalRMVCChat.Models.GapChatContext
                 .WithOptional(o => o.UsersSeparation)
                 .HasForeignKey(o => o.UsersSeparationId).WillCascadeOnDelete(false);
 
+            #endregion
+
+
+            #region RemindMe
+
+            modelBuilder.Entity<RemindMe.RemindMe>()
+                .HasRequired(r => r.MyWebsite)
+                .WithMany(o => o.RemindMes)
+                .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<RemindMe.RemindMe>()
+                .HasRequired(r => r.MyAccount)
+                .WithMany(o => o.RemindMes)
+                .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<RemindMe.RemindMe>()
+                .HasRequired(r => r.Customer)
+                .WithMany(o => o.RemindMes)
+                .HasForeignKey(o => o.CustomerId).WillCascadeOnDelete(false);
 
             #endregion
-            
+
+
+            #region Ready Pm
+
+            modelBuilder.Entity<ReadyPm.ReadyPm>()
+                .HasRequired(r => r.MyAccount)
+                .WithMany(o => o.ReadyPms)
+                .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<ReadyPm.ReadyPm>()
+                .HasRequired(r => r.MyWebsite)
+                .WithMany(o => o.ReadyPms)
+                .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
+
+            #endregion
+
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -368,7 +402,6 @@ namespace SignalRMVCChat.Models.GapChatContext
         #region UsersSeparation
 
         public DbSet<UsersSeparation.UsersSeparation> UsersSeparations { get; set; }
-
 
         #endregion
 
@@ -381,23 +414,27 @@ namespace SignalRMVCChat.Models.GapChatContext
 
         #endregion
 
+        #region Ready Pm
+
+        public DbSet<ReadyPm.ReadyPm> ReadyPms { get; set; }
+        public DbSet<RemindMe.RemindMe> RemindMes { get; set; }
+
+        #endregion
+
 
         #region EventTrigger
 
-        
         public DbSet<EventTrigger> EventTriggers { get; set; }
 
         #endregion
 
         #region CustomerProfile
-        public DbSet<CustomerData> CustomerDatas { get; set; }
 
-        
+        public DbSet<CustomerData> CustomerDatas { get; set; }
 
         #endregion
 
         #region HelpDesk
-        
 
         public DbSet<HelpDesk.HelpDesk> HelpDesks { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -431,7 +468,7 @@ namespace SignalRMVCChat.Models.GapChatContext
         #region Security
 
         public DbSet<MyFile> MyFiles { get; set; }
-      
+
         public DbSet<BaseAppUser> AppUsers { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<AppRole> AppRoles { get; set; }
@@ -516,6 +553,20 @@ namespace SignalRMVCChat.Models.GapChatContext
                 Password = "admin",
                 Name = "administrator",
             };
+            var ch2 = new MyAccount
+            {
+                Username = "علی صمدی",
+                Password = "علی صمدی",
+                Name = "علی صمدی",
+            };
+
+            var ch3 = new MyAccount
+            {
+                Username = "سعید درخشان",
+                Password = "سعید درخشان",
+                Name = "سعید درخشان",
+            };
+
             var myAccount = new MyAccount
             {
                 IdentityUsername = "admin@admin.com",
@@ -524,7 +575,9 @@ namespace SignalRMVCChat.Models.GapChatContext
                 Name = "administrator",
                 Children = new List<MyAccount>
                 {
-                    childAccount
+                    childAccount,
+                    ch2,
+                    ch3
                 }
             };
 
@@ -585,6 +638,8 @@ namespace SignalRMVCChat.Models.GapChatContext
 
 
             childAccount.AccessWebsites = gapChatContext.MyWebsites.Select(c => c.Id).ToArray();
+            ch2.AccessWebsites = gapChatContext.MyWebsites.Select(c => c.Id).ToArray();
+            ch3.AccessWebsites = gapChatContext.MyWebsites.Select(c => c.Id).ToArray();
 
             web.WebsiteToken = MySpecificGlobal.GenerateWebsiteAdminToken(web);
             gapChatContext.Entry(web).State = EntityState.Modified;

@@ -25,11 +25,15 @@ export default class LoginPage extends Component {
 
 
             CurrentUserInfo.LayoutPage.setState({isLogin:true,isClearCookie:false});
+            
+            
+            window.location.reload();
 
         } else {
 
             this.setState({err:'نام کاربری یا رمز عبور صحیح نیست'});
         }
+        
     }
 
     

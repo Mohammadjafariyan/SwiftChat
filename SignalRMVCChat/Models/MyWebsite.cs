@@ -147,5 +147,7 @@ namespace SignalRMVCChat.Service
         public List<Models.HelpDesk.HelpDesk> HelpDesks { get; set; }
         public List<Models.ET.EventTrigger> EventTriggers { get; set; }
         public List<Models.UsersSeparation.UsersSeparation> UsersSeparations { get; set; }
+        public List<Models.RemindMe.RemindMe> RemindMes { get; set; }
+        public List<Models.ReadyPm.ReadyPm> ReadyPms { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using OpenQA.Selenium.DevTools.Debugger;
 using SignalRMVCChat.Areas.Customer;
@@ -32,7 +33,18 @@ namespace SignalRMVCChat.WebSocket
                 // اگر بر حسب اتفاقی ، کاستومر حذف شده باشد ، اینجا دوباره ایجاد می شود
                 try
                 {
-                    customerProviderService.GetById(currMySocketReq.CurrentRequest.customerId.Value);
+                    var customer = customerProviderService.GetById(currMySocketReq.CurrentRequest.customerId.Value)
+                        .Single;
+
+                    if (customer.IsBlocked)
+                    {
+                        throw new NotImplementedException("شما توسط پشتیبانی بلاک شده اید");
+                    }
+                }
+                catch (NotImplementedException e)
+                {
+                    throw new NotImplementedException("شما توسط پشتیبانی بلاک شده اید");
+
                 }
                 catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);

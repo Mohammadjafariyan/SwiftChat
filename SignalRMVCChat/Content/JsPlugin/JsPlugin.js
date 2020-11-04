@@ -1994,6 +1994,10 @@ class BasePlugin {
                 * 
                 * 
                 * */
+                if(arr[i].ChatType===5){
+                    // private Admin send
+                    continue;
+                }
 
                 //screen record request from admin
                 if (arr[i].ChatContentType === 3 && !arr[i].ChatContentTypeJobDone) {

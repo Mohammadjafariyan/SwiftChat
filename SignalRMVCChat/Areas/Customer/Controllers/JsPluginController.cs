@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Web.Mvc;
 using SignalRMVCChat.DependencyInjection;
@@ -21,6 +22,41 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
             var pluginCustomizedService = Injector.Inject<PluginCustomizedService>();
 
             var pluginCustomized = pluginCustomizedService.GetSingleByUserId(website.Id);
+
+            #region CHECK BLOCKING
+
+            if(Request.Cookies["customerToken"]!=null)
+            {
+                
+                var customerToken=Request.Cookies["customerToken"].Value;
+
+                try
+                {
+                    customerToken = Uri.UnescapeDataString(customerToken);
+
+                    var customerId= MySpecificGlobal.ParseToken(customerToken).customerId;
+                    if (customerId.HasValue)
+                    {
+                        var customerProviderService=  Injector.Inject<CustomerProviderService>();
+
+                        var customer= customerProviderService.GetById(customerId.Value, "کاربر یافت نشد").Single;
+
+                        if (customer!=null && customer.IsBlocked)
+                        {
+                            return new HttpStatusCodeResult(200);
+                        }
+                    }
+      
+                }
+                catch (Exception e)
+                {
+                   //ignore
+                }
+            }
+
+            #endregion
+            
+            
             return PartialView("CustomerChatHtml", pluginCustomized);
         }
 

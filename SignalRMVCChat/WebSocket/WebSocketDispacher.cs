@@ -1,5 +1,6 @@
 ﻿using System;
 using SignalRMVCChat.DependencyInjection;
+using SignalRMVCChat.WebSocket.BlockUser;
 using SignalRMVCChat.WebSocket.Call.AdminScreenRecord;
 using SignalRMVCChat.WebSocket.Call.ScreenRecord;
 using SignalRMVCChat.WebSocket.CustomerProfile;
@@ -13,7 +14,10 @@ using SignalRMVCChat.WebSocket.Profile;
 using SignalRMVCChat.WebSocket.SocialChannels;
 using SignalRMVCChat.WebSocket.Typing;
 using SignalRMVCChat.WebSocket.LiveAssist;
+using SignalRMVCChat.WebSocket.PrivateNote;
 using SignalRMVCChat.WebSocket.Rate;
+using SignalRMVCChat.WebSocket.ReadyPm;
+using SignalRMVCChat.WebSocket.RemindMe;
 using SignalRMVCChat.WebSocket.UsersSeparation;
 
 namespace SignalRMVCChat.WebSocket
@@ -62,6 +66,52 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+                #region Ready Pm
+
+                    
+
+                case "SaveReadyPms":
+                    return new SaveReadyPmsSocketHandler();
+                    break;
+                case "RemoveReadyPm":
+                    return new RemoveReadyPmSocketHandler();
+                    break;
+                case "GetReadyPmsList":
+                    return new GetReadyPmsListSocketHandler();
+                    break;
+                #endregion
+                
+                #region RemindMe
+
+                case "SaveRemindMe":
+                    return new SaveRemindMeSocketHandler();
+                    break;
+
+                case "GetRemindMeList":
+                    return new GetRemindMeListSocketHandler();
+                    break;
+
+                case "DeleteRemindMe":
+                    return new DeleteRemindMeSocketHandler();
+                    break;
+
+                #endregion
+
+                #region Private Note
+
+                case "AdminPrivateNoteSendToAdmin":
+                    return new AdminPrivateNoteSendToAdminSocketHandler();
+                    break;
+
+                #endregion
+
+                #region BlockUser
+
+                case "changeCustomerBlockStatus":
+                    return new ChangeCustomerBlockStatusSocketHandler();
+                    break;
+
+                #endregion
 
                 #region Rate
 
@@ -71,15 +121,15 @@ namespace SignalRMVCChat.WebSocket
                 case "CustomerRate":
                     return new CustomerRateSocketHandler();
                     break;
+
                 #endregion
 
                 #region UsersSeparation
-                    
-                    
+
                 case "CustomerSaveUsersSeparationValues":
                     return new CustomerSaveUsersSeparationValuesSocketHandler();
                     break;
-                
+
                 case "CustomerGetUsersSeparationConfig":
                     return new CustomerGetUsersSeparationConfigSocketHandler();
                     break;
@@ -89,9 +139,10 @@ namespace SignalRMVCChat.WebSocket
                 case "SaveUsersSeparationForm":
                     return new SaveUsersSeparationFormSocketHander();
                     break;
+
                 #endregion
 
-                #region LiveAssist 
+                #region LiveAssist
 
                 case "LiveAssistRequest":
                     return new LiveAssistRequestSocketHandler();
@@ -104,134 +155,134 @@ namespace SignalRMVCChat.WebSocket
                 case "LiveAssistFireEvent":
                     return new LiveAssistFireEventSocketHandler();
                     break;
-                    
+
                 case "LiveAssistFireEventByAdmin":
                     return new LiveAssistFireEventByAdminSocketHandler();
                     break;
-                    
-                    
+
                 #endregion
 
                 #region EventTrigger
 
-
                 case "EventFired":
                     return new EventFiredSocketHandler();
-                    break; 
+                    break;
 
                 case "GetEventTriggers":
                     return new GetEventTriggersSocketHandler();
-                    break; 
-                
+                    break;
+
                 case "EventTriggerSave":
                     return new EventTriggerSaveSocketHandler();
-                    break; 
+                    break;
                 case "EventTriggerDelete":
                     return new EventTriggerDeleteSocketHandler();
-                    break; 
-                    
+                    break;
+
                 case "EventTriggerGetById":
                     return new EventTriggerGetByIdSocketHandler();
-                    break; 
-                    
-                    
+                    break;
+
                 #endregion
+
                 #region CustomerProfile
+
                 case "DeleteKey":
                     return new DeleteKeySocketHandler();
-                    break; 
-                    
+                    break;
+
                 case "SaveKey":
                     return new SaveKeySocketHandler();
-                    break; 
-                
+                    break;
+
                 case "GetCustomerDataList":
                     return new GetCustomerDataListSocketHandler();
-                    break; 
-                    
+                    break;
+
                 case "GetRating":
                     return new GetRatingSocketHandler();
-                    break;  
+                    break;
                 case "GetLastVisitedPages":
                     return new GetLastVisitedPagesSocketHandler();
-                    break;  
-                    
+                    break;
+
                 case "SaveUserInfo":
                     return new SaveUserInfoSocketHandler();
-                    break;  
+                    break;
+
                 #endregion
-                
+
                 #region HelpDesk
+
                 case "HelpDeskGetById":
                     return new HelpDeskGetByIdSocketHandler();
-                    break;  
+                    break;
                 case "HelpDeskSaveDetail":
                     return new HelpDeskSaveDetailSocketHandler();
-                    break;  
-                    
+                    break;
+
 
                 #region Article
-                
-                case  "EventTriggerGetAll":
+
+                case "EventTriggerGetAll":
                     return new EventTriggerGetAllSocketHandler();
-                break;
+                    break;
 
                 case "ArticleSave":
                     return new ArticleSaveSocketHandler();
-                    break;  
-                    
+                    break;
+
                 case "ArticleGetById":
                     return new ArticleGetByIdSocketHandler();
-                    break;  
-                    
+                    break;
+
                 case "ArticleDeleteById":
                     return new ArticleDeleteByIdSocketHandler();
-                    break;  
+                    break;
 
                 #endregion
-                    
+
                 case "SelectHelpDesk":
                     return new SelectHelpDeskSocketHandler();
-                    break; 
+                    break;
                 case "RemoveHelpDesk":
                     return new RemoveHelpDeskSocketHandler();
-                    break; 
+                    break;
                 case "CreateHelpDesk":
                     return new CreateHelpDeskSocketHandler();
-                    break; 
-                
+                    break;
+
                 #region Language
+
                 case "GetDefinedLanguages":
                     return new GetDefinedLanguagesSocketHandler();
-                    break; 
-                
-                    
+                    break;
+
+
                 case "Language_Get_List":
                     return new LanguageGetListSocketHandler();
-                    break; 
+                    break;
                 case "Language_GetCurrentHelpDesk_SelectedLanguage":
                     return new LanguageGetCurrentHelpDeskSelectedLanguageSocketHandler();
-                    break; 
+                    break;
 
-                    
-                    
                 #endregion
-                
+
                 case "Category_Get_List":
                     return new CategoryGetListSocketHandler();
-                    break; 
+                    break;
                 case "Category_Delete":
                     return new CategoryDeleteSocketHandler();
-                    break;  
+                    break;
                 case "Category_Save":
                     return new CategorySaveSocketHandler();
                     break;
                 case "CategoryGetById":
                     return new CategoryGetByIdSocketHandler();
                     break;
-                
+
                 #endregion
-                
+
                 #region screenRecord
 
                 case "ScreenRecordAdminShare":

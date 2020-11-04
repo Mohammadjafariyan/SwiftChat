@@ -5,7 +5,7 @@ import MyHeader from './Components/Header';
 import Chat from './Components/Chat';
 import Customers from './Components/Customers';
 import ChatPage from './Pages/ChatPage';
-import LayoutPage from './Pages/LayoutPage';
+import LayoutPage, {MessageAlerts} from './Pages/LayoutPage';
 import Menu from "./Components/Menu";
 
 import './styles/myStyle.css'
@@ -21,22 +21,51 @@ import 'primeicons/primeicons.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import B4AdminLayout from "./External/B4Admin/B4AdminLayout";
+import {cookieManager} from "./Help/CookieManager";
+import {Toast} from "primereact/toast";
+import LoginPage from "./Pages/LoginPage";
 
 function App() {
-  return (
-    <div className="App">
-      
-      <B4AdminLayout/>
+
+    let adminToken= cookieManager.getItem("adminToken");
+    //console.log(adminToken)
 
 
-        {MyGlobal.isTestingEnvirement && <div className="onthefly">
-            <FakeServerMonitor></FakeServerMonitor>
+    // console.log(adminToken)
 
-        </div>}
+    if (adminToken && adminToken!='null' && adminToken!='undefined') {
+        return (
+            <div className="App">
 
-      
-    </div>
-  );
+                <B4AdminLayout/>
+
+
+                {MyGlobal.isTestingEnvirement && <div className="onthefly">
+                    <FakeServerMonitor></FakeServerMonitor>
+
+                </div>}
+
+
+            </div>
+        );
+    }else{
+
+        return (
+            <div className="App">
+
+                <div>
+                    
+                    
+                    <LayoutPage/>
+                </div>
+
+
+            </div>
+        );
+    }
+    
+    
+  
 }
 
 export default App;

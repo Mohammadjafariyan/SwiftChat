@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.DynamicData;
+using Newtonsoft.Json;
 using SignalRMVCChat.Models.ViewModels;
 using SignalRMVCChat.Service;
 
@@ -10,6 +11,42 @@ namespace SignalRMVCChat.Models
     [TableName("Chat")]
     public class Chat:ChatAbstract
     {
+
+        [NotMapped]
+        public MyAccount senderAdmin  {
+            get
+            {
+                if (string.IsNullOrEmpty(senderAdminJson))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<MyAccount>(senderAdminJson);
+            }
+            set { senderAdminJson = JsonConvert.SerializeObject(value); }
+        }
+        
+        [JsonIgnore]
+        public string senderAdminJson { get; set; }
+        
+        [NotMapped]
+        public List<MyAccount> selectedAdmins
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(selectedAdminsJson))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<List<MyAccount>>(selectedAdminsJson);
+            }
+            set { selectedAdminsJson = JsonConvert.SerializeObject(value); }
+        }
+
+        [JsonIgnore]
+        public string selectedAdminsJson { get; set; }
+        
         public Customer Customer { get; set; }
 
         public MyAccount MyAccount { get; set; }

@@ -13,6 +13,60 @@ class dispatcher {
         console.log("dispatcher===>", res.Name);
         switch (res.Name) {
 
+            /*-------------------- Remind Me--------------------*/
+            case "deleteRemindMeCallback":
+                if (CurrentUserInfo.RemindMe) {
+                    CurrentUserInfo.RemindMe.deleteRemindMeCallback(res);
+                }
+                break;
+
+            case "getRemindMeListCallback":
+                if (CurrentUserInfo.RemindMe) {
+                    CurrentUserInfo.RemindMe.getRemindMeListCallback(res);
+                }
+                break;
+            case "saveRemindMeCallback":
+                if (CurrentUserInfo.RemindMe) {
+                    CurrentUserInfo.RemindMe.saveRemindMeCallback(res);
+                }
+                break;
+
+            /*--------------------END--------------------*/
+
+
+
+            /*-------------------- Ready Pm--------------------*/
+            case "getReadyPmsListCallback":
+                if (CurrentUserInfo.ReadyPms) {
+                    CurrentUserInfo.ReadyPms.getReadyPmsListCallback(res);
+                }
+                break;
+
+            case "removeReadyPmCallback":
+                if (CurrentUserInfo.ReadyPms) {
+                    CurrentUserInfo.ReadyPms.removeReadyPmCallback(res);
+                }
+                break;
+            case "saveReadyPmsCallback":
+                if (CurrentUserInfo.ReadyPms) {
+                    CurrentUserInfo.ReadyPms.saveReadyPmsCallback(res);
+                }
+                break;
+
+            /*--------------------END--------------------*/
+
+
+            /* ===============Users BLOCK =============== */
+            case "changeCustomerBlockStatusCallback":
+                if (CurrentUserInfo.BlockUser) {
+                    CurrentUserInfo.BlockUser.changeCustomerBlockStatusCallback(res);
+                }
+                break;
+
+
+            /* =============== END =============== */
+
+
             /* ===============Users Separation =============== */
             case "getUsersSeparationFormCallback":
                 if (CurrentUserInfo.UsersSeparationForm) {
@@ -74,23 +128,23 @@ class dispatcher {
 
 
 
-                /*========== rating==========*/
+            /*========== rating==========*/
 
             case "getLastVisitedPagesCallback":
                 if (CurrentUserInfo.LastPagesVisited) {
                     CurrentUserInfo.LastPagesVisited.getLastVisitedPagesCallback(res);
                 }
                 break;
-                /*========== END==========*/
+            /*========== END==========*/
 
 
 
-                
-                
-                
-                
-                
-                
+
+
+
+
+
+
 
             /*===========customer data===============*/
             case "saveKeyCallback":
@@ -212,7 +266,6 @@ class dispatcher {
 
             /*===========category===================*/
 
-                
 
             case "category_GetById_Callback":
                 if (CurrentUserInfo.CategorySave) {
@@ -435,7 +488,15 @@ class dispatcher {
                 break;
 
             case "GetAdminsListCallback":
-                CurrentUserInfo.AdminsPage.GetAdminsListCallback(res);
+                if (CurrentUserInfo.AdminsPage) {
+                    CurrentUserInfo.AdminsPage.GetAdminsListCallback(res);
+
+                }
+
+                if (CurrentUserInfo.SelectAdmin) {
+                    CurrentUserInfo.SelectAdmin.GetAdminsListCallback(res);
+
+                }
                 break;
 
             case "getAutomaticSendChatsSocketHandlerCallback":
@@ -491,15 +552,14 @@ class dispatcher {
                             res
                         );
                     }
-                    
-                    
-                    
-                    if (DataHolder.currentPage==='Map'){
+
+
+                    if (DataHolder.currentPage === 'Map') {
                         if (CurrentUserInfo.CustomersPage) {
                             CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);
                         }
-                        
-                        if (CurrentUserInfo.MyMapHolder){
+
+                        if (CurrentUserInfo.MyMapHolder) {
                             CurrentUserInfo.MyMapHolder.getClientsListForAdminCallback(res);
                         }
                     }
@@ -574,11 +634,10 @@ class dispatcher {
 
                 CurrentUserInfo.Menu.totalUserCountsChangedCallback(res);
                 CurrentUserInfo.B4AdminMainMenu.totalUserCountsChangedCallback(res);
-                
-                if (CurrentUserInfo.B4AdminNavbar)
-                CurrentUserInfo.B4AdminNavbar.totalUserCountsChangedCallback(res);
 
-                
+                if (CurrentUserInfo.B4AdminNavbar)
+                    CurrentUserInfo.B4AdminNavbar.totalUserCountsChangedCallback(res);
+
 
                 if (CurrentUserInfo.OnlineCustomerListHolder) {
                     CurrentUserInfo.OnlineCustomerListHolder.totalUserCountsChangedCallback(
@@ -680,6 +739,10 @@ class dispatcher {
             case "getMyProfileCallback":
                 if (CurrentUserInfo.ProfilePage) {
                     CurrentUserInfo.ProfilePage.getMyProfileCallback(res);
+                }
+
+                if (CurrentUserInfo.B4AdminLayout) {
+                    CurrentUserInfo.B4AdminLayout.getMyProfileCallback(res);
                 }
                 break;
             case "saveMyProfileCallback":

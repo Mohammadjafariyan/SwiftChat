@@ -320,17 +320,22 @@ export default class Chat extends Component {
 
                         <ChatForm
                             onPaste={(e) => {
-                                this.onPaste(e);
+
+                                this.setState({text: e.target.value});
+
+                                /*this.onPaste(e);*/
                             }}
                             upload={(e) => {
                                 this.uploadFile(e);
                             }}
-                            onSubmit={(e) => {
-                                this.submit(e);
+                            onSubmit={(e,type) => {
+                                this.submit(e,type);
                             }}
-                            onChange={(e) => {
+                            onChange={(val) => {
 
-                                this.chatFormOnChange(e);
+                                this.setState({text: val});
+
+                                /* this.chatFormOnChange(e);*/
                             }}
                         ></ChatForm>
                     </div>
@@ -540,7 +545,20 @@ export default class Chat extends Component {
                 MultimediaContent: chat.MultimediaContent,
                 uniqId: chat.UniqId,
             });
-        } else {
+        }
+       else if (chat.ChatType){
+            MyCaller.Send("AdminPrivateNoteSendToAdmin", {
+                adminToken: cookieManager.getItem("adminToken"),
+                targetUserId: DataHolder.selectedCustomer.Id,
+                typedMessage: chat.Message,
+                gapFileUniqId: chat.UniqId,
+                uniqId: chat.UniqId,
+                ChatType:chat.ChatType,
+                selectedAdmins:chat.selectedAdmins,
+                senderAdmin:chat.senderAdmin
+            });
+        }
+        else {
             MyCaller.Send("AdminSendToCustomer", {
                 adminToken: cookieManager.getItem("adminToken"),
                 targetUserId: DataHolder.selectedCustomer.Id,
@@ -551,12 +569,29 @@ export default class Chat extends Component {
         }
     }
 
-    submit(e) {
+    submit(e,type) {
+        
+        if (e)
         e.preventDefault();
         if (!this.state.text) return false;
         CurrentUserInfo.ChatPage.setState({scroll: false});
 
-        this.addChat({Message: this.state.text});
+        
+        if (type==='یادداشت' && CurrentUserInfo.SelectAdmin && CurrentUserInfo.SelectAdmin.state &&
+            CurrentUserInfo.SelectAdmin.state.selectedAdmins && CurrentUserInfo.SelectAdmin.state.selectedAdmins.length){
+            //ChatType: private note
+
+            
+           
+            this.addChat({Message: this.state.text,ChatType:5,
+                selectedAdmins:CurrentUserInfo.SelectAdmin.state.selectedAdmins,
+            senderAdmin:CurrentUserInfo.B4AdminLayout.state.currentUser});
+          
+
+        }else{
+            this.addChat({Message: this.state.text});
+
+        }
 
         this.setState({text: ""});
         return false;
@@ -648,6 +683,15 @@ export default class Chat extends Component {
     }
 }
 
+function getColorBasedOnChatType(el){
+    
+    if (el.ChatType===5){
+        return "bg-warning text-black"
+    }
+    
+    return "bg-light text-black";
+}
+
 export function ChatPannel(props) {
     if (!props.chats || !props.chats.length) {
         return <></>;
@@ -655,61 +699,131 @@ export function ChatPannel(props) {
 
     return props.chats.map((el, i, arr) => {
         if (!el.IsReceive) {
-            return (
-                <div className="card post  offset-md-4 " key={el.UniqId}>
-                    {props.onDelete && (
-                        <div className="card-header card-header-left">
-                            <button
-                                onClick={(e) => {
-                                    props.onDelete(el);
-                                }}
-                            >
-                                x
-                            </button>
-                            {el.Delay && <p dir="rtl"> بعد از {el.Delay} دقیقه </p>}
-                            {el.Time && <span style={{fontSize: '10px'}} dir="rtl"> {el.Time} </span>}
+            
+            
+            if (el.ChatType){
+                return (
+                    <div className={"card post  offset-md-4 " + getColorBasedOnChatType(el)} key={el.UniqId}>
+                        {props.onDelete && (
+                            <div className="card-header card-header-left">
+                                <button
+                                    onClick={(e) => {
+                                        props.onDelete(el);
+                                    }}
+                                >
+                                    x
+                                </button>
+                                {el.Delay && <p dir="rtl"> بعد از {el.Delay} دقیقه </p>}
+                                {el.Time && <span style={{fontSize: '10px'}} dir="rtl"> {el.Time} </span>}
 
-                            {props.parent && props.parent.DeleteMsgOnClick && <div style={{display: 'inline-flex'}}>
-                                <button
-                                    onClick={() => {
-                                        props.parent.DeleteMsgOnClick(el.UniqId, el);
-                                    }}
-                                    className="gapB gapRemB"
-                                >
-                                    <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        props.parent.EditMsgOnClick(el.UniqId, el);
-                                    }}
-                                    className="gapB gapEdB"
-                                >
-                                    <i className="fa fa-pencil" aria-hidden="true"></i>
-                                </button>
-                            </div>}
+                                {props.parent && props.parent.DeleteMsgOnClick && <div style={{display: 'inline-flex'}}>
+                                    <button
+                                        onClick={() => {
+                                            props.parent.DeleteMsgOnClick(el.UniqId, el);
+                                        }}
+                                        className="gapB gapRemB"
+                                    >
+                                        <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            props.parent.EditMsgOnClick(el.UniqId, el);
+                                        }}
+                                        className="gapB gapEdB"
+                                    >
+                                        <i className="fa fa-pencil" aria-hidden="true"></i>
+                                    </button>
+                                </div>}
+
+                            </div>
+                        )}
+
+                        <div className="card-body" style={{wordBreak: 'break-all', direction: 'rtl'}}>
+
+                            
+                            <span style={{textDecoration:'underline',textAlign:'right'}}>یک پیغام خصوصی از <b>{el.senderAdmin.Name}</b> به ادمین های زیر :</span>
+                           <div style={{display:'flex'}}>{el.selectedAdmins.map((admin,j,admins)=>{
+                                
+                                return <><b style={{textAlign:'right'}}>{admin.Name}:</b></>
+                                
+                            })}
+                           </div>
+                            <br/>
+                            {el.formId &&
+                            <FormShowerInChat chatId={el.Id} chatUniqId={el.UniqId} formId={el.formId}></FormShowerInChat>}
+
+                            {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
+                            {!el.MultimediaContent && <p key={el.Message}
+
+                                                         dangerouslySetInnerHTML={{__html: el.Message}}
+                            />}
+
+
+                            <IsDelivered DeliverDateTime={el.DeliverDateTime}/>
+
 
                         </div>
-                    )}
-
-                    <div className="card-body" style={{wordBreak: 'break-all', display: 'flex', direction: 'rtl'}}>
-
-
-                        {el.formId &&
-                        <FormShowerInChat chatId={el.Id} chatUniqId={el.UniqId} formId={el.formId}></FormShowerInChat>}
-
-                        {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
-                        {!el.MultimediaContent && <p key={el.Message}
-
-                                                     dangerouslySetInnerHTML={{__html: el.Message}}
-                        />}
-
-
-                        <IsDelivered DeliverDateTime={el.DeliverDateTime}/>
-
-
                     </div>
-                </div>
-            );
+                );
+            }else{
+                return (
+                    <div className={"card post  offset-md-4 " + getColorBasedOnChatType(el)} key={el.UniqId}>
+                        {props.onDelete && (
+                            <div className="card-header card-header-left">
+                                <button
+                                    onClick={(e) => {
+                                        props.onDelete(el);
+                                    }}
+                                >
+                                    x
+                                </button>
+                                {el.Delay && <p dir="rtl"> بعد از {el.Delay} دقیقه </p>}
+                                {el.Time && <span style={{fontSize: '10px'}} dir="rtl"> {el.Time} </span>}
+
+                                {props.parent && props.parent.DeleteMsgOnClick && <div style={{display: 'inline-flex'}}>
+                                    <button
+                                        onClick={() => {
+                                            props.parent.DeleteMsgOnClick(el.UniqId, el);
+                                        }}
+                                        className="gapB gapRemB"
+                                    >
+                                        <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            props.parent.EditMsgOnClick(el.UniqId, el);
+                                        }}
+                                        className="gapB gapEdB"
+                                    >
+                                        <i className="fa fa-pencil" aria-hidden="true"></i>
+                                    </button>
+                                </div>}
+
+                            </div>
+                        )}
+
+                        <div className="card-body" style={{wordBreak: 'break-all', display: 'flex', direction: 'rtl'}}>
+
+
+                            {el.formId &&
+                            <FormShowerInChat chatId={el.Id} chatUniqId={el.UniqId} formId={el.formId}></FormShowerInChat>}
+
+                            {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
+                            {!el.MultimediaContent && <p key={el.Message}
+
+                                                         dangerouslySetInnerHTML={{__html: el.Message}}
+                            />}
+
+
+                            <IsDelivered DeliverDateTime={el.DeliverDateTime}/>
+
+
+                        </div>
+                    </div>
+                );
+            }
+            
+           
         } else {
             return (
                 <div className="card post card post col-6" key={el.UniqId}>
@@ -949,19 +1063,22 @@ export class AutomaticSendPage extends Chat {
 
                             <ChatForm
                                 onPaste={(e) => {
-                                    this.onPaste(e)
+                                    this.setState({text: e.target.value});
+/*                                    this.onPaste(e)*/
                                 }} upload={(e) => {
                                 this.uploadFile(e);
                             }} onSubmit={(e) => {
                                 return this.submit(e)
-                            }} onChange={(e) => {
-                                let multiMedia = showMultimedia(e.target.value);
+                            }} onChange={(val) => {
+                                this.setState({text: val});
+
+                                /*let multiMedia = showMultimedia(e.target.value);
 
                                 if (!multiMedia) {
                                     this.setState({text: e.target.value});
                                 } else {
                                     this.setState({text: ""});
-                                }
+                                }*/
                             }}
 
 
@@ -1085,6 +1202,8 @@ export class AutomaticSendPage extends Chat {
     }
 
     submit(e) {
+        
+        if (e)
         e.preventDefault();
         if (!this.state.text) return false;
         CurrentUserInfo.ChatPage.setState({scroll: false});
