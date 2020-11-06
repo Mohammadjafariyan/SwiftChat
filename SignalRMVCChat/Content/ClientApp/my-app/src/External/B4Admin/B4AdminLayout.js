@@ -30,6 +30,7 @@ class B4AdminLayout extends Component {
 
     componentDidMount() {
 
+        debugger;
         MyCaller.Send('GetMyProfile')
 
 
@@ -43,7 +44,7 @@ class B4AdminLayout extends Component {
         }
        // CurrentUserInfo.LayoutPage.showMsg('اطلاعات پروفایل خوانده شد');
 
-        this.setState({currentUser:res.Content});
+        this.setState({currentUser:res.Content.MyAccount});
     }
 
     render() {

@@ -26,6 +26,17 @@ namespace SignalRMVCChat.Models.GapChatContext
         {
         }
 
+        public void DetachAllEntities()
+        {
+            var changedEntriesCopy = this.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added ||
+                            e.State == EntityState.Modified ||
+                            e.State == EntityState.Deleted)
+                .ToList();
+
+            foreach (var entry in changedEntriesCopy)
+                entry.State = EntityState.Detached;
+        }
         public GapChatContext() : base(MySpecificGlobal.GetConnectionString())
         {
             if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
@@ -555,15 +566,15 @@ namespace SignalRMVCChat.Models.GapChatContext
             };
             var ch2 = new MyAccount
             {
-                Username = "علی صمدی",
-                Password = "علی صمدی",
+                Username = "ali",
+                Password = "ali",
                 Name = "علی صمدی",
             };
 
             var ch3 = new MyAccount
             {
-                Username = "سعید درخشان",
-                Password = "سعید درخشان",
+                Username = "s",
+                Password = "s",
                 Name = "سعید درخشان",
             };
 

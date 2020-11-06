@@ -1,9 +1,45 @@
+/*------------------------------scrollpanel----------------------------*/
+
+button .label-promotion::before:empty {
+    display: none;
+    
+}
+.p-scrollpanel-wrapper {
+    border-right: 9px solid #afabab !important;
+}
+
+.p-scrollpanel-bar {
+    background-color: #1976d2!important;
+    opacity: 1;
+    transition: background-color .3s;
+}
+
+.p-scrollpanel-bar:hover {
+    background-color: #135ba1 !important;
+}
+/*------------------------------end----------------------------*/
+
+
 a:hover{
     cursor: pointer;
 }
 
 .selected{
     
+}
+
+
+
+.smallText{
+    font-size: 12px !important;
+}
+
+.text-black{
+    color: black !important; 
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link{
+    padding:10px !important;
 }
 
 .p-tabmenu.p-component{

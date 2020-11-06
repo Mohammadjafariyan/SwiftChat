@@ -13,6 +13,25 @@ class dispatcher {
         console.log("dispatcher===>", res.Name);
         switch (res.Name) {
 
+            /*-------------------- PRIVATE NOTE--------------------*/
+            case "adminPrivateNoteSendToAdminCallback":
+                if (CurrentUserInfo.B4AdminNavbar) {
+                    CurrentUserInfo.B4AdminNavbar.adminPrivateNoteSendToAdminCallback(res);
+                }
+
+                if (CurrentUserInfo.ChatPage) {
+                    CurrentUserInfo.ChatPage.adminPrivateNoteSendToAdminCallback(res);
+                }
+                break;
+                
+                
+
+                
+            /*--------------------END--------------------*/
+
+
+                
+                
             /*-------------------- Remind Me--------------------*/
             case "deleteRemindMeCallback":
                 if (CurrentUserInfo.RemindMe) {
@@ -743,6 +762,10 @@ class dispatcher {
 
                 if (CurrentUserInfo.B4AdminLayout) {
                     CurrentUserInfo.B4AdminLayout.getMyProfileCallback(res);
+                }
+
+                if (CurrentUserInfo.B4AdminNavbar ) {
+                    CurrentUserInfo.B4AdminNavbar.getMyProfileCallback(res);
                 }
                 break;
             case "saveMyProfileCallback":

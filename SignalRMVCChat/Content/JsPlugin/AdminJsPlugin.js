@@ -122,7 +122,7 @@ function socketConnect(responseText) {
         setTimeout(function () {
 
 
-                dragElement(getDoc().querySelector("#onTheFly"));
+            dragElement(getDoc().querySelector("#onTheFly"));
             if (CurrentUserInfo.IsCustomer) {
 
 
@@ -137,18 +137,16 @@ function socketConnect(responseText) {
 
             }
 
-            if (! document.body){
+            if (!document.body) {
                 alert('صفحه دارای تگ body نیست لذا فونت ها لود نمی شوند')
-                return ;
+                return;
             }
 
-            if (!document.body.querySelector('#gap_fonts')){
+            if (!document.body.querySelector('#gap_fonts')) {
                 document.body.prepend(getDoc().querySelector('#gap_fonts'));
 
             }
             //CurrentUserInfo.plugin.Register()
-
-           
 
 
         }, 1000)
@@ -327,7 +325,6 @@ function getCustomerActivityDetailCallback(res) {
         content += this.makeItemForInfo(res.Content[i], i)
     }
 
-    
 
     let table = " " +
         "<div><button onclick='closeBigPanel(this)' >x</button> " +
@@ -378,6 +375,9 @@ class BasePlugin {
         let TotalReceivedMesssages = res.Content.TotalReceivedMesssages;
 
 
+        CurrentUserInfo.ProfileImageId = res.Content.ProfilePhotoId;
+        CurrentUserInfo.targetName = res.Content.AccountName;
+
         pushManager.push('پیغام جدید', Message);
 
         this.handleNewMessageCome(AccountId, Message, TotalReceivedMesssages, function () {
@@ -426,7 +426,7 @@ class BasePlugin {
               res.Content.CustomerId==CurrentUserInfo.targetId)
               return;*/
 
-        
+
         if (res.Content.MultimediaContent) {
 
             let file = getDoc().querySelector("#muf_" + res.Content.gapFileUniqId);
@@ -558,7 +558,6 @@ class BasePlugin {
         let gapRowTmp = getDoc().querySelector(".gapRow[accountId='" + AccountId + "']");
 
 
-        
         // اگر قبلا موجود باشد اضافه نکن فقط وضعیت او را انلاین نشان بده
         if (gapRowTmp) {
             gapRowTmp.querySelector('.gapStat').style.backgroundColor = "green";
@@ -593,7 +592,7 @@ class BasePlugin {
         // let content= document.querySelector('meta[name="description"]');
 
         let desc = '';
-   //     MyCaller.Send("Register", {Description: desc, Title: Title, URL: URL});
+        //     MyCaller.Send("Register", {Description: desc, Title: Title, URL: URL});
     }
 
     registerCallback(res) {
@@ -614,8 +613,7 @@ class BasePlugin {
 
         if (!CurrentUserInfo.IsCustomer && arr.length === 0) {
             gapContent.innerHTML = gapContent.innerHTML + '<p >هیچ کاربر آنلاینی یافت نشد</p>'
-        } 
-        else {
+        } else {
             let p = gapContent.querySelector('p');
             if (p) {
                 p.innerText = "";
@@ -756,7 +754,7 @@ class BasePlugin {
         let chatPanel = getDoc().querySelector('#chatPanel');
 
         for (let i = 0; i < arr.length; i++) {
-            
+
             var gapMe = arr[i].SenderType === 1;
             if (!CurrentUserInfo.IsCustomer) {
                 gapMe = !gapMe;
@@ -870,15 +868,15 @@ class BasePlugin {
         CurrentUserInfo.commonDomManager.bindBackButton();
         CurrentUserInfo.commonDomManager.bindCloseButton();
 
-/*
-
-        if (!CurrentUserInfo.IsCustomer) {
-            CurrentUserInfo.commonDomManager.bindgapSearchButton();
-        }
-
-        CurrentUserInfo.commonDomManager.bindSubmitButton();
-        CurrentUserInfo.commonDomManager.bindGapChatInput();
-        bindChatPanelScrollPaging();*/
+        /*
+        
+                if (!CurrentUserInfo.IsCustomer) {
+                    CurrentUserInfo.commonDomManager.bindgapSearchButton();
+                }
+        
+                CurrentUserInfo.commonDomManager.bindSubmitButton();
+                CurrentUserInfo.commonDomManager.bindGapChatInput();
+                bindChatPanelScrollPaging();*/
 
 
     }
@@ -1258,23 +1256,21 @@ class AdminPlugin extends BasePlugin {
         Comment.style.display = 'block';
 
         let gaptags = getDoc().querySelector('#gaptags');
-        if(!CurrentUserInfo.currentUsersIsAdmins){
+        if (!CurrentUserInfo.currentUsersIsAdmins) {
             gaptags.style.display = null;
 
-        }else{
+        } else {
             gaptags.style.display = 'none';
 
         }
-    
+
 
         let selectedTag = getDoc().querySelector('#selectedTag');
-        if(selectedTag){
+        if (selectedTag) {
             selectedTag.style.display = null;
-            
+
         }
 
-        
-        
 
     }
 
@@ -1669,7 +1665,7 @@ function DeleteMessageCallback(res) {
     console.log('رسپانس حذف پیام');
 
     if (!res || !res.Content || !res.Content.uniqId || !res.Content.targetId) {
-        
+
         console.error(' مقدار بازگشتی از سرور نال است ');
         return;
     }
@@ -1792,7 +1788,7 @@ function EditMessageCallback(res) {
     console.log('رسپانس درخواست ویرایش');
 
     if (!res || !res.Content || !res.Content.uniqId || !res.Content.targetId) {
-        
+
         console.error(' مقدار بازگشتی از سرور نال است ');
         return;
     }
@@ -1812,7 +1808,7 @@ function EditMessageCallback(res) {
 
 
     if (inner) {
-        
+
         inner.innerText = res.Content.Message;
 
 
@@ -2025,25 +2021,24 @@ class DomManager {
 
         let gaptagUser = getDoc().querySelector('#gaptagUser');
 
-        
-        
+
         if (!CurrentUserInfo.IsCustomer) {
             gaptagUser.style.display = null;
         } else {
             gaptagUser.style.display = 'none';
         }
 
-/*
-
-        let gapBackButton = getDoc().querySelector('#gapBackButton');
-
-        // یعنی چت انتخاب شده
-        if (el) {
-            gapBackButton.style.display = null;
-        } else {
-            gapBackButton.style.display = 'none';
-        }
-*/
+        /*
+        
+                let gapBackButton = getDoc().querySelector('#gapBackButton');
+        
+                // یعنی چت انتخاب شده
+                if (el) {
+                    gapBackButton.style.display = null;
+                } else {
+                    gapBackButton.style.display = 'none';
+                }
+        */
 
 
         let gapScreens = getDoc().querySelectorAll('#gapScreen');
@@ -2068,10 +2063,10 @@ class DomManager {
         }
 
         var gapChat = getDoc().querySelector('#gapChat');
-        
-        if (CurrentUserInfo.isSearch){
-            gapChat.style.display=null;
-        }else{
+
+        if (CurrentUserInfo.isSearch) {
+            gapChat.style.display = null;
+        } else {
             toggle(gapChat)
 
         }
@@ -2097,7 +2092,7 @@ class DomManager {
 
 
             //tag
-            if (accountId!=='SavedPms' && !CurrentUserInfo.IsCustomer) {
+            if (accountId !== 'SavedPms' && !CurrentUserInfo.IsCustomer) {
                 GetUserAddedToTags(accountId);
             }
 
@@ -2208,17 +2203,17 @@ class DomManager {
             var x = getDoc().querySelector('#dot');
             toggle(x);
 
-/*
-
-            if (!CurrentUserInfo.IsCustomer) {
-
-                if (_currentAdminInfo.adminToken && _currentAdminInfo.adminToken.length > 20) {
-                    let x2 = getDoc().querySelector('#toolsPanel');
-                    x2.style.display = 'none';
-                }
-
-
-            }*/
+            /*
+            
+                        if (!CurrentUserInfo.IsCustomer) {
+            
+                            if (_currentAdminInfo.adminToken && _currentAdminInfo.adminToken.length > 20) {
+                                let x2 = getDoc().querySelector('#toolsPanel');
+                                x2.style.display = 'none';
+                            }
+            
+            
+                        }*/
             backOnTheFlyPosision();
 
         }
@@ -2296,8 +2291,8 @@ class DomManager {
                 CurrentUserInfo.plugin.Register();
 
             } else {
-                
-                if (!CurrentUserInfo.targetId){
+
+                if (!CurrentUserInfo.targetId) {
 
                     CurrentUserInfo.plugin.checkLoginAndGetClientsForAdmin();
                 }
@@ -2490,13 +2485,12 @@ let MyCaller = {
 
     Send(name, data) {
 
-        
 
         if (name === "ReadChat") {
             showLoadingChats('#chatPanel');
 
         }
-        
+
 
         if (CurrentUserInfo.ws.readyState != WebSocket.OPEN) {
             showError('در حال اتصال به سرور و ارسال درخواست');
@@ -2525,10 +2519,9 @@ let MyCaller = {
         req.Token = CurrentUserInfo.IsCustomer ? CurrentUserInfo.GetCurrentCustomerToken() : _currentAdminInfo.adminToken;
         req.WebsiteToken = websiteToken;
 
-        
-        
-        req.SelectedTagId=CurrentUserInfo.selectedTagId;
-        
+
+        req.SelectedTagId = CurrentUserInfo.selectedTagId;
+
 
         let gapIsOnlyOnly = getDoc().querySelector('#gapIsOnlyOnly');
         if (gapIsOnlyOnly) {
@@ -2582,7 +2575,7 @@ class dispatcher {
             case"getAllTagsForCurrentAdminCallback":
                 getAllTagsForCurrentAdminCallback(res);
                 break;
-                
+
             case "userAddedToTagsCallback":
                 userAddedToTagsCallback(res);
                 break;
@@ -2600,7 +2593,7 @@ class dispatcher {
                 break;
             case "ClearCookie":
 
-                
+
                 cookieManager.removeItem('customerToken')
                 cookieManager.removeItem('adminToken')
                 _currentAdminInfo.adminToken = null;
@@ -2608,7 +2601,7 @@ class dispatcher {
 
 
                 CurrentUserInfo.IsRestart = true;
-               // getDoc().innerHTML = '';
+                // getDoc().innerHTML = '';
 
                 CurrentUserInfo.ws.close();
                 //startUp();
@@ -3066,25 +3059,24 @@ function forwardChatAction(myAccountId) {
 }
 
 function ChangeUsers() {
-    
+
     if (CurrentUserInfo.IsCustomer) {
         return; // ححتما باید ادمین باشد
     }
-    
+
 
     if (CurrentUserInfo.currentUsersIsAdmins) {
         CurrentUserInfo.currentUsersIsAdmins = false;
 
         getDoc().querySelector('#changeUsers').innerText = 'ادمین ها';
 
-      
 
     } else {
 
         getDoc().querySelector('#changeUsers').innerText = 'بازدید کنندگان';
         CurrentUserInfo.currentUsersIsAdmins = true;
 
-        
+
     }
     CurrentUserInfo.plugin.checkLoginAndGetClientsForAdmin();
 
@@ -3196,7 +3188,6 @@ function changeUserTypes(type, THIS) {
     changeToolsPanelButtonColors(THIS);
 
 
-    
     CurrentUserInfo.UserType = type;
     CurrentUserInfo.LastUserType = type;
     CurrentUserInfo.LastSelectedFilterButton = THIS;
@@ -3241,7 +3232,7 @@ function getVisitedPagesForCurrentSiteCallback(res) {
             public List<Customer> Customers { get; set; }
         }*/
 
-    
+
     let trackinfosViewModellist = res.Content;
     if (!trackinfosViewModellist) {
         alert('دیتا نال است');
@@ -3314,7 +3305,7 @@ function getVisitedPagesForCurrentSiteCallback(res) {
 }
 
 function showCustomersPerPage(i) {
-    
+
     let trackinfosViewModellist = window['trackinfosViewModellist'];
     if (!trackinfosViewModellist) {
         alert('trackinfosViewModellist is null');
@@ -3488,7 +3479,7 @@ function Comment() {
 
 function commentSubmit() {
 
-    
+
     let commentText = getDoc().querySelector('#commentText');
 
     let changeScreenBack = getDoc().querySelector('#changeScreenBack');
@@ -3558,14 +3549,14 @@ function tagUser() {
 function getTagsCallback(res) {
     let gapChat = getDoc().querySelector('#gapChat');
     let gaptags = getDoc().querySelector('#gaptags');
-  
+
     if (gapChat && gaptags) {
 
         /// اگر در صفحه چت با کاربر باشد
-        if (gapChat.style.display==="none"){
+        if (gapChat.style.display === "none") {
             gaptags.click();
 
-        }else{
+        } else {
             // در صفحه اصلی است
         }
     }
@@ -3634,8 +3625,6 @@ ${lis}
         chatPanel.append(createElementFromHTML(html));
     }
 
-   
-    
 
 }
 
@@ -3650,9 +3639,9 @@ function setCurrentUserToTags() {
         return;
     }
 
-    let arr=[];
+    let arr = [];
     for (let i = 0; i < gapTags.length; i++) {
-         arr.push( gapTags[i].value);
+        arr.push(gapTags[i].value);
     }
 
     if (!CurrentUserInfo.targetId) {
@@ -3804,14 +3793,14 @@ function showAddTagForm() {
     let gapContent = getDoc().querySelector('#gapContent');
     let gapChat = getDoc().querySelector('#gapChat');
 
-    
-    if (gapContent) {
-        
-        // اگر چت باز نشده باشد
-        if (gapChat && gapContent.children && gapContent.children.length>1){
 
-            gapContent.insertBefore(createElementFromHTML(html),gapContent.children[1])
-        }else{
+    if (gapContent) {
+
+        // اگر چت باز نشده باشد
+        if (gapChat && gapContent.children && gapContent.children.length > 1) {
+
+            gapContent.insertBefore(createElementFromHTML(html), gapContent.children[1])
+        } else {
             gapContent.append(createElementFromHTML(html));
 
         }
@@ -3826,11 +3815,11 @@ function getAllTagsForCurrentAdminCallback(res) {
     }
     showAddTagForm();
 
-   /* if (res.Content.EntityList.length === 0) {
-        
-        
-        return;
-    }*/
+    /* if (res.Content.EntityList.length === 0) {
+         
+         
+         return;
+     }*/
     let toolsPanel = getDoc().querySelector('#toolsPanel');
     if (!toolsPanel) {
         alert('toolsPanel isn ull');
@@ -3842,8 +3831,7 @@ function getAllTagsForCurrentAdminCallback(res) {
         gapTagsPanel.remove();
     }
 
-    
-    
+
     let buttons = toolsPanel.querySelectorAll('button');
     if (!buttons || !buttons.length) {
         alert('toolsPanel buttons is null');
@@ -3858,14 +3846,14 @@ function getAllTagsForCurrentAdminCallback(res) {
     for (let i = 0; i < res.Content.EntityList.length; i++) {
         let rec = res.Content.EntityList[i];
 
-        if (rec.Id==CurrentUserInfo.selectedTagId){
+        if (rec.Id == CurrentUserInfo.selectedTagId) {
             html += `<li style="background-color: #0edbf9" class="aTagForSelect" onclick="getUsersByTagId('${rec.Id}','${rec.Name}')"><i style="    font-size: 14px;" class="fa fa-tags" aria-hidden="true"></i>${rec.Name}
 </li>`;
-        }else{
+        } else {
             html += `<li ><span class="aTagForSelect" onclick="getUsersByTagId('${rec.Id}','${rec.Name}')"><i  style="    font-size: 14px;" class="fa fa-tags" aria-hidden="true"></i>${rec.Name}</span>
             <span class="aTagForSelect" onclick="deleteTagById('${rec.Id}')">x</span> </li>`;
         }
-      
+
     }
     html += `<li class="aTagForSelect" onclick="getUsersByTagId(null)"><i style="    font-size: 14px;" class="fa fa-times" aria-hidden="true"></i>
 حذف تگ
@@ -3875,15 +3863,16 @@ function getAllTagsForCurrentAdminCallback(res) {
 
 
     toolsPanel.append(createElementFromHTML(html));
-    
-    
+
+
 }
 
 
 function deleteTagById(tagId) {
 
-    MyCaller.Send('DeleteTagById',{tagId:tagId});
+    MyCaller.Send('DeleteTagById', {tagId: tagId});
 }
+
 function closeTagsPanel(THIS) {
     let toolsPanel = getDoc().querySelector('#toolsPanel');
     if (!toolsPanel) {
@@ -3905,11 +3894,10 @@ function closeTagsPanel(THIS) {
     }
 
 
-
 }
 
-function getUsersByTagId(tagId,tagName) {
-    CurrentUserInfo.selectedTagId=tagId;
+function getUsersByTagId(tagId, tagName) {
+    CurrentUserInfo.selectedTagId = tagId;
 
 
     gapIsOnlyOnlyChange();
@@ -3917,55 +3905,49 @@ function getUsersByTagId(tagId,tagName) {
     closeTagsPanel();
 
 
-    let gaptags= getDoc().querySelector('#gaptags');
-    if (!gaptags){
+    let gaptags = getDoc().querySelector('#gaptags');
+    if (!gaptags) {
         alert('gaptags not found');
         return;
     }
-    
-    if (CurrentUserInfo.selectedTagId){
-        gaptags.style.color="#5ab7dd"
-    }else{
-        gaptags.style.color=null;
+
+    if (CurrentUserInfo.selectedTagId) {
+        gaptags.style.color = "#5ab7dd"
+    } else {
+        gaptags.style.color = null;
     }
 
 
-    let selectedTag= getDoc().querySelector('#selectedTag');
-    if (selectedTag){
+    let selectedTag = getDoc().querySelector('#selectedTag');
+    if (selectedTag) {
         selectedTag.remove();
     }
 
     if (CurrentUserInfo.selectedTagId && getDoc().querySelector('.gapTopToolsPanel') &&
         getDoc().querySelector('.gapTopToolsPanel').nextSibling) {
 
-        
+
         getDoc().querySelector('#gapContent').insertBefore(
             createElementFromHTML(`<span id="selectedTag"> <i class="fa fa-tag" aria-hidden="true"></i>${tagName} <span class="aTagForSelect" onclick="getUsersByTagId(null)">x</span> 
  </span>`),
 
             getDoc().querySelector('.gapTopToolsPanel').nextSibling
-
-            
         );
     }
-       
 
 
-
-    let gapOnTheFlyScreen= getDoc().querySelector('#gapOnTheFlyScreen');
-    if (gapOnTheFlyScreen){
+    let gapOnTheFlyScreen = getDoc().querySelector('#gapOnTheFlyScreen');
+    if (gapOnTheFlyScreen) {
         gapOnTheFlyScreen.remove();
     }
-    
+
 
 }
 
-function deleteTagFormUserTagsById(tagId,THIS) {
-THIS.parentNode.remove();
-MyCaller.Send("DeleteTagFormUserTagsById",{tagId:tagId,target:CurrentUserInfo.targetId});
+function deleteTagFormUserTagsById(tagId, THIS) {
+    THIS.parentNode.remove();
+    MyCaller.Send("DeleteTagFormUserTagsById", {tagId: tagId, target: CurrentUserInfo.targetId});
 }
-
-
 
 
 function gap_maximize(THIS) {
@@ -3974,7 +3956,6 @@ function gap_maximize(THIS) {
 
 
     getDoc().querySelector('#gapContent').classList.add('gapMax')
-    
 
 
 }

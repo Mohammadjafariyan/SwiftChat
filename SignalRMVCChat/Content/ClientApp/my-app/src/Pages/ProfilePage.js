@@ -49,7 +49,8 @@ class ProfilePage extends Component {
         }
         CurrentUserInfo.LayoutPage.showMsg('اطلاعات پروفایل خوانده شد');
 
-        this.setState({Name:res.Content.Name,Image:res.Content.Image});
+        this.setState({Name:res.Content.Name,Image:res.Content.Image,
+        MyAccount:res.Content});
     }
 
     render() {

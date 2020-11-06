@@ -139,5 +139,23 @@ namespace SignalRMVCChat.Models
         public UsersSeparation.UsersSeparation UsersSeparation { get; set; }
         public bool IsBlocked { get; set; }
         public List<RemindMe.RemindMe> RemindMes { get; set; }
+        
+        
+        [NotMapped]
+        public List<MyAccount> ContactAdmins
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ContactAdminsJson))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<List<MyAccount>>(ContactAdminsJson);
+            }
+            set { ContactAdminsJson = JsonConvert.SerializeObject(value); }
+        }
+        public string ContactAdminsJson { get; set; }
+
     }
 }

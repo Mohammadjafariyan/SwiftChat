@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using Effort.Internal.DbManagement.Schema;
 using Engine.SysAdmin.Service;
 using SignalRMVCChat.Service;
@@ -16,7 +17,10 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
         public GenericImp(string contextName)
         {
             db= ContextFactory.GetContext(contextName);
+            this.Table = db.Set<T>();
         }
+
+        public DbSet<T> Table { get; set; }
 
         public readonly MyContextBase db;
         public virtual List<T> GetMocklist()
@@ -26,7 +30,7 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
         public void Save(List<T> models)
         {
-            var entities = db.Set<T>();
+            var entities = Table;
 
             foreach (var model in models.ToList())
             {
@@ -119,7 +123,7 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
         public virtual IQueryable<T> GetQuery()
         {
             
-            return db.Set<T>().AsNoTracking().AsQueryable();
+            return Table.AsNoTracking().AsQueryable();
         }
 
         public virtual MyEntityResponse<T> GetById(int id, string notFoundMsg = null)
@@ -141,7 +145,7 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
         public virtual MyEntityResponse<int> Save(T model)
         {
-            var entities = db.Set<T>();
+            var entities = Table;
 
             T newEntity;
 
@@ -177,7 +181,7 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
         {
             var myEntityResponse = GetById(id);
 
-            db.Set<T>().Attach(myEntityResponse.Single);
+            Table.Attach(myEntityResponse.Single);
 
             db.Entry(myEntityResponse.Single).State = EntityState.Deleted;
             db.SaveChanges();
@@ -190,17 +194,23 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
         public virtual void AttachUpdate(T chat, Action<T, DbEntityEntry<T>> action)
         {
-            if (chat.Id!=0 &&  db.Entry(chat).State==EntityState.Detached )
+             var record=Table.Find(chat.Id);
+            
+            if (record!=null &&  db.Entry(record).State==EntityState.Detached)
             {
-            db.Set<T>().Attach(chat);
+                Table.Attach(record);
             }
             else
             {
-                db.Set<T>().Add(chat);
+                if (record==null) 
+                {
+                    throw new Exception("این ابجکت جدید است");
+
+                }
 
             }
 
-            action(chat,db.Entry(chat));
+            action(record,db.Entry(record));
         }
 
         public virtual async Task SaveChangesAsync()
@@ -215,7 +225,7 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
         public void Delete(List<T> deletedChats)
         {
-            var table= db.Set<T>();
+            var table= Table;
 
             var arr = deletedChats.Select(c => c.Id).ToArray();
             var deleted= table.Where(t=>arr.Contains(t.Id));
@@ -232,10 +242,15 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
         public void Delete(IQueryable<T> deletedChats)
         {
-            var table= db.Set<T>();
+            var table= Table;
 
             var toRemove = table.Where(t => deletedChats.Select(d => d.Id).Contains(t.Id));
             table.RemoveRange(toRemove);
+        }
+
+        public void DetachAllEntities()
+        {
+            db.DetachAllEntities();
         }
     }
 

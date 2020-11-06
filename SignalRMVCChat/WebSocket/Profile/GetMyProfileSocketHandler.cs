@@ -26,6 +26,9 @@ namespace SignalRMVCChat.WebSocket.Profile
              {
                  image=imageService.GetById(myAccount.ProfileImageId.Value, "عکس پروفایل یافت نشد").Single.Content;
              }
+
+             myAccount.Username = null;
+             myAccount.Password = null;
              
              return await Task.FromResult(new MyWebSocketResponse
              {
@@ -33,7 +36,8 @@ namespace SignalRMVCChat.WebSocket.Profile
                  Content = new
                  {
                      Image=image,
-                     Name=myAccount.Name
+                     Name=myAccount.Name,
+                     MyAccount=myAccount
                  }
                  
              });

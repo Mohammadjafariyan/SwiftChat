@@ -11,7 +11,7 @@ using SignalRMVCChat.Models.UsersSeparation;
 
 namespace SignalRMVCChat.Models
 {
-    public class MyAccount:EntitySafeDelete,ISelfReferenceEntity<MyAccount>
+    public class MyAccount : EntitySafeDelete, ISelfReferenceEntity<MyAccount>
     {
         public MyAccount()
         {
@@ -21,8 +21,9 @@ namespace SignalRMVCChat.Models
             Children = new List<MyAccount>();
             MyAccountPlans = new List<MyAccountPlans>();
             MyAccountPayments = new List<MyAccountPayment>();
-            Tags=new List<Tag>();
-            Forms =new List<Form>();
+            Tags = new List<Tag>();
+            Forms = new List<Form>();
+            ReceivedPrivateChats = new List<ReceivedPrivateChat>();
         }
 
         public List<Tag> Tags { get; set; }
@@ -35,27 +36,23 @@ namespace SignalRMVCChat.Models
         public string Name { get; set; }
         public string Token { get; set; }
 
-        public string AccessWebsitesJson
-        {
-            get;
-            set;
-        }
+        public string AccessWebsitesJson { get; set; }
+
         [NotMapped]
         public int[] AccessWebsites
         {
-            set
-            {
-                AccessWebsitesJson = JsonConvert.SerializeObject(value);
-            }
+            set { AccessWebsitesJson = JsonConvert.SerializeObject(value); }
             get
             {
                 if (string.IsNullOrEmpty(AccessWebsitesJson))
                 {
                     return new int[0];
                 }
+
                 return JsonConvert.DeserializeObject<int[]>(AccessWebsitesJson);
             }
         }
+
         public MyAccount Parent { get; set; }
         public int? ParentId { get; set; }
         public List<Chat> Chats { get; set; }
@@ -71,50 +68,42 @@ namespace SignalRMVCChat.Models
         /// </summary>
         [NotMapped]
         public CustomerTrackInfo LastTrackInfo { get; set; }
-        
-           
+
+
         /// <summary>
         /// در هر اتصال یک ابجکت ایجاد می شود و یا از دیتابیس فراخوانی می شود اطلاعات اتصال
         /// </summary>
         [JsonIgnore]
-
         public List<MySocket> MySockets { get; set; }
-        
+
         /// <summary>
         /// وب سایت هایی که ادمین ثبت کرده است
         /// یا اگر زیر مجموعه این ادمین باشد مثلا من صاحب سایتی هستم و یک ادمین دیگر برای آن تعریف کرده باشم
         /// در اینصورت زیر ادمین نیز به هرکدام از وب سایت ها که بخواهم می توانم وصل کرده و دسترسی بدهم
         /// </summary>
         public List<MyWebsite> MyWebsites { get; set; }
-        
-        
+
 
         public List<MyAccount> Children { get; set; }
         public List<MyAccountPlans> MyAccountPlans { get; set; }
         public List<MyAccountPayment> MyAccountPayments { get; set; }
         public List<ChatAutomatic> ChatAutomatics { get; set; }
 
-        [NotMapped]
-        public string Address { get; set; }
+        [NotMapped] public string Address { get; set; }
 
-        [NotMapped]
-        public Chat Message { get; set; }
+        [NotMapped] public Chat Message { get; set; }
 
-        [NotMapped]
-        public int NewMessageCount { get; set; }
+        [NotMapped] public int NewMessageCount { get; set; }
 
 
-        [NotMapped]
-        public Chat LastMessage { get; set; }
+        [NotMapped] public Chat LastMessage { get; set; }
 
         public int? ProfileImageId { get; set; }
-        
-        [NotMapped]
-        public string Time { get; set; }
+
+        [NotMapped] public string Time { get; set; }
 
         // برای نمایش در سمت کلاینت
-        [NotMapped]
-        public IEnumerable<Tag> CustomerTags { get; set; }
+        [NotMapped] public IEnumerable<Tag> CustomerTags { get; set; }
 
         public Image ProfileImage { get; set; }
 
@@ -133,54 +122,90 @@ namespace SignalRMVCChat.Models
 
         public static string CalculateOnlineTime(DateTime argCreationDateTime)
         {
-            var now=DateTime.Now;
-            var seconds= (now - argCreationDateTime).TotalSeconds;
-            var TotalMinutes= (now - argCreationDateTime).TotalMinutes;
-            var TotalDays= (now - argCreationDateTime).TotalDays;
-            var TotalHours= (now - argCreationDateTime).TotalHours;
+            var now = DateTime.Now;
+            var seconds = (now - argCreationDateTime).TotalSeconds;
+            var TotalMinutes = (now - argCreationDateTime).TotalMinutes;
+            var TotalDays = (now - argCreationDateTime).TotalDays;
+            var TotalHours = (now - argCreationDateTime).TotalHours;
 
-            if (seconds<60)
+            if (seconds < 60)
             {
-                return Math.Round(seconds)+ " ثانیه قبل " ;
+                return Math.Round(seconds) + " ثانیه قبل ";
             }
 
-            if (TotalMinutes<60)
+            if (TotalMinutes < 60)
             {
-                return Math.Round(TotalMinutes)+ " دقیقه قبل " ;
+                return Math.Round(TotalMinutes) + " دقیقه قبل ";
             }
-            
-            if (TotalHours<24)
+
+            if (TotalHours < 24)
             {
-                return  Math.Round(TotalHours)+" ساعت قبل " ;
+                return Math.Round(TotalHours) + " ساعت قبل ";
             }
-            
-            if (TotalDays>0)
+
+            if (TotalDays > 0)
             {
-                return  Math.Round(TotalDays)+"روز قبل" ;
+                return Math.Round(TotalDays) + "روز قبل";
             }
 
             return "ساعت تشخیص داده نشد";
         }
-        
+
         public List<Form> Forms { get; set; }
         public bool HasRootPrivilages { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public List<EventTrigger> EventTriggers { get; set; }
         public List<UsersSeparation.UsersSeparation> UsersSeparations { get; set; }
-        
-        [NotMapped]
-        public List<UsersSeparationParam> UsersSeparationParams { get; set; }
+
+        [NotMapped] public List<UsersSeparationParam> UsersSeparationParams { get; set; }
 
         public List<RemindMe.RemindMe> RemindMes { get; set; }
         public List<ReadyPm.ReadyPm> ReadyPms { get; set; }
+
+
+        public string ReceivedPrivateChatsJson { get; set; }
+
+        [NotMapped]
+        public List<ReceivedPrivateChat> ReceivedPrivateChats
+        {
+            set { ReceivedPrivateChatsJson = JsonConvert.SerializeObject(value); }
+            get
+            {
+                if (string.IsNullOrEmpty(ReceivedPrivateChatsJson))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<List<ReceivedPrivateChat>>(ReceivedPrivateChatsJson);
+            }
+        }
+    }
+
+    public class ReceivedPrivateChat
+    {
+        public ReceivedPrivateChat()
+        {
+            DateTime = DateTime.Now;
+        }
+
+        public Chat Chat { get; set; }
+        public MyAccount SenderAdmin { get; set; }
+        public Customer Customer { get; set; }
+
+
+        public DateTime DateTime { get; set; }
+
+        public string Time
+        {
+            get { return MyAccount.CalculateOnlineTime(DateTime); }
+        }
     }
 
     public enum PlanType
     {
-        Trial,Silver,Gold
+        Trial,
+        Silver,
+        Gold
     }
-
-
-    
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using SignalRMVCChat.DependencyInjection;
@@ -69,7 +70,7 @@ namespace SignalRMVCChat.WebSocket
             
             int? targetAccountIdTEMP = isParsed ? targetAccountId : default(int?);
 
-            var chat =  chatProviderService
+            MyEntityResponse<int> chat =  chatProviderService
                 .CustomerSendToAdmin(targetAccountIdTEMP
                     ,customerId,typedMessage,currMySocketReq.MySocket.Id,gapFileUniqId, uniqId);
 
@@ -124,7 +125,9 @@ namespace SignalRMVCChat.WebSocket
             response.Message = typedMessage;
 
 
-            var newAddedChat= chatProviderService.GetById(chat.Single).Single;
+            var _ChatObject = chatProviderServices.GetQuery().Where(c=>c.Id==chat.Single).Include(c=>c.Customer)
+                .Include(c=>c.MyAccount).SingleOrDefault();
+            
             int totalUnseen = chatProviderService.GetTotalUnseen(targetAccountId, customerId,ChatSenderType.CustomerToAccount);
 
             response.Content = new CustomerSendToAdminViewModel
@@ -133,7 +136,7 @@ namespace SignalRMVCChat.WebSocket
                 Message = typedMessage,
                 TotalReceivedMesssages = totalUnseen,
                 ChatId=chat.Single,
-                Chat= newAddedChat
+                Chat= _ChatObject
             };
 
 
@@ -145,7 +148,7 @@ namespace SignalRMVCChat.WebSocket
             
 
             
-            var _ChatObject = chatProviderService.GetById((int)chat.Single).Single;
+        
 
             // اگر از جای دیگری هم وصل شده باشد این پیغام را در جای دیگر هم نشان بده
             await NotifySelf(MySocketUserType.Customer,_ChatObject,currMySocketReq.MyWebsite.Id,currMySocketReq);

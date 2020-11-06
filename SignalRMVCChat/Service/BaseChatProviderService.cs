@@ -47,11 +47,13 @@ namespace SignalRMVCChat.Service
         protected virtual async Task<IQueryable<Chat>> GetUserAndAdminChatsHelper(int? accountId, int customerId,
             int currentUserIsAdminorCustomer, Func<IQueryable<Chat>, IQueryable<Chat>> filter)
         {
-            var chatsQuery = GetQuery().Where(q => q.CustomerId == customerId &&
-                                              q.MyAccountId == accountId)
+            var chatsQuery = GetQuery()
+                .Include(c=>c.MyAccount)
+                .Include(c=>c.Customer).Where(q => q.CustomerId == customerId)
                 .OrderByDescending(o => o.Id).AsQueryable();
 
 
+        
             #region  filter chat types
 
             /*----------------------- filter chat types---------------------------------*/
@@ -94,13 +96,15 @@ namespace SignalRMVCChat.Service
 
         protected virtual async Task MakeSeen(List<Chat> chats)
         {
+            Impl.DetachAllEntities();
             foreach (var chat in chats)
             {
-                chat.DeliverDateTime = DateTime.Now;
 
                 Impl.AttachUpdate(chat,
                     (Chat _chat, DbEntityEntry<Chat> entity) =>
                     {
+
+                        entity.Entity.DeliverDateTime = DateTime.Now;
                         entity.Property(c => c.DeliverDateTime).IsModified = true;
                     });
             }

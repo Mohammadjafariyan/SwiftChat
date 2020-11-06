@@ -40,7 +40,7 @@ namespace SignalRMVCChat.Service
             {
                 if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
                 {
-                    throw new Exception("کاستومر یافت نشد");
+                  //  throw new Exception("کاستومر یافت نشد");
                 }
                 else
                 {

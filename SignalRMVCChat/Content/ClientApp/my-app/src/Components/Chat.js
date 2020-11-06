@@ -20,7 +20,7 @@ export default class Chat extends Component {
     constructor(arg) {
         super(arg);
 
-        this.state = {chats:[]};
+        this.state = {chats: []};
         CurrentUserInfo.ChatPage = this;
         this.submit = this.submit.bind(this);
     }
@@ -29,6 +29,33 @@ export default class Chat extends Component {
     componentDidMount() {
 
 
+    }
+
+
+    adminPrivateNoteSendToAdminCallback(res) {
+
+        /* SenderAdmin = chatSent.senderAdmin,
+                            Chat = chatSaved,
+                            Customer = customer*/
+
+        CurrentUserInfo.ChatPage.setState({scroll: false});
+
+        // let AccountId = res.Content.senderAdmin.Id;
+        // let Message = res.Content.Message;
+        //  let TotalReceivedMesssages = res.Content.TotalReceivedMesssages;
+
+        let chat = res.Content.Chat;
+        let chats = this.state.chats;
+        if (!chats) {
+            chats = [];
+        }
+
+        var isFind = chats.find((c) => c.UniqId == chat.UniqId);
+
+        if (isFind) {
+        } else {
+            this.addChat(chat, true);
+        }
     }
 
 
@@ -42,21 +69,21 @@ export default class Chat extends Component {
 
         let chat;
         var i = this.state.chats.findIndex((c) => c.IsTyping);
-      
-        if (i>=0) {
+
+        if (i >= 0) {
 
 
-            this.state.chats[i].Message=res.Content.text;
-            
-            this.setState({rndom:Math.random()})
-            
+            this.state.chats[i].Message = res.Content.text;
+
+            this.setState({rndom: Math.random()})
+
         } else {
-           
-            chat={Message: res.Content.text};
-            chat.IsReceive = true;
-            chat.IsTyping=true;
 
-            this.addChat(chat,true);
+            chat = {Message: res.Content.text};
+            chat.IsReceive = true;
+            chat.IsTyping = true;
+
+            this.addChat(chat, true);
 
         }
 
@@ -77,8 +104,26 @@ export default class Chat extends Component {
                 }
             }
         } else {
-            this.adminSendToCustomerCallback(res, true);
-            // this.customerSendToAdminCallback(res,true);
+            //this.adminSendToCustomerCallback(res, true);
+
+
+            CurrentUserInfo.ChatPage.setState({scroll: false});
+
+            let AccountId = res.Content.AccountId;
+            let Message = res.Content.Message;
+            let TotalReceivedMesssages = res.Content.TotalReceivedMesssages;
+            let chat = res.Content.Chat;
+            let chats = this.state.chats;
+            if (!chats) {
+                chats = [];
+            }
+
+            var isFind = chats.find((c) => c.UniqId == chat.UniqId);
+
+            if (isFind) {
+            } else {
+                this.addChat(chat, true);
+            }
         }
     }
 
@@ -229,12 +274,9 @@ export default class Chat extends Component {
             }*/
 
 
-        
-
-
         chat.IsReceive = true;
         this.addChat(chat, true);
-        
+
 
         MyCaller.Send("AdminReceivedMsg", {
             chatId: res.Content.ChatId,
@@ -328,8 +370,8 @@ export default class Chat extends Component {
                             upload={(e) => {
                                 this.uploadFile(e);
                             }}
-                            onSubmit={(e,type) => {
-                                this.submit(e,type);
+                            onSubmit={(e, type) => {
+                                this.submit(e, type);
                             }}
                             onChange={(val) => {
 
@@ -415,7 +457,7 @@ export default class Chat extends Component {
         }
 
         /// اگر در حال تایپ باشد ُ  از حالت تایپ در بیاور 
-        chats=chats.filter((c) => !c.IsTyping);
+        chats = chats.filter((c) => !c.IsTyping);
 
         return chats;
     }
@@ -456,6 +498,12 @@ export default class Chat extends Component {
 
             this.sendChat(chat);
         }
+        
+        if (!chat.IsReceive && !chat.AccountName) {
+            chat.AccountName = CurrentUserInfo.B4AdminLayout.state.currentUser.Name;
+            chat.ProfilePhotoId = CurrentUserInfo.B4AdminLayout.state.currentUser.ProfileImageId;
+        }
+
         chats.push(chat);
 
 
@@ -545,20 +593,18 @@ export default class Chat extends Component {
                 MultimediaContent: chat.MultimediaContent,
                 uniqId: chat.UniqId,
             });
-        }
-       else if (chat.ChatType){
+        } else if (chat.ChatType) {
             MyCaller.Send("AdminPrivateNoteSendToAdmin", {
                 adminToken: cookieManager.getItem("adminToken"),
                 targetUserId: DataHolder.selectedCustomer.Id,
                 typedMessage: chat.Message,
                 gapFileUniqId: chat.UniqId,
                 uniqId: chat.UniqId,
-                ChatType:chat.ChatType,
-                selectedAdmins:chat.selectedAdmins,
-                senderAdmin:chat.senderAdmin
+                ChatType: chat.ChatType,
+                selectedAdmins: chat.selectedAdmins,
+                senderAdmin: chat.senderAdmin
             });
-        }
-        else {
+        } else {
             MyCaller.Send("AdminSendToCustomer", {
                 adminToken: cookieManager.getItem("adminToken"),
                 targetUserId: DataHolder.selectedCustomer.Id,
@@ -569,26 +615,27 @@ export default class Chat extends Component {
         }
     }
 
-    submit(e,type) {
-        
+    submit(e, type) {
+
         if (e)
-        e.preventDefault();
+            e.preventDefault();
         if (!this.state.text) return false;
         CurrentUserInfo.ChatPage.setState({scroll: false});
 
-        
-        if (type==='یادداشت' && CurrentUserInfo.SelectAdmin && CurrentUserInfo.SelectAdmin.state &&
-            CurrentUserInfo.SelectAdmin.state.selectedAdmins && CurrentUserInfo.SelectAdmin.state.selectedAdmins.length){
+
+        if (type === 'یادداشت' && CurrentUserInfo.SelectAdmin && CurrentUserInfo.SelectAdmin.state &&
+            CurrentUserInfo.SelectAdmin.state.selectedAdmins && CurrentUserInfo.SelectAdmin.state.selectedAdmins.length) {
             //ChatType: private note
 
-            
-           
-            this.addChat({Message: this.state.text,ChatType:5,
-                selectedAdmins:CurrentUserInfo.SelectAdmin.state.selectedAdmins,
-            senderAdmin:CurrentUserInfo.B4AdminLayout.state.currentUser});
-          
 
-        }else{
+            this.addChat({
+                Message: this.state.text, ChatType: 5,
+                selectedAdmins: CurrentUserInfo.SelectAdmin.state.selectedAdmins,
+                senderAdmin: CurrentUserInfo.B4AdminLayout.state.currentUser
+            });
+
+
+        } else {
             this.addChat({Message: this.state.text});
 
         }
@@ -683,12 +730,12 @@ export default class Chat extends Component {
     }
 }
 
-function getColorBasedOnChatType(el){
-    
-    if (el.ChatType===5){
+function getColorBasedOnChatType(el) {
+
+    if (el.ChatType === 5) {
         return "bg-warning text-black"
     }
-    
+
     return "bg-light text-black";
 }
 
@@ -697,75 +744,94 @@ export function ChatPannel(props) {
         return <></>;
     }
 
+    
+    
     return props.chats.map((el, i, arr) => {
-        if (!el.IsReceive) {
-            
-            
-            if (el.ChatType){
-                return (
-                    <div className={"card post  offset-md-4 " + getColorBasedOnChatType(el)} key={el.UniqId}>
-                        {props.onDelete && (
-                            <div className="card-header card-header-left">
-                                <button
-                                    onClick={(e) => {
-                                        props.onDelete(el);
-                                    }}
-                                >
-                                    x
-                                </button>
-                                {el.Delay && <p dir="rtl"> بعد از {el.Delay} دقیقه </p>}
-                                {el.Time && <span style={{fontSize: '10px'}} dir="rtl"> {el.Time} </span>}
-
-                                {props.parent && props.parent.DeleteMsgOnClick && <div style={{display: 'inline-flex'}}>
-                                    <button
-                                        onClick={() => {
-                                            props.parent.DeleteMsgOnClick(el.UniqId, el);
-                                        }}
-                                        className="gapB gapRemB"
-                                    >
-                                        <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            props.parent.EditMsgOnClick(el.UniqId, el);
-                                        }}
-                                        className="gapB gapEdB"
-                                    >
-                                        <i className="fa fa-pencil" aria-hidden="true"></i>
-                                    </button>
-                                </div>}
-
-                            </div>
-                        )}
-
-                        <div className="card-body" style={{wordBreak: 'break-all', direction: 'rtl'}}>
-
-                            
-                            <span style={{textDecoration:'underline',textAlign:'right'}}>یک پیغام خصوصی از <b>{el.senderAdmin.Name}</b> به ادمین های زیر :</span>
-                           <div style={{display:'flex'}}>{el.selectedAdmins.map((admin,j,admins)=>{
-                                
-                                return <><b style={{textAlign:'right'}}>{admin.Name}:</b></>
-                                
-                            })}
-                           </div>
-                            <br/>
-                            {el.formId &&
-                            <FormShowerInChat chatId={el.Id} chatUniqId={el.UniqId} formId={el.formId}></FormShowerInChat>}
-
-                            {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
-                            {!el.MultimediaContent && <p key={el.Message}
-
-                                                         dangerouslySetInnerHTML={{__html: el.Message}}
-                            />}
 
 
-                            <IsDelivered DeliverDateTime={el.DeliverDateTime}/>
+        let showChatType =  () =>{
+            return <div className={"card post  offset-md-4 " + getColorBasedOnChatType(el)} key={el.UniqId}>
+                {props.onDelete && (
+                    <div className="card-header card-header-left">
+                        <button
+                            onClick={(e) => {
+                                props.onDelete(el);
+                            }}
+                        >
+                            x
+                        </button>
 
+                        {props.parent && props.parent.DeleteMsgOnClick && <div style={{display: 'inline-flex'}}>
+                            <button
+                                onClick={() => {
+                                    props.parent.DeleteMsgOnClick(el.UniqId, el);
+                                }}
+                                className="gapB gapRemB"
+                            >
+                                <i className="fa fa-trash-o" aria-hidden="true"></i>
+                            </button>
+                            <button
+                                onClick={() => {
+                                    props.parent.EditMsgOnClick(el.UniqId, el);
+                                }}
+                                className="gapB gapEdB"
+                            >
+                                <i className="fa fa-pencil" aria-hidden="true"></i>
+                            </button>
+                        </div>}
 
-                        </div>
                     </div>
+                )}
+
+                <SenderIcon el={el}/>
+
+                <div className="card-body" style={{wordBreak: 'break-all', direction: 'rtl'}}>
+                  
+
+
+                    <span style={{
+                        textDecoration: 'underline',
+                        textAlign: 'right'
+                    }}>یک پیغام خصوصی از <b>{el.senderAdmin.Name}</b> به ادمین های زیر :</span>
+                    <div style={{display: 'flex'}}>{el.selectedAdmins.map((admin, j, admins) => {
+
+                        return <><b style={{textAlign: 'right'}}>{admin.Name}:</b></>
+
+                    })}
+                    </div>
+                    <br/>
+                    {el.formId &&
+                    <FormShowerInChat chatId={el.Id} chatUniqId={el.UniqId}
+                                      formId={el.formId}></FormShowerInChat>}
+
+                    {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
+                    {!el.MultimediaContent && <p key={el.Message}
+
+                                                 dangerouslySetInnerHTML={{__html: el.Message}}
+                    />}
+
+
+                    <IsDelivered DeliverDateTime={el.DeliverDateTime}/>
+
+
+                </div>
+            </div>
+        }
+       /* if (el.ChatType){
+            if (el.MyAccountId!=CurrentUserInfo.B4AdminLayout.state.currentUser.Id){
+                el.IsReceive=true;
+            }
+        }*/
+
+       
+        if (!el.IsReceive) {
+
+
+            if (el.ChatType) {
+                return (
+                    showChatType()
                 );
-            }else{
+            } else {
                 return (
                     <div className={"card post  offset-md-4 " + getColorBasedOnChatType(el)} key={el.UniqId}>
                         {props.onDelete && (
@@ -801,12 +867,14 @@ export function ChatPannel(props) {
 
                             </div>
                         )}
+                        <SenderIcon el={el}/>
 
                         <div className="card-body" style={{wordBreak: 'break-all', display: 'flex', direction: 'rtl'}}>
 
 
                             {el.formId &&
-                            <FormShowerInChat chatId={el.Id} chatUniqId={el.UniqId} formId={el.formId}></FormShowerInChat>}
+                            <FormShowerInChat chatId={el.Id} chatUniqId={el.UniqId}
+                                              formId={el.formId}></FormShowerInChat>}
 
                             {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
                             {!el.MultimediaContent && <p key={el.Message}
@@ -822,38 +890,43 @@ export function ChatPannel(props) {
                     </div>
                 );
             }
-            
-           
+
+
         } else {
-            return (
-                <div className="card post card post col-6" key={el.UniqId}>
-                    {props.onDelete && (
-                        <div className="card-header card-header-left">
-                            <button
-                                onClick={(e) => {
-                                    props.onDelete(el);
-                                }}
-                            >
-                                x
-                            </button>
+        
+                return (
+                    <div className="card post card post col-6" key={el.UniqId}>
+                        {props.onDelete && (
+                            <div className="card-header card-header-left">
+                                <button
+                                    onClick={(e) => {
+                                        props.onDelete(el);
+                                    }}
+                                >
+                                    x
+                                </button>
 
-                            {el.Delay && <p dir="rtl"> بعد از {el.Delay}دقیقه </p>}
+                                {el.Delay && <p dir="rtl"> بعد از {el.Delay}دقیقه </p>}
+                            </div>
+                        )}
+
+                        <SenderIcon el={el}/>
+                        <div className="card-body" style={{wordBreak: 'break-all', direction: 'ltr'}}>
+                            {el.formId && <FormShowerInChat chatId={el.Id} formName={el.formName} chatUniqId={el.UniqId}
+                                                            formId={el.formId}
+                                                            elements={el.elements}></FormShowerInChat>}
+
+                            {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
+                            {!el.MultimediaContent && <p key={el.Message}
+
+                            > {el.Message} </p>}
+
+
+                            {el.IsTyping &&
+                            <div className={'float-right'}><WhileWriting IsTyping={el.IsTyping}></WhileWriting></div>}
                         </div>
-                    )}
-                    <div className="card-body" style={{wordBreak: 'break-all', direction: 'ltr'}}>
-                        {el.formId && <FormShowerInChat chatId={el.Id} formName={el.formName} chatUniqId={el.UniqId}
-                                                        formId={el.formId} elements={el.elements}></FormShowerInChat>}
-
-                        {el.MultimediaContent && showMultimedia(el.MultimediaContent)}
-                        {!el.MultimediaContent && <p key={el.Message}
-
-                        > {el.Message} </p>}
-                        
-                        
-                        {el.IsTyping && <div className={'float-right'}> <WhileWriting IsTyping={el.IsTyping}></WhileWriting></div> }
                     </div>
-                </div>
-            );
+                );
         }
     });
 }
@@ -1064,7 +1137,7 @@ export class AutomaticSendPage extends Chat {
                             <ChatForm
                                 onPaste={(e) => {
                                     this.setState({text: e.target.value});
-/*                                    this.onPaste(e)*/
+                                    /*                                    this.onPaste(e)*/
                                 }} upload={(e) => {
                                 this.uploadFile(e);
                             }} onSubmit={(e) => {
@@ -1202,9 +1275,9 @@ export class AutomaticSendPage extends Chat {
     }
 
     submit(e) {
-        
+
         if (e)
-        e.preventDefault();
+            e.preventDefault();
         if (!this.state.text) return false;
         CurrentUserInfo.ChatPage.setState({scroll: false});
 
@@ -1215,4 +1288,57 @@ export class AutomaticSendPage extends Chat {
     }
 
 
+}
+
+
+export const SenderIcon = (props) => {
+
+    let name = props.el.AccountName;
+    let ProfilePhotoId = props.el.ProfilePhotoId;
+
+    let direction = 'right';
+    if (!props.el.IsReceive) {
+
+        direction = 'left';
+    } else {
+
+        name = props.el.CustomerName;
+        ProfilePhotoId = 0;
+    }
+
+
+    let profileUrl;
+    if (ProfilePhotoId) {
+        let baseUrl = document.getElementById('baseUrl').value;
+
+        let port = document.getElementById('port').value;
+
+
+        profileUrl = `http://${baseUrl}:${port}/Upload/Upload?id=${ProfilePhotoId}`
+
+    }
+
+    let charAt;
+    if (name) {
+        charAt = name.charAt(0);
+    }
+
+
+    return <div className="badges" style={{textAlign: 'right'}}>
+        
+        <small style={{float:'left',fontSize:'10px'}} >
+            {props.el.Delay && <p className={'smallText'} dir="rtl"> بعد از {props.el.Delay} دقیقه </p>}
+            {props.el.Time && <span className={'smallText'} style={{fontSize: '10px'}} dir="rtl"> {props.el.Time} </span>}
+        </small>
+        
+        <span
+
+            aria-label={name} data-microtip-position={direction} role="tooltip"
+
+            className="p-badge   p-badge-lg bg-light text-black  " style={{
+            backgroundImage: profileUrl ? `url(${profileUrl})` : null,
+            backgroundPosition: profileUrl ? 'center' : null,
+            backgroundSize: profileUrl ? 'cover' : null
+        }}>{profileUrl ? "" : charAt}</span>
+    </div>
 }

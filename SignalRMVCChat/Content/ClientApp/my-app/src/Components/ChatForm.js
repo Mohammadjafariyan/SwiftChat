@@ -34,6 +34,7 @@ export default class ChatForm extends Component {
                 {label: 'یادآور', icon: 'pi pi-fw pi-clock'},
                 {label: 'آماده', icon: 'pi pi-fw pi-inbox'},
                 {label: 'ویراستار', icon: 'pi pi-fw pi-pencil'},
+                {label: 'آیکون', icon: 'pi pi-fw pi-image'},
             ]
         };
         CurrentUserInfo.ChatForm = this;
@@ -94,7 +95,7 @@ export default class ChatForm extends Component {
 
                               }
 
-                              if (e.value.label==='یادداشت' || e.value.label==='یادآور' || e.value.label==='آماده'){
+                              if (e.value.label==='یادداشت' || e.value.label==='یادآور' || e.value.label==='آماده' ||  e.value.label==='آیکون' ){
                                   this.setState({panelCollapsed:false});
                               }else{
                                   this.setState({panelCollapsed:true});

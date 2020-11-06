@@ -2120,6 +2120,7 @@
     <Content Include="Content\ClientApp\my-app\src\Components\HelpDesk\Language\LanguageHolder.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\HelpDesk\Language\ConfirmModal.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\HelpDesk\Language\RemoveLanguage.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\IconChooser\IconChooser.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\LastPagesVisited.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\LiveAssist\LiveAssistInitialize.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\LiveAssist\LiveAssistLayout.js" />

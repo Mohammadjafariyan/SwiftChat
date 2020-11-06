@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SignalRMVCChat.DependencyInjection;
@@ -10,6 +11,9 @@ namespace SignalRMVCChat.WebSocket.PrivateNote
 {
     public class AdminPrivateNoteSendToAdminSocketHandler : BaseAdminSendToCustomerSocketHandler
     {
+        private MyAccountProviderService MyAccountProviderService = Injector.Inject<MyAccountProviderService>();
+
+        private CustomerProviderService CustomerProviderService = Injector.Inject<CustomerProviderService>();
         /*public async override Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
         {
             await base.ExecuteAsync(request, currMySocketReq);
@@ -21,13 +25,15 @@ namespace SignalRMVCChat.WebSocket.PrivateNote
             };
         }*/
 
-        protected async  override Task<Chat> SaveAndSend(int targetUserId, string typedMessage, int uniqId, int gapFileUniqId,
+        protected async override Task<Chat> SaveAndSend(int targetUserId, string typedMessage, int uniqId,
+            int gapFileUniqId,
             string request,
             MyWebSocketRequest currMySocketReq)
         {
-            MySocket customer = currMySocketReq.MyWebsite.Customers.FirstOrDefault(c => c.CustomerId == targetUserId);
+            MySocket customerSocket =
+                currMySocketReq.MyWebsite.Customers.FirstOrDefault(c => c.CustomerId == targetUserId);
 
-            if (customer == null)
+            if (customerSocket == null)
             {
                 throw new Exception("کاربر یافت نشد");
             }
@@ -58,13 +64,69 @@ namespace SignalRMVCChat.WebSocket.PrivateNote
             chatSaved.ChatType = chatSent.ChatType;
             chatSaved.selectedAdmins = chatSent.selectedAdmins;
             chatSaved.senderAdmin = chatSent.senderAdmin;
-            
+
 
             chatProviderService.Save(chatSaved);
 
 
+            var customer = CustomerProviderService.GetById(customerSocket.CustomerId.Value,
+                "مشخص نیست در چت چه کاربری پیغام خصوصی ارسال شده است").Single;
 
-            return null ;
+
+            var ids = chatSent.selectedAdmins.Select(a => a.Id);
+            var myAccounts = MyAccountProviderService.GetQuery()
+                .Where(c => ids.Contains(c.Id)).ToList();
+
+            foreach (var myAccount in myAccounts)
+            {
+                if (myAccount.ReceivedPrivateChats == null)
+                {
+                    myAccount.ReceivedPrivateChats = new List<ReceivedPrivateChat>();
+                }
+
+                myAccount.Username = null;
+                myAccount.Password = null;
+
+                myAccount.ReceivedPrivateChats.Add(new ReceivedPrivateChat
+                {
+                    SenderAdmin = chatSent.senderAdmin,
+                    Chat = chatSaved,
+                    Customer = customer
+                });
+            }
+
+            MyAccountProviderService.Save(myAccounts);
+            
+            
+            myAccounts.Add(chatSent.senderAdmin);
+            
+            customer.ContactAdmins=(myAccounts);
+           // customer.ContactAdmins.Add(chatSent.senderAdmin);
+
+            CustomerProviderService.Save(customer);
+
+
+            chatSaved.MyAccount = chatSent.senderAdmin;
+            chatSaved.Customer = chatSent.Customer;
+            
+
+            foreach (var admin in chatSent.selectedAdmins)
+            {
+                await MySocketManagerService.SendToAdmin(admin.Id, currMySocketReq.MyWebsite.Id,
+                    new MyWebSocketResponse
+                    {
+                        Name = "adminPrivateNoteSendToAdminCallback",
+                        Content = new
+                        {
+                            SenderAdmin = chatSent.senderAdmin,
+                            Chat = chatSaved,
+                            Customer = customer
+                        }
+                    });
+            }
+
+
+            return null;
         }
     }
 }

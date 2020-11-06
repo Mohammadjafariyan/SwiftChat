@@ -27,6 +27,8 @@ class SelectAdmin extends Component {
     }
 
     componentDidMount() {
+        
+        this.setState({selectedAdmins:[]});
 
         MyCaller.Send('GetAdminsList')
     }

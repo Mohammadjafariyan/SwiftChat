@@ -142,16 +142,16 @@ export default class Customers extends Component {
             userType: CurrentUserInfo.UserType
         });
     }
-    
-    getCustomersChattedWithMe(){
-        this.setState({loading:true});
+
+    getCustomersChattedWithMe() {
+        this.setState({loading: true});
 
         CurrentUserInfo.UserType = 'CustomersChattedWithMe';
 
         MyCaller.Send("GetClientsListForAdmin", {
             userType: CurrentUserInfo.UserType
         });
-        
+
     }
 
     getCustomerActivityDetailCallback(res) {
@@ -174,7 +174,7 @@ export default class Customers extends Component {
 
     getClientsListForAdminCallback(res) {
 
-        this.setState({loading:false});
+        this.setState({loading: false});
 
         if (!res || !res.Content || !res.Content.EntityList) {
             CurrentUserInfo.LayoutPage.showError('getClientsListForAdminCallback returns null');
@@ -184,8 +184,7 @@ export default class Customers extends Component {
         var arr = [];
         arr = res.Content.EntityList;
 
-        if (!this.props.noReadChat)
-        {
+        if (!this.props.noReadChat) {
             if (DataHolder.selectedCustomer) {
 
 
@@ -206,7 +205,7 @@ export default class Customers extends Component {
                 this.placeOnTop(arr);
             }
         }
-    
+
 
         this.setState({arr: arr});
 
@@ -256,48 +255,67 @@ export default class Customers extends Component {
         return (
             <div>
                 <div className="card ">
-                <TabView className="tabview-custom" activeIndex={this.state.activeIndex}
-                         onTabChange={(e) => {
+                    <TabView className="tabview-custom" activeIndex={this.state.activeIndex}
+                             onTabChange={(e) => {
 
 
-                             this.setState({activeIndex: e.index});
-                             
-                             if (e.index===2){
-                                 
-                                 this.getSharedChatBoxUsers();
-                             }else{
-                                 this.getCustomersChattedWithMe();
-                             }
-                         }}>
-                    <TabPanel header="من" leftIcon="pi pi-user">
+                                 this.setState({activeIndex: e.index,arr:[]});
 
-                        <h6>با من چت کرده اند</h6>
+                                 if (e.index == 1) {
 
-                        {this.state.loading &&
-                        <Spinner animation="border" role="status">
-                            <span className="sr-only">در حال خواندن اطلاعات...</span>
-                        </Spinner>}
-                        
-                        
-                        {this.state.arr && this.state.arr.length &&
-                        <ShowOnlineUsers arr={this.state.arr} parent={this}/>}
-                        
-                    </TabPanel>
-                    <TabPanel header="مشترک" rightIcon="pi pi-users ">
-                    
-                       <h6>چت باکس مشترک</h6>
+                                     this.getSharedChatBoxUsers();
+                                 } else if (e.index == 0) {
+                                     this.getCustomersChattedWithMe();
+                                 } else if (e.index == 2) {
+                                     this.getPrivateChatsCustomers();
+                                 }
+                             }}>
+                        <TabPanel header="من" leftIcon="pi pi-user">
+
+                            <h6>با من چت کرده اند</h6>
+
+                            {this.state.loading &&
+                            <Spinner animation="border" role="status">
+                                <span className="sr-only">در حال خواندن اطلاعات...</span>
+                            </Spinner>}
 
 
-                        {this.state.loading &&
-                        <Spinner animation="border" role="status">
-                            <span className="sr-only">در حال خواندن اطلاعات...</span>
-                        </Spinner>}
+                            {this.state.arr && this.state.arr.length &&
+                            <ShowOnlineUsers arr={this.state.arr} parent={this}/>}
 
-                        {this.state.arr && this.state.arr.length &&
-                        <ShowOnlineUsers arr={this.state.arr} parent={this}/>}
-                    </TabPanel>
-                 
-                </TabView>
+                        </TabPanel>
+                        <TabPanel header="مشترک" rightIcon="pi pi-users ">
+
+                            <h6>چت باکس مشترک</h6>
+
+                            <small>چت های خصوصی در این باکس این کاربران برای شما ارسال شده است</small>
+
+                            {this.state.loading &&
+                            <Spinner animation="border" role="status">
+                                <span className="sr-only">در حال خواندن اطلاعات...</span>
+                            </Spinner>}
+
+                            {this.state.arr && this.state.arr.length &&
+                            <ShowOnlineUsers arr={this.state.arr} parent={this}/>}
+                        </TabPanel>
+
+                        <TabPanel header="هدایت" rightIcon="pi pi-users "
+                                  aria-label="کاربرانی که پیغام خصوصی در چت شان برای شما ارسال شده است"
+                                  data-microtip-position="top" role="tooltip">
+
+                            <h6>کاربران هدایت شده</h6>
+
+
+                            {this.state.loading &&
+                            <Spinner animation="border" role="status">
+                                <span className="sr-only">در حال خواندن اطلاعات...</span>
+                            </Spinner>}
+
+                            {this.state.arr && this.state.arr.length &&
+                            <ShowOnlineUsers arr={this.state.arr} parent={this}/>}
+                        </TabPanel>
+
+                    </TabView>
                 </div>
 
                 {/*    <div className="card ">
@@ -317,13 +335,35 @@ export default class Customers extends Component {
     }
 
     getSharedChatBoxUsers() {
-        this.setState({loading:true});
+        this.setState({loading: true});
         CurrentUserInfo.UserType = 'SharedChatBox';
 
 
         MyCaller.Send("GetClientsListForAdmin", {
             userType: CurrentUserInfo.UserType
         });
+    }
+
+    getPrivateChatsCustomers() {
+
+        if (!CurrentUserInfo.B4AdminNavbar || !CurrentUserInfo.B4AdminNavbar.state ||
+            !CurrentUserInfo.B4AdminNavbar.state.ReceivedPrivateChats || !CurrentUserInfo.B4AdminNavbar.state.ReceivedPrivateChats.length) {
+            this.setState({arr: []});
+        }
+
+        let arr = [];
+
+        for (let i = 0; i < CurrentUserInfo.B4AdminNavbar.state.ReceivedPrivateChats.length; i++) {
+            let Customer = CurrentUserInfo.B4AdminNavbar.state.ReceivedPrivateChats[i].Customer;
+
+            arr.push(Customer);
+
+
+        }
+
+        this.setState({arr: arr});
+
+
     }
 }
 const showTotalUnRead = function (el) {
@@ -354,7 +394,7 @@ export function ShowOnlineUsers(props) {
             isSelected = DataHolder.selectedCustomer && el.Id == DataHolder.selectedCustomer.Id ? 'selectedUserInList' : '';
 
         }
-        return <li   key={el.Id} onClick={(e) => {
+        return <li key={el.Id} onClick={(e) => {
 
 
             if (props.onClick) {
@@ -382,9 +422,9 @@ export function ShowOnlineUsers(props) {
                 if (CurrentUserInfo.ChatPage) {
                     CurrentUserInfo.ChatPage.setState({chats: []});
                 }
-                
-                if (CurrentUserInfo.MyMap && el && el.LastTrackInfo ){
-                    CurrentUserInfo.MyMap.AddMarker(el.LastTrackInfo.latitude,el.LastTrackInfo.longitude,el)
+
+                if (CurrentUserInfo.MyMap && el && el.LastTrackInfo) {
+                    CurrentUserInfo.MyMap.AddMarker(el.LastTrackInfo.latitude, el.LastTrackInfo.longitude, el)
                 }
 
                 //CurrentUserInfo.CustomersPage.placeOnTop(arr);
@@ -394,7 +434,8 @@ export function ShowOnlineUsers(props) {
 
 
         }}
-                   className={`list-group-item  ${isSelected ? 'bg-info text-white' :''} ${el.IsResolved ? 'IsResolved' : 'UnIsResolved'} userInList ` + isSelected} key={el.Id}>
+                   className={`list-group-item  ${isSelected ? 'bg-info text-white' : ''} ${el.IsResolved ? 'IsResolved' : 'UnIsResolved'} userInList ` + isSelected}
+                   key={el.Id}>
             {showTotalUnRead(el)}
             {el.Name}
 

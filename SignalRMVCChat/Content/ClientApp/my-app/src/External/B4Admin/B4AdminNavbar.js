@@ -11,12 +11,15 @@ import {DataHolder} from "../../Help/DataHolder";
 import '../../styles/myStyle.css'
 
 class B4AdminNavbar extends Component {
-    state={};
+    state = {
+        ReceivedPrivateChats: []
+    };
+
 
     constructor(props) {
         super(props);
-        
-        CurrentUserInfo.B4AdminNavbar=this;
+
+        CurrentUserInfo.B4AdminNavbar = this;
 
         this.items = [
             {
@@ -37,7 +40,7 @@ class B4AdminNavbar extends Component {
             {
                 label: 'دیگر',
                 icon: 'pi pi-fw pi-file',
-                items:[
+                items: [
                     {
                         label: 'فقط آفلاین',
                         icon: 'pi pi-fw pi-pencil',
@@ -47,7 +50,7 @@ class B4AdminNavbar extends Component {
                         icon: 'pi pi-fw pi-pencil',
                     },
                     {
-                        separator:true
+                        separator: true
                     },
                     {
                         label: 'تمامی مراجعه کنندگان سایت',
@@ -57,33 +60,76 @@ class B4AdminNavbar extends Component {
                     {
                         label: ' کاربرانی که بدون دریافت پشتیبانی سایت را ترک کرده اند',
                         icon: 'pi pi-fw pi-pencil',
-                    }, 
+                    },
                     {
                         label: ' بعد از دریافت پشتیبانی مجددا به سایت بازگشته اند',
                         icon: 'pi pi-fw pi-pencil',
                     }
                 ]
             }
-           
+
         ];
     }
 
-    
-    OnlyOfflines(e){
-        CurrentUserInfo.gapIsOnlyOnly=  !this.state.onlyOfflineChecked;
-        this.setState({ onlyOfflineChecked:!this.state.onlyOfflineChecked });
+    getMyProfileCallback(res) {
+        if (!res || !res.Content) {
+            CurrentUserInfo.LayoutPage.showError('اطلاعات بازگشتی خالی است')
+            return
+        }
+
+        if (!res.Content.ReceivedPrivateChats) {
+            return;
+        }
+
+
+        this.setState({ReceivedPrivateChats: res.Content.ReceivedPrivateChats});
+
+    }
+
+    adminPrivateNoteSendToAdminCallback(res) {
+
+        if (!res || !res.Content) {
+            CurrentUserInfo.LayoutPage.showError('اطلاعات بازگشتی خالی است')
+            return
+        }
+
+
+        let ReceivedPrivateChats = this.state.ReceivedPrivateChats;
+
+
+        if (ReceivedPrivateChats === null) {
+            ReceivedPrivateChats = [];
+        }
+
+        ReceivedPrivateChats.push(res.Content);
+
+        this.setState({ReceivedPrivateChats: ReceivedPrivateChats});
+
+        /*
+        *              senderAdmin=chatSent.senderAdmin,
+                            chat=chatSaved,
+                            customer=customer*/
+
+
+    }
+
+
+    OnlyOfflines(e) {
+        CurrentUserInfo.gapIsOnlyOnly = !this.state.onlyOfflineChecked;
+        this.setState({onlyOfflineChecked: !this.state.onlyOfflineChecked});
 
 
         if (CurrentUserInfo.OnlineCustomerListHolder)
             CurrentUserInfo.OnlineCustomerListHolder.GetClientsListForAdmin();
     }
-    
+
     render() {
 
-        const end= <Form.Check checked={this.state.onlyOfflineChecked} type="checkbox" label="فقط آفلاین ها"  onChange={()=>{
+        const end = <Form.Check checked={this.state.onlyOfflineChecked} type="checkbox" label="فقط آفلاین ها"
+                                onChange={() => {
 
-            this.OnlyOfflines();
-        }}/>
+                                    this.OnlyOfflines();
+                                }}/>
         return (
             <>
                 <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -94,9 +140,9 @@ class B4AdminNavbar extends Component {
                     </button>
 
                     {/* <!-- Topbar Search-->*/}
-                   {/* <Menubar model={this.items} end={end}  />*/}
-                   
-                   <B4AdminSubMenu/>
+                    {/* <Menubar model={this.items} end={end}  />*/}
+
+                    <B4AdminSubMenu/>
 
 
                     {/* <!-- Topbar Navbar-->*/}
@@ -117,7 +163,7 @@ class B4AdminNavbar extends Component {
                                     <div className="input-group">
                                         <input type="text" className="form-control bg-light border-0 small"
                                                placeholder="Search for..." aria-label="Search"
-                                               aria-describedby="basic-addon2" />
+                                               aria-describedby="basic-addon2"/>
                                         <div className="input-group-append">
                                             <button className="btn btn-primary" type="button">
                                                 <i className="fas fa-search fa-sm"></i>
@@ -135,51 +181,25 @@ class B4AdminNavbar extends Component {
                                aria-expanded="false">
                                 <i className="fas fa-bell fa-fw"></i>
                                 {/* <!-- Counter - Alerts-->*/}
-                                <span className="badge badge-danger badge-counter">3+</span>
+
+                                {this.state.ReceivedPrivateChats && this.state.ReceivedPrivateChats.length > 0 &&
+                                <span
+                                    className="badge badge-danger badge-counter">{this.state.ReceivedPrivateChats.length}+</span>
+                                }
+
                             </a>
                             {/* <!-- Dropdown - Alerts-->*/}
                             <div
                                 className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 className="dropdown-header">
-                                    Alerts Center
+                                    مرکز اعلان پیغام های خصوصی
                                 </h6>
-                                <a className="dropdown-item d-flex align-items-center" href="#">
-                                    <div className="mr-3">
-                                        <div className="icon-circle bg-primary">
-                                            <i className="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="small text-gray-500">December 12, 2019</div>
-                                        <span className="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a className="dropdown-item d-flex align-items-center" href="#">
-                                    <div className="mr-3">
-                                        <div className="icon-circle bg-success">
-                                            <i className="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a className="dropdown-item d-flex align-items-center" href="#">
-                                    <div className="mr-3">
-                                        <div className="icon-circle bg-warning">
-                                            <i className="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your
-                                        account.
-                                    </div>
-                                </a>
-                                <a className="dropdown-item text-center small text-gray-500" href="#">Show
-                                    All Alerts</a>
+
+                                {this.showReceivedPrivateChats()}
+
+                                {/*   <a className="dropdown-item text-center small text-gray-500" href="#">Show
+                                    All Alerts</a>*/}
                             </div>
                         </li>
 
@@ -191,8 +211,9 @@ class B4AdminNavbar extends Component {
                                 <i className="fas fa-envelope fa-fw"></i>
                                 {/* <!-- Counter - Messages-->*/}
 
-                                {this.state.TotalNewChatReceived && <span  className="badge badge-danger badge-counter iconSize18">{this.state.TotalNewChatReceived}+</span>}
-                                
+                                {this.state.TotalNewChatReceived && <span
+                                    className="badge badge-danger badge-counter iconSize18">{this.state.TotalNewChatReceived}+</span>}
+
                             </a>
                             {/* <!-- Dropdown - Messages-->*/}
                             <div
@@ -204,7 +225,7 @@ class B4AdminNavbar extends Component {
                                 <a className="dropdown-item d-flex align-items-center" href="#">
                                     <div className="dropdown-list-image mr-3">
                                         <img className="rounded-circle"
-                                             src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="" />
+                                             src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt=""/>
                                         <div className="status-indicator bg-success"></div>
                                     </div>
                                     <div className="font-weight-bold">
@@ -217,7 +238,7 @@ class B4AdminNavbar extends Component {
                                 <a className="dropdown-item d-flex align-items-center" href="#">
                                     <div className="dropdown-list-image mr-3">
                                         <img className="rounded-circle"
-                                             src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="" />
+                                             src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt=""/>
                                         <div className="status-indicator"></div>
                                     </div>
                                     <div>
@@ -230,7 +251,7 @@ class B4AdminNavbar extends Component {
                                 <a className="dropdown-item d-flex align-items-center" href="#">
                                     <div className="dropdown-list-image mr-3">
                                         <img className="rounded-circle"
-                                             src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="" />
+                                             src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt=""/>
                                         <div className="status-indicator bg-warning"></div>
                                     </div>
                                     <div>
@@ -243,7 +264,7 @@ class B4AdminNavbar extends Component {
                                 <a className="dropdown-item d-flex align-items-center" href="#">
                                     <div className="dropdown-list-image mr-3">
                                         <img className="rounded-circle"
-                                             src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="" />
+                                             src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt=""/>
                                         <div className="status-indicator bg-success"></div>
                                     </div>
                                     <div>
@@ -265,10 +286,16 @@ class B4AdminNavbar extends Component {
                         <li className="nav-item dropdown no-arrow">
                             <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span
-                                                className="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                                <img className="img-profile rounded-circle"
-                                     src="https://source.unsplash.com/QAB-WJcbgJk/60x60" />
+
+                                {CurrentUserInfo.B4AdminLayout.state.currentUser && <span
+                                    className="mr-2 d-none d-lg-inline text-gray-600 small">
+                                                
+                                                {CurrentUserInfo.B4AdminLayout.state.currentUser.Name}
+                                                
+                                            </span>
+                                }
+                              {/*  <img className="img-profile rounded-circle"
+                                     src="https://source.unsplash.com/QAB-WJcbgJk/60x60"/>*/}
                             </a>
                             {/* <!-- Dropdown - User Information-->*/}
                             <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -296,7 +323,7 @@ class B4AdminNavbar extends Component {
 
                     </ul>
 
-                </nav>   
+                </nav>
             </>
         );
     }
@@ -321,6 +348,53 @@ class B4AdminNavbar extends Component {
             NotChattedCount: res.Content.NotChattedCount
         })
 
+
+    }
+
+    showReceivedPrivateChats() {
+
+        if (!this.state.ReceivedPrivateChats || !this.state.ReceivedPrivateChats.length) {
+            return <></>;
+        }
+
+
+        return this.state.ReceivedPrivateChats.map((row, i, arr) => {
+
+            return <a className="dropdown-item d-flex align-items-center" onClick={() => {
+
+
+                /*-------------------------SELECT CUSTOMER FOR CHAT --------------------------*/
+
+                DataHolder.selectedCustomer = row.Customer;
+
+                DataHolder.currentPage = null;
+                CurrentUserInfo.LayoutPage.setState({
+                    temp: Math.random(),
+                });
+                this.setState({temp: Math.random()});
+                
+                CurrentUserInfo.CustomersPage.readChat()
+
+                /* if (CurrentUserInfo.CustomersPage) {
+                     this.selectCustomer(item);
+                 }*/
+
+                /*-------------------------END --------------------------*/
+
+            }}>
+                <div className="mr-3">
+                    <div className="icon-circle bg-primary">
+                        <i className="fas fa-file-alt text-white"></i>
+                    </div>
+                </div>
+                <div>
+                    <div className="small text-gray-500">{row.SenderAdmin.Name} - {row.Time}</div>
+                    <span
+                        className="font-weight-bold">{row.Chat.Message}</span>
+                </div>
+            </a>
+
+        });
 
     }
 }

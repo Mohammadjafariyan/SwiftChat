@@ -1,6 +1,7 @@
 using System;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using Engine.SysAdmin.Service;
 using SignalRMVCChat.Models;
@@ -37,9 +38,16 @@ namespace Engine.SysAdmin.Service
         }
 
 
+        public void DetachAllEntities()
+        {
+            var changedEntriesCopy = this.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added ||
+                            e.State == EntityState.Modified ||
+                            e.State == EntityState.Deleted)
+                .ToList();
 
-     
-
-    
+            foreach (var entry in changedEntriesCopy)
+                entry.State = EntityState.Detached;
+        }
     }
 }

@@ -316,7 +316,7 @@ class LiveAssistShower {
 
         // Apply the x & y coordinates on our element
         this.el.style.transform = `translate(${x}px, ${y}px)`;
-        this.el.style.display=null;
+        this.el.style.display = null;
 
         // Call the render function once the browser is ready to make it an infinite loop
     }
@@ -1446,6 +1446,8 @@ class BasePlugin {
 
         pushManager.push('پیغام جدید', Message);
 
+        CurrentUserInfo.ProfileImageId = res.Content.ProfilePhotoId;
+        CurrentUserInfo.targetName = res.Content.AccountName;
 
         //on the fly showing message:
 
@@ -1731,7 +1733,7 @@ class BasePlugin {
             _EventTriggerManager.getEventTriggers();
 
         }
-        
+
         MyCaller.Send('CustomerGetUsersSeparationConfig');
 
 
@@ -1994,7 +1996,7 @@ class BasePlugin {
                 * 
                 * 
                 * */
-                if(arr[i].ChatType===5){
+                if (arr[i].ChatType === 5) {
                     // private Admin send
                     continue;
                 }
@@ -2132,9 +2134,8 @@ class BasePlugin {
 
         doSomethingIfSameOpenOrNot(gapRowTmp);
 
-        if (AccountId + '' === gapCurId) {
-            ifCurrentChatPanelSameDoSomeThing(getDoc().getElementById('chatPanel'), gapRowTmp)
-        }
+        ifCurrentChatPanelSameDoSomeThing(getDoc().getElementById('chatPanel'), gapRowTmp)
+
     }
 
     handleNewMessageCome(AccountId, Message, TotalReceivedMesssages, callback, isGapMe, gapFileUniqId, UniqId) {
@@ -2166,20 +2167,19 @@ class BasePlugin {
 
 
         if (Message) {
-            if (AccountId + '' === gapCurId) {
-
-                var html = CurrentUserInfo.commonDomManager.makeChatDom(Message, isGapMe, false, gapFileUniqId, UniqId);
-
-                getDoc().querySelector('#chatPanel').innerHTML = getDoc().querySelector('#chatPanel').innerHTML + html;
-
-                scrollToBottomChatPanel();
-
-                if (callback) {
-                    callback();
-                }
 
 
+            var html = CurrentUserInfo.commonDomManager.makeChatDom(Message, isGapMe, false, gapFileUniqId, UniqId);
+
+            getDoc().querySelector('#chatPanel').innerHTML = getDoc().querySelector('#chatPanel').innerHTML + html;
+
+            scrollToBottomChatPanel();
+
+            if (callback) {
+                callback();
             }
+
+
         }
 
 
@@ -3207,14 +3207,27 @@ function GetMakeEditDeleteButtons(uniqId, gapFileUniqId) {
     return dom;
 }
 
-function getSenderProfile() {
-    let ProfilePhotoId = CurrentUserInfo.ProfileImageId;
+function getSenderProfile(chat) {
+
+    
+    
+   
+    
+    
+    let fullname=chat.AccountName;
+
+    let name = (chat.AccountName ? chat.AccountName : "ک").charAt(0);
+
+
+    name = chat.ProfilePhotoId ? '' : name;
+    
+    let ProfilePhotoId = chat.ProfilePhotoId;
     let bgImage = ProfilePhotoId ? `background-image: url(${baseUrlForapi}/Upload/Upload?id=${ProfilePhotoId})` : '';
-    let sum = `<span style="position:relative;  float: left; font-size: 20px !important;${bgImage}" class="gap_online_admin">
+    let sum = `<span  aria-label='${fullname}' data-microtip-position='right' role="tooltip" style="position:relative;  float: left; font-size: 20px !important;${bgImage}" class="gap_online_admin">
 <span style="    right: 35%;
     position: absolute;
     top: 15%;
-}">${(CurrentUserInfo.targetName ? CurrentUserInfo.targetName : "ک").charAt(0)}</span></span>`;
+}">${name}</span></span>`;
 
     return sum;
 }
@@ -3288,7 +3301,7 @@ class DomManager {
 
             /*profile img*/
 
-            dom += getSenderProfile();
+            dom += getSenderProfile(chat);
             /*profile img end*/
         }
 
@@ -3579,9 +3592,7 @@ class DomManager {
     bindDotOnClick() {
 
         getDoc().querySelector('#dot').onclick = function () {
-            
-            
-            
+
 
             getDoc().querySelector('#gapOnTheFlyMessage').style.display = 'none'
 
@@ -3928,7 +3939,7 @@ class dispatcher {
         }
         switch (res.Name) {
 
-            
+
             /*============================ Rating ===========================*/
             case 'adminSendRatingRequestCallback':
                 adminSendRatingRequestCallback(res);
@@ -3936,10 +3947,10 @@ class dispatcher {
 
             /*============================ END ===========================*/
 
-                
-                
-                
-                
+
+
+
+
             /*============================ Users Separation ===========================*/
             case 'customerGetUsersSeparationConfigCallback':
                 customerGetUsersSeparationConfigCallback(res);
@@ -6848,7 +6859,7 @@ function customerGetUsersSeparationConfigCallback(res) {
                             usersSeparation.params[i].paramValue = res[usersSeparation.params[i].paramName];
 
                         }
-                        
+
                         CustomerSaveUsersSeparationValues(usersSeparation);
                     }
 
@@ -6901,23 +6912,22 @@ function customerGetUsersSeparationConfigCallback(res) {
 }
 
 
-function CustomerSaveUsersSeparationValues(usersSeparation){
-    
-    
-    MyCaller.Send("CustomerSaveUsersSeparationValues",usersSeparation);
+function CustomerSaveUsersSeparationValues(usersSeparation) {
+
+
+    MyCaller.Send("CustomerSaveUsersSeparationValues", usersSeparation);
 }
 
 /*--------------------------------------------- END -------------------------------------*/
 
 
-
 /*--------------------------------------------- rating -------------------------------------*/
 
-function adminSendRatingRequestCallback(res){
-   /* if (getDoc().querySelector('#gapComment'))
-        return ;*/
+function adminSendRatingRequestCallback(res) {
+    /* if (getDoc().querySelector('#gapComment'))
+         return ;*/
 
-    let html=`
+    let html = `
     <div id="gapComment" style="margin:20px;border-radius: 5px 5px 5px 5px;background-color: white;
     padding:20px;border:1px solid black">
     <h3>
@@ -6937,22 +6947,21 @@ function adminSendRatingRequestCallback(res){
     `;
 
 
-
     if (getDoc().querySelector('#dot').style.display === 'none') {
         getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
 
-    }else{
-        getDoc().querySelector('#gapOnTheFlyMessageText').innerHTML=html;
-        getDoc().querySelector('#gapOnTheFlyMessage').style.display=null;
+    } else {
+        getDoc().querySelector('#gapOnTheFlyMessageText').innerHTML = html;
+        getDoc().querySelector('#gapOnTheFlyMessage').style.display = null;
     }
 
 }
 
-function gapComment(rate,el){
-    
-    
-    MyCaller.Send("CustomerRate",{rate});
-    let html=`
+function gapComment(rate, el) {
+
+
+    MyCaller.Send("CustomerRate", {rate});
+    let html = `
    
     <h3>
     
@@ -6968,21 +6977,20 @@ function gapComment(rate,el){
     `;
 
     if (getDoc().querySelector('#dot').style.display === 'none') {
-       html+=`    <i style="font-size: 25px;float:left" class="fa fa-comment" aria-hidden="true"></i>`;
+        html += `    <i style="font-size: 25px;float:left" class="fa fa-comment" aria-hidden="true"></i>`;
 
-    }else{
-        html+=`    <i style="font-size: 25px;" class="fa fa-comment" aria-hidden="true"></i>`;
+    } else {
+        html += `    <i style="font-size: 25px;" class="fa fa-comment" aria-hidden="true"></i>`;
     }
 
-   el.parentNode.innerHTML=html;
+    el.parentNode.innerHTML = html;
 
 }
 
 
+function testDo() {
 
-function testDo(){
-
-  //  adminSendRatingRequestCallback();
+    //  adminSendRatingRequestCallback();
 }
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using SignalRMVCChat.DependencyInjection;
@@ -129,14 +130,16 @@ namespace SignalRMVCChat.WebSocket
             int totalUnseen = chatProviderService.GetTotalUnseen(accountId
                 , targetUserId, ChatSenderType.AccountToCustomer);
 
-            var chatObject = chatProviderServices.GetById(chat.Single).Single;
+            var chatObject = chatProviderServices.GetQuery().Where(c=>c.Id==chat.Single).Include(c=>c.Customer)
+                .Include(c=>c.MyAccount).SingleOrDefault();
 
             var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
 
-            string AccountName = myAccountProviderService.GetById(accountId).Single.Name;
+            var Account = myAccountProviderService.GetById(accountId).Single;
             response.Content = new AdminSendToCustomerViewModel
             {
-                AccountName = AccountName,
+                AccountName = Account.Name,
+                ProfilePhotoId=Account.ProfileImageId,
                 AccountId = accountId,
                 Message = typedMessage,
                 TotalReceivedMesssages = totalUnseen,
@@ -151,7 +154,29 @@ namespace SignalRMVCChat.WebSocket
 
             var _ChatObject = chatProviderService.GetById((int) chat.Single).Single;
 
-           
+
+            var CustomerProviderService = Injector.Inject<CustomerProviderService>();
+
+            var customer_target = CustomerProviderService.GetById(customer.CustomerId.Value, "کاربر یافت نشد").Single;
+
+            if (customer_target.ContactAdmins != null && customer_target.ContactAdmins.Count > 0)
+            {
+                response.Name = "newSendPMByMeInAnotherPlaceCallback";
+                
+                foreach (var contactAdmin in customer_target.ContactAdmins)
+                {
+                    if (contactAdmin.Id!=currMySocketReq.MySocket.MyAccountId)
+                    {
+                        await MySocketManagerService.SendToAdmin(contactAdmin.Id, currMySocketReq.MyWebsite.Id,
+                            response); 
+                    }
+                    
+                }
+            }
+
+            
+
+
             // اگر از جای دیگری هم وصل شده باشد این پیغام را در جای دیگر هم نشان بده
             await MySocketManagerService.NotifySelf(MySocketUserType.Admin, _ChatObject, currMySocketReq.MyWebsite.Id,
                 currMySocketReq);
