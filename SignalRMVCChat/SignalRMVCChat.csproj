@@ -462,6 +462,7 @@
     <Compile Include="Test\SelectPlanInFront\SignUpForPlanTests.cs" />
     <Compile Include="Test\SuperAdminTests\SuperAdminTests.cs" />
     <Compile Include="Test\SuperAdminTests\UpgradePlanTests.cs" />
+    <Compile Include="Timer\TimerService.cs" />
     <Compile Include="Utility\MethodResult.cs" />
     <Compile Include="Utility\ResultCode.cs" />
     <Compile Include="Utility\SiteUtility.cs" />
@@ -2076,6 +2077,13 @@
     <Content Include="Content\ClientApp\my-app\src\App.js" />
     <Content Include="Content\ClientApp\my-app\src\App.test.js" />
     <Content Include="Content\ClientApp\my-app\src\AppGlobalStyle.css" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\BotHelpMessage.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\BotIndex.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\BotLayout.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\BotList.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\Design\BotDesign.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\Design\BotOrgChart.css" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\Design\BotOrgChart.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\AddTag.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\Admins.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\BlockUser\BlockUser.js" />
@@ -2177,6 +2185,7 @@
     <Content Include="Content\ClientApp\my-app\src\Pages\AllCustomerListPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\Answered.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\AutomaticSendPage.js" />
+    <Content Include="Content\ClientApp\my-app\src\Pages\BotPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\ChatPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\ChattedAndReturnedCustomerListPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\CustomerProfilePage.js" />
@@ -2198,9 +2207,14 @@
     <Content Include="Content\ClientApp\my-app\src\Pages\WaitingForAnswer.js" />
     <Content Include="Content\ClientApp\my-app\src\serviceWorker.js" />
     <Content Include="Content\ClientApp\my-app\src\setupTests.js" />
+    <Content Include="Content\ClientApp\my-app\src\styles\fonts\primeicons.eot" />
+    <Content Include="Content\ClientApp\my-app\src\styles\fonts\primeicons.svg" />
+    <Content Include="Content\ClientApp\my-app\src\styles\fonts\primeicons.ttf" />
+    <Content Include="Content\ClientApp\my-app\src\styles\fonts\primeicons.woff" />
     <Content Include="Content\ClientApp\my-app\src\styles\images\marker-icon.png" />
     <Content Include="Content\ClientApp\my-app\src\styles\leaflet.css" />
     <Content Include="Content\ClientApp\my-app\src\styles\myStyle.css" />
+    <Content Include="Content\ClientApp\my-app\src\styles\primeicons.css" />
     <Content Include="Content\ClientApp\my-app\src\styles\Tooltip.css" />
     <Content Include="Content\ClientApp\my-app\src\styles\whileWriting.css" />
     <Content Include="Content\customerIframe.css" />

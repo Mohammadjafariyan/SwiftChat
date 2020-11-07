@@ -36,6 +36,7 @@ import EventTriggersPage from "../../Pages/Event_TriggersPage";
 import LiveAssistPage from "../../Pages/LiveAssistPage";
 import UsersSeparationLayout from "../../Components/UsersSeparation/UsersSeparationLayout";
 import MapPage from "../../Pages/MapPage";
+import BotPage from "../../Pages/BotPage";
 
 
 
@@ -153,12 +154,30 @@ export default class B4AdminLayoutPage extends Component {
                 return(
                     <div>
                         <Toast  position="bottom-left"ref={(el) => this.toast = el} />
-                        
+
                         <MessageAlerts/>
 
 
 
                         <UsersSeparationLayout></UsersSeparationLayout>
+
+
+                    </div>
+                )
+            }
+
+            else if(DataHolder.currentPage ==='Bot')
+
+            {
+                return(
+                    <div>
+                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+
+                        <MessageAlerts/>
+
+
+
+                        <BotPage></BotPage>
 
 
                     </div>

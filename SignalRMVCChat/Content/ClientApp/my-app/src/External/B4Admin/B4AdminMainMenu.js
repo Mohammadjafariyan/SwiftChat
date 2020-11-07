@@ -97,7 +97,7 @@ export default class B4AdminMainMenu extends Component {
                                 ها     EventTrigger
                             </span></a>
                 </li>
-                
+
                 <li className={'nav-item ' + (DataHolder.currentPage === 'HelpDeskPage' ? ' active ' : '')}>
                     <a className="nav-link"  onClick={() => {
                         this.setPage('HelpDeskPage');
@@ -108,6 +108,20 @@ export default class B4AdminMainMenu extends Component {
 
 
                                 Help Desk  مقالات
+                            </span></a>
+                </li>
+
+
+                <li className={'nav-item ' + (DataHolder.currentPage === 'Bot' ? ' active ' : '')}>
+                    <a className="nav-link"  onClick={() => {
+                        this.setPage('Bot');
+                        DataHolder.subPage = null;
+                    }}>
+                        <i className={'fa fa-cogs'} aria-hidden="true"></i>
+                        <span>
+
+
+                                ربات (Bot)
                             </span></a>
                 </li>
 
@@ -138,7 +152,7 @@ export default class B4AdminMainMenu extends Component {
                         this.setPage('FormCreator');
 
                     }}>
-                        <i className={'fa fa-map-marker'} aria-hidden="true"></i>
+                        <i className="fa fa-check-square" aria-hidden="true"></i>
                         <span>
 
 

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Fleck;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.Timer;
 using SignalRMVCChat.WebSocket;
 
 namespace SignalRMVCChat.WebSocket
@@ -47,6 +48,8 @@ namespace SignalRMVCChat.WebSocket
                 {
                   //  socket.Send(message);
                     
+                  
+                  TimerService.Config();
                   
                  await   WebSocketRequestThreadMaker.HandleRequest(message,socket);
 

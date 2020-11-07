@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import ChatPage from './ChatPage';
 import LoginPage from './LoginPage';
-import { cookieManager } from './../Help/CookieManager';
-import { MyGlobal } from './../Help/MyGlobal';
-import { MyCaller, CurrentUserInfo } from './../Help/Socket';
-import { DataHolder } from './../Help/DataHolder';
+import {cookieManager} from './../Help/CookieManager';
+import {MyGlobal} from './../Help/MyGlobal';
+import {MyCaller, CurrentUserInfo} from './../Help/Socket';
+import {DataHolder} from './../Help/DataHolder';
 import Menu from "../Components/Menu";
 
 
@@ -24,7 +24,7 @@ import FormCreatorPage from "./FormCreatorPage";
 import FormDataPage from "./FormDataPage";
 import {AutomaticSendPage} from "../Components/Chat";
 
-import { Toast } from 'primereact/toast';
+import {Toast} from 'primereact/toast';
 import {Message} from "primereact/message";
 import Spinner from "react-bootstrap/Spinner";
 import {Button} from "primereact/button";
@@ -37,109 +37,106 @@ import EventTriggersPage from "./Event_TriggersPage";
 import LiveAssistPage from "./LiveAssistPage";
 import UsersSeparationLayout from "../Components/UsersSeparation/UsersSeparationLayout";
 import MapPage from "./MapPage";
-
+import BotLayout from "../Bot/BotLayout";
+import BotPage from "./BotPage";
 
 
 export default class LayoutPage extends Component {
-    toastRunning=0;
-    constructor(props){
+    toastRunning = 0;
+
+    constructor(props) {
         super(props);
-        this.state={isLogin:false};
+        this.state = {isLogin: false};
         CurrentUserInfo.LayoutPage = this;
 
 
     }
 
-    showConstantMsg(msg,type,callback){
-        this.setState({constantMsg: msg,constantMsgType:type,constantMsgCallback:callback});
+    showConstantMsg(msg, type, callback) {
+        this.setState({constantMsg: msg, constantMsgType: type, constantMsgCallback: callback});
 
     }
 
 
     showError(msg) {
-        
-        if (msg){
-            if (this.toast)
-            {
-                this.toast.show({severity: 'error', summary: 'پیغام', detail: msg});
-            }
-            else {
-                this.setState({ err: msg });
-                setTimeout(() => {
-                    this.setState({ err: null });
 
-                },2000)
+        if (msg) {
+            if (this.toast) {
+                this.toast.show({severity: 'error', summary: 'پیغام', detail: msg});
+            } else {
+                this.setState({err: msg});
+                setTimeout(() => {
+                    this.setState({err: null});
+
+                }, 2000)
             }
         }
-    
-      
+
+
     }
-    showMsg(msg,TYPE) {
+
+    showMsg(msg, TYPE) {
         if (msg) {
 
-            if (this.toast && this.toastRunning<3 && this.toastRunning>=0) {
+            if (this.toast && this.toastRunning < 3 && this.toastRunning >= 0) {
                 this.toastRunning++;
-                this.toast.show({severity: TYPE ?TYPE: 'info', summary: 'پیغام', detail: msg});
-                
-            } 
-                this.setState({msg: msg});
-                setTimeout(() => {
-                    this.setState({msg: null});
+                this.toast.show({severity: TYPE ? TYPE : 'info', summary: 'پیغام', detail: msg});
 
-                    this.toastRunning--;
-                    if (this.toastRunning<=0)
-                    {
-                        this.toastRunning=0;
-                    }
+            }
+            this.setState({msg: msg});
+            setTimeout(() => {
+                this.setState({msg: null});
 
-                }, 3000)
+                this.toastRunning--;
+                if (this.toastRunning <= 0) {
+                    this.toastRunning = 0;
+                }
+
+            }, 3000)
         }
     }
 
-   
-    componentDidMount(){
-        if(MyGlobal.isTestingEnvirement){
-            cookieManager.setItem("adminToken","sdlflksdf")
-            this.setState({isLogin:true});
+
+    componentDidMount() {
+        if (MyGlobal.isTestingEnvirement) {
+            cookieManager.setItem("adminToken", "sdlflksdf")
+            this.setState({isLogin: true});
         }
     }
+
     render() {
 
 
-
-        let adminToken= cookieManager.getItem("adminToken");
+        let adminToken = cookieManager.getItem("adminToken");
         //console.log(adminToken)
 
-        if (this.state.isClearCookie){
-            adminToken=null;
-            
+        if (this.state.isClearCookie) {
+            adminToken = null;
+
         }
 
-       // console.log(adminToken)
+        // console.log(adminToken)
 
-        if (adminToken && adminToken!='null' && adminToken!='undefined') {
+        if (adminToken && adminToken != 'null' && adminToken != 'undefined') {
 
             if (!DataHolder.currentPage) {
                 return (
                     <div>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
 
-                        <Menu/>
-                        <MessageAlerts />
-                        
-            <ChatPage />
-                </div>
-    )
-            }else if(DataHolder.currentPage ==='FakeServerMonitor')
-
-            {
-                return(
-                    <div>
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
                         <Menu/>
                         <MessageAlerts/>
 
+                        <ChatPage/>
+                    </div>
+                )
+            } else if (DataHolder.currentPage === 'FakeServerMonitor') {
+                return (
+                    <div>
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+                        <Menu/>
+                        <MessageAlerts/>
 
 
                         <FakeServerMonitor></FakeServerMonitor>
@@ -147,16 +144,12 @@ export default class LayoutPage extends Component {
 
                     </div>
                 )
-            }
-            else if(DataHolder.currentPage ==='usersSeparation')
-
-            {
-                return(
+            } else if (DataHolder.currentPage === 'usersSeparation') {
+                return (
                     <div>
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                         <Menu/>
                         <MessageAlerts/>
-
 
 
                         <UsersSeparationLayout></UsersSeparationLayout>
@@ -164,118 +157,115 @@ export default class LayoutPage extends Component {
 
                     </div>
                 )
-            }
-            
-
-            else if (DataHolder.currentPage === "FormCreator") {
+            } else if (DataHolder.currentPage === "Bot") {
 
                 return (
                     <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
 
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+                        <Menu/>
+                        <MessageAlerts/>
+
+                        <BotPage></BotPage>
+                    </>)
+            } else if (DataHolder.currentPage === "FormCreator") {
+
+                return (
+                    <>
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
+
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                         <Menu/>
                         <MessageAlerts/>
 
                         <FormCreatorPage></FormCreatorPage>
                     </>)
-            }
-
-            else if (DataHolder.currentPage === "EventTrigger") {
+            } else if (DataHolder.currentPage === "EventTrigger") {
 
                 return (
                     <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
 
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                         <Menu/>
                         <MessageAlerts/>
 
                         <EventTriggersPage></EventTriggersPage>
                     </>)
-            }
-            else if (DataHolder.currentPage === "AutomaticSend") {
+            } else if (DataHolder.currentPage === "AutomaticSend") {
 
                 return (
                     <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
 
                         <Menu/>
                         <MessageAlerts/>
 
                         <AutomaticSendPage></AutomaticSendPage>
                     </>)
-            }
-
-
-            else if (DataHolder.currentPage === "ProfilePage") {
+            } else if (DataHolder.currentPage === "ProfilePage") {
 
                 return (
                     <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
 
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                         <Menu/>
                         <MessageAlerts/>
 
                         <ProfilePage></ProfilePage>
                     </>)
-            }
-
-            else if (DataHolder.currentPage === "CustomerProfilePage") {
+            } else if (DataHolder.currentPage === "CustomerProfilePage") {
 
                 return (
                     <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
 
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                         <Menu/>
                         <MessageAlerts/>
 
                         <CustomerProfilePage></CustomerProfilePage>
                     </>)
-            }
-            else if (DataHolder.currentPage === "FormDataPage") {
+            } else if (DataHolder.currentPage === "FormDataPage") {
 
                 return (
                     <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
 
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                         <Menu/>
                         <MessageAlerts/>
 
                         <FormDataPage></FormDataPage>
                     </>)
-            }
-            else if (DataHolder.currentPage === "SocialChannels") {
+            } else if (DataHolder.currentPage === "SocialChannels") {
 
                 return (
                     <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
 
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                         <Menu/>
                         <MessageAlerts/>
 
                         <SocialChannelsPage></SocialChannelsPage>
                     </>)
-            }
-
-            else if (DataHolder.currentPage === "HelpDeskPage") {
+            } else if (DataHolder.currentPage === "HelpDeskPage") {
 
                 return (
                     <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
 
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                         <Menu/>
                         <MessageAlerts/>
 
 
                         <Container>
-                            <LanguageHolder onSelect={(countryCode)=>{
+                            <LanguageHolder onSelect={(countryCode) => {
 
                             }}/>
                         </Container>
@@ -284,37 +274,29 @@ export default class LayoutPage extends Component {
                         <HelpDeskPage></HelpDeskPage>
 
 
-
-
                     </>)
-            }
-            else if (DataHolder.currentPage === "Map") {
+            } else if (DataHolder.currentPage === "Map") {
 
                 return (
                     <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
 
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                         <Menu/>
                         <MessageAlerts/>
-
-
 
 
                         <MapPage></MapPage>
 
 
-
-
                     </>)
-            }
-            else if (DataHolder.currentPage === "LiveAssistPage") {
+            } else if (DataHolder.currentPage === "LiveAssistPage") {
 
                 return (
                     <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
 
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                         <Menu/>
                         <MessageAlerts/>
 
@@ -322,64 +304,54 @@ export default class LayoutPage extends Component {
                         <LiveAssistPage></LiveAssistPage>
 
 
+                    </>)
+            } else if (DataHolder.currentPage === "CustomerList") {
+
+                return (
+                    <>
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
+
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+                        <Menu/>
+                        <MessageAlerts/>
+
+                        {DataHolder.filterType === 'WaitingForAnswer' &&
+                        <WaitingForAnswer/>}
+
+                        {DataHolder.filterType === 'Answered' &&
+                        <Answered/>}
+
+
+                        {DataHolder.filterType === 'AllCustomerListPage' &&
+                        <AllCustomerListPage/>}
+
+
+                        {DataHolder.filterType === 'NotChatted' &&
+                        <NotChatted/>}
+
+                        {DataHolder.filterType === 'ChattedAndReturnedCustomerListPage' &&
+                        <ChattedAndReturnedCustomerListPage/>}
+
+                        {DataHolder.filterType === 'NotChattedLeftCustomerListPage' &&
+                        <NotChattedLeftCustomerListPage/>}
+
+
+                        {DataHolder.filterType === 'SepratePerPage' &&
+                        <SepratePerPage/>}
+
+
+                        {DataHolder.filterType === 'SeparatePerPageCustomerListPage' &&
+                        <SeparatePerPageCustomerListPage/>}
 
 
                     </>)
             }
 
-            
 
-            
-            else if (DataHolder.currentPage === "CustomerList") {
-
-                return (
-                    <>
-                        {this.state.focusForSelectingAdmin &&  <div className="hideWhole"></div>}
-
-                        <Toast  position="bottom-left"ref={(el) => this.toast = el} />
-                        <Menu/>
-                        <MessageAlerts/>
-
-                        {DataHolder.filterType==='WaitingForAnswer' && 
-                        <WaitingForAnswer/>} 
-                       
-                        {DataHolder.filterType==='Answered' && 
-                        <Answered/>}    
-
-
-                        {DataHolder.filterType==='AllCustomerListPage' && 
-                        <AllCustomerListPage/>}    
-
-
-                        {DataHolder.filterType==='NotChatted' && 
-                        <NotChatted/>}    
-
-                        {DataHolder.filterType==='ChattedAndReturnedCustomerListPage' && 
-                        <ChattedAndReturnedCustomerListPage/>}    
-
-                        {DataHolder.filterType==='NotChattedLeftCustomerListPage' && 
-                        <NotChattedLeftCustomerListPage/>}    
-
-
-                        {DataHolder.filterType==='SepratePerPage' && 
-                        <SepratePerPage/>}    
-
-
-
-                        {DataHolder.filterType==='SeparatePerPageCustomerListPage' && 
-                        <SeparatePerPageCustomerListPage/>}    
-
-                        
-                        
-                        
-                        </>)
-            }
-
-           
-        }else{
+        } else {
             return (
                 <div>
-                    <Toast  position="bottom-left"ref={(el) => this.toast = el} />
+                    <Toast position="bottom-left" ref={(el) => this.toast = el}/>
                     <MessageAlerts/>
 
                     <LoginPage parent={this}/>
@@ -388,54 +360,55 @@ export default class LayoutPage extends Component {
 
         }
 
-       
+
     }
 }
 
 
-export function _showError(msgf){
+export function _showError(msgf) {
     CurrentUserInfo.LayoutPage.showError(msgf)
 
 }
 
 
-
-
-export function _showConstantMsg(msgf,type,callback){
-    CurrentUserInfo.LayoutPage.showConstantMsg(msgf,type,callback)
+export function _showConstantMsg(msgf, type, callback) {
+    CurrentUserInfo.LayoutPage.showConstantMsg(msgf, type, callback)
 
 }
 
-export function _showMsg(msg,TYPE){
-    CurrentUserInfo.LayoutPage.showMsg(msg,TYPE)
+export function _showMsg(msg, TYPE) {
+    CurrentUserInfo.LayoutPage.showMsg(msg, TYPE)
 
 }
 
 
-export function MessageAlerts(props){
-    
+export function MessageAlerts(props) {
+
     return <>
-        {CurrentUserInfo. LayoutPage.state.err && <div className="alert alert-danger">{CurrentUserInfo.LayoutPage.state.err}</div>}
-        {CurrentUserInfo.LayoutPage.state.msg && <div className="alert alert-info">{CurrentUserInfo.LayoutPage.state.msg}</div>}
-{/*
+        {CurrentUserInfo.LayoutPage.state.err &&
+        <div className="alert alert-danger">{CurrentUserInfo.LayoutPage.state.err}</div>}
+        {CurrentUserInfo.LayoutPage.state.msg &&
+        <div className="alert alert-info">{CurrentUserInfo.LayoutPage.state.msg}</div>}
+        {/*
         {CurrentUserInfo.LayoutPage.state.constantMsg && <Message severity={CurrentUserInfo.LayoutPage.state.constantMsgType ? CurrentUserInfo.LayoutPage.state.constantMsgType : 'success' }  text={CurrentUserInfo.LayoutPage.state.constantMsg} />}
 */}
         {CurrentUserInfo.LayoutPage.state.constantMsg &&
-        <div className={"alert alert-" +(CurrentUserInfo.LayoutPage.state.constantMsgType ? CurrentUserInfo.LayoutPage.state.constantMsgType : 'success') }>
+        <div
+            className={"alert alert-" + (CurrentUserInfo.LayoutPage.state.constantMsgType ? CurrentUserInfo.LayoutPage.state.constantMsgType : 'success')}>
 
 
-            <Button icon="pi pi-times" onClick={()=>{
+            <Button icon="pi pi-times" onClick={() => {
                 if (CurrentUserInfo.LayoutPage.state.constantMsgCallback)
                     CurrentUserInfo.LayoutPage.state.constantMsgCallback()
-            }} className="p-button-rounded p-button-text p-button-plain" />
+            }} className="p-button-rounded p-button-text p-button-plain"/>
 
-            
+
             {CurrentUserInfo.LayoutPage.state.constantMsg}
 
-            <Spinner animation="grow" variant="info" />
-            
-            
+            <Spinner animation="grow" variant="info"/>
+
+
         </div>}
-        
-        </>
+
+    </>
 }

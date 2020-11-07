@@ -136,5 +136,38 @@ namespace SignalRMVCChat.Models
                 return null;
             }
         }
+
+        public static DateTime ParseDateTime(string value)
+        {
+            try
+            {
+                string format = "DD/MM/YYYY HH:MM:SS";
+
+                var datePart=value.Split(' ')[0];
+                var timePart=value.Split(' ')[1];
+
+
+                var day=datePart.Split('/')[0];
+                var mon=datePart.Split('/')[1];
+                var year=datePart.Split('/')[2];
+
+            
+            
+                var hour=timePart.Split(':')[0];
+                var minutes=timePart.Split(':')[1];
+                var second=timePart.Split(':')[2];
+            
+            
+                return  new DateTime(int.Parse(year),int.Parse(mon),int.Parse(day),int.Parse(hour),int.Parse(minutes),int.Parse(second));
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("فرم تاریخ صحیح نیست");
+            }
+            
+
+        }
     }
 }

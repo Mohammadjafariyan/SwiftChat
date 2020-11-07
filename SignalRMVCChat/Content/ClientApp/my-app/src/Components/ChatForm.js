@@ -27,6 +27,7 @@ export default class ChatForm extends Component {
         super(arg);
         this.submit = this.submit.bind(this);
         this.state = {
+            editorEnable:false,
             panelCollapsed:true,
             items: [
                 {label: 'متن', icon: 'pi pi-fw pi-comments'},
@@ -107,8 +108,18 @@ export default class ChatForm extends Component {
                               
                           }}/>
 
+               
                 <div className="p-inputgroup">
-                             <Button variant={'light'} onClick={() => {
+                    <Button  style={{height:'50px'}} aria-label="استفاده از ویراستار" data-microtip-position="top" role="tooltip" variant={ this.state.editorEnable ? 'success' : 'light'}  onClick={() => {
+
+                        this.setState({editorEnable: !this.state.editorEnable});
+
+                    }}>
+
+                        <i className="pi pi-pencil"></i>
+
+                    </Button>
+                             <Button  style={{height:'50px'}}  variant={'light'} onClick={() => {
 
                                  let label=this.state.activeItem && this.state.activeItem.label ? this.state.activeItem.label : '';
                                  this.props.onSubmit(null,label);
@@ -117,14 +128,16 @@ export default class ChatForm extends Component {
                              }} aria-label="ارسال پیغام" data-microtip-position="top" role="tooltip">
 
 
+                              
                   <Badge>
                       <i className="fa fa-paper-plane" aria-hidden="true"></i>
 
                   </Badge>
 
               </Button>
+                   
 
-                    {this.state.editorEnable && <Editor  style={{ height: '200px',width:'100%',overflow:'auto' }} value={this.state.text}
+                    {this.state.editorEnable && <Editor className={this.getEditorsStyle()}  style={{ height: '200px',width:'100%',overflow:'auto' }} value={this.state.text}
                                                         onTextChange={(e) =>{
 
 
@@ -133,14 +146,14 @@ export default class ChatForm extends Component {
                                                             
                                                         }} />}
 
-                    {!this.state.editorEnable &&   <InputTextarea  rows={1} cols={30} autoResize 
+                    {!this.state.editorEnable &&   <InputTextarea   rows={1} cols={30} autoResize 
                                                                    style={{direction:'rtl'}} onKeyPress={() => {
 
 
                     }}
                                     value={this.state.text}
                                     placeholder='جهت ارسال فایل یا پیغام متنی اینجا تایپ نمایید'
-                                    className='form-control' onChange={(e) => {
+                                    className={'form-control '+this.getEditorsStyle()} onChange={(e) => {
 
 
                         this.setState({text: e.target.value});
@@ -192,6 +205,13 @@ export default class ChatForm extends Component {
 
           </div>
         </div>);
+    }
+
+    getEditorsStyle() {
+        if (this.state.activeItem && this.state.activeItem.label==='یادداشت'){
+            return  "bg-warning"
+        }
+        return "";
     }
 }
 

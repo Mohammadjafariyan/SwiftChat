@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Globalization;
+using NUnit.Framework;
 using SignalRMVCChat.Areas.sysAdmin.Service;
+using SignalRMVCChat.Models;
 using SignalRMVCChat.Service.RemindMe;
 using SignalRMVCChat.WebSocket.Base;
 
@@ -14,6 +17,11 @@ namespace SignalRMVCChat.WebSocket.RemindMe
         protected override Models.RemindMe.RemindMe SetParams(Models.RemindMe.RemindMe record,
             Models.RemindMe.RemindMe existRecord)
         {
+            
+
+            record.Date = MySpecificGlobal.ParseDateTime(record.DateStr);
+                
+                
             if (record.Type == "Manual")
             {
                 if (record.Date.HasValue == false)
@@ -50,6 +58,23 @@ namespace SignalRMVCChat.WebSocket.RemindMe
             }
 
             return record;
+        }
+    }
+
+
+
+    public class DateTimeTest
+    {
+
+        [Test]
+        public void Test()
+        {
+            string format = "DD/MM/YYYY HH:MM:SS";
+            string str = "7/10/2020 13:22:24";
+
+            var Date = MySpecificGlobal.ParseDateTime(str);
+            
+            
         }
     }
 }

@@ -1,11 +1,85 @@
+/*----------------- scrollpanel-demo=-------------------*/
+.scrollpanel-demo .p-scrollpanel p {
+    padding: .5rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.scrollpanel-demo .p-scrollpanel.custombar1 .p-scrollpanel-wrapper {
+    border-right: 10px solid var(--surface-b);
+}
+
+.scrollpanel-demo .p-scrollpanel.custombar1 .p-scrollpanel-bar {
+    background-color: var(--primary-color);
+    opacity: 1;
+    transition: background-color .2s;
+}
+
+.scrollpanel-demo .p-scrollpanel.custombar1 .p-scrollpanel-bar:hover {
+    background-color: #007ad9;
+}
+
+.scrollpanel-demo .p-scrollpanel.custombar2 .p-scrollpanel-wrapper {
+    border-right: 10px solid var(--surface-b);
+    border-bottom: 10px solid var(--surface-b);
+}
+
+.scrollpanel-demo .p-scrollpanel.custombar2 .p-scrollpanel-bar {
+    background-color: var(--surface-d);
+    border-radius: 0;
+    opacity: 1;
+    transition: background-color .2s;
+}
+
+.scrollpanel-demo .p-col-12 {
+    padding: 2rem;
+}
+/*----------------- list=-------------------*/
+
+.cap-plugin-content-box-inner ol {
+    list-style: none;
+    counter-reset: item;
+}
+.cap-plugin-content-box-inner li {
+    counter-increment: item;
+    margin:5px
+}
+.cap-plugin-content-box-inner li:before {
+    margin-right: 10px;
+    content: counter(item);
+    background: lightblue;
+    border-radius: 100%;
+    color: white;
+    width: 1.2em;
+    text-align: center;
+    display: inline-block;
+    
+    margin-left: 5px;
+}
+
+.cap-plugin-content-box-inner * {
+    direction: rtl;
+}
+
+.onHoverBlue:hover{
+    z-index: 2;
+    color: white;
+    background-color: #00AEEF !important;
+    border-color: #00AEEF !important;
+    
+    cursor: pointer;
+}
+
+
 /*------------------------------scrollpanel----------------------------*/
 
 button .label-promotion::before:empty {
     display: none;
     
 }
+
 .p-scrollpanel-wrapper {
-    border-right: 9px solid #afabab !important;
+    border-right: 9px solid #f0efef !important;
 }
 
 .p-scrollpanel-bar {

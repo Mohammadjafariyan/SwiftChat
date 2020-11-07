@@ -78,7 +78,18 @@ export default class Menu extends Component {
                     <i className={'fa fa-map-marker'} aria-hidden="true"></i>
 
                     نمایش در نقشه
-                
+
+                </Button>
+
+
+                <Button variant="light" id={'Bot'} className={'btn btn-default ' +(DataHolder.currentPage==='Bot' ? ' bg-primary text-white ' : '')} type="button"
+                        onClick={() => {
+                            this.setPage('Bot');
+                        }}>
+                    <i className={'fa fa-cogs'} aria-hidden="true"></i>
+
+                   ربات (Bot) 
+
                 </Button>
                 
                 

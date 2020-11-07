@@ -23,6 +23,7 @@ namespace SignalRMVCChat.Models.RemindMe
         
 
         public DateTime? Date { get; set; }
+        public string DateStr { get; set; }
 
 
 
@@ -61,5 +62,7 @@ namespace SignalRMVCChat.Models.RemindMe
         /// در رابطه با کدام مشتری است
         /// </summary>
         public Customer Customer { get; set; }
+
+        public DateTime? FiredDateTime { get; set; }
     }
 }

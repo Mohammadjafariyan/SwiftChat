@@ -13,6 +13,22 @@ class dispatcher {
         console.log("dispatcher===>", res.Name);
         switch (res.Name) {
 
+
+            
+
+            /*-------------------- REMIND ME--------------------*/
+            case "remindMeFireCallback":
+                if (CurrentUserInfo.B4AdminNavbar) {
+                    CurrentUserInfo.B4AdminNavbar.remindMeFireCallback(res);
+                }
+
+             
+                break;
+
+
+
+
+            /*--------------------END--------------------*/
             /*-------------------- PRIVATE NOTE--------------------*/
             case "adminPrivateNoteSendToAdminCallback":
                 if (CurrentUserInfo.B4AdminNavbar) {

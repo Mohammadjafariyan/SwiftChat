@@ -3210,6 +3210,12 @@ function GetMakeEditDeleteButtons(uniqId, gapFileUniqId) {
 function getSenderProfile(chat) {
 
     
+    if (!chat){
+        chat={};
+        chat.AccountName=CurrentUserInfo.targetName;
+        chat.ProfilePhotoId=CurrentUserInfo.ProfileImageId;
+
+    }
     
    
     

@@ -139,7 +139,11 @@ class B4AdminMenu extends Component {
 
                     {/* <!-- Sidebar Toggler (Sidebar)-->*/}
                     <div className="text-center d-none d-md-inline">
-                        <button className="rounded-circle border-0" id="sidebarToggle"></button>
+                        <button className="rounded-circle border-0" id="sidebarToggle">
+                            
+                            <i style={{color:'white'}} className={'fa fa-arrows-h'}></i>
+                            
+                        </button>
                     </div>
 
                 </ul>

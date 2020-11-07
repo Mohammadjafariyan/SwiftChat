@@ -180,6 +180,24 @@ namespace SignalRMVCChat.Models
                 return JsonConvert.DeserializeObject<List<ReceivedPrivateChat>>(ReceivedPrivateChatsJson);
             }
         }
+
+
+        public string RemindMeFiresJson { get; set; }
+
+        [NotMapped]
+        public List<RemindMe.RemindMe> RemindMeFires
+        {
+            set { RemindMeFiresJson = JsonConvert.SerializeObject(value); }
+            get
+            {
+                if (string.IsNullOrEmpty(RemindMeFiresJson))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<List<RemindMe.RemindMe>>(RemindMeFiresJson);
+            }
+        }
     }
 
     public class ReceivedPrivateChat

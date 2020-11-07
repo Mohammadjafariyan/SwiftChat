@@ -32,8 +32,8 @@ class RemindMe extends Component {
             {name: 'پس فردا همین ساعت', code: 48},
             {name: 'هفته بعد همین ساعت', code: 84}
         ];
-        
-        CurrentUserInfo.RemindMe=this;
+
+        CurrentUserInfo.RemindMe = this;
 
         this.onTimeChange = this.onTimeChange.bind(this);
         this.statusBodyTemplate = this.statusBodyTemplate.bind(this);
@@ -67,12 +67,12 @@ class RemindMe extends Component {
             }}>
                 <i className={'fa fa-pencil-square'}></i>
             </Badge>*/}
-            
-             <Badge  variant={'danger'} onClick={() => {
+
+            <Badge variant={'danger'} onClick={() => {
 
 
-                 this.delete(rowData);
-             }}>
+                this.delete(rowData);
+            }}>
                 <i className={'fa fa-minus'}></i>
             </Badge>
             
@@ -89,15 +89,15 @@ class RemindMe extends Component {
                 <TabView
 
                     activeIndex={this.state.activeIndex}
-                    className={"bg-light text-black"} onTabChange={(event)=>{
-                    
-                    if(event.index==1){
-                     
+                    className={"bg-light text-black"} onTabChange={(event) => {
+
+                    if (event.index == 1) {
+
                         this.componentDidMount();
                     }
 
                     this.setState({activeIndex: event.index})
-                    
+
                 }}>
                     <TabPanel header="جدید" className={"bg-light text-black"}>
 
@@ -128,7 +128,20 @@ class RemindMe extends Component {
 
                         <div className="p-field p-col-12 p-md-4">
                             <Calendar id="time24" value={this.state.Date}
-                                      onChange={(e) => this.setState({Date: e.value})}
+                                      onChange={(e) => {
+                                          let day = e.value.getDate();
+                                          let mont = e.value.getMonth();
+                                          let year = e.value.getFullYear();
+
+                                          let hour = e.value.getHours();
+                                          let min = e.value.getMinutes();
+                                          let sec = e.value.getSeconds();
+                                       
+                                          this.setState({
+                                              Date: e.value,
+                                              DateStr: `${day}/${mont}/${year} ${hour}:${min}:${sec}`
+                                          });
+                                      }}
                                       showTime showSeconds/>
                             <label htmlFor="time24">:انتخاب از تقویم</label>
                         </div>
@@ -203,8 +216,8 @@ class RemindMe extends Component {
             SelectedTime: this.state.SelectedTime.code,
             Date: this.state.Date,
             Id: this.state.Id,
-            CustomerId:DataHolder.selectedCustomer.Id
-
+            CustomerId: DataHolder.selectedCustomer.Id,
+            DateStr: this.state.DateStr
         });
     }
 }

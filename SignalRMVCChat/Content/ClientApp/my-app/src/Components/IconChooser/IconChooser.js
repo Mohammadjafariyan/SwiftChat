@@ -3,6 +3,7 @@ import Button from "react-bootstrap/cjs/Button";
 import {ScrollPanel} from "primereact/scrollpanel";
 
 import '../../styles/myStyle.css'
+import {CurrentUserInfo} from "../../Help/Socket";
 
 class IconChooser extends Component {
     state={
@@ -24,7 +25,21 @@ class IconChooser extends Component {
               
                 {this.state.arr.map((item,i,arr)=>{
                     
-                    return <Button className={''} variant={'light'}>
+                    return <Button className={''} variant={'light'} onClick={()=>{
+
+
+                        let holdText=CurrentUserInfo.ChatPage.state.text;
+                        holdText= holdText ? holdText : '';
+                        CurrentUserInfo.ChatPage.setState({text:holdText+` <i style="font-size: 36px"  class='label-promotion fa ${item}'></i>`})
+
+
+                        setTimeout(()=>{
+                            CurrentUserInfo.ChatPage.submit()
+                            CurrentUserInfo.ChatPage.setState({text:holdText})
+                        },100)
+                        
+                        
+                    }}>
                         
                         <i  className={'label-promotion fa '+ item}></i>
                         

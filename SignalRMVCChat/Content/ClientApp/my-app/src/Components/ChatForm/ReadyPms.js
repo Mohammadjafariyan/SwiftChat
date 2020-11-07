@@ -5,16 +5,19 @@ import {InputText} from "primereact/inputtext";
 import {Badge} from "react-bootstrap";
 import Button from "react-bootstrap/cjs/Button";
 import {_showMsg} from "../../Pages/LayoutPage";
-import {MyCaller,CurrentUserInfo} from "../../Help/Socket";
+import {MyCaller, CurrentUserInfo} from "../../Help/Socket";
 import Row from "react-bootstrap/cjs/Row";
 import Col from "react-bootstrap/Col";
+import {Editor} from "primereact/editor";
 
 class ReadyPms extends Component {
-    state = {};
+    state = {
+        editor:false
+    };
 
     constructor(props) {
         super(props);
-        CurrentUserInfo.ReadyPms=this;
+        CurrentUserInfo.ReadyPms = this;
         this.searchCountry = this.searchCountry.bind(this);
         this.itemTemplate = this.itemTemplate.bind(this);
         this.countryTemplate = this.countryTemplate.bind(this);
@@ -63,10 +66,10 @@ class ReadyPms extends Component {
 
     countryTemplate(option) {
         return (
-            <Row className="country-item" >
+            <Row className="country-item">
 
-                <Col style={{float:'left'}}>
-                    <Badge variant={'danger'} onClick={()=>{
+                <Col style={{float: 'left'}}>
+                    <Badge  aria-label="حذف" data-microtip-position="top" role="tooltip" variant={'danger'} onClick={() => {
 
                         this.remove(option);
 
@@ -74,8 +77,19 @@ class ReadyPms extends Component {
 
                         <i className={'fa fa-minus'}> </i>
                     </Badge>
-                    <Badge variant={'success'} onClick={()=>{
+                    <Badge   aria-label="ارسال به چت" data-microtip-position="top" role="tooltip" variant={'success'} onClick={() => {
 
+
+
+                        let holdText=CurrentUserInfo.ChatPage.state.text;
+                        CurrentUserInfo.ChatPage.setState({text:option.Name})
+                        
+                        
+                        setTimeout(()=>{
+                            CurrentUserInfo.ChatPage.submit()
+                            CurrentUserInfo.ChatPage.setState({text:holdText})
+                        },100)
+                  
 
 
                     }}>
@@ -83,9 +97,12 @@ class ReadyPms extends Component {
                         <i className={'fa fa-send'}> </i>
                     </Badge>
                 </Col>
-           
-                <Col>{option.Name}</Col>
-               
+
+                <Col>
+
+                    <div dangerouslySetInnerHTML={{__html:option.Name}}></div>
+</Col>
+
             </Row>
         );
     }
@@ -98,22 +115,42 @@ class ReadyPms extends Component {
                      
                      
                          <div className="p-inputgroup">
-                                                               <InputText value={this.state.value1}
-                                                                          onChange={(e) => this.setState({value1: e.target.value})}
-                                                                          placeholder="پیغام آماده جدید"/>
-                                     <span className="p-inputgroup-addon">
+                             
+                             
+                            
+
+                             {!this.state.editor &&
+                             <InputText value={this.state.value1}
+                                        onChange={(e) => this.setState({value1: e.target.value})}
+                                        placeholder="پیغام آماده جدید"/>
+                             }
+
+
+                             <span className="p-inputgroup-addon">
                                     
-                                              <Badge variant={'primary'} onClick={() => {
+                                              <Badge aria-label="افزودن" data-microtip-position="top" role="tooltip" variant={'primary'} onClick={() => {
 
                                                   this.save()
 
                                               }}>
                                         <i className="pi pi-plus"></i>
                                     </Badge>
+                                         
+                                            <Badge  aria-label="استفاده از ویراستار" data-microtip-position="top" role="tooltip" variant={ this.state.editor ? 'success' : 'light'} onClick={() => {
+
+                                                this.setState({editor: !this.state.editor});
+
+                                            }}>
+                                        <i className="pi pi-pencil"></i>
+                                                
+                                    </Badge>
                                         
                                 </span>
                             </div>
-              
+                     {this.state.editor &&
+                     <Editor style={{height: '320px'}} value={this.state.value1}
+                             onTextChange={(e) => this.setState({value1: e.htmlValue})}/>
+                     }
                      
                    
                   <ListBox value={this.state.selectedCountries} options={this.state.arr}
@@ -127,7 +164,7 @@ class ReadyPms extends Component {
     saveReadyPmsCallback(res) {
 
         _showMsg('با موفقیت ذخیره شد');
-        
+
         this.componentDidMount();
     }
 
@@ -135,9 +172,9 @@ class ReadyPms extends Component {
         MyCaller.Send('SaveReadyPms', {
             Name: this.state.value1
         });
-        
-        
-        this.setState({value1:''});
+
+
+        this.setState({value1: ''});
     }
 
 
@@ -149,7 +186,7 @@ class ReadyPms extends Component {
         let arr = res.Content;
 
 
-        this.setState({arr: arr,mat:Math.random()});
+        this.setState({arr: arr, mat: Math.random()});
     }
 
     GetReadyPmsList() {
@@ -159,18 +196,18 @@ class ReadyPms extends Component {
     }
 
 
-    removeReadyPmCallback(res){
+    removeReadyPmCallback(res) {
         _showMsg('با موفقیت حذف شد');
 
 
         this.GetReadyPmsList();
     }
-    
 
-    remove(op){
+
+    remove(op) {
 
         _showMsg('در حال حذف پیغام ');
-        MyCaller.Send('RemoveReadyPm',{id:op.Id})
+        MyCaller.Send('RemoveReadyPm', {id: op.Id})
     }
 }
 

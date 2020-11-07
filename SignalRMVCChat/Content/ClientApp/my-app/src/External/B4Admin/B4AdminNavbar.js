@@ -83,9 +83,30 @@ class B4AdminNavbar extends Component {
 
 
         this.setState({ReceivedPrivateChats: res.Content.ReceivedPrivateChats});
+        this.setState({RemindMeFires: res.Content.RemindMeFires});
+
+        
 
     }
 
+    remindMeFireCallback(res){
+        if (!res || !res.Content) {
+            CurrentUserInfo.LayoutPage.showError('اطلاعات بازگشتی خالی است')
+            return
+        }
+
+
+        let RemindMeFires = this.state.RemindMeFires;
+
+
+        if (RemindMeFires === null) {
+            RemindMeFires = [];
+        }
+
+        RemindMeFires.push(res.Content);
+
+        this.setState({RemindMeFires: RemindMeFires});
+    }
     adminPrivateNoteSendToAdminCallback(res) {
 
         if (!res || !res.Content) {
@@ -175,11 +196,11 @@ class B4AdminNavbar extends Component {
                         </li>
 
                         {/* <!-- Nav Item - Alerts-->*/}
-                        <li className="nav-item dropdown no-arrow mx-1">
+                        <li className="nav-item dropdown no-arrow mx-1" aria-label="چت های خصوصی " data-microtip-position="left" role="tooltip">
                             <a className="nav-link dropdown-toggle" href="#" id="alertsDropdown"
                                role="button" data-toggle="dropdown" aria-haspopup="true"
                                aria-expanded="false">
-                                <i className="fas fa-bell fa-fw"></i>
+                                <i className="fa fa-bell-o"></i>
                                 {/* <!-- Counter - Alerts-->*/}
 
                                 {this.state.ReceivedPrivateChats && this.state.ReceivedPrivateChats.length > 0 &&
@@ -204,11 +225,11 @@ class B4AdminNavbar extends Component {
                         </li>
 
                         {/* <!-- Nav Item - Messages-->*/}
-                        <li className="nav-item dropdown no-arrow mx-1">
+                        <li className="nav-item dropdown no-arrow mx-1" aria-label="پیغام های جدید" data-microtip-position="left" role="tooltip">
                             <a className="nav-link dropdown-toggle" href="#" id="messagesDropdown"
                                role="button" data-toggle="dropdown" aria-haspopup="true"
                                aria-expanded="false">
-                                <i className="fas fa-envelope fa-fw"></i>
+                                <i className="fa fa-envelope-o"></i>
                                 {/* <!-- Counter - Messages-->*/}
 
                                 {this.state.TotalNewChatReceived && <span
@@ -277,6 +298,27 @@ class B4AdminNavbar extends Component {
                                 </a>
                                 <a className="dropdown-item text-center small text-gray-500" href="#">Read
                                     More Messages</a>
+                            </div>
+                        </li>
+                        <li className="nav-item dropdown no-arrow mx-1" aria-label=" یادآوری ها" data-microtip-position="left" role="tooltip">
+                            <a className="nav-link dropdown-toggle" href="#" id="messagesDropdown"
+                               role="button" data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                <i className="fa fa-clock-o"></i>
+                                {/* <!-- Counter - Messages-->*/}
+
+                                {this.state.RemindMeFires && this.state.RemindMeFires.length && <span
+                                    className="badge badge-danger badge-counter iconSize18">{this.state.RemindMeFires.length}+</span>}
+
+                            </a>
+                            {/* <!-- Dropdown - Messages-->*/}
+                            <div
+                                className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="messagesDropdown">
+                                <h6 className="dropdown-header">یادآوری ها</h6>
+                              
+                                {this.showRemindMes()}
+                               
                             </div>
                         </li>
 
@@ -396,6 +438,30 @@ class B4AdminNavbar extends Component {
 
         });
 
+    }
+
+    showRemindMes() {
+        
+
+        if (!this.state.RemindMeFires || this.state.RemindMeFires.length){
+            return  <></>
+        }
+        return  this.state.RemindMeFires.map((row,i,arr)=>{
+            return <a className="dropdown-item d-flex align-items-center" href="#">
+                <div className="dropdown-list-image mr-3">
+                   
+                    <div className="status-indicator bg-success"></div>
+                </div>
+                <div className="font-weight-bold">
+                    <div className="text-truncate">
+                        {row.DateTimeShow}
+                    </div>
+                    <div className="small text-gray-500">
+                        {row.Name}
+                    </div>
+                </div>
+            </a>
+        }) ;
     }
 }
 
