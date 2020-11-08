@@ -482,6 +482,17 @@ class dispatcher {
                     CurrentUserInfo.CustomerToolbar.getCreatedFormsCallback(res);
                 }
 
+
+                if (CurrentUserInfo.BotEventNodeSetting) {
+                    CurrentUserInfo.BotEventNodeSetting.getCreatedFormsCallback(res);
+                }
+
+
+                if (CurrentUserInfo.BotEventAction) {
+                    CurrentUserInfo.BotEventAction.getCreatedFormsCallback(res);
+                }
+                
+
                 break;
 
             case "getSocialChannelsInfoCallback":
@@ -530,7 +541,11 @@ class dispatcher {
 
                 if (CurrentUserInfo.SelectAdmin) {
                     CurrentUserInfo.SelectAdmin.GetAdminsListCallback(res);
+                }
 
+
+                if (CurrentUserInfo.BotEventAction) {
+                    CurrentUserInfo.BotEventAction.GetAdminsListCallback(res);
                 }
                 break;
 

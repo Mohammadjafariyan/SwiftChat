@@ -36,12 +36,19 @@
     color: #ffffff;
 }
 
-.p-fieldset.p-component.p-fieldset-toggleable{
+.organizationchart-demo .p-fieldset.p-component.p-fieldset-toggleable{
     position: absolute;
     z-index: 9999;
     border: none;
 }
 
-.p-fieldset button{
+.organizationchart-demo .p-fieldset button{
     margin-top: 5px;
 }
+
+.organizationchart-demo .p-contextmenu.p-component.p-contextmenu-enter-done{
+    position: absolute;
+    left: 0px !important;
+    top: 0px !important;
+}
+

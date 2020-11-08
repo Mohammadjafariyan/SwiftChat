@@ -2084,6 +2084,9 @@
     <Content Include="Content\ClientApp\my-app\src\Bot\Design\BotDesign.js" />
     <Content Include="Content\ClientApp\my-app\src\Bot\Design\BotOrgChart.css" />
     <Content Include="Content\ClientApp\my-app\src\Bot\Design\BotOrgChart.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\Design\NodeSetting\BotEventAction.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\Design\NodeSetting\BotEventCondition.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\Design\NodeSetting\BotEventNodeSetting.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\AddTag.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\Admins.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\BlockUser\BlockUser.js" />

@@ -30,7 +30,6 @@ class B4AdminLayout extends Component {
 
     componentDidMount() {
 
-        debugger;
         MyCaller.Send('GetMyProfile')
 
 
