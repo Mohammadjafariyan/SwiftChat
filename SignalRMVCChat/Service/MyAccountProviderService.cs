@@ -23,6 +23,33 @@ namespace SignalRMVCChat.Service
             return base.Save(model);
         }
 
+
+        /// <summary>
+        /// سیستم یک اکانت ثابت برای کل وب سایت ها دارد
+        /// پیغام های ربات ها از طریق این اکانات ارسال می شود
+        /// و همچنین بعضی پیغام های بدون ادمین
+        /// </summary>
+        /// <returns></returns>
+        public MyAccount GetSystemMyAccount()
+        {
+            var firstOrDefault = GetQuery().Include(c=>c.MySockets).FirstOrDefault(m => m.MyAccountType == MyAccountType.SystemMyAccount);
+
+            if (firstOrDefault == null)
+            {
+                firstOrDefault = new MyAccount
+                {
+                    MyAccountType = MyAccountType.SystemMyAccount,
+                    MySockets = new List<MySocket>
+                    {
+                        new MySocket()
+                    }
+                };
+                Save(firstOrDefault);
+            }
+
+            return firstOrDefault;
+        }
+
         public override MyEntityResponse<int> Save(MyAccount model)
         {
             var currentRequestService = CurrentRequestSingleton.CurrentRequest;
@@ -50,9 +77,10 @@ namespace SignalRMVCChat.Service
         }
 
 
-        public MyDataTableResponse<MyAccount> GetAllAdminsForWebsite(string websiteUrl, int requesterId,MyWebSocketRequest request)
+        public MyDataTableResponse<MyAccount> GetAllAdminsForWebsite(string websiteUrl, int requesterId,
+            MyWebSocketRequest request)
         {
-            return BaseUserProviderService.GetAllOnlineByType(websiteUrl, requesterId, MySocketUserType.Admin,request);
+            return BaseUserProviderService.GetAllOnlineByType(websiteUrl, requesterId, MySocketUserType.Admin, request);
         }
 
         public MyAccount Login(string username, string password, int websiteId)
@@ -67,7 +95,8 @@ namespace SignalRMVCChat.Service
                 .Where(q => q.MyWebsites.Any(w => w.Id == websiteId) || q.Parent.MyWebsites.Any(w => w.Id == websiteId))*/
                 .Where(q => q.Username == username && q.Password == password)
                 // یا خودش یا پدرش به این وب سایت دسترسی داشته باشند / آن اکانت هایی را بده که به این وب سایت دسترسی دارند و بین آن ها بگرد
-                .Where(q => q.MyWebsites.Any(w => w.Id == websiteId) || q.Parent.MyWebsites.Any(w => w.Id == websiteId)).ToList()
+                .Where(q => q.MyWebsites.Any(w => w.Id == websiteId) || q.Parent.MyWebsites.Any(w => w.Id == websiteId))
+                .ToList()
                 .FirstOrDefault(c => Enumerable.Contains(c.AccessWebsites, websiteId));
             if (account == null)
             {
@@ -113,8 +142,8 @@ namespace SignalRMVCChat.Service
             }
 
 
-            var wbsiteService= Injector.Inject<MyWebsiteService>();
-            @default.MyWebsites= wbsiteService.GetQuery().Where(w => w.MyAccountId == @default.Id).ToList();
+            var wbsiteService = Injector.Inject<MyWebsiteService>();
+            @default.MyWebsites = wbsiteService.GetQuery().Where(w => w.MyAccountId == @default.Id).ToList();
 
             return @default;
         }
@@ -153,53 +182,52 @@ namespace SignalRMVCChat.Service
             }
         }
 
-        public  MyAccount LoadChildren(MyAccount myAccount)
+        public MyAccount LoadChildren(MyAccount myAccount)
         {
-            var children= Impl.GetQuery()
-                .Include(o=>o.MyWebsites).Where(q => q.IsDeleted == false)
+            var children = Impl.GetQuery()
+                .Include(o => o.MyWebsites).Where(q => q.IsDeleted == false)
                 .Where(q => q.ParentId == myAccount.Id).ToList();
 
             myAccount.Children = children;
             return myAccount;
         }
-        
-        public  MyAccountStatisticsViewModel LoadChildrenWithChats(MyAccount myAccount)
+
+        public MyAccountStatisticsViewModel LoadChildrenWithChats(MyAccount myAccount)
         {
             int parentId = myAccount.ParentId.HasValue ? myAccount.ParentId.Value : myAccount.Id;
-            var children= Impl.GetQuery()
-                .Include(o=>o.MyWebsites)
+            var children = Impl.GetQuery()
+                .Include(o => o.MyWebsites)
                 .Where(q => q.IsDeleted == false)
                 .Where(q => q.ParentId == parentId).ToList();
 
-            var chatService= Injector.Inject<ChatProviderService>();
+            var chatService = Injector.Inject<ChatProviderService>();
 
             var childIds = children.Select(cchild => cchild.Id).ToList();
-           var chatStatistics= chatService.GetQuery()
+            var chatStatistics = chatService.GetQuery()
                 .Where(c => childIds.Contains(c.MyAccountId.Value))
-                .GroupBy(c=>c.MyAccountId)
-                .Select(c=>new
+                .GroupBy(c => c.MyAccountId)
+                .Select(c => new
                 {
-                    MyAccountId=  c.Key,
-                    AdminTotalChats=c.Count(),
-                    AdminTotalSendChats=c.Count(chats => chats.SenderType==ChatSenderType.AccountToCustomer),
-                    AdminTotalReceiveChats=c.Count(chats => chats.SenderType==ChatSenderType.AccountToCustomer),
-                }).OrderByDescending(o=>o.AdminTotalChats);
+                    MyAccountId = c.Key,
+                    AdminTotalChats = c.Count(),
+                    AdminTotalSendChats = c.Count(chats => chats.SenderType == ChatSenderType.AccountToCustomer),
+                    AdminTotalReceiveChats = c.Count(chats => chats.SenderType == ChatSenderType.AccountToCustomer),
+                }).OrderByDescending(o => o.AdminTotalChats);
 
 
-           List<MyAccountChildStatisticsViewModel> models = new List<MyAccountChildStatisticsViewModel>();
+            List<MyAccountChildStatisticsViewModel> models = new List<MyAccountChildStatisticsViewModel>();
             foreach (var account in children)
             {
+                var account_ChatStatistics = chatStatistics.FirstOrDefault(f => f.MyAccountId == account.Id);
 
-                var account_ChatStatistics= chatStatistics.FirstOrDefault(f => f.MyAccountId == account.Id);
 
-                
                 models.Add(new MyAccountChildStatisticsViewModel()
                 {
-                    Parent=myAccount,
-                    MyAccount=account,
-                    AdminTotalChats=account_ChatStatistics?.AdminTotalChats,
-                    AdminTotalReceiveChats=account_ChatStatistics?.AdminTotalReceiveChats,
-                    AdminTotalSendChats=account_ChatStatistics?.AdminTotalSendChats,
+                    Parent = myAccount,
+                    MyAccount = account,
+                    AdminTotalChats = account_ChatStatistics?.AdminTotalChats,
+                    AdminTotalReceiveChats = account_ChatStatistics?.AdminTotalReceiveChats,
+                    AdminTotalSendChats = account_ChatStatistics?.AdminTotalSendChats,
                 });
             }
 
@@ -209,7 +237,8 @@ namespace SignalRMVCChat.Service
                 children = models
             };
         }
-        public static Plan GetCurrentPlan(MyWebSocketRequest currReq=null)
+
+        public static Plan GetCurrentPlan(MyWebSocketRequest currReq = null)
         {
             var accountProviderService = Injector.Inject<MyAccountProviderService>();
 
@@ -217,57 +246,55 @@ namespace SignalRMVCChat.Service
 
             // یعنی از handler ها 
             //فراخانی شده است
-            if (currReq==null)
+            if (currReq == null)
             {
-
-                account=accountProviderService.GetAccountIdByUsername(CurrentRequestSingleton.CurrentRequest.AppLoginViewModel
+                account = accountProviderService.GetAccountIdByUsername(CurrentRequestSingleton.CurrentRequest
+                    .AppLoginViewModel
                     .Username);
             }
             else
             {
-
                 if (currReq == null)
                 {
                     throw new Exception("currReq is null");
                 }
 
-                if (currReq.IsAdminOrCustomer==(int)MySocketUserType.Customer)
+                if (currReq.IsAdminOrCustomer == (int) MySocketUserType.Customer)
                 {
                     throw new Exception("GetCurrentPlan used in wrong place");
                 }
 
-                if (currReq==null)
+                if (currReq == null)
                 {
                     throw new Exception("currReq is null    ");
                 }
+
                 if (currReq.MySocket.MyAccountId.HasValue == false)
                 {
                     throw new Exception("currReq.MySocket.MyAccountId is null");
                 }
 
-                var parent= accountProviderService.GetById(currReq.MySocket.MyAccountId.Value);
+                var parent = accountProviderService.GetById(currReq.MySocket.MyAccountId.Value);
                 if (parent.Single.ParentId.HasValue)
                 {
-                   account=  accountProviderService.GetById(parent.Single.ParentId.Value).Single;
+                    account = accountProviderService.GetById(parent.Single.ParentId.Value).Single;
                 }
                 else
                 {
                     account = parent.Single;
                 }
-
             }
-            
-            
+
+
             var myAccountPlansService = Injector.Inject<MyAccountPlansService>();
 
             var notExpiredPlan = myAccountPlansService.GetQuery()
-                .Include(p=>p.Plan)
+                .Include(p => p.Plan)
                 .Where(q => q.MyAccountId == account.Id
-                            
+
                             // OrderBy Instead of OrderByDescending because we want nearest plan not last
                             && q.ExpireDateTime > DateTime.Now).OrderBy(o => o.ExpireDateTime)
                 .Select(n => n.Plan).FirstOrDefault();
-
 
 
             return notExpiredPlan;
@@ -278,8 +305,9 @@ namespace SignalRMVCChat.Service
     {
         public MyAccount MyAccount { get; set; }
 
-        public  List<MyAccountChildStatisticsViewModel> children { get; set; }
+        public List<MyAccountChildStatisticsViewModel> children { get; set; }
     }
+
     public class MyAccountChildStatisticsViewModel
     {
         public MyAccount MyAccount { get; set; }

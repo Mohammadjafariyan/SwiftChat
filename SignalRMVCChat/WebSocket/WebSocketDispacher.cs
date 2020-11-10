@@ -1,6 +1,9 @@
 ﻿using System;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.WebSocket.BlockUser;
+using SignalRMVCChat.WebSocket.Bot;
+using SignalRMVCChat.WebSocket.Bot.Execute;
+using SignalRMVCChat.WebSocket.Bot.Log;
 using SignalRMVCChat.WebSocket.Call.AdminScreenRecord;
 using SignalRMVCChat.WebSocket.Call.ScreenRecord;
 using SignalRMVCChat.WebSocket.CustomerProfile;
@@ -66,9 +69,41 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
-                #region Ready Pm
+                #region Bot
 
-                    
+                case "BotSave":
+                    return new BotSaveSocketHandler();
+                    break;
+                case "BotDelete":
+                    return new BotDeleteSocketHandler();
+                    break;
+                case "BotList":
+                    return new BotListSocketHandler();
+                    break;
+
+
+                case "TestBot":
+                    return new TestBotSocketHandler();
+                    break;
+
+                #region BotLog
+
+                case "GetBotList":
+                    return new GetBotListSocketHandler();
+                    break;
+                case "GetBotLogSingle":
+                    return new GetBotLogSingleSocketHandler();
+                    break;
+                case "GetBotLogList":
+                    return new GetBotLogListSocketHandler();
+                    break;
+
+                #endregion
+
+                #endregion
+
+
+                #region Ready Pm
 
                 case "SaveReadyPms":
                     return new SaveReadyPmsSocketHandler();
@@ -79,8 +114,9 @@ namespace SignalRMVCChat.WebSocket
                 case "GetReadyPmsList":
                     return new GetReadyPmsListSocketHandler();
                     break;
+
                 #endregion
-                
+
                 #region RemindMe
 
                 case "SaveRemindMe":

@@ -55,7 +55,7 @@ export default class B4AdminMainMenu extends Component {
 
 
                 <li className={'nav-item ' + (!DataHolder.currentPage ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage(null);
 
                     }}>
@@ -68,11 +68,8 @@ export default class B4AdminMainMenu extends Component {
                 </li>
 
 
-
-
-
                 {/* <!-- Divider-->*/}
-                <hr className="sidebar-divider" />
+                <hr className="sidebar-divider"/>
 
                 {/* <!-- Heading-->*/}
                 <div className="sidebar-heading">
@@ -81,14 +78,14 @@ export default class B4AdminMainMenu extends Component {
 
 
                 <li className={'nav-item ' + (DataHolder.currentPage === 'Map' ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage('Map');
                     }}>
                         <i className={'fa fa-map-marker'} aria-hidden="true"></i>
                         <span>نمایش در نقشه</span></a>
                 </li>
                 <li className={'nav-item ' + (DataHolder.currentPage === 'EventTrigger' ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage('EventTrigger');
 
                     }}>
@@ -99,7 +96,7 @@ export default class B4AdminMainMenu extends Component {
                 </li>
 
                 <li className={'nav-item ' + (DataHolder.currentPage === 'HelpDeskPage' ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage('HelpDeskPage');
                         DataHolder.subPage = null;
                     }}>
@@ -113,7 +110,7 @@ export default class B4AdminMainMenu extends Component {
 
 
                 <li className={'nav-item ' + (DataHolder.currentPage === 'Bot' ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage('Bot');
                         DataHolder.subPage = null;
                     }}>
@@ -125,19 +122,31 @@ export default class B4AdminMainMenu extends Component {
                             </span></a>
                 </li>
 
+                <li className={'nav-item ' + (DataHolder.currentPage === 'BotData' ? ' active ' : '')}>
+                    <a className="nav-link" onClick={() => {
+                        this.setPage('BotData');
+                        DataHolder.subPage = null;
+                    }}>
+                        <i className={'fa fa-cogs'} aria-hidden="true"></i>
+                        <span>
+
+
+                                           آمار ربات ها
+                            </span></a>
+                </li>
 
 
                 <li className={'nav-item ' + (DataHolder.currentPage === 'usersSeparation' ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage('usersSeparation');
                     }}>
                         <i className="fas fa-fw fa-chart-area"></i>
                         <span>تفکیک کاربران عضو</span></a>
                 </li>
 
-                
+
                 <li className={'nav-item ' + (DataHolder.currentPage === 'AutomaticSend' ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage('AutomaticSend');
 
                     }}>
@@ -148,7 +157,7 @@ export default class B4AdminMainMenu extends Component {
                 </li>
 
                 <li className={'nav-item ' + (DataHolder.currentPage === 'FormCreator' ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage('FormCreator');
 
                     }}>
@@ -161,14 +170,14 @@ export default class B4AdminMainMenu extends Component {
                 </li>
 
                 {/* <!-- Divider-->*/}
-                <hr className="sidebar-divider" />
+                <hr className="sidebar-divider"/>
 
                 {/* <!-- Heading-->*/}
                 <div className="sidebar-heading">
                     آمار و اطلاعات
                 </div>
                 <li className={'nav-item ' + (DataHolder.currentPage === 'FormDataPage' ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage('FormDataPage');
                     }}>
                         <i className={'fa fa-map-marker'} aria-hidden="true"></i>
@@ -176,25 +185,23 @@ export default class B4AdminMainMenu extends Component {
                 </li>
 
 
-
                 {/* <!-- Divider-->*/}
-                <hr className="sidebar-divider" />
+                <hr className="sidebar-divider"/>
 
                 {/* <!-- Heading-->*/}
                 <div className="sidebar-heading">دیگر</div>
 
                 <li className={'nav-item ' + (DataHolder.currentPage === 'ProfilePage' ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage('ProfilePage');
                     }}>
                         <i className="fas fa-fw fa-chart-area"></i>
                         <span>پروفایل</span></a>
                 </li>
-                
 
 
                 <li className={'nav-item ' + (DataHolder.currentPage === 'SocialChannels' ? ' active ' : '')}>
-                    <a className="nav-link"  onClick={() => {
+                    <a className="nav-link" onClick={() => {
                         this.setPage('SocialChannels');
 
                     }}>
@@ -205,12 +212,6 @@ export default class B4AdminMainMenu extends Component {
                                 شبکه های اجتماعی
                             </span></a>
                 </li>
-
-
-
-      
-
-             
 
 
             </>

@@ -39,6 +39,7 @@ import UsersSeparationLayout from "../Components/UsersSeparation/UsersSeparation
 import MapPage from "./MapPage";
 import BotLayout from "../Bot/BotLayout";
 import BotPage from "./BotPage";
+import BotDataPage from "./BotDataPage";
 
 
 export default class LayoutPage extends Component {
@@ -169,10 +170,26 @@ export default class LayoutPage extends Component {
 
                         <BotPage></BotPage>
                     </>)
-            } else if (DataHolder.currentPage === "FormCreator") {
+
+
+            }
+            else if (DataHolder.currentPage === "BotData") {
 
                 return (
                     <>
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
+
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+                        <Menu/>
+                        <MessageAlerts/>
+
+                        <BotDataPage></BotDataPage>
+                    </>)
+
+            }else if (DataHolder.currentPage === "FormCreator") {
+
+                return (
+                            <>
                         {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
 
                         <Toast position="bottom-left" ref={(el) => this.toast = el}/>

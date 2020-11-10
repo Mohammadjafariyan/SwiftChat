@@ -14,21 +14,26 @@ import BotEventAction from "./NodeSetting/BotEventAction";
 import BotEventCondition from "./NodeSetting/BotEventCondition";
 import {ContextMenu} from "primereact/contextmenu";
 
-import { Tooltip } from 'primereact/tooltip';
+import {Tooltip} from 'primereact/tooltip';
+import {_showError} from "../../Pages/LayoutPage";
+import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import {InputText} from "primereact/inputtext";
+import {Checkbox} from "primereact/checkbox";
+import Row from "react-bootstrap/cjs/Row";
+import Col from "react-bootstrap/cjs/Col";
+import {ToggleButton} from "primereact/togglebutton";
 
 const eventBgColor = "#e9286f";
 const conditionBgColor = "#a534b6";
 const actionBgColor = "orange";
 
 
-const TypeNames = {
+export const TypeNames = {
     Event: 1,
     Condition: 2,
     Action: 3,
     End: 4,
     Start: 5,
-
-
 }
 
 
@@ -37,79 +42,13 @@ const white = "white";
 class BotOrgChart extends Component {
     constructor(props) {
         super(props);
-        
-        
-        this.props.parent.BotOrgChart=this;
+
+
+        this.props.parent.BotOrgChart = this;
 
         this.state = {
             selection: [],
-            data1: [{
-                label: 'نود شروع',
-                type: TypeNames.Start,
-                className: 'p-person',
-                expanded: true,
-                data: {name: 'Walter White', 'avatar': 'walter.jpg'},
-                /*  children: [
-                      {
-                          label: 'CFO',
-                          type: 'person',
-                          className: 'p-person',
-                          expanded: true,
-                          data: {name: 'Saul Goodman', 'avatar': 'saul.jpg'},
-                          children: [{
-                              label: 'Tax',
-                              className: 'department-cfo'
-                          },
-                              {
-                                  label: 'Legal',
-                                  className: 'department-cfo'
-                              }],
-                      },
-                      {
-                          label: 'COO',
-                          type: 'person',
-                          className: 'p-person',
-                          expanded: true,
-                          data: {name: 'Mike E.', 'avatar': 'mike.jpg'},
-                          children: [{
-                              label: 'Operations',
-                              className: 'department-coo'
-                          }]
-                      },
-                      {
-                          label: 'CTO',
-                          type: 'person',
-                          className: 'p-person',
-                          expanded: true,
-                          data: {name: 'Jesse Pinkman', 'avatar': 'jesse.jpg'},
-                          children: [{
-                              label: 'Development',
-                              className: 'department-cto',
-                              expanded: true,
-                              children: [{
-                                  label: 'Analysis',
-                                  className: 'department-cto'
-                              },
-                                  {
-                                      label: 'Front End',
-                                      className: 'department-cto'
-                                  },
-                                  {
-                                      label: 'Back End',
-                                      className: 'department-cto'
-                                  }]
-                          },
-                              {
-                                  label: 'QA',
-                                  className: 'department-cto'
-                              },
-                              {
-                                  label: 'R&D',
-                                  className: 'department-cto'
-                              }]
-                      }
-                  ]*/
-            }]
+            data1: []
         }
 
         this.data2 = [{
@@ -181,6 +120,28 @@ class BotOrgChart extends Component {
         }
     }
 
+    componentDidMount() {
+
+        let arr = [];
+        arr.push(this.props.bot)
+
+        this.setState({data1: arr})
+
+        /* MyCaller.Send('BotGetScenario',{id:this.props.botId})*/
+    }
+
+
+    botGetScenarioCallback(res) {
+        if (!res || !res.Content) {
+            _showError(' مقدار بازگشتی از سرور نال است ');
+            return;
+        }
+
+
+        this.setState({data1: res.Content})
+    }
+
+
     render() {
         return (
             <ScrollPanel style={{width: '100%'}} className="custombar2">
@@ -188,13 +149,69 @@ class BotOrgChart extends Component {
 
 
                     <div className="card">
-                        <h5>سناریوی عملیات ربات</h5>
+                        <h5>
+                            <br/>
+                            {this.state.data1 && this.state.data1.length > 0 &&
+                            <Row>
+                                <Col>
+                                    <InputText value={this.state.data1[0].Name}
+                                               onChange={(e) => {
 
-                        <OrganizationChart style={{minHeight: '500px',paddingBottom:'200px'}} value={this.state.data1}
+                                                   this.state.data1[0].Name = e.target.value;
+                                                   this.setState({value: e.target.value});
+                                               }}/>
+
+                                    <label>عنوان</label>
+                                </Col>
+                                <Col>
+                                    <div className="p-field-checkbox">
+                                        <ToggleButton onIcon="pi pi-check" offIcon="pi pi-times"
+                                                      onLabel="انتشار" offLabel="عدم انتشار"
+                                                      
+                                                      inputId="city1" name="city" value="Chicago"
+                                                  onChange={(e) => {
+
+                                                      if (this.state.data1[0].IsPublish) {
+                                                          this.state.data1[0].IsPublish = false;
+                                                      } else {
+                                                          this.state.data1[0].IsPublish = true;
+                                                      }
+
+                                                      this.setState({mg: Math.random()});
+
+                                                  }} checked={this.state.data1[0].IsPublish}/>
+                                    </div>
+                                </Col>
+                                <Col>
+                                    <div className="p-field-checkbox">
+                                        <Checkbox inputId="city1" name="city" value="Chicago"
+                                                  onChange={(e) => {
+
+                                                      if (this.state.data1[0].ExecuteOnce) {
+                                                          this.state.data1[0].ExecuteOnce = false;
+                                                      } else {
+                                                          this.state.data1[0].ExecuteOnce = true;
+                                                      }
+
+                                                      this.setState({mg: Math.random()});
+
+                                                  }} checked={this.state.data1[0].ExecuteOnce}/>
+                                        <label>فقط یک بار اجرا شود</label>
+                                    </div>
+                                </Col>
+
+                            </Row>
+                            }
+                            سناریوی عملیات ربات</h5>
+                        <hr/>
+
+
+                        {this.state.data1 && this.state.data1.length > 0 &&
+                        <OrganizationChart style={{minHeight: '500px', paddingBottom: '200px'}} value={this.state.data1}
                                            nodeTemplate={this.nodeTemplate}
                                            selection={this.state.selection} selectionMode="multiple"
                                            onSelectionChange={event => this.setState({selection: event.data})}
-                                           className="custombar2"></OrganizationChart>
+                                           className="custombar2"></OrganizationChart>}
 
 
                     </div>
@@ -207,26 +224,26 @@ class BotOrgChart extends Component {
     removeInTree(node) {
 
 
-        let arr=[...this.state.data1]
-        this.removeInTreeHelper(node,arr,this.state.data1 )
-        
-        this.setState({data1:arr});
+        let arr = [...this.state.data1]
+        this.removeInTreeHelper(node, arr, this.state.data1)
+
+        this.setState({data1: arr});
 
     }
 
-    removeInTreeHelper(node, arr,parent) {
+    removeInTreeHelper(node, arr, parent) {
         if (!arr)
-            return ;
+            return;
 
         arr = arr.filter(a => node != a)
 
-        
+
         for (let i = 0; i < arr.length; i++) {
 
-             this.removeInTreeHelper(node, arr[i].children,arr[i])
+            this.removeInTreeHelper(node, arr[i].children, arr[i])
         }
 
-        parent.children=arr;
+        parent.children = arr;
 
     }
 }
@@ -261,7 +278,7 @@ export const BotOrgBox = (props) => {
             command: (event) => {
                 // event.originalEvent: Browser event
                 // event.item: MenuItem instance
-                
+
                 props.parent.removeInTree(props.node);
             },
 
@@ -338,11 +355,9 @@ export const BotOrgBox = (props) => {
             expanded: true,
             data: {},
             label: text,
-            botEvent:{
-                
-            },
-            botAction:{},
-            botCondition:{}
+            botEvent: {},
+            botAction: {},
+            botCondition: {}
         });
 
         props.parent.setState({mg: Math.random()});
@@ -352,7 +367,7 @@ export const BotOrgBox = (props) => {
 
     return (
         <div style={{backgroundColor: props.bgColor, color: 'white'}} onContextMenu={(e) => cm.show(e)}
-         >
+        >
             <ContextMenu model={contextMenuItems} ref={el => cm = el}></ContextMenu>
             <div className={'node-header'}>{props.node.label}</div>
             <div className="node-content">
@@ -366,6 +381,8 @@ export const BotOrgBox = (props) => {
                         }}></Button>
 
                 }
+
+
                 {props.node.type != TypeNames.End && props.node.type != TypeNames.Start &&
                 <Button icon="pi pi-cog "
                         className="p-button p-component p-button-rounded p-button-info p-button-icon-only"
@@ -380,6 +397,7 @@ export const BotOrgBox = (props) => {
 
 
                 <NodeSetting/>
+
 
                 <Fieldset legend="Header" toggleable collapsed={!props.node.data.panelCollapsed}
                           style={{width: '200px'}}
@@ -430,6 +448,7 @@ export const BotOrgBox = (props) => {
                     </div>
 
                 </Fieldset>
+
             </div>
         </div>
     );

@@ -169,5 +169,24 @@ namespace SignalRMVCChat.Models
             
 
         }
+
+        public static TimeSpan ParseTime(string botConditionTimeFrom)
+        {
+            try
+            {
+                string format = "HH:MM:SS";
+
+                var hour=botConditionTimeFrom.Split(':')[0];
+                var minutes=botConditionTimeFrom.Split(':')[1];
+                var second=botConditionTimeFrom.Split(':')[2];
+            
+            
+                return new TimeSpan(int.Parse(hour),int.Parse(minutes),int.Parse(second));
+            }
+            catch (Exception e)
+            {
+                throw  new Exception("تایم قابل پردازش نیست");
+            }
+        }
     }
 }

@@ -141,6 +141,14 @@ export default class Menu extends Component {
                         }}>
                     ها     EventTrigger 
                 </Button>
+
+                <Button variant="light" id={'formCreatorButton'} className={'btn btn-default ' +(DataHolder.currentPage==='BotData' ? ' bg-primary text-white ' : '')} type="button"
+                        onClick={() => {
+                            this.setPage('BotData');
+                        }}>
+                    
+                    آمار ربات ها
+                </Button>
                 
                 <Button variant="light" className={'btn btn-default ' + (!DataHolder.currentPage ? ' bg-primary text-white ' : '')} type="button"
                         onClick={() => {

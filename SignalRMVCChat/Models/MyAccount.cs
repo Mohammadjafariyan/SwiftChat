@@ -24,7 +24,11 @@ namespace SignalRMVCChat.Models
             Tags = new List<Tag>();
             Forms = new List<Form>();
             ReceivedPrivateChats = new List<ReceivedPrivateChat>();
+            MyAccountType = MyAccountType.Normal;
         }
+
+
+        public MyAccountType MyAccountType { get; set; }
 
         public List<Tag> Tags { get; set; }
 
@@ -198,6 +202,9 @@ namespace SignalRMVCChat.Models
                 return JsonConvert.DeserializeObject<List<RemindMe.RemindMe>>(RemindMeFiresJson);
             }
         }
+
+        public List<Models.Bot.Bot> Bots { get; set; }
+
     }
 
     public class ReceivedPrivateChat
@@ -225,5 +232,11 @@ namespace SignalRMVCChat.Models
         Trial,
         Silver,
         Gold
+    }
+
+    public enum MyAccountType
+    {
+        SystemMyAccount=7,
+        Normal
     }
 }

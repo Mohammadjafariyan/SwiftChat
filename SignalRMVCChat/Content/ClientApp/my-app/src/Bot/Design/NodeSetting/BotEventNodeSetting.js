@@ -25,7 +25,6 @@ const cities = [
     {name: 'اگر فرم خاصی پر شود', code: 'Form'},
     {name: 'اگر فیلدی از کاربر دریافت شود', code: 'FormInput'},
     {name: 'اگر کاربر در یک صفحه خاص باشد', code: 'InPage'},
-    {name: 'اگر کاربر خواست صفحه را عوض کند', code: 'InPage'},
 
     {name: 'برچست خاصی به کاربر زده شود', code: 'Tagged'},
     {name: 'عنوان صفحه ای که کاربر در آن است شامل کلماتی باشد', code: 'PageTitle'},
@@ -291,6 +290,9 @@ class BotEventNodeSetting extends Component {
                     </div>}
 
 
+            
+
+                    
                     {this.state.selectedEventType && this.state.selectedEventType.code == 'Tagged' &&
                     <div className="card p-fluid">
 

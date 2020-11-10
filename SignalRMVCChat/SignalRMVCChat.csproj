@@ -388,6 +388,11 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActiveChats.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
+    <Compile Include="Models\Bot\BaseBot.cs" />
+    <Compile Include="Models\Bot\Bot.cs" />
+    <Compile Include="Models\Bot\BotLog.cs" />
+    <Compile Include="Models\Bot\UserCity.cs" />
+    <Compile Include="Models\Bot\UserState.cs" />
     <Compile Include="Models\Chat.cs" />
     <Compile Include="Models\ChatAbstract.cs" />
     <Compile Include="Models\ChatAutomatic.cs" />
@@ -424,6 +429,8 @@
     <Compile Include="Service\AutomaticChatService.cs" />
     <Compile Include="Service\BaseChatProviderService.cs" />
     <Compile Include="Service\BaseUserProviderService.cs" />
+    <Compile Include="Service\Bot\BotLogService.cs" />
+    <Compile Include="Service\Bot\BotService.cs" />
     <Compile Include="Service\ChatProviderService.cs" />
     <Compile Include="Service\CommentService.cs" />
     <Compile Include="Service\CustomerDataService.cs" />
@@ -440,6 +447,7 @@
     <Compile Include="Service\HelpDesk\HelpDeskService.cs" />
     <Compile Include="Service\HelpDesk\Language\LanguageService.cs" />
     <Compile Include="Service\ImageService.cs" />
+    <Compile Include="Service\Init\SystemDataInitService.cs" />
     <Compile Include="Service\IpInfoService.cs" />
     <Compile Include="Service\IpInfoViewModel.cs" />
     <Compile Include="Service\LogService.cs" />
@@ -519,6 +527,16 @@
     <Compile Include="WebSocket\Base\Call\ScreenRecord\ScreenRecordSaveSocketHandler.cs" />
     <Compile Include="WebSocket\Base\Call\ScreenRecord\SetScreenRecordAccessRequestIsAcceptedSocketHandler.cs" />
     <Compile Include="WebSocket\BlockUser\ChangeCustomerBlockStatusSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\BotDeleteSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\BotListSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\BotSaveSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\Execute\BaseBotSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\Execute\BotExecuteSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\Execute\BotSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\Execute\TestBotSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\Log\GetBotListSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\Log\GetBotLogListSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\Log\GetBotLogSingleSocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\DeleteKeySocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\GetCustomerDataListSocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\GetLastVisitedPagesSocketHandler.cs" />
@@ -2087,6 +2105,10 @@
     <Content Include="Content\ClientApp\my-app\src\Bot\Design\NodeSetting\BotEventAction.js" />
     <Content Include="Content\ClientApp\my-app\src\Bot\Design\NodeSetting\BotEventCondition.js" />
     <Content Include="Content\ClientApp\my-app\src\Bot\Design\NodeSetting\BotEventNodeSetting.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\Log\BotLogDetail.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\Log\BotLogForm.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\Log\BotLogLayout.js" />
+    <Content Include="Content\ClientApp\my-app\src\Bot\Log\BotLogTable.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\AddTag.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\Admins.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\BlockUser\BlockUser.js" />
@@ -2188,6 +2210,7 @@
     <Content Include="Content\ClientApp\my-app\src\Pages\AllCustomerListPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\Answered.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\AutomaticSendPage.js" />
+    <Content Include="Content\ClientApp\my-app\src\Pages\BotDataPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\BotPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\ChatPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\ChattedAndReturnedCustomerListPage.js" />

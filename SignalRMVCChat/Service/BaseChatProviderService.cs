@@ -113,7 +113,7 @@ namespace SignalRMVCChat.Service
         }
 
         public virtual MyEntityResponse<int> AdminSendToCustomer
-            (int accountId, int customerId, string typedMessage, int mySocketId, int gapFileUniqId,int uniqId,int? formId=null,
+            (int? accountId, int customerId, string typedMessage, int mySocketId, int gapFileUniqId,int uniqId,int? formId=null,
             ChatContentType ChatContentType=ChatContentType.Normal)
         {
             return Save(new Chat

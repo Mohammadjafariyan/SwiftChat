@@ -42,13 +42,13 @@ const yesNo = [
 ];
 
 const weekdays = [
-    {name: 'شنبه', code: 0},
-    {name: 'یکشنبه', code: 1},
-    {name: 'دوشنبه', code: 2},
-    {name: 'سه شنبه', code: 3},
-    {name: 'چهارشنبه', code: 4},
-    {name: 'پنج شنبه', code: 5},
-    {name: 'جمعه', code: 6},
+    {name: 'شنبه', code: 6},
+    {name: 'یکشنبه', code: 0},
+    {name: 'دوشنبه', code: 1},
+    {name: 'سه شنبه', code: 2},
+    {name: 'چهارشنبه', code: 3},
+    {name: 'پنج شنبه', code: 4},
+    {name: 'جمعه', code: 5},
 
 
 ];

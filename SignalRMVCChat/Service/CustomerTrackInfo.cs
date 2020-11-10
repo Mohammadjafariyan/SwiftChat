@@ -39,5 +39,7 @@ namespace SignalRMVCChat.Service
         public double? longitude { get; set; }
         public string Language { get; set; }
         public string CountryLanguage { get; set; }
+        public UserCity UserCity { get; set; }
+        public UserState UserState { get; set; }
     }
 }

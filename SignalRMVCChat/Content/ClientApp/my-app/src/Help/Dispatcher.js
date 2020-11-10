@@ -13,8 +13,53 @@ class dispatcher {
         console.log("dispatcher===>", res.Name);
         switch (res.Name) {
 
-
             
+            /*-------------------- BOT LOG--------------------*/
+            case "getBotLogSingleCallback":
+                if (CurrentUserInfo.BotLogLayout) {
+                    CurrentUserInfo.BotLogLayout.getBotLogSingleCallback(res);
+                }
+                break;
+                
+            case "getBotListCallback":
+                if (CurrentUserInfo.BotLogForm) {
+                    CurrentUserInfo.BotLogForm.getBotListCallback(res);
+                }
+                break;
+            case "getBotLogListCallback":
+                if (CurrentUserInfo.BotLogTable) {
+                    CurrentUserInfo.BotLogTable.getBotLogListCallback(res);
+                }
+                break;
+                
+                
+                
+            /*-------------------- BOT--------------------*/
+            case "botSaveCallback":
+                if (CurrentUserInfo.BotDesign) {
+                    CurrentUserInfo.BotDesign.botSaveCallback(res);
+                }
+                if (CurrentUserInfo.BotList) {
+                    CurrentUserInfo.BotList.botSaveCallback(res);
+                }
+                break;
+            case "botListCallback":
+                if (CurrentUserInfo.BotList) {
+                    CurrentUserInfo.BotList.botListCallback(res);
+                }
+                break;
+            case "botDeleteCallback":
+                if (CurrentUserInfo.BotDesign) {
+                    CurrentUserInfo.BotDesign.botDeleteCallback(res);
+                }
+                break;
+
+            /*--------------------END--------------------*/
+
+
+
+
+
 
             /*-------------------- REMIND ME--------------------*/
             case "remindMeFireCallback":
@@ -22,7 +67,7 @@ class dispatcher {
                     CurrentUserInfo.B4AdminNavbar.remindMeFireCallback(res);
                 }
 
-             
+
                 break;
 
 
@@ -39,15 +84,15 @@ class dispatcher {
                     CurrentUserInfo.ChatPage.adminPrivateNoteSendToAdminCallback(res);
                 }
                 break;
-                
-                
 
-                
+
+
+
             /*--------------------END--------------------*/
 
 
-                
-                
+
+
             /*-------------------- Remind Me--------------------*/
             case "deleteRemindMeCallback":
                 if (CurrentUserInfo.RemindMe) {
@@ -491,7 +536,7 @@ class dispatcher {
                 if (CurrentUserInfo.BotEventAction) {
                     CurrentUserInfo.BotEventAction.getCreatedFormsCallback(res);
                 }
-                
+
 
                 break;
 
@@ -795,7 +840,7 @@ class dispatcher {
                     CurrentUserInfo.B4AdminLayout.getMyProfileCallback(res);
                 }
 
-                if (CurrentUserInfo.B4AdminNavbar ) {
+                if (CurrentUserInfo.B4AdminNavbar) {
                     CurrentUserInfo.B4AdminNavbar.getMyProfileCallback(res);
                 }
                 break;

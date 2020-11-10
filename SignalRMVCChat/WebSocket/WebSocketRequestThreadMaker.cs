@@ -8,6 +8,7 @@ using Fleck;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.WebSocket.Bot.Execute;
 using TelegramBotsWebApplication;
 
 namespace SignalRMVCChat.WebSocket
@@ -23,7 +24,6 @@ namespace SignalRMVCChat.WebSocket
         {
             try
             {
-                
                 // برای کار های ارسال درخواست این کار انجام می شود
                 HttpContext.Current = SocketSingleton.ExampleHttpContext;
 
@@ -32,7 +32,7 @@ namespace SignalRMVCChat.WebSocket
 
                 //فقط اینجا باید باشد
                 var request = MyWebSocketRequest.Deserialize(result);
-                
+
                 // اینجا شناسایی می کنیم از کدام سایت است و چه کسی است ؟
                 WebsiteSingleTon.WebsiteService.FindAndSet(socket, request);
 
@@ -52,9 +52,9 @@ namespace SignalRMVCChat.WebSocket
                     await socket.Send(body);
                 }
 
-                request.Name=request.Name ?? "";
-                
-                if (request.Name.Contains("LiveAssist")==false)
+                request.Name = request.Name ?? "";
+
+                if (request.Name.Contains("LiveAssist") == false)
                 {
                     try
                     {
@@ -65,7 +65,7 @@ namespace SignalRMVCChat.WebSocket
                         //todo:log 
                     }
 
-                
+
                     try
                     {
                         await new TotalUserCountsChangedSocketHandler().ExecuteAsync(result, request);
@@ -77,6 +77,18 @@ namespace SignalRMVCChat.WebSocket
                 }
 
 
+                #region Bot
+
+                try
+                {
+                    await new BotExecuteSocketHandler().ExecuteAsync(result, request);
+                }
+                catch (Exception e)
+                {
+                    //todo:log 
+                }
+
+                #endregion
             }
             catch (FindAndSetExcaption e)
             {
@@ -97,12 +109,12 @@ namespace SignalRMVCChat.WebSocket
                 // Get the line number from the stack frame
                 var line = frame.GetFileLineNumber();
                 var method = frame.GetMethod().ToString();
-                var file =frame.GetFileName();
-                 file = Path.GetFileName(file);
+                var file = frame.GetFileName();
+                file = Path.GetFileName(file);
 /*0930 948 3176 */
                 var errJson = new MyWebSocketResponse
                 {
-                    Message = MyGlobal.RecursiveExecptionMsg(e) + "\n" + file+":"+method+":"+line,
+                    Message = MyGlobal.RecursiveExecptionMsg(e) + "\n" + file + ":" + method + ":" + line,
                     Type = MyWebSocketResponseType.Fail
                 }.Serilize();
 

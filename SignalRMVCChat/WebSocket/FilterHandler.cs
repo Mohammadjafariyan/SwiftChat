@@ -7,6 +7,7 @@ using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.Service.Init;
 using TelegramBotsWebApplication;
 
 namespace SignalRMVCChat.WebSocket
@@ -29,7 +30,6 @@ namespace SignalRMVCChat.WebSocket
             if (currMySocketReq.CurrentRequest != null &&
                 currMySocketReq.CurrentRequest.customerId.HasValue)
             {
-
                 // اگر بر حسب اتفاقی ، کاستومر حذف شده باشد ، اینجا دوباره ایجاد می شود
                 try
                 {
@@ -44,17 +44,17 @@ namespace SignalRMVCChat.WebSocket
                 catch (NotImplementedException e)
                 {
                     throw new NotImplementedException("شما توسط پشتیبانی بلاک شده اید");
-
                 }
                 catch (Exception e)
-            {SignalRMVCChat.Service.LogService.Log(e);
-
-                throw new FindAndSetExcaption();
-                /*currMySocketReq.CurrentRequest.customerId = customerProviderService.Save(new Customer
                 {
-                    Name = " بازدید کننده" + (currMySocketReq?.MySocket?.MyConnectionInfo?.ClientIpAddress ?? DateTime.Now.ToString("HH:mm"))
-                }).Single;*/
-            }
+                    SignalRMVCChat.Service.LogService.Log(e);
+
+                    throw new FindAndSetExcaption();
+                    /*currMySocketReq.CurrentRequest.customerId = customerProviderService.Save(new Customer
+                    {
+                        Name = " بازدید کننده" + (currMySocketReq?.MySocket?.MyConnectionInfo?.ClientIpAddress ?? DateTime.Now.ToString("HH:mm"))
+                    }).Single;*/
+                }
             }
 
 
@@ -70,7 +70,7 @@ namespace SignalRMVCChat.WebSocket
 
                     currMySocketReq.MySocket.IsCustomerOrAdmin = MySocketUserType.Admin;
                     currMySocketReq.MySocket.MyAccount = resp.Content;
-                    
+
                     if (currMySocketReq.MySocket.MyAccountId != resp.Content.Id)
                         throw new Exception("کد های ادمین برابر نیست2");
                     currMySocketReq.MySocket.Token = resp.Token;
@@ -127,7 +127,7 @@ namespace SignalRMVCChat.WebSocket
 
 
             //VALIDATION:
-            if (!MyGlobal.IsUnitTestEnvirement )
+            if (!MyGlobal.IsUnitTestEnvirement)
             {
                 if (!MyGlobal.IsReactWebTesting)
                 {
@@ -162,31 +162,31 @@ namespace SignalRMVCChat.WebSocket
                             var title = _request.Body.Title;
                             var description = _request.Body.Description;
 
-                            
+
                             /*header infos:*/
 
-                            var browser= currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["User-Agent"];
-                            var language= currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["Accept-Language"];
+                            var browser = currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["User-Agent"];
+                            var language = currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["Accept-Language"];
 
                             string countryLanguage = "";
                             /*en-US,en;q=0.9*/
-                            if (string.IsNullOrEmpty(language)==false)
+                            if (string.IsNullOrEmpty(language) == false)
                             {
                                 try
                                 {
-                                    var parts= language.Split(',')[0].Split('-');
-                                  
+                                    var parts = language.Split(',')[0].Split('-');
+
                                     language = parts[0];
                                     countryLanguage = parts[1];
                                 }
                                 catch (Exception e)
                                 {
-                                   //ignore
+                                    //ignore
                                 }
                             }
                             /*end*/
-                            
-                            
+
+
                             // ذخیره
                             var customerTrackerService = Injector.Inject<CustomerTrackerService>();
                             var track = new CustomerTrackInfo
@@ -200,25 +200,26 @@ namespace SignalRMVCChat.WebSocket
                                 Time = DateTime.Now.ToString("HH:mm"),
                                 TimeDt = DateTime.Now.TimeOfDay,
                                 DateTime = DateTime.Now,
-                                
-                                
-                                ip=inforByIp.ip,
-                                type=inforByIp.type,
-                                continent_code=inforByIp.continent_code,
-                                continent_name=inforByIp.continent_name,
-                                country_code=inforByIp.country_code,
-                                country_name=inforByIp.country_name,
-                                region_code=inforByIp.region_code,
-                                region_name=inforByIp.region_name,
-                                city=inforByIp.city,
-                                latitude=inforByIp.latitude,
-                                longitude=inforByIp.longitude,
-                                
-                                
-                                Browser=browser,
-                                Language=language,
-                                CountryLanguage=countryLanguage
-                                
+
+
+                                ip = inforByIp.ip,
+                                type = inforByIp.type,
+                                continent_code = inforByIp.continent_code,
+                                continent_name = inforByIp.continent_name,
+                                country_code = inforByIp.country_code,
+                                country_name = inforByIp.country_name,
+                                region_code = inforByIp.region_code,
+                                region_name = inforByIp.region_name,
+                                city = inforByIp.city,
+                                latitude = inforByIp.latitude,
+                                longitude = inforByIp.longitude,
+
+                                UserCity = SystemDataInitService.GetUserCity(inforByIp.city),
+                                UserState = SystemDataInitService.GetUserState(inforByIp.region_name),
+
+                                Browser = browser,
+                                Language = language,
+                                CountryLanguage = countryLanguage
                             };
                             customerTrackerService.Save(track);
 
@@ -226,13 +227,12 @@ namespace SignalRMVCChat.WebSocket
                             currMySocketReq.MySocket.Customer.LastTrackInfo = track;
                         }
                         catch (Exception e)
-            {SignalRMVCChat.Service.LogService.Log(e);
+                        {
+                            SignalRMVCChat.Service.LogService.Log(e);
                             //todo:log
                             //ignore
                         }
                     }
-
-                    
                 }
             }
 

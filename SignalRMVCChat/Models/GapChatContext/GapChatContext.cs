@@ -11,6 +11,7 @@ using SignalRMVCChat.Areas.Customer.Service;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Migrations;
+using SignalRMVCChat.Models.Bot;
 using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Models.HelpDesk;
 using SignalRMVCChat.Service;
@@ -37,6 +38,7 @@ namespace SignalRMVCChat.Models.GapChatContext
             foreach (var entry in changedEntriesCopy)
                 entry.State = EntityState.Detached;
         }
+
         public GapChatContext() : base(MySpecificGlobal.GetConnectionString())
         {
             if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
@@ -194,6 +196,7 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             modelBuilder.Entity<AppUser>().ToTable("AppUser");
             modelBuilder.Entity<AppAdmin>().ToTable("AppAdmin");
+
 
             #region Ticket
 
@@ -406,6 +409,26 @@ namespace SignalRMVCChat.Models.GapChatContext
             #endregion
 
 
+            #region Bot
+
+            modelBuilder.Entity<MyWebsite>()
+                .HasMany(r => r.Bots)
+                .WithRequired(o => o.MyWebsite)
+                .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<MyAccount>()
+                .HasMany(r => r.Bots)
+                .WithRequired(o => o.MyAccount)
+                .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<Bot.Bot>().ToTable("Bot");
+            modelBuilder.Entity<BotLog>().ToTable("BotLog");
+
+            #endregion
+
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -413,6 +436,14 @@ namespace SignalRMVCChat.Models.GapChatContext
         #region UsersSeparation
 
         public DbSet<UsersSeparation.UsersSeparation> UsersSeparations { get; set; }
+
+        #endregion
+
+
+        #region Tag
+
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<CustomerTag> CustomerTag { get; set; }
 
         #endregion
 
@@ -432,6 +463,12 @@ namespace SignalRMVCChat.Models.GapChatContext
 
         #endregion
 
+
+        #region Bot
+
+        public DbSet<Bot.BaseBot> Bots { get; set; }
+
+        #endregion
 
         #region EventTrigger
 
@@ -460,7 +497,6 @@ namespace SignalRMVCChat.Models.GapChatContext
 
         public DbSet<Image> Images { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<Tag> Tags { get; set; }
         public DbSet<CustomerTrackInfo> CustomerTrackInfo { get; set; }
 
         public DbSet<MyWebsite> MyWebsites { get; set; }
@@ -475,6 +511,16 @@ namespace SignalRMVCChat.Models.GapChatContext
         public DbSet<Customer> Customers { get; set; }
         public DbSet<PluginCustomized> PluginCustomized { get; set; }
 
+
+        /*
+        #region SystemData
+
+        public DbSet<UserCity> UserCities { get; set; }
+        public DbSet<UserState> UserStates { get; set; }
+
+
+        #endregion
+        */
 
         #region Security
 
