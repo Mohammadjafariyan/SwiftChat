@@ -44,7 +44,7 @@ namespace SignalRMVCChat.Service
                         new MySocket()
                     }
                 };
-                Save(firstOrDefault);
+                VanillaSave(firstOrDefault);
             }
 
             return firstOrDefault;

@@ -1,4 +1,5 @@
-﻿using SignalRMVCChat.Service.Bot;
+﻿using System.Linq;
+using SignalRMVCChat.Service.Bot;
 using SignalRMVCChat.WebSocket.Base;
 
 namespace SignalRMVCChat.WebSocket.Bot
@@ -14,7 +15,9 @@ namespace SignalRMVCChat.WebSocket.Bot
                 
             record.MyAccountId = _currMySocketReq.MySocket.MyAccountId.Value;
             record.MyWebsiteId = _currMySocketReq.MyWebsite.Id;
-           
+
+
+            var list=_service.GetQuery().ToList();
 
             return record;
         }

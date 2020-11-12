@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Engine.SysAdmin.Service;
+using NUnit.Framework;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
@@ -35,12 +37,15 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
         #region Temporary
 
-        public Dictionary<string, string> LogDic = new Dictionary<string, string>();
+        public List<BotLogPhrase> LogDic = new List<BotLogPhrase>();
         public string FiredEvent { get; set; }
         public string FiredCondition { get; set; }
         public string FiredAction { get; set; }
         public MyAccount SystemMyAccount { get; set; }
         public List<Models.Bot.BotLog> SavedLogs { get; set; }
+
+
+        private List<BotLog> _botLogList = new List<BotLog>();
 
         #endregion
 
@@ -58,21 +63,25 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
         public virtual List<Models.Bot.Bot> GetBots()
         {
-            var bots = db.Bots.OfType<Models.Bot.Bot>().Where(c => c.MyWebsiteId == _currMySocketReq.MyWebsite.Id)
-                .Where(b=>!b.ExecuteOnce || 
-                          db.Bots.OfType<BotLog>().Count(botLog => botLog.BotType==BotType.Log && botLog.LogBotId==b.Id)==0)
-              
+            var bots = db.Bots.OfType<Models.Bot.Bot>()
+                .Where(c => c.MyWebsiteId == _currMySocketReq.MyWebsite.Id && c.IsPublish)
+                .Where(b => !b.ExecuteOnce ||
+                            db.Bots.OfType<BotLog>().Count(botLog =>
+                                botLog.BotType == BotType.Log && botLog.LogBotId == b.Id) == 0)
                 .ToList()
                 .Where(b => b.children.Select(t => t.type).FirstOrDefault() == (int) TypeNames.Event)
                 .ToList();
 
+            var list = db.Bots.ToList();
+            var list2 = _service.GetQuery().ToList();
             return bots;
         }
 
 
         public async override Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
         {
-            using (var db = new GapChatContext())
+            SavedLogs = new List<BotLog>();
+            using (var db = ContextFactory.GetContext(null) as GapChatContext)
             {
                 this.db = db;
 
@@ -89,10 +98,11 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
                 foreach (var bot in bots)
                 {
+                    bot.MutableChildren = bot.children;
                     try
                     {
                         /*-----------EVENT---------------*/
-                        bool isMatch = CheckEventMatch(bot);
+                        bool isMatch = CheckEventMatch(bot.MutableChildren?.FirstOrDefault());
                         if (!isMatch)
                         {
                             /*-----------SaveLog---------------*/
@@ -103,13 +113,16 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
 
                         /*-----------CONDITION---------------*/
-                        isMatch = CheckConditionMatch(bot);
-                        if (!isMatch)
+                        if (bot.type == (int) TypeNames.Condition)
                         {
-                            /*-----------SaveLog---------------*/
-                            SaveLog(bot);
+                            isMatch = CheckConditionMatch(bot);
+                            if (!isMatch)
+                            {
+                                /*-----------SaveLog---------------*/
+                                SaveLog(bot);
 
-                            continue;
+                                continue;
+                            }
                         }
 
 
@@ -128,14 +141,9 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                     }
                 }
 
-                if (SavedLogs.Any())
-                {
-                    SavedLogs[0].LogDic = LogDic;
-                }
 
-                if (this.IsSaveLog()  )
+                if (this.IsSaveLog())
                 {
-
                     BotLogService.Save(SavedLogs);
                 }
 
@@ -152,7 +160,10 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
         /*-------------------------------------------------- LOG ------------------------------------------------*/
         private void SaveLog(Models.Bot.Bot bot, string eMessage = null)
         {
+            ConnectChildrenRecursive(bot);
+
             var botLog = MyGlobal.CloneTo<Models.Bot.Bot, BotLog>(bot);
+
 
             botLog.LogBotId = bot.Id;
             botLog.Id = 0;
@@ -161,13 +172,30 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
             botLog.LogDateTime = DateTime.Now;
             botLog.LogCustomerId = CurrentCustomer.Id;
             botLog.LogError = eMessage;
+            
+            
 
             botLog.BotType = BotType.Log;
 
 
             this.SavedLogs.Add(botLog);
 
+            botLog.LogDic = LogDic;
             LogDic.Clear();
+        }
+
+        private void ConnectChildrenRecursive(Models.Bot.Bot bot)
+        {
+            if (bot.MutableChildren?.Count==0 || bot.MutableChildren?.Count==null)
+            {
+                return;
+            }
+            bot.children = bot.MutableChildren;
+
+            for (int i = 0; i < bot.MutableChildren.Count; i++)
+            {
+                ConnectChildrenRecursive(bot.MutableChildren[i]);
+            }
         }
         /*-------------------------------------------------- END ------------------------------------------------*/
 
@@ -178,7 +206,6 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
         private bool CheckEventMatch(Models.Bot.Bot bot)
         {
-            var firstNode = bot.children.FirstOrDefault();
             this.FiredEvent = bot.botEvent?.selectedEventType?.code;
 
             var userStates = bot.botEvent?.UserStates;
@@ -237,7 +264,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
                     break;
                 case "InPage":
-                    isMatch = CheckPage(bot.botEvent?.links);
+                    isMatch = CheckPage(bot.botEvent?.links?.Select(l => l.Name)?.ToList());
 
 
                     break;
@@ -292,17 +319,23 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
             return isMatch;
         }
 
-        private void LogBot(Models.Bot.Bot bot, bool isMatch, string log)
+        private void LogBot(Models.Bot.Bot bot, bool isMatch, string log,string error=null)
         {
             bot.IsMatch = isMatch;
             bot.IsMatchStatusLog = log;
-
+            bot.LogError = error;
 
             /*
              *  MyGlobal.ToIranianDateWidthTime(DateTime.Now) + ":" + "کاربر :" + CurrentCustomer.Name +
              */
 
-            this.LogDic.Add(this.FiredEvent, bot.IsMatchStatusLog);
+            this.LogDic.Add(new BotLogPhrase
+            {
+                BotType = (TypeNames) bot.type,
+                IsMatch = isMatch,
+                FiredEvent = this.FiredEvent,
+                IsMatchStatusLog = bot.IsMatchStatusLog
+            });
         }
 
         private bool CheckTags(List<string> botEventTags)
@@ -646,7 +679,6 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
         private bool CheckConditionMatch(Models.Bot.Bot bot)
         {
-            var firstNode = bot.children.FirstOrDefault();
             this.FiredCondition = bot.botCondition?.selectedEventType?.code;
 
             if (string.IsNullOrEmpty(FiredCondition))
@@ -695,7 +727,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
                     break;
                 case "InPage":
-                    isMatch = CheckPage(bot.botEvent?.links);
+                    isMatch = CheckPage(bot.botEvent?.links?.Select(l => l.Name)?.ToList());
 
 
                     break;
@@ -812,15 +844,27 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                     return;
                 }
             }
-
-
-            DoBot(bot);
-
-            if (bot.children?.Count > 0)
+            else if (bot.type == (int) TypeNames.Action)
             {
-                foreach (var child in bot.children)
+                DoBot(bot);
+            }
+
+
+            if (bot.MutableChildren?.Count > 0)
+            {
+                foreach (var child in bot.MutableChildren)
                 {
-                    DoActionCycle(child);
+                    try
+                    {
+                        child.MutableChildren = child.children;
+
+                        DoActionCycle(child);
+                    }
+                    catch (Exception e)
+                    {
+                        LogBot(child, false, e.Message,e.Message);
+
+                    }
                 }
             }
         }
@@ -833,18 +877,20 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                 return;
             }
 
-            this.FiredAction = bot.botAction?.selectedEventType?.code;
+            this.FiredAction = bot.botAction?.selectedActionType?.code;
 
             ISocketHandler handler = null;
             MyWebSocketResponse response = null;
 
             MyWebSocketRequest currMySocketReq = new MyWebSocketRequest
             {
-                MySocket = SystemMyAccount.MySockets.FirstOrDefault(),
+                MySocket = _currMySocketReq.MySocket,
                 CurrentRequest = new ParsedCustomerTokenViewModel
                 {
                     myAccountId = SystemMyAccount.Id
-                }
+                },
+                MyWebsite = _currMySocketReq.MyWebsite,
+                IsAdminOrCustomer = (int)MySocketUserType.Customer
             };
 
             MyWebSocketRequest request = null;
@@ -868,7 +914,8 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                         {
                             targetUserId = CurrentCustomer.Id,
                             typedMessage = bot.botAction.SendMessage,
-                            uniqId = uniqId
+                            uniqId = uniqId,
+                            gapFileUniqId = uniqId,
                         }
                     };
                     break;
@@ -938,6 +985,34 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                     }
 
 
+                    var tagService = Injector.Inject<TagService>();
+
+                    var tags = tagService.GetQuery().Where(c => c.MyWebsiteId == currMySocketReq.MyWebsite.Id).ToList();
+
+                    List<Tag> newTags = new List<Tag>();
+                    for (int j = 0; j < bot?.botAction?.SetTags.Count; j++)
+                    {
+                        var find = tags.FirstOrDefault(t => t.Name == bot?.botAction?.SetTags[j]);
+                        if (find==null)
+                        {
+                            newTags.Add(new Tag
+                            {
+                                Name = bot?.botAction?.SetTags[j],
+                                MyWebsiteId = currMySocketReq.MyWebsite.Id
+                            });
+                        }
+                        else
+                        {
+                            newTags.Add(find);
+                        }
+                    }
+
+                    if (newTags.Any())
+                    {
+                        tagService.Save(newTags);
+                    }
+
+
                     TempLog = JoinText("زدن تگ ها به کاربر",
                         Join(bot.botAction.SetTags.ToList()));
 
@@ -948,7 +1023,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                         Body = new
                         {
                             target = CurrentCustomer.Id,
-                            tags = bot?.botAction?.SetTags?.ToArray(),
+                            tags = newTags.Select(t => t.Id).ToArray(),
                         }
                     };
 
@@ -1006,5 +1081,14 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
         #endregion
 
         /*-------------------------------------------------- END ------------------------------------------------*/
+    }
+
+
+    public class BotLogPhrase
+    {
+        public string FiredEvent { get; set; }
+        public string IsMatchStatusLog { get; set; }
+        public TypeNames BotType { get; set; }
+        public bool IsMatch { get; set; }
     }
 }

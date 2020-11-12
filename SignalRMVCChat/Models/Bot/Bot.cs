@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.DynamicData;
 using SignalRMVCChat.Models;
+using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.Areas.Admin.Models;
 
@@ -33,7 +34,7 @@ public enum BotType
 }
 public class BotAction
 {
-    public BotNodeType selectedEventType { get; set; }
+    public BotNodeType selectedActionType { get; set; }
     public string SendMessage { get; set; }
     public Form selectedForm { get; set; }
     public bool BlockUser { get; set; }
@@ -64,7 +65,7 @@ public class BotEvent
     public List<string> patterns { get; set; }
     public string selectedForm { get; set; }
     public string selectedFormInput { get; set; }
-    public List<string> links { get; set; }
+    public List<Link> links { get; set; }
     public List<string> tags { get; set; }
     public List<string> pageTitlePatterns { get; set; }
     public string timeFrom { get; set; }

@@ -32,7 +32,8 @@ namespace SignalRMVCChat.WebSocket
             tagService.Save(new Tag
             {
                 Name = tagTitle,
-                MyAccountId = rootAdminId
+                MyAccountId = rootAdminId,
+                MyWebsiteId=currMySocketReq.MyWebsite.Id
             });
 
             

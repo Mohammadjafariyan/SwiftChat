@@ -113,6 +113,11 @@ namespace SignalRMVCChat.Models.Bot
 
 
         #region children
+        /// <summary>
+        /// for logging porpuses 
+        /// </summary>
+        [NotMapped]
+        public List<Bot> MutableChildren { get; set; }
 
         [NotMapped]
         public List<Bot> children
@@ -128,6 +133,9 @@ namespace SignalRMVCChat.Models.Bot
             }
             set { childrenJson = JsonConvert.SerializeObject(value); }
         }
+        
+        public string LogError { get; set; }
+
 
         #endregion
 

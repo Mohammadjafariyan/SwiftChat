@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.DynamicData;
 using Newtonsoft.Json;
+using SignalRMVCChat.Areas.sysAdmin.Service;
+using SignalRMVCChat.WebSocket.Bot.Execute;
 
 namespace SignalRMVCChat.Models.Bot
 {
@@ -12,10 +14,10 @@ namespace SignalRMVCChat.Models.Bot
     [TableName("BotLog")]
     public class BotLog : BaseBot
     {
-
         public BotLog()
         {
             BotType = BotType.Log;
+            LogDateTime=DateTime.Now;
         }
 
         #region joins
@@ -23,25 +25,30 @@ namespace SignalRMVCChat.Models.Bot
         public int MyWebsiteId { get; set; }
 
         public int MyAccountId { get; set; }
-        
 
         #endregion
-        
+
         #region Log
+
         public int LogBotId { get; set; }
 
-        public bool IsMatch { get; set; }
         public string IsMatchStatusLog { get; set; }
         public DateTime LogDateTime { get; set; }
-        public int LogCustomerId { get; set; }
-        public string LogError { get; set; }
 
-      
+        public string LogDateTimeSTR
+        {
+            get { return MyGlobal.ToIranianDateWidthTime(LogDateTime); }
+        }
+
+
+        public int LogCustomerId { get; set; }
+
+
         /// <summary>
         /// فقط به نود ریشه میزنیم و بقیه نود ها نخواهند داشت
         /// </summary>
         [NotMapped]
-        public Dictionary<string, string> LogDic
+        public List<BotLogPhrase> LogDic
         {
             get
             {
@@ -50,14 +57,14 @@ namespace SignalRMVCChat.Models.Bot
                     return null;
                 }
 
-                return JsonConvert.DeserializeObject<Dictionary<string, string>>(LogDicJson);
+                return JsonConvert.DeserializeObject<List<BotLogPhrase>>(LogDicJson);
             }
             set { LogDicJson = JsonConvert.SerializeObject(value); }
         }
-        #endregion
-        
-        
-        [JsonIgnore] public string LogDicJson { get; set; }
 
+        #endregion
+
+
+        [JsonIgnore] public string LogDicJson { get; set; }
     }
 }

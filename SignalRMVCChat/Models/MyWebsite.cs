@@ -150,5 +150,6 @@ namespace SignalRMVCChat.Service
         public List<Models.RemindMe.RemindMe> RemindMes { get; set; }
         public List<Models.ReadyPm.ReadyPm> ReadyPms { get; set; }
         public List<Models.Bot.Bot> Bots { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }

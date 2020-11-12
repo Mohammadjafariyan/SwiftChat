@@ -15,6 +15,7 @@ import {SelectButton} from "primereact/selectbutton";
 import {Calendar} from "primereact/calendar";
 import {_showMsg} from "../../../Pages/LayoutPage";
 import {Editor} from "primereact/editor";
+import {GetDateTime} from "./BotEventNodeSetting";
 
 const cities = [
     {name: 'در روز هفته خاصی به سایت مراجعه کند', code: 'Week'},
@@ -77,8 +78,12 @@ class BotEventCondition extends Component {
 
         this.onCountryChange = this.onCountryChange.bind(this);
 
-        MyHook.register('BotEventNodeSettingOk', this, 'BotEventNodeSetting');
+        MyHook.register('BotEventConditionOk', this, 'BotEventCondition');
 
+    }
+
+    BotEventConditionOk(){
+        
     }
 
 
@@ -87,8 +92,8 @@ class BotEventCondition extends Component {
         let arr = {
             selectedEventType: this.state.selectedEventType,
             weekdays: this.state.weekdays,
-            timeFrom: this.state.timeFrom,
-            timeTo: this.state.timeTo,
+            timeFrom:this.state.timeFrom? GetDateTime(this.state.timeFrom):null,
+            timeTo: this.state.timeTo?GetDateTime(this.state.timeTo):null,
             IsResovled: this.state.IsResovled,
             HasTag: this.state.HasTag,
             PageUrlPatterns: this.state.PageUrlPatterns,
@@ -104,18 +109,23 @@ class BotEventCondition extends Component {
 
     init() {
 
+        let UserStates=this.props.node.botCondition.UserStates && this.props.node.botCondition.UserStates.length>0 ? IranStates().filter(f=>f.name==this.props.node.botCondition.UserStates[0].name):[];
+        let UserCities=this.props.node.botCondition.UserCities && this.props.node.botCondition.UserCities.length>0 ? IranStates().filter(f=>f.name==this.props.node.botCondition.UserCities[0].name):[];
+
         this.setState({
                 selectedEventType:  this.props.node.botCondition.selectedEventType,
                 weekdays:  this.props.node.botCondition.weekdays ? this.props.node.botCondition.weekdays :[],
-                timeFrom:  this.props.node.botCondition.timeFrom,
-                timeTo:  this.props.node.botCondition.timeTo,
-                IsResovled:  this.props.node.botCondition.IsResovled,
+          
+            timeFrom: this.props.node.botEvent.timeFrom ? this.props.node.botEvent.timeFrom.toLocaleString() : null,
+            timeTo: this.props.node.botEvent.timeTo ? this.props.node.botEvent.timeTo.toLocaleString():null,
+           
+            IsResovled:  this.props.node.botCondition.IsResovled,
                 HasTag:  this.props.node.botCondition.HasTag ? this.props.node.botCondition.HasTag : [],
                 PageUrlPatterns:  this.props.node.botCondition.PageUrlPatterns ? this.props.node.botCondition.PageUrlPatterns:[],
                 PageTitleConditions:  this.props.node.botCondition.PageTitleConditions ? this.props.node.botCondition.PageTitleConditions:[],
                 UserNames:  this.props.node.botCondition.UserNames ? this.props.node.botCondition.UserNames:[],
-                UserStates:  this.props.node.botCondition.UserStates ? this.props.node.botCondition.UserStates:[],
-                UserCities:  this.props.node.botCondition.UserCities ? this.props.node.botCondition.UserCities:[],
+                UserStates: UserStates ,
+                UserCities: UserCities,
             }
 
         );

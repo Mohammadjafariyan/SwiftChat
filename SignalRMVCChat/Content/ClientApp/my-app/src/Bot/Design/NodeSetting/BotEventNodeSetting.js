@@ -107,8 +107,8 @@ class BotEventNodeSetting extends Component {
             links: this.state.links,
             tags: this.state.tags,
             pageTitlePatterns: this.state.pageTitlePatterns,
-            timeFrom: this.state.timeFrom,
-            timeTo: this.state.timeTo,
+            timeFrom:this.state.timeFrom? GetDateTime(this.state.timeFrom):null,
+            timeTo: this.state.timeTo?GetDateTime(this.state.timeTo):null,
             MarkAsResolved: this.state.MarkAsResolved,
             UserStates: this.state.UserStates,
             UserCities: this.state.UserCities,
@@ -120,6 +120,9 @@ class BotEventNodeSetting extends Component {
 
     init() {
 
+        let UserStates=this.props.node.botEvent.UserStates && this.props.node.botEvent.UserStates.length>0 ? IranStates().filter(f=>f.name==this.props.node.botEvent.UserStates[0].name):[];
+        let UserCities=this.props.node.botEvent.UserCities && this.props.node.botEvent.UserCities.length>0 ? IranStates().filter(f=>f.name==this.props.node.botEvent.UserCities[0].name):[];
+
         this.setState({
                 selectedEventType: this.props.node.botEvent.selectedEventType,
                 patterns: this.props.node.botEvent.patterns ? this.props.node.botEvent.patterns:[],
@@ -128,11 +131,11 @@ class BotEventNodeSetting extends Component {
                 links: this.props.node.botEvent.links ? this.props.node.botEvent.links:[],
                 tags: this.props.node.botEvent.tags ? this.props.node.botEvent.tags:[],
                 pageTitlePatterns: this.props.node.botEvent.pageTitlePatterns ? this.props.node.botEvent.pageTitlePatterns:[],
-                timeFrom: this.props.node.botEvent.timeFrom,
-                timeTo: this.props.node.botEvent.timeTo,
+                timeFrom: new Date(this.props.node.botEvent.timeFrom),
+                timeTo: new Date(this.props.node.botEvent.timeTo),
                 MarkAsResolved: this.props.node.botEvent.MarkAsResolved,
-                UserStates: this.props.node.botEvent.UserStates ? this.props.node.botEvent.UserStates:[],
-                UserCities: this.props.node.botEvent.UserCities ? this.props.node.botEvent.UserCities:[],
+                UserStates: UserStates,
+                UserCities:UserCities,
             }
 
         );
@@ -411,3 +414,22 @@ class BotEventNodeSetting extends Component {
 }
 
 export default BotEventNodeSetting;
+
+
+
+export function GetDateTime(m){
+
+    if (!m)
+        return  null;
+    var dateString =
+        m.getUTCFullYear() + "/" +
+        ("0" + (m.getUTCMonth()+1)).slice(-2) + "/" +
+        ("0" + m.getUTCDate()).slice(-2) + " " +
+        ("0" + m.getUTCHours()).slice(-2) + ":" +
+        ("0" + m.getUTCMinutes()).slice(-2) + ":" +
+        ("0" + m.getUTCSeconds()).slice(-2);
+
+    return dateString;
+}
+
+/*2020/11/12 14:36:28*/

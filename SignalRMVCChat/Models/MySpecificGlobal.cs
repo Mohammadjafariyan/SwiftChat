@@ -174,8 +174,12 @@ namespace SignalRMVCChat.Models
         {
             try
             {
-                string format = "HH:MM:SS";
+                string format = "2020/11/12 14:36:28";
 
+                botConditionTimeFrom = botConditionTimeFrom.Split(' ')[1];
+
+                /*botConditionTimeFrom=  botConditionTimeFrom.Substring(0
+                    , botConditionTimeFrom.IndexOf(" "));*/
                 var hour=botConditionTimeFrom.Split(':')[0];
                 var minutes=botConditionTimeFrom.Split(':')[1];
                 var second=botConditionTimeFrom.Split(':')[2];

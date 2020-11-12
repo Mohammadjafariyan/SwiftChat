@@ -11,6 +11,11 @@ namespace SignalRMVCChat.Service
         public async Task<IpInfoViewModel> GetInforByIp(string ip)
         {
 
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                ip = "84.47.254.12";
+            }
+            
             var viewModel= await ReadDataByIpAsync(ip);
 
             return viewModel;

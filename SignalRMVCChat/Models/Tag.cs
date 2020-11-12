@@ -11,8 +11,12 @@ namespace SignalRMVCChat.Models
 
 
         public MyAccount MyAccount { get; set; }
-        public int MyAccountId { get; set; }
+        public int? MyAccountId { get; set; }
 
         public List<CustomerTag> CustomerTags { get; set; }
+        public int MyWebsiteId { get; set; }
+        
+        public MyWebsite MyWebsite { get; set; }
+
     }
 }

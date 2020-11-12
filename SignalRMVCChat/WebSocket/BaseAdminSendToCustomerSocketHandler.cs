@@ -159,7 +159,7 @@ namespace SignalRMVCChat.WebSocket
 
             var customer_target = CustomerProviderService.GetById(customer.CustomerId.Value, "کاربر یافت نشد").Single;
 
-            if (customer_target.ContactAdmins != null && customer_target.ContactAdmins.Count > 0)
+            if ( currMySocketReq.IsAdminOrCustomer!=(int)MySocketUserType.Customer &&  customer_target.ContactAdmins != null && customer_target.ContactAdmins.Count > 0)
             {
                 response.Name = "newSendPMByMeInAnotherPlaceCallback";
                 

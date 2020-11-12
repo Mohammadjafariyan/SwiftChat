@@ -406,6 +406,7 @@
     <Compile Include="Models\ET\EventTrigger.cs" />
     <Compile Include="Models\Form.cs" />
     <Compile Include="Models\GapChatContext\GapChatContext.cs" />
+    <Compile Include="Models\GapChatContext\GapChatContextTest.cs" />
     <Compile Include="Models\HelpDesk\Category.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\Log.cs" />
@@ -448,6 +449,7 @@
     <Compile Include="Service\HelpDesk\Language\LanguageService.cs" />
     <Compile Include="Service\ImageService.cs" />
     <Compile Include="Service\Init\SystemDataInitService.cs" />
+    <Compile Include="Service\Init\SystemDataJson.cs" />
     <Compile Include="Service\IpInfoService.cs" />
     <Compile Include="Service\IpInfoViewModel.cs" />
     <Compile Include="Service\LogService.cs" />
@@ -530,6 +532,7 @@
     <Compile Include="WebSocket\Bot\BotDeleteSocketHandler.cs" />
     <Compile Include="WebSocket\Bot\BotListSocketHandler.cs" />
     <Compile Include="WebSocket\Bot\BotSaveSocketHandler.cs" />
+    <Compile Include="WebSocket\Bot\ExecuteTest\BotSocketHandlerTests.cs" />
     <Compile Include="WebSocket\Bot\Execute\BaseBotSocketHandler.cs" />
     <Compile Include="WebSocket\Bot\Execute\BotExecuteSocketHandler.cs" />
     <Compile Include="WebSocket\Bot\Execute\BotSocketHandler.cs" />
@@ -2397,6 +2400,7 @@
     <Content Include="fonts\Sahel(1).woff" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\GapChatContext\NewFile1.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="libman.json" />
@@ -2434,6 +2438,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Service\Init\towns.json" />
     <Content Include="Views\Account\RegisterAdmin.cshtml" />
     <Content Include="Views\HelpDesk\Article.cshtml" />
     <Content Include="Views\HelpDesk\Detail.cshtml" />

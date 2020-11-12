@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 using SignalRMVCChat.Models;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
@@ -16,16 +18,14 @@ namespace SignalRMVCChat.Service
         public string Time { get; set; }
         public TimeSpan TimeDt { get; set; }
         public DateTime DateTime { get; set; }
-        
-        
-        
+
+
         public string Browser { get; set; }
         public string OS { get; set; }
 
-        
-        
+
         /*track infos*/
-        
+
         public string ip { get; set; }
         public string type { get; set; }
         public string continent_code { get; set; }
@@ -39,7 +39,40 @@ namespace SignalRMVCChat.Service
         public double? longitude { get; set; }
         public string Language { get; set; }
         public string CountryLanguage { get; set; }
-        public UserCity UserCity { get; set; }
-        public UserState UserState { get; set; }
+
+        [NotMapped]
+        public UserCity UserCity
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(UserCityJSON))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<UserCity>(UserCityJSON);
+            }
+            set { UserCityJSON = JsonConvert.SerializeObject(value); }
+        }
+
+        [NotMapped]
+        public UserState UserState
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(UserStateJSON))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<UserState>(UserStateJSON);
+            }
+            set { UserStateJSON = JsonConvert.SerializeObject(value); }
+        }
+
+
+        [JsonIgnore] public string UserCityJSON { get; set; }
+
+        [JsonIgnore] public string UserStateJSON { get; set; }
     }
 }

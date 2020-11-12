@@ -22,6 +22,11 @@ import {Checkbox} from "primereact/checkbox";
 import Row from "react-bootstrap/cjs/Row";
 import Col from "react-bootstrap/cjs/Col";
 import {ToggleButton} from "primereact/togglebutton";
+import {TabPanel, TabView} from "primereact/tabview";
+import {DataTable} from "primereact/datatable";
+import {Column} from "primereact/column";
+import Badge from "react-bootstrap/cjs/Badge";
+import {Card} from "primereact/card";
 
 const eventBgColor = "#e9286f";
 const conditionBgColor = "#a534b6";
@@ -83,6 +88,9 @@ class BotOrgChart extends Component {
         }];
 
         this.nodeTemplate = this.nodeTemplate.bind(this);
+        this.statusBodyTemplate = this.statusBodyTemplate.bind(this);
+
+        
     }
 
     nodeTemplate(node) {
@@ -144,31 +152,98 @@ class BotOrgChart extends Component {
 
     render() {
         return (
-            <ScrollPanel style={{width: '100%'}} className="custombar2">
-                <div className="organizationchart-demo">
+
+            <>
+                {this.state.data1 && this.state.data1.length > 0 && this.state.data1[0].LogDic &&
+
+                <TabView activeIndex={this.state.activeIndex}
+                         onTabChange={(e) => this.setState({activeIndex: e.index})}>
+                    <TabPanel header="گزارش ">
 
 
-                    <div className="card">
-                        <h5>
-                            <br/>
-                            {this.state.data1 && this.state.data1.length > 0 &&
-                            <Row>
-                                <Col>
-                                    <InputText value={this.state.data1[0].Name}
-                                               onChange={(e) => {
+                        <h3 style={{textAlign: 'center'}}>گزارش عملکرد ربات</h3>
+                        {this.logReport()}
 
-                                                   this.state.data1[0].Name = e.target.value;
-                                                   this.setState({value: e.target.value});
-                                               }}/>
+                    </TabPanel>
+                    <TabPanel header="مرحله به مرحله">
+                        {this.showPanel()}
+                    </TabPanel>
 
-                                    <label>عنوان</label>
-                                </Col>
-                                <Col>
-                                    <div className="p-field-checkbox">
-                                        <ToggleButton onIcon="pi pi-check" offIcon="pi pi-times"
-                                                      onLabel="انتشار" offLabel="عدم انتشار"
-                                                      
-                                                      inputId="city1" name="city" value="Chicago"
+                </TabView>
+
+                }
+
+                {this.state.data1 && this.state.data1.length > 0 && !this.state.data1[0].LogDic &&
+                this.showPanel()}
+
+            </>
+
+        )
+    }
+
+    statusBodyTemplate(rowData) {
+        if (rowData.IsMatch) {
+
+            return <Badge variant="success">مطابقت</Badge>
+
+        } else {
+            return <Badge variant="danger">عدم تطابق</Badge>
+        }
+
+    }
+    logReport() {
+        if (!this.state.data1[0].LogDic) {
+            return <small>هیچ لاگی ثبت نشده است</small>
+        }
+        console.log(this.state.data1[0]);
+
+        return          <DataTable value={this.state.data1[0].LogDic}  paginator
+                                   paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" rows={10} rowsPerPageOptions={[10,20,50]}
+                                 >
+            <Column field="FiredEvent" header="رویداد "></Column>
+            <Column field="IsMatch" header="وضعیت" body={this.statusBodyTemplate}></Column>
+            <Column field="IsMatchStatusLog" header="توضیح اتفاق"></Column>
+            <Column field="BotType" header="نوع نود"></Column>
+
+        </DataTable>
+      /*  return this.state.data1[0].LogDic.map((l, i, arr) => {
+
+            return <>
+
+                <div>{l.FiredEvent}</div>
+                <div>{l.IsMatchStatusLog}</div>
+
+            </>
+        })*/
+    }
+
+    showPanel() {
+        return <ScrollPanel style={{width: '100%'}} className="custombar2">
+            <div className="organizationchart-demo">
+
+
+                <div className="card">
+                    <h5>
+                        <br/>
+                        {this.state.data1 && this.state.data1.length > 0 &&
+                        <Row>
+                            <Col>
+                                <InputText value={this.state.data1[0].Name}
+                                           onChange={(e) => {
+
+                                               this.state.data1[0].Name = e.target.value;
+                                               this.setState({value: e.target.value});
+                                           }}/>
+
+                                <label>عنوان</label>
+                            </Col>
+                            <Col>
+                                <div className="p-field-checkbox">
+                                    <ToggleButton onIcon="pi pi-check" offIcon="pi pi-times"
+                                                  onLabel="انتشار" offLabel="عدم انتشار"
+
+                                                  inputId="city1" name="city" value="Chicago"
                                                   onChange={(e) => {
 
                                                       if (this.state.data1[0].IsPublish) {
@@ -180,44 +255,42 @@ class BotOrgChart extends Component {
                                                       this.setState({mg: Math.random()});
 
                                                   }} checked={this.state.data1[0].IsPublish}/>
-                                    </div>
-                                </Col>
-                                <Col>
-                                    <div className="p-field-checkbox">
-                                        <Checkbox inputId="city1" name="city" value="Chicago"
-                                                  onChange={(e) => {
+                                </div>
+                            </Col>
+                            <Col>
+                                <div className="p-field-checkbox">
+                                    <Checkbox inputId="city1" name="city" value="Chicago"
+                                              onChange={(e) => {
 
-                                                      if (this.state.data1[0].ExecuteOnce) {
-                                                          this.state.data1[0].ExecuteOnce = false;
-                                                      } else {
-                                                          this.state.data1[0].ExecuteOnce = true;
-                                                      }
+                                                  if (this.state.data1[0].ExecuteOnce) {
+                                                      this.state.data1[0].ExecuteOnce = false;
+                                                  } else {
+                                                      this.state.data1[0].ExecuteOnce = true;
+                                                  }
 
-                                                      this.setState({mg: Math.random()});
+                                                  this.setState({mg: Math.random()});
 
-                                                  }} checked={this.state.data1[0].ExecuteOnce}/>
-                                        <label>فقط یک بار اجرا شود</label>
-                                    </div>
-                                </Col>
+                                              }} checked={this.state.data1[0].ExecuteOnce}/>
+                                    <label>فقط یک بار اجرا شود</label>
+                                </div>
+                            </Col>
 
-                            </Row>
-                            }
-                            سناریوی عملیات ربات</h5>
-                        <hr/>
+                        </Row>
+                        }
+                        سناریوی عملیات ربات</h5>
+                    <hr/>
+
+                    {this.state.data1 && this.state.data1.length > 0 &&
+                    <OrganizationChart style={{minHeight: '500px', paddingBottom: '200px'}} value={this.state.data1}
+                                       nodeTemplate={this.nodeTemplate}
+                                       selection={this.state.selection} selectionMode="multiple"
+                                       onSelectionChange={event => this.setState({selection: event.data})}
+                                       className="custombar2"></OrganizationChart>}
 
 
-                        {this.state.data1 && this.state.data1.length > 0 &&
-                        <OrganizationChart style={{minHeight: '500px', paddingBottom: '200px'}} value={this.state.data1}
-                                           nodeTemplate={this.nodeTemplate}
-                                           selection={this.state.selection} selectionMode="multiple"
-                                           onSelectionChange={event => this.setState({selection: event.data})}
-                                           className="custombar2"></OrganizationChart>}
-
-
-                    </div>
                 </div>
-            </ScrollPanel>
-        )
+            </div>
+        </ScrollPanel>;
     }
 
 
@@ -325,7 +398,7 @@ export const BotOrgBox = (props) => {
                 return <NodeSettingModal title={'تنظیمات نود عملیات'} onHide={() => {
 
                     setOpenSetting(null)
-                }} name={'Action'}>
+                }} name={'BotEventActionOk'}>
 
 
                     <BotEventAction node={props.node}/>
@@ -336,7 +409,7 @@ export const BotOrgBox = (props) => {
                 return <NodeSettingModal title={'تنظیمات نود شرط'} onHide={() => {
 
                     setOpenSetting(null)
-                }} name={'Condition'}>
+                }} name={'BotEventConditionOk'}>
 
 
                     <BotEventCondition node={props.node}/>
@@ -370,6 +443,13 @@ export const BotOrgBox = (props) => {
         >
             <ContextMenu model={contextMenuItems} ref={el => cm = el}></ContextMenu>
             <div className={'node-header'}>{props.node.label}</div>
+
+            
+            {props.node.IsMatchStatusLog && <Card title={getStatus(props.node)} subTitle={props.node.IsMatchStatusLog}>
+
+                
+            </Card> }
+            
             <div className="node-content">
                 {props.node.type != TypeNames.End &&
                 <Button icon="pi pi-sitemap"
@@ -497,3 +577,13 @@ const NodeSettingModal = (props) => {
 
 
 
+function   getStatus(rowData) {
+    if (rowData.IsMatch) {
+
+        return <Badge variant="success">مطابقت</Badge>
+
+    } else {
+        return <Badge variant="danger">عدم تطابق</Badge>
+    }
+
+}

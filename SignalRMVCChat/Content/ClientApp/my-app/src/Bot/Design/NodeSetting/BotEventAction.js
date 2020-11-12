@@ -52,6 +52,10 @@ class BotEventAction extends Component {
         }
     }
 
+    BotEventConditionOk(){
+        
+    }
+
 
     componentWillUnmount() {
 
