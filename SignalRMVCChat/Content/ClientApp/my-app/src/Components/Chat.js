@@ -112,7 +112,7 @@ export default class Chat extends Component {
             let AccountId = res.Content.AccountId;
             let Message = res.Content.Message;
             let TotalReceivedMesssages = res.Content.TotalReceivedMesssages;
-            let chat = res.Content.Chat;
+            let chat = res.Content.Chat ? res.Content.Chat : res.Content;
             let chats = this.state.chats;
             if (!chats) {
                 chats = [];

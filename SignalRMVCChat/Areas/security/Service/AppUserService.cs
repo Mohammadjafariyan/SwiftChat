@@ -31,7 +31,7 @@ namespace SignalRMVCChat.Areas.security.Service
         
         public override IQueryable<AppUser> GetQuery()
         {
-            return Impl.db.Set<BaseAppUser>().OfType<AppUser>().AsNoTracking().AsQueryable();
+            return Impl.db.Set<AppUser>().AsNoTracking().AsQueryable();
             //  return base.GetQuery().OfType<AppAdmin>();
         }
 

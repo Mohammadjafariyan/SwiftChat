@@ -25,7 +25,7 @@ namespace SignalRMVCChat.Service
             //VALIDAION
              _myWebsiteService.GetById(websiteId);
 
-            var single = Impl.GetQuery().SingleOrDefault(r => r.MyWebsiteId == websiteId);
+            var single = Impl.GetQuery().FirstOrDefault(r => r.MyWebsiteId == websiteId);
 
             if (single == null)
             {

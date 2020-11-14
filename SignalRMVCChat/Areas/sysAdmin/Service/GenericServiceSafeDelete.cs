@@ -2,8 +2,8 @@
 using System.Data.Entity;
 using System.Linq;
 using Engine.SysAdmin.Service;
-using EntityFramework.DynamicFilters;
 using SignalRMVCChat.Areas.sysAdmin.Service;
+using SignalRMVCChat.Models.GapChatContext;
 using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace TelegramBotsWebApplication.Areas.Admin.Service
@@ -44,13 +44,15 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
         }
         public override IQueryable<T> GetQuery()
         {
+         
+            
             return db.Set<T>().AsNoTracking().AsQueryable().Where(e => e.IsDeleted == false);
         }
         
         
         public  IQueryable<T> GetAllDeleteIncludedQuery()
         {
-            db.DisableFilter("IsDeleted");
+           // db.DisableFilter("IsDeleted");
             return db.Set<T>().AsNoTracking().AsQueryable();
         }
      

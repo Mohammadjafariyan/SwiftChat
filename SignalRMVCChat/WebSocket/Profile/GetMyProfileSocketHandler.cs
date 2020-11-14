@@ -37,7 +37,9 @@ namespace SignalRMVCChat.WebSocket.Profile
                  {
                      Image=image,
                      Name=myAccount.Name,
-                     MyAccount=myAccount
+                     MyAccount=myAccount,
+                     Id=myAccount.Id,
+                     Prof="hiiiiiiiiiiiiiiiiiiiii"
                  }
                  
              });

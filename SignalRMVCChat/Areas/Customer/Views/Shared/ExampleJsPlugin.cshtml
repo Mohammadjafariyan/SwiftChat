@@ -29,8 +29,19 @@
         website = Model;
     }
     else
-    {   
-        website= myWebsiteService.GetQuery().FirstOrDefault(m => m.BaseUrl.Contains(Request.Url.Host) || url.Contains(m.BaseUrl));
+    {
+       
+        
+        
+        
+        
+        
+        string host = Request.Url.Host;
+
+
+        var query = myWebsiteService.GetQuery();
+           website=query.FirstOrDefault(m =>
+            m.BaseUrl.ToLower().Contains(host.ToLower()) || url.Contains(m.BaseUrl));
 
     }
 

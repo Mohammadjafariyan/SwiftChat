@@ -63,6 +63,12 @@
                style="width: 100%;text-align: left;direction: ltr" name="Password"/>
 
 @Html.Hidden("Id", myAccount.Id)
+
+
+
+        <label>دسترسی root</label>
+        @Html.CheckBox("HasRootPrivilages",myAccount.HasRootPrivilages)
+                      
         <hr/>
 
         <input type="submit" value="ثبت" class="btn btn-primary" />

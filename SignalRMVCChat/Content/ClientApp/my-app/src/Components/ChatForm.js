@@ -67,8 +67,32 @@ export default class ChatForm extends Component {
         let prev=this.state.text ? this.state.text : '';
         this.setState({text:prev+" "+text})
     }
-    
 
+    bindIsTyping() {
+
+        if (!DataHolder.selectedCustomer || !DataHolder.selectedCustomer.Id) {
+            // CurrentUserInfo.LayoutPage.showError('کاربری انتخاب نشده است');
+            return;
+        }
+
+
+        if(!(!this.state.text || this.state.text.trim().length === 0)) {
+
+
+
+            this.isTypingSent=true;
+
+            MyCaller.Send('AdminStartTyping', {customerId: DataHolder.selectedCustomer.Id});
+        }else{
+
+            this.isTypingSent=false;
+
+            MyCaller.Send('AdminStopTyping', {customerId: DataHolder.selectedCustomer.Id});
+
+        }
+
+
+    }
     render() {
         
         if (!DataHolder.selectedCustomer )
@@ -159,7 +183,7 @@ export default class ChatForm extends Component {
                         this.setState({text: e.target.value});
                         this.props.onChange(e.target.value);
 
-                        bindIsTyping();
+                        this.bindIsTyping();
 
                     }}
                                     onPaste={(e) => {
@@ -221,31 +245,6 @@ export default class ChatForm extends Component {
 var searchTimeout;
 let searchTimeoutSelectedCustomerId;
 
-function bindIsTyping() {
-
-    if (!DataHolder.selectedCustomer || !DataHolder.selectedCustomer.Id) {
-       // CurrentUserInfo.LayoutPage.showError('کاربری انتخاب نشده است');
-        return;
-    }
-    
-
-        if(!(!this.state.text || this.state.text.trim().length === 0)) {
-
-
-
-            this.isTypingSent=true;
-            
-            MyCaller.Send('AdminStartTyping', {customerId: DataHolder.selectedCustomer.Id});
-        }else{
-
-            this.isTypingSent=false;
-
-            MyCaller.Send('AdminStopTyping', {customerId: DataHolder.selectedCustomer.Id});
-
-        }
-
-
-}
 
 function callServerScript() {
     if (!searchTimeoutSelectedCustomerId) {

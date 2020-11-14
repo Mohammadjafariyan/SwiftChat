@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using Effort.Internal.DbManagement.Schema;
 using Engine.SysAdmin.Service;
+using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.Areas.Admin.Models;
 
@@ -122,7 +123,23 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
         public virtual IQueryable<T> GetQuery()
         {
-            
+            try
+            {
+                using (var db2=new GapChatContext())
+                {
+                  //  db2.Init();
+                    var list=db2.Set<T>().AsNoTracking().ToList();
+                }
+                var entities= db.Set<T>();
+                var noT = entities.AsNoTracking();
+
+                var asqu = entities.AsQueryable();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;    
+            }
             return Table.AsNoTracking().AsQueryable();
         }
 

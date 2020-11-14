@@ -28,6 +28,8 @@ namespace SignalRMVCChat.Models.GapChatContext
     {
         public GapChatContext(DbConnection connection) : base(connection, false)
         {
+            
+            
         }
 
         public void DetachAllEntities()
@@ -186,6 +188,33 @@ namespace SignalRMVCChat.Models.GapChatContext
             #endregion
 
 
+            #region Ticketing
+
+            modelBuilder.Entity<Ticket>().HasOptional(r => r.AppUser)
+                .WithMany(o => o.Tickets)
+                .HasForeignKey(o => o.AppUserId).WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<Ticket>().HasOptional(r => r.AppAdmin)
+                .WithMany(o => o.Tickets)
+                .HasForeignKey(o => o.AppAdminId).WillCascadeOnDelete(false);
+
+            
+            /*
+            modelBuilder.Entity<AppUser>()
+                .HasMany(r => r.Tickets)
+                .WithRequired(o => o.AppUser)
+                .HasForeignKey(o => o.AppUserId).WillCascadeOnDelete(false);
+                */
+
+
+            modelBuilder.Entity<Ticket>()
+                .HasMany(r => r.MyFiles)
+                .WithRequired(o => o.Ticket)
+                .HasForeignKey(o => o.TicketId).WillCascadeOnDelete(false);
+            #endregion
+
+
             #region Security
 
             modelBuilder.Entity<AppRole>().HasMany(r => r.AppUsers)
@@ -197,24 +226,6 @@ namespace SignalRMVCChat.Models.GapChatContext
                 .HasForeignKey(o => o.AppRoleId).WillCascadeOnDelete(false);
 
 
-            modelBuilder.Entity<AppUser>().ToTable("AppUser");
-            modelBuilder.Entity<AppAdmin>().ToTable("AppAdmin");
-
-
-            #region Ticket
-
-            modelBuilder.Entity<AppUser>()
-                .HasMany(r => r.Tickets)
-                .WithRequired(o => o.AppUser)
-                .HasForeignKey(o => o.AppUserId).WillCascadeOnDelete(false);
-
-
-            modelBuilder.Entity<Ticket>()
-                .HasMany(r => r.MyFiles)
-                .WithRequired(o => o.Ticket)
-                .HasForeignKey(o => o.TicketId).WillCascadeOnDelete(false);
-
-            #endregion
 
             #endregion
 
@@ -229,7 +240,7 @@ namespace SignalRMVCChat.Models.GapChatContext
 
 
             #region Tag
-            
+
             modelBuilder.Entity<Tag>().HasRequired(r => r.MyWebsite)
                 .WithMany(o => o.Tags)
                 .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
@@ -533,7 +544,10 @@ namespace SignalRMVCChat.Models.GapChatContext
 
         public DbSet<MyFile> MyFiles { get; set; }
 
-        public DbSet<BaseAppUser> AppUsers { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<AppAdmin> AppAdmin { get; set; }
+
+
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<AppRole> AppRoles { get; set; }
         public DbSet<Log> Logs { get; set; }
@@ -717,10 +731,11 @@ namespace SignalRMVCChat.Models.GapChatContext
 
         public void BotInit(GapChatContext gapChatContext)
         {
-            if (gapChatContext.Bots.Any()==true)
+            if (gapChatContext.Bots.Any() == true)
             {
                 return;
             }
+
             string json =
                 @"
 
@@ -732,7 +747,6 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             var requeset = JsonConvert.DeserializeObject<MyWebSocketRequest>(json);
 
-            
 
             Bot.Bot bot =
                 JsonConvert.DeserializeObject<Bot.Bot>((JsonConvert.SerializeObject(requeset.Body)));

@@ -81,6 +81,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
                 role.Name = "customer";
                 await AppRoleService.CreateAsync(role);
             }
+            
 
             var s = new SuperAdminSeed();
 

@@ -19,7 +19,7 @@ namespace SignalRMVCChat.Areas.security.Models
           [NotMapped]
           public string ReturnUrl { get; set; }
           public AppUser AppUser { get; set; }
-          public int AppUserId { get; set; }
+          public int? AppUserId { get; set; }
           public string Title { get; set; }
           public string Body { get; set; }
          
@@ -32,7 +32,9 @@ namespace SignalRMVCChat.Areas.security.Models
           public int? ParentId { get; set; }
           public List<MyFile> MyFiles { get; set; }
         public bool IsAdmin { get; internal set; }
-    }
+        public AppAdmin AppAdmin { get; set; }
+        public int? AppAdminId { get; set; }
+      }
 
     public class MyFile:Entity
     {

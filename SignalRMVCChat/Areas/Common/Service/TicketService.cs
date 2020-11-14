@@ -35,7 +35,14 @@ namespace SignalRMVCChat.Areas.Common.Service
             // اگر سوپر ادمین نباشد یعنی نمی تواند کل تیکت هارا ببیند فقط مال خودش را می بیند
             if (isSuperAdmin == false)
             {
-                query=query.Where(r => r.AppUserId == appUserId);
+                if (_appRoleService.IsInRole(appUserId,"admin"))
+                {
+                    query=query.Where(r => r.AppAdminId == appUserId);
+                }
+                else
+                {
+                    query=query.Where(r => r.AppUserId == appUserId);
+                }
             }
 
             return query;

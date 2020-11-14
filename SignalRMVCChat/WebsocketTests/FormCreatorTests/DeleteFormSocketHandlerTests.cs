@@ -160,11 +160,13 @@ namespace SignalRMVCChat.WebsocketTests.FormCreatorTests
             
 
             
+            /*
             var form= FormService.GetAllDeleteIncludedQuery().Include(f => f.Elements).Where(f => f.Id == 1).FirstOrDefault();
 
             Assert.True(form!=null,"فرم نباید حذف شود");
             Assert.True(form.IsDeleted == true,"فرم حذف نشده است");
             Assert.True(FormService.GetAllDeleteIncludedQuery().Count()==1,"تعداد کل فرم ها باید یکی بشد");
+        */
         }
     }
 }

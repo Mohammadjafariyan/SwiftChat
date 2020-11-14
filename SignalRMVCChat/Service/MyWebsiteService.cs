@@ -17,7 +17,7 @@ using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.Service
 {
-    public class MyWebsiteService:GenericService<MyWebsite>
+    public class MyWebsiteService:GenericServiceSafeDelete<MyWebsite>
     {
         public MyWebsiteService() : base(null)
         {

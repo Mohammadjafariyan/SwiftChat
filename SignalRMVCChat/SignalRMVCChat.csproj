@@ -323,7 +323,6 @@
     <Compile Include="Areas\security\Models\AppAdmin.cs" />
     <Compile Include="Areas\security\Models\AppRole.cs" />
     <Compile Include="Areas\security\Models\AppUser.cs" />
-    <Compile Include="Areas\security\Models\BaseAppUser.cs" />
     <Compile Include="Areas\security\Models\IdentityModels.cs" />
     <Compile Include="Areas\security\Models\ManageViewModels.cs" />
     <Compile Include="Areas\security\Models\MyUnitTestHelper.cs" />
@@ -386,6 +385,7 @@
     <Compile Include="ManualMigrate\SuperAdminSeed.cs" />
     <Compile Include="ManualMigrate\SuperAdminSeedTests.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\InitialSchema.cs" />
     <Compile Include="Models\ActiveChats.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\Bot\BaseBot.cs" />

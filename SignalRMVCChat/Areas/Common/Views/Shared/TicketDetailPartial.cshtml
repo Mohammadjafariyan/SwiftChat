@@ -1,5 +1,6 @@
 ﻿@using System.Data.Entity
 @using SignalRMVCChat.Areas.Common.Service
+@using SignalRMVCChat.Areas.security.Service
 @using SignalRMVCChat.DependencyInjection
 @using SignalRMVCChat.Extentions
 @using SignalRMVCChat.SysAdmin.Service
@@ -8,14 +9,34 @@
 
 @{
     var appUserId = CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.AppUserId;
+
+
+    var _appRoleService = Injector.Inject<AppRoleService>();
+    
+    bool isCustomer= _appRoleService.IsInRole(appUserId, "customer");
+
 }
 
 @{
     var ticketIdstr = @Request.Params["ticketId"] ?? "";
 }
 
-<form action="/Common/Ticket/Save" method="post" enctype = "multipart/form-data">
-    <input hidden="hidden" name="AppUserId" value="@appUserId"/>
+<form action="/Common/Ticket/Save" method="post" enctype="multipart/form-data">
+    
+    @if (isCustomer)
+    {
+        <input hidden="hidden" name="AppUserId" value="@appUserId"/>
+        
+    }
+    else
+    {
+        <input hidden="hidden" name="AppAdminId" value="@appUserId"/>
+        
+    }
+
+
+
+
     <input hidden="hidden" name="ReturnUrl" value="@Model.Single.ReturnUrl"/>
     <input hidden="hidden" name="ParentId" value="@ticketIdstr"/>
     <input hidden="hidden" name="Status" value="@Model.Single.Status"/>
