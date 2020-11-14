@@ -172,14 +172,16 @@ namespace SignalRMVCChat.WebSocket
                     }
                     
                 }
+                
+                // اگر از جای دیگری هم وصل شده باشد این پیغام را در جای دیگر هم نشان بده
+                await MySocketManagerService.NotifySelf(MySocketUserType.Admin, _ChatObject, currMySocketReq.MyWebsite.Id,
+                    currMySocketReq);
             }
 
             
 
 
-            // اگر از جای دیگری هم وصل شده باشد این پیغام را در جای دیگر هم نشان بده
-            await MySocketManagerService.NotifySelf(MySocketUserType.Admin, _ChatObject, currMySocketReq.MyWebsite.Id,
-                currMySocketReq);
+            
 
 
             return _ChatObject;

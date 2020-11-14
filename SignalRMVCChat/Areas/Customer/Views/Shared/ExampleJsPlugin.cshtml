@@ -29,9 +29,9 @@
         website = Model;
     }
     else
-    {    website= myWebsiteService.GetQuery().FirstOrDefault(m => m.BaseUrl.Contains(url) || url.Contains(m.BaseUrl));
+    {   
+        website= myWebsiteService.GetQuery().FirstOrDefault(m => m.BaseUrl.Contains(Request.Url.Host) || url.Contains(m.BaseUrl));
 
-        
     }
 
     /*if (website == null)
@@ -54,6 +54,7 @@
 
         <script src="@url/Customer/JsPlugin/ResourceJs?token=@website.WebsiteToken" type="text/javascript" crossorigin="anonymous" async="async"></script>
 
+                                                                                                                                                
     }
     else
     {

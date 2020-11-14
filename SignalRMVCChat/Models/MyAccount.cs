@@ -204,7 +204,19 @@ namespace SignalRMVCChat.Models
         }
 
         public List<Models.Bot.Bot> Bots { get; set; }
+        
+        
+        /// <summary>
+        /// for showing data purposes 
+        /// </summary>
+        [NotMapped]
+        public bool IsBlocked { get; set; }
 
+        /// <summary>
+        /// for showing data purposes 
+        /// </summary>
+        [NotMapped]
+        public bool IsResolved { get; set; }
     }
 
     public class ReceivedPrivateChat

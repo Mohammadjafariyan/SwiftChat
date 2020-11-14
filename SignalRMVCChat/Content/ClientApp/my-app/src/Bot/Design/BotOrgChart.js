@@ -90,7 +90,7 @@ class BotOrgChart extends Component {
         this.nodeTemplate = this.nodeTemplate.bind(this);
         this.statusBodyTemplate = this.statusBodyTemplate.bind(this);
 
-        
+
     }
 
     nodeTemplate(node) {
@@ -191,31 +191,33 @@ class BotOrgChart extends Component {
         }
 
     }
+
     logReport() {
         if (!this.state.data1[0].LogDic) {
             return <small>هیچ لاگی ثبت نشده است</small>
         }
         console.log(this.state.data1[0]);
 
-        return          <DataTable value={this.state.data1[0].LogDic}  paginator
-                                   paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-                                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" rows={10} rowsPerPageOptions={[10,20,50]}
-                                 >
+        return <DataTable value={this.state.data1[0].LogDic} paginator
+                          paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" rows={10}
+                          rowsPerPageOptions={[10, 20, 50]}
+        >
             <Column field="FiredEvent" header="رویداد "></Column>
             <Column field="IsMatch" header="وضعیت" body={this.statusBodyTemplate}></Column>
             <Column field="IsMatchStatusLog" header="توضیح اتفاق"></Column>
             <Column field="BotType" header="نوع نود"></Column>
 
         </DataTable>
-      /*  return this.state.data1[0].LogDic.map((l, i, arr) => {
-
-            return <>
-
-                <div>{l.FiredEvent}</div>
-                <div>{l.IsMatchStatusLog}</div>
-
-            </>
-        })*/
+        /*  return this.state.data1[0].LogDic.map((l, i, arr) => {
+  
+              return <>
+  
+                  <div>{l.FiredEvent}</div>
+                  <div>{l.IsMatchStatusLog}</div>
+  
+              </>
+          })*/
     }
 
     showPanel() {
@@ -444,12 +446,12 @@ export const BotOrgBox = (props) => {
             <ContextMenu model={contextMenuItems} ref={el => cm = el}></ContextMenu>
             <div className={'node-header'}>{props.node.label}</div>
 
-            
+
             {props.node.IsMatchStatusLog && <Card title={getStatus(props.node)} subTitle={props.node.IsMatchStatusLog}>
 
-                
-            </Card> }
-            
+
+            </Card>}
+
             <div className="node-content">
                 {props.node.type != TypeNames.End &&
                 <Button icon="pi pi-sitemap"
@@ -500,31 +502,35 @@ export const BotOrgBox = (props) => {
                                 }}
 
                         ></Button>
-                        <Button icon="pi pi-share-alt" label="افزودن شرط" className="p-button-rounded "
-                                style={{backgroundColor: conditionBgColor, color: 'white'}}
-                                onClick={() => {
+                        {props.node.type != TypeNames.Start && <>
+
+                            <Button icon="pi pi-share-alt" label="افزودن شرط" className="p-button-rounded "
+                                    style={{backgroundColor: conditionBgColor, color: 'white'}}
+                                    onClick={() => {
 
 
-                                    Add(TypeNames.Condition, 'شرط')
+                                        Add(TypeNames.Condition, 'شرط')
 
 
-                                }}></Button>
-                        <Button icon="pi pi-check-circle" label="افزودن عملیات"
-                                className="p-button-rounded p-button-warning"
-                                style={{backgroundColor: actionBgColor, color: 'white'}}
-                                onClick={() => {
+                                    }}></Button>
+                            <Button icon="pi pi-check-circle" label="افزودن عملیات"
+                                    className="p-button-rounded p-button-warning"
+                                    style={{backgroundColor: actionBgColor, color: 'white'}}
+                                    onClick={() => {
 
-                                    Add(TypeNames.Action, 'عملیات')
+                                        Add(TypeNames.Action, 'عملیات')
 
 
-                                }}></Button>
-                        <Button icon="pi pi-download" label="افزودن خروج"
-                                className="p-button-rounded p-button-secondary"
-                                onClick={() => {
+                                    }}></Button>
+                            <Button icon="pi pi-download" label="افزودن خروج"
+                                    className="p-button-rounded p-button-secondary"
+                                    onClick={() => {
 
-                                    Add(TypeNames.End, 'نود خروج')
+                                        Add(TypeNames.End, 'نود خروج')
 
-                                }}></Button>
+                                    }}></Button>
+                        </>}
+
                     </div>
 
                 </Fieldset>
@@ -571,13 +577,7 @@ const NodeSettingModal = (props) => {
 }
 
 
-
-
-
-
-
-
-function   getStatus(rowData) {
+function getStatus(rowData) {
     if (rowData.IsMatch) {
 
         return <Badge variant="success">مطابقت</Badge>

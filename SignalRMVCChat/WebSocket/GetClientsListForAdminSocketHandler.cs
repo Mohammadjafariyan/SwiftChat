@@ -207,7 +207,9 @@ namespace SignalRMVCChat.WebSocket
                         CustomerTags=c.CustomerTagsForClientTemp,
                         Email=c.Email,
                         Phone=c.Phone,
-                        UsersSeparationParams=c.UsersSeparationParams
+                        UsersSeparationParams=c.UsersSeparationParams,
+                        IsBlocked = c.IsBlocked,
+                        IsResolved = c.IsResolved,
                     }).ToList();
 
 
@@ -253,6 +255,8 @@ namespace SignalRMVCChat.WebSocket
                     CustomerTagsForClientTemp = c.CustomerTags.Select(t=>t.Tag),
                     LastTrackInfo = c.LastTrackInfo,
                     OnlineStatus = c.OnlineStatus,
+                    IsBlocked = c.IsBlocked,
+                    IsResolved = c.IsResolved,
 
                     Email = c.Email,
                     Phone = c.Phone,

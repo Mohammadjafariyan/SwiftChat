@@ -8,9 +8,9 @@ namespace SignalRMVCChat.WebSocket
 {
     public class ErrorSocketHandler : ISocketHandler
     {
-        public async Task<MyWebSocketResponse> ExecuteAsync(string headerResponse, MyWebSocketRequest currMySocketReq)
+        public async Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
         {
-            var response = new MyWebSocketResponse {Message = "متد شناسایی نشد یا خطایی رخ داد", Type = MyWebSocketResponseType.Fail};
+            var response = new MyWebSocketResponse {Message = " متد شناسایی نشد یا خطایی رخ داد " + request, Type = MyWebSocketResponseType.Fail};
 
             return response;
         }
