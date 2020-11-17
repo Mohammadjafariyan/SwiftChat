@@ -24,22 +24,23 @@ namespace SignalRMVCChat.ManualMigrate
             }
             
             
-            var  appUserService= Injector.Inject<AppUserService>();
+            var  appUserService= Injector.Inject<AppAdminService>();
 
             var superAdmin=appUserService.GetByUsername("superAdmin");
             int superAdminId = superAdmin?.Id ?? 0;
             if (superAdmin == null)
             {
-               superAdminId= appUserService.Save(new AppUser
+               superAdminId= appUserService.Save(new AppAdmin
                 {
-                    Email = "superAdmin@admin.com",
+                    Email = "superAdmin",
                     UserName = "superAdmin",
                     Password = "$2Mv55s@a",
                 }).Single;
 
-               await roleService.AddToRoleAsync(superAdminId, "superAdmin");
+               await roleService.AddToRoleAdminAsync(superAdminId, "superAdmin");
             }
-            var  appRoleService= Injector.Inject<AppRoleService>();
+            
+            var  appRoleService= new AppRoleService();
 
             if (!appRoleService.IsInRole(superAdminId ,"superAdmin"))
             {

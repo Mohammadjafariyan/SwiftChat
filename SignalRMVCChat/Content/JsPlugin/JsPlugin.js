@@ -3609,7 +3609,11 @@ class DomManager {
             toggle(this)
 
             var x = getDoc().querySelector('#gapContent');
-            toggle(x)
+           // toggle(x)
+
+            ADP.show(x, 'slide-down');
+
+
 
 
             // اطلاعات کاربر انتخاب شده را برمیگرداند در صورت انتخاب 

@@ -1,0 +1,92 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@using TelegramBotsWebApplication.Areas.Admin.Models
+@model dynamic
+
+@{
+    ViewBag.Title = "نصب اطلاعات اولیه";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+  <style>
+        .active{
+             color: coral !important;
+             }
+                .active a{
+                     color: coral !important;
+                     }
+    </style>
+<div class="">
+    <br/>
+    <br/>
+    <div class="page-body">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-header" style="text-align: center">بعد از طی مراحل زیر ، وب سایت جدید آماده استفاده است</div>
+                    <div class="card-body">
+
+
+
+                        @{
+                            TempData["NOLAYOUT"] = true;
+                        }
+                        <form method="post" action="/Admin/Setting/Save">
+                            @{
+                                var settingService = Injector.Inject<SettingService>();
+                                var setting = new MyEntityResponse<Setting>
+                                {
+                                    Single = settingService.GetSingle()
+                                };
+                            }
+
+                            @Html.Partial("~/Areas/Admin/Views/Setting/SettingForm.cshtml", setting)
+                            @Html.Partial("~/Areas/Admin/Views/Setting/SettingAdvancedForm.cshtml", setting)
+
+                            
+<div class="form-group">
+    <button type="submit">ثبت</button>
+</div>
+                        </form>
+
+                        <hr/>
+
+                        @{
+                            var baseUrl = MyGlobal.GetBaseUrl(Request.Url);
+
+                        }
+                   
+
+                        <h3>انتخاب بسته آموزشی پیشفرض</h3>
+                        @*@Html.Partial("~/Areas/Admin/Views/Plan/Index.cshtml", plans)*@
+                        <iframe onload="onIframeLoad()" id="iframe" src="@baseUrl/admin/plan/index" style="width: 100%;height: 100vh;border: none">
+                        
+                        </iframe>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+   
+   function onIframeLoad(){
+        
+        
+        $('.form-group').addClass('col-md-6');
+        
+              $(document.getElementById('iframe').contentWindow.document).find('nav').hide()
+                        $(document.getElementById('iframe').contentWindow.document).find('.pcoded-content').css('margin-right','0px');
+        
+                        setTimeout(()=>{
+                         $(document.getElementById('iframe').contentWindow.document).find('.pcoded-main-container').css('margin-top','0px');
+                          },1000)
+                     
+        }
+</script>

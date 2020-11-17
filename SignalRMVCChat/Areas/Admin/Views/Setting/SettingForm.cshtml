@@ -1,0 +1,50 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyEntityResponse<SignalRMVCChat.Service.Setting>
+
+@Html.Hidden("Id", Model.Single.Id)
+<div class="form-group">
+    <label> کد آیدی پی (API Key) برای پرداخت بانک</label>
+    <input class="form-control" name="IdPayApiKey" value="@Model.Single.IdPayApiKey"/>
+
+</div>
+
+
+
+
+<div class="form-group">
+    <label> واترمارک سایت</label>
+    <input class="form-control" name="WaterMark" value="@Model.Single.WaterMark"/>
+</div>
+
+
+<div class="form-group">
+
+
+    <label> عنوان وبسایت</label>
+    <input class="form-control" name="WebsiteName" value="@Model.Single.WebsiteName"/>
+</div>
+
+<div class="form-group">
+    @{
+        if (string.IsNullOrEmpty(Model.Single.BaseUrl))
+        {
+            Model.Single.BaseUrl = MyGlobal.GetBaseUrl(Request.Url);
+        }
+    }
+    <label> آدرس وبسایت</label>
+    <input class="form-control" name="BaseUrl" value="@Model.Single.BaseUrl"/>
+</div>
+
+       
+@*@Html.Partial("SettingAdvancedForm")*@
+<div class="form-group">
+    <label> آیا هر ثبت نام شده با بسته آزمایشی آغاز شود؟</label>
+    <input type="checkbox" class="form-control"
+           name="IsStartWithTrivialPlan" value="@Model.Single.IsStartWithTrivialPlan" checked="@Model.Single.IsStartWithTrivialPlan"/>
+</div>
+
+<div class="form-group">
+    <label> تعداد روز های بسته آزمایشی</label>
+    <input type="number" class="form-control" name="TrivialDays" value="@Model.Single.TrivialDays"/>
+</div>
+

@@ -1,0 +1,42 @@
+﻿@model TelegramBotsWebApplication.Areas.Admin.Models.MyEntityResponse<SignalRMVCChat.Service.Setting>
+
+<hr/>
+<h3 style="text-align: center">تنظیمات امنیتی</h3>
+
+<div class="form-group">
+  
+    <label> نام کاربری سوپر ادمین</label>
+    <input class="form-control" name="SuperAdminUsername" value="@Model.Single.SuperAdminUsername"/>
+</div>
+<div class="form-group">
+  
+    <label> رمز عبور سوپر ادمین</label>
+    <input class="form-control" name="SuperAdminPassword" value="@Model.Single.SuperAdminPassword"/>
+</div>
+
+        
+<div class="form-group">
+                   
+    <label> نام کاربری سوپر ادمین</label>
+    <input class="form-control" name="AdminUsername" value="@Model.Single.AdminUsername"/>
+</div>
+<div class="form-group">
+                   
+    <label> رمز عبور سوپر ادمین</label>
+    <input class="form-control" name="AdminPassword" value="@Model.Single.AdminPassword"/>
+</div>
+        
+        
+<div class="form-group">
+                
+    <label> نام کاربری اپراتور</label>
+    <input class="form-control" name="AdminUsername" value="@Model.Single.OperatorUsername"/>
+</div>
+<div class="form-group">
+                
+    <label> رمز عبور اپراتور </label>
+    <input class="form-control" name="AdminPassword" value="@Model.Single.OperatorPassword"/>
+</div>
+
+
+<hr/>

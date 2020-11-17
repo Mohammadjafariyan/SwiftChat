@@ -368,7 +368,7 @@ const UserSeparationParameter = (props) => {
 
 
         <MyInputG id={'param-text'}  className={'param-text'} title={'نام فارسی پارامتر'} name={'paramText'} parent={fakeParent}
-                  placeholder={'ایی که در قسمت داشبورد نمایش داده خواهد شد(Unique) نام یکتای  '}
+                  placeholder={'ایی که در قسمت پیشخوان نمایش داده خواهد شد(Unique) نام یکتای  '}
                   onChange={(val) => {
 
                       setParamText(val);

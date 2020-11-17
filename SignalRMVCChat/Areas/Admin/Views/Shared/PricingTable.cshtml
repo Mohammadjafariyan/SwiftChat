@@ -48,13 +48,17 @@
     </thead>
     <tbody>
 
+    @{
+        var appRoleService = Injector.Inject<AppRoleService>();
+        var appUserId = CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.AppUserId ?? 0;
+
+        var isSuperAdmin = appRoleService.IsInRole(appUserId, "superAdmin");
+    }
     <tr>
         <th>عنوان پلن</th>
         @foreach (var m in Model.EntityList)
         {
-            var appRoleService = Injector.Inject<AppRoleService>();
-            var appUserId = CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.AppUserId ?? 0;
-            if (appRoleService.IsInRole(appUserId, "superAdmin"))
+            if (isSuperAdmin)
             {
                 <td>
                     @m.Name -
@@ -81,13 +85,20 @@
             }
         }
     </tr>
-      <tr>
-            <th>قیمت در ماه (ریال)</th>
+     <tr>
+            <th>بسته پیشفرض</th>
             @foreach (var m in Model.EntityList)
             {
-                <td>@m.PerMonthPrice   ریال</td>
+                <td>@m.IsTrivial   </td>
             }
         </tr>
+    <tr>
+        <th>قیمت در ماه (ریال)</th>
+        @foreach (var m in Model.EntityList)
+        {
+            <td>@m.PerMonthPrice   ریال</td>
+        }
+    </tr>
     <tr>
         <th>جستجو</th>
         @foreach (var m in Model.EntityList)
@@ -219,3 +230,4 @@
 
     </tbody>
 </table>
+

@@ -9,6 +9,7 @@ direction: ltr;
 </style>
 @{
     Layout = "../Shared/_Layout.cshtml";
+
     
     
     ViewBag.Title = "پلن های کاربری";
@@ -32,7 +33,7 @@ direction: ltr;
 <div >
     <div >
         <a  href="/Admin/Plan/Detail?id=0" class="btn btn-primary">تعریف پلن کاربری جدید</a>
-            @Html.Partial("PricingTable", Model)
+            @Html.Partial("~/Areas/Admin/Views/Shared/PricingTable.cshtml", Model)
         </div>
 
 </div>
@@ -49,6 +50,7 @@ direction: ltr;
        $('td:contains("-1")').text('بینهایت');
 
       
+     
     })
     </script>
 }

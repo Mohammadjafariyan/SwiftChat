@@ -5,6 +5,8 @@ using SignalRMVCChat.WebSocket;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using Microsoft.Owin.Security.Provider;
+using TelegramBotsWebApplication.Areas.Admin.Models;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Service
@@ -19,8 +21,6 @@ namespace SignalRMVCChat.Service
         }
 
 
-
-
         public static void CheckChatCount(MyWebSocketRequest currMySocketReq)
         {
             Plan plan = MyAccountProviderService.GetCurrentPlan(currMySocketReq);
@@ -31,12 +31,12 @@ namespace SignalRMVCChat.Service
             }
 
             int? chatCount = null;
-            if (plan.ChatCounts==-1)
+            if (plan.ChatCounts == -1)
             {
                 return;
             }
 
-            if (currMySocketReq.MySocket.MyAccountId.HasValue==false)
+            if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
             {
                 throw new PlanException(" ادمین کد ندارد");
             }
@@ -45,29 +45,24 @@ namespace SignalRMVCChat.Service
             var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
             MyAccount myAccount = myAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value).Single;
 
-            if (myAccount.ParentId!=null)
+            if (myAccount.ParentId != null)
             {
                 myAccount = myAccountProviderService.GetById(myAccount.ParentId.Value).Single;
             }
 
             var myAccountIds = myAccountProviderService.LoadChildren(myAccount)
-                .Children.Select(s=>s.Id).ToList();
+                .Children.Select(s => s.Id).ToList();
 
-           
-
-
-
-          
 
             // کل چت های همه آن ها را محاسبه کن
             var chatProviderService = Injector.Inject<ChatProviderService>();
 
             var totalChatCount = chatProviderService.GetQuery()
-                 .Where(q => q.MyAccountId.HasValue && myAccountIds.Contains(q.MyAccountId.Value))
-                 .Count();
+                .Where(q => q.MyAccountId.HasValue && myAccountIds.Contains(q.MyAccountId.Value))
+                .Count();
 
 
-            if (plan.ChatCounts<totalChatCount)
+            if (plan.ChatCounts < totalChatCount)
             {
                 throw new PlanException(" برای استفاده از امکان چت بایستی پلن کاربری خود را ارتقاء بخشید");
             }
@@ -80,8 +75,10 @@ namespace SignalRMVCChat.Service
 
             if (plan == null)
             {
-                throw new PlanException(" برای استفاده از امکان ارسال مولتی مدیا بایستی پلن کاربری خود را ارتقاء بخشید");
+                throw new PlanException(
+                    " برای استفاده از امکان ارسال مولتی مدیا بایستی پلن کاربری خود را ارتقاء بخشید");
             }
+
             int? chatCount = null;
             if (plan.SendMultimedia)
             {
@@ -106,6 +103,23 @@ namespace SignalRMVCChat.Service
             }
         }
 
+        public override MyEntityResponse<int> Save(Plan model)
+        {
+            var ers = base.Save(model);
+            if (model.IsTrivial)
+            {
+                var otherPlans = GetQuery().Where(c => c.Id != model.Id).ToList();
+                foreach (var otherPlan in otherPlans)
+                {
+                    otherPlan.IsTrivial = false;
+                }
+
+                Save(otherPlans);
+            }
+
+            return ers;
+        }
+
         public static void CheckSupporterCount()
         {
             Plan plan = MyAccountProviderService.GetCurrentPlan();
@@ -114,14 +128,16 @@ namespace SignalRMVCChat.Service
             {
                 throw new PlanException(" برای تعریف ادمین جدید بایستی پلن کاربری خود را ارتقاء بخشید");
             }
-            var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
-            MyAccount myAccount = myAccountProviderService.GetAccountIdByUsername(SecurityService.GetCurrentUser().UserName);
 
-            var childrenResp = myAccountProviderService.
-                GetQuery().Where(c=>c.ParentId==myAccount.Id && c.IsDeleted==false).ToList();
+            var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
+            MyAccount myAccount =
+                myAccountProviderService.GetAccountIdByUsername(SecurityService.GetCurrentUser().UserName);
+
+            var childrenResp = myAccountProviderService.GetQuery()
+                .Where(c => c.ParentId == myAccount.Id && c.IsDeleted == false).ToList();
 
             int? SupporterCount = null;
-            if (plan?.SupporterCount==-1)
+            if (plan?.SupporterCount == -1)
             {
                 SupporterCount = int.MaxValue;
             }
@@ -130,8 +146,6 @@ namespace SignalRMVCChat.Service
             {
                 throw new PlanException(" برای تعریف ادمین جدید بایستی پلن کاربری خود را ارتقاء بخشید");
             }
-
         }
-
     }
 }

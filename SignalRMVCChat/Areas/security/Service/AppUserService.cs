@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Management.Automation;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using SignalRMVCChat.Areas.security.Models;
@@ -40,7 +41,10 @@ namespace SignalRMVCChat.Areas.security.Service
         {
             var user = GetQuery().FirstOrDefault(q => q.UserName == userUserName);
 
-            
+            if (MyGlobal.IsAttached)
+            {
+                var list= GetQuery().ToList();
+            }
             //console.Write($"exceptionOnNotExist={exceptionOnNotExist}");
             if (user==null && exceptionOnNotExist)
             {

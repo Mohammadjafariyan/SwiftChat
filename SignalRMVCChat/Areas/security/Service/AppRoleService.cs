@@ -16,15 +16,14 @@ namespace SignalRMVCChat.Areas.security.Service
     public class AppRoleService : GenericService<AppRole>
     {
         private readonly AppUserService _appUserService;
-
-        public AppRoleService(AppUserService appUserService) : base(MyGlobal.SecurityContextName)
-        {
-            _appUserService = appUserService;
-        }
+        private readonly AppAdminService _appAdminService;
         
+
+       
         public AppRoleService() : base(MyGlobal.SecurityContextName)
         {
             _appUserService = DependencyInjection.Injector.Inject< AppUserService>();
+            _appAdminService = DependencyInjection.Injector.Inject< AppAdminService>();
         }
 
         public async Task CreateAsync(AppRole role)
@@ -53,6 +52,21 @@ namespace SignalRMVCChat.Areas.security.Service
             User.Single.AppRoleId = Role.Id;
 
             _appUserService.Save(User.Single);
+        }
+        
+        public async Task AddToRoleAdminAsync(int userId, string role)
+        {
+            if (RoleExists(role) == false)
+            {
+                throw new Exception("نقش وجود ندارد");
+            }
+
+            var User = _appAdminService.GetById(userId);
+
+            var Role = GetRoleByName(role);
+            User.Single.AppRoleId = Role.Id;
+
+            _appAdminService.Save(User.Single);
         }
 
         private AppRole GetRoleByName(string role)

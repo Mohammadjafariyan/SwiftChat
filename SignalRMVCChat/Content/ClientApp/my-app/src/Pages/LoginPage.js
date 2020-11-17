@@ -60,7 +60,7 @@ export default class LoginPage extends Component {
              }
          />
 
-    <small id="emailHelp" className="form-text text-muted">نام کاربری و رمز عبور از داشبورد /  قسمت تعریف ادمین قابل دسترس است</small>
+    <small id="emailHelp" className="form-text text-muted">نام کاربری و رمز عبور از پیشخوان /  قسمت تعریف ادمین قابل دسترس است</small>
   </div>
   <div className="form-group">
     <label for="exampleInputPassword1">رمز عبور</label>

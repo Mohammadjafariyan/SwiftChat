@@ -3,6 +3,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
+using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Controllers
 {

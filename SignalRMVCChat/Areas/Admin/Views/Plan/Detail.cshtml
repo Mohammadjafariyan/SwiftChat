@@ -49,10 +49,17 @@ direction: ltr;
             <tr>
                 <td>عنوان پلن</td>
                 <td>
-
+            
                     <input name="Name" type="text" value="@plan.Name"/>
                 </td>
             </tr>
+            
+            
+            <tr>
+                       
+                            <td>بسته آموزشی پیش فرض</td>
+                            <td>@Html.CheckBox("IsTrivial", plan.IsTrivial)</td>
+                        </tr>
             <tr>
                 <td>جستجو</td>
                 <td>@Html.CheckBox("Search", plan.Search) </td>

@@ -31,6 +31,14 @@ namespace SignalRMVCChat.Models.GapChatContext
             
             
         }
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                Database.Connection.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
         public void DetachAllEntities()
         {

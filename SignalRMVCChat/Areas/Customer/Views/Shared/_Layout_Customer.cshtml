@@ -33,6 +33,14 @@
     <link rel="stylesheet" href="~/Content/bootstrap.css"/>
     <link rel="stylesheet" href="~/Content/Site.css"/>
 
+    <style>
+        .active{
+             color: coral !important;
+             }
+                .active a{
+                     color: coral !important;
+                     }
+    </style>
 
     @Scripts.Render("~/bundles/modernizr")
     
@@ -129,7 +137,8 @@
 <div id="pcoded" class="pcoded">
 <div class="pcoded-overlay-box"></div>
 <div class="pcoded-container navbar-wrapper">
-<nav class="navbar header-navbar pcoded-header">
+
+    <nav class="navbar header-navbar pcoded-header noLayout">
     <div class="navbar-wrapper">
         <div class="navbar-logo" style="background-color: white;color:black">
             <a style="    color: black;
@@ -137,7 +146,7 @@
                 <i class="feather icon-menu"></i>
             </a>
             <a href="/Customer/Dashboard" style="color: black">
-                <h3  style="color: black" >داشبورد</h3>
+                <h3 style="color: black">پیشخوان</h3>
             </a>
             <a class="mobile-options">
                 <i class="feather icon-more-horizontal"></i>
@@ -221,15 +230,15 @@
                     </div>
                 </li>*@
                 <li class="header-notification">
-                                   <a id="CurrentPlan" href="/Customer/CustomerTickets/Index">
-                                        تیکت ها
-                                   </a>
-                               </li>
-                                <li class="header-notification">
-                                                   <a id="CurrentPlan" href="/Customer/CustomerTickets/Detail">
-                                                       ارسال تیکت
-                                                   </a>
-                                               </li>
+                    <a id="CurrentPlan" href="/Customer/CustomerTickets/Index">
+                        تیکت ها
+                    </a>
+                </li>
+                <li class="header-notification">
+                    <a id="CurrentPlan" href="/Customer/CustomerTickets/Detail">
+                        ارسال تیکت
+                    </a>
+                </li>
                 @{
                     var planName = MyAccountProviderService.GetCurrentPlan()?.Name ?? "معمولی";
                 }
@@ -393,41 +402,49 @@
     </div>
 </div>
 <!-- Sidebar inner chat end-->
-<div class="pcoded-main-container">
-<div class="pcoded-wrapper">
-<nav class="pcoded-navbar">
+<div class="pcoded-main-container ">
+
+    <div class="pcoded-wrapper">
+
+<nav class="pcoded-navbar noLayout">
 <div class="pcoded-inner-navbar main-menu">
-    <div class="pcoded-navigatio-lavel">منوی اصلی</div>
-    <ul class="pcoded-item pcoded-left-item">
-        <li class="pcoded-hasmenu pcoded-trigger" dropdown-icon="style1" subitem-icon="style1">
-            <a href="javascript:void(0)" style="padding-right: 0px">
-                <span class="pcoded-mtext" style="text-align: right !important;">نصب افزونه </span>
-            </a>
-            <ul class="pcoded-submenu">
-                <li class="">
-                    <a href="/customer/dashboard/CreatePluginForCustomers">
-                        <span class="pcoded-mtext">افزونه بازدیدکنندگان</span>
+<div class="pcoded-navigatio-lavel">منوی اصلی</div>
+<ul class="pcoded-item pcoded-left-item">
+     <li class=" @(Request.Url.PathAndQuery.ToString()=="/customer/dashboard" ? "active" : "")">
+                    <a href="/customer/dashboard">
+                        <span class="pcoded-mtext">پیشخوان</span>
                         <span class="pcoded-badge label label-info ">جدید</span>
                     </a>
                 </li>
-                <li class="">
-                    <a href="/customer/dashboard/CreatePluginForAdmins">
-                        <span class="pcoded-mtext">افزونه پشتیبانی و ادمین</span>
-                        <span class="pcoded-badge label label-info ">جدید</span>
-                    </a>
-                </li>
+    <li class="pcoded-hasmenu pcoded-trigger" dropdown-icon="style1" subitem-icon="style1">
+        <a href="javascript:void(0)" style="padding-right: 0px">
+            <span class="pcoded-mtext" style="text-align: right !important;">نصب افزونه </span>
+        </a>
+        <ul class="pcoded-submenu">
+            <li class="@(Request.Url.ToString().Contains("/customer/dashboard/CreatePluginForCustomers") ? "active" : "")">
+                <a href="/customer/dashboard/CreatePluginForCustomers">
+                    <span class="pcoded-mtext">افزونه بازدیدکنندگان</span>
+                    <span class="pcoded-badge label label-info ">جدید</span>
+                </a>
+            </li>
+            <li class="@(Request.Url.PathAndQuery.ToString().Contains("/customer/dashboard/CreatePluginForAdmins") ? "active" : "")">
+                <a href="/customer/dashboard/CreatePluginForAdmins">
+                    <span class="pcoded-mtext">افزونه پشتیبانی و ادمین</span>
+                    <span class="pcoded-badge label label-info ">جدید</span>
+                </a>
+            </li>
 
 
-                @*<li class=" ">
+            @*<li class=" ">
                                                 <a href="dashboard-analytics.htm">
                                                     <span class="pcoded-mtext">Analytics</span>
                                                     <span class="pcoded-badge label label-info ">NEW</span>
                                                 </a>
                                             </li>*@
-            </ul>
-        </li>
+        </ul>
+    </li>
 
-        @*<li class="pcoded-hasmenu active pcoded-trigger">
+    @*<li class="pcoded-hasmenu active pcoded-trigger">
                                     <a href="javascript:void(0)">
                                         <span class="pcoded-micon"><i class="feather icon-sidebar"></i></span>
                                         <span class="pcoded-mtext">Page layouts</span>
@@ -506,7 +523,7 @@
                                         </li>
                                     </ul>#1#
                                 </li>*@
-        @*<li class="">
+    @*<li class="">
                                     <a href="navbar-light.htm">
                                         <span class="pcoded-micon"><i class="feather icon-menu"></i></span>
                                         <span class="pcoded-mtext">Navigation</span>
@@ -537,53 +554,53 @@
 
                                     </ul>
                                 </li>*@
-    </ul>
+</ul>
 
-    <ul class="pcoded-item pcoded-left-item" item-border="true" item-border-style="none" subitem-border="true">
-        <li class="pcoded-hasmenu pcoded-trigger" dropdown-icon="style1" subitem-icon="style1">
-            <a href="javascript:void(0)" style="padding-right: 0px">
-                <span class="pcoded-mtext" style="text-align: right !important;">تنظیمات </span>
-            </a>
-            <ul class="pcoded-submenu">
-                <li class="">
-                    <a href="/customer/MyWebsites/Index">
-                        <span class="pcoded-mtext">سایت های من</span>
-                        <span class="pcoded-badge label label-info ">جدید</span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="/customer/MyAccounts/Index">
-                        <span class="pcoded-mtext">تعریف ادمین پشتیبانی</span>
-                        <span class="pcoded-badge label label-info ">جدید</span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="/customer/MyAccounts/AssignWebsites">
-                        <span class="pcoded-mtext">دسترسی ادمین ها</span>
-                        <span class="pcoded-badge label label-info ">جدید</span>
-                    </a>
-                </li>
+<ul class="pcoded-item pcoded-left-item" item-border="true" item-border-style="none" subitem-border="true">
+    <li class="pcoded-hasmenu pcoded-trigger" dropdown-icon="style1" subitem-icon="style1">
+        <a href="javascript:void(0)" style="padding-right: 0px">
+            <span class="pcoded-mtext" style="text-align: right !important;">تنظیمات </span>
+        </a>
+        <ul class="pcoded-submenu">
+            <li class=" @(Request.Url.PathAndQuery.ToLower().Contains("/customer/MyWebsites/Index".ToLower()) ? "active" : "")">
+                <a href="/customer/MyWebsites/Index">
+                    <span class="pcoded-mtext">سایت های من</span>
+                    <span class="pcoded-badge label label-info ">جدید</span>
+                </a>
+            </li>
+            <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/MyAccounts/Index".ToLower()) ? "active" : "")">
+                <a href="/customer/MyAccounts/Index">
+                    <span class="pcoded-mtext">تعریف ادمین پشتیبانی</span>
+                    <span class="pcoded-badge label label-info ">جدید</span>
+                </a>
+            </li>
+            <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/MyAccounts/AssignWebsites".ToLower()) ? "active" : "")">
+                <a href="/customer/MyAccounts/AssignWebsites">
+                    <span class="pcoded-mtext">دسترسی ادمین ها</span>
+                    <span class="pcoded-badge label label-info ">جدید</span>
+                </a>
+            </li>
 
-            </ul>
-        </li>
+        </ul>
+    </li>
 
 
-    </ul>
-    <div class="pcoded-navigatio-lavel">UI Element</div>
-    <ul class="pcoded-item pcoded-left-item">
-        <li class="pcoded-hasmenu">
-        <li class="">
-            <a href="/Customer/UpgradePlan/PlanStatus">
-                <span class="pcoded-micon">
-                    <i class="feather icon-menu"></i>
-                </span>
-                <span class="pcoded-mtext">پلن های کاربری من</span>
-            </a>
-        </li>
-    </ul>
+</ul>
+<div class="pcoded-navigatio-lavel">UI Element</div>
 <ul class="pcoded-item pcoded-left-item">
     <li class="pcoded-hasmenu">
-    <li class="">
+    <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/UpgradePlan/PlanStatus".ToLower()) ? "active" : "")">
+        <a href="/Customer/UpgradePlan/PlanStatus">
+            <span class="pcoded-micon">
+                <i class="feather icon-menu"></i>
+            </span>
+            <span class="pcoded-mtext">پلن های کاربری من</span>
+        </a>
+    </li>
+</ul>
+<ul class="pcoded-item pcoded-left-item">
+    <li class="pcoded-hasmenu">
+    <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/UpgradePlan/MyBills".ToLower()) ? "active" : "")">
         <a href="/Customer/UpgradePlan/MyBills">
             <span class="pcoded-micon">
                 <i class="feather icon-menu"></i>
@@ -593,36 +610,38 @@
     </li>
 </ul>
 
-        <ul class="pcoded-item pcoded-left-item">
-               <li class="pcoded-hasmenu">
-               <li class="">
-                   <a href="/Customer/PluginCustomized/MyWebsiteList">
-                       <span class="pcoded-micon">
-                           <i class="feather icon-menu"></i>
-                       </span>
-                       <span class="pcoded-mtext">سفارشی سازی پلاگین</span>
-                   </a>
-               </li>
-           </ul>
+<ul class="pcoded-item pcoded-left-item">
+    <li class="pcoded-hasmenu">
+    <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/PluginCustomized/MyWebsiteList".ToLower()) ? "active" : "")">
+        <a href="/Customer/PluginCustomized/MyWebsiteList">
+            <span class="pcoded-micon">
+                <i class="feather icon-menu"></i>
+            </span>
+            <span class="pcoded-mtext">سفارشی سازی پلاگین</span>
+        </a>
+    </li>
+</ul>
 </div>
 </nav>
-
 </div>
-<div class="pcoded-content">
+
+
+<div class="pcoded-content " >
     <div class="pcoded-inner-content">
 
         <!-- Main-body start -->
         <div class="main-body">
-        
-        @if(TempData["err"]!=null){
-        
-            <div class="alert alert-danger">
-                @TempData["err"]
-            </div>
+
+            @if (TempData["err"] != null)
+            {
+
+                <div class="alert alert-danger">
+                    @TempData["err"]
+                </div>
 
                 TempData["err"] = null;
-        }
-        
+            }
+
             @RenderBody()
 
         </div>

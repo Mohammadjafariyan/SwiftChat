@@ -1,4 +1,32 @@
-﻿/*----------------------------- pulsing circle animation-------------------------*/
+﻿
+/*---------------------------------------------------animations--------------------------------------*/
+
+/* The animation code */
+@keyframes openChatboxAnim {
+    from  {visibility: hidden}
+    to  {visibility: visible ;}
+}
+@-webkit-keyframes openChatboxAnim{
+    from  {visibility: hidden}
+    to  {visibility: visible ;}
+}
+div {
+    animation-name: openChatboxAnim;
+    animation-duration: 4s;
+    animation-iteration-count: 300;
+  
+    -webkit-animation-name: openChatboxAnim;
+    -webkit-animation-duration:4s;
+    -webkit-animation-iteration-count: 300;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-fill-mode: forwards;
+}
+
+/*---------------------------------------------------END--------------------------------------*/
+
+
+
+/*----------------------------- pulsing circle animation-------------------------*/
 
 .pulsating-circle {
     position: absolute;

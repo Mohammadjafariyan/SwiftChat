@@ -66,9 +66,9 @@ namespace SignalRMVCChat.Migrations
                 context.AppAdmin.Add(admin);
             }
             
-            if (!context.AppUsers.Any(a=>a.UserName=="admin@admin.com"))
+            /*if (!context.AppUsers.Any(a=>a.UserName=="admin@admin.com"))
             {
-                var appRole= context.AppRoles.Single(f => f.Name == "superAdmin");
+                var appRole= context.AppRoles.Single(f => f.Name == "admin");
                 var appUser = new AppUser()
                 {
                     Email = "admin@admin.com",
@@ -81,7 +81,7 @@ namespace SignalRMVCChat.Migrations
                 context.AppUsers.Add(appUser);
                 
                 
-                var account = new MyAccount
+                /*var account = new MyAccount
                 {
                     IdentityUsername = appUser.Email,
                     Username = "admin",
@@ -97,8 +97,8 @@ namespace SignalRMVCChat.Migrations
                         BaseUrl = baseUrl,
                         MyAccount = account,
                     });
-                }
-            }
+                }#1#
+            }*/
 
 
             context.SaveChanges();

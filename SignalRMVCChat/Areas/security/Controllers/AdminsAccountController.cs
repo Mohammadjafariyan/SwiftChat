@@ -39,7 +39,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, change to shouldLockout: true
-                var result = SecurityService.SignInAsync(model.Email, model.Password);
+                var result = SecurityService.AdminSignInAsync(model.Email, model.Password);
 
 
                 var appRoleService = Injector.Inject<AppRoleService>();

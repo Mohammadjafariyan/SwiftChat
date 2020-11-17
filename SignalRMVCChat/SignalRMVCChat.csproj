@@ -282,6 +282,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminTicketsController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardLogController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminLogController.cs" />
+    <Compile Include="Areas\Admin\Controllers\InitializeController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentBillsController.cs" />
     <Compile Include="Areas\Admin\Controllers\PlanController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingController.cs" />
@@ -300,6 +301,7 @@
     <Compile Include="Areas\Customer\Controllers\JsPluginController.cs" />
     <Compile Include="Areas\Customer\Controllers\MyAccountsController.cs" />
     <Compile Include="Areas\Customer\Controllers\MyWebsitesController.cs" />
+    <Compile Include="Areas\Customer\Controllers\NewWebsiteGuideController.cs" />
     <Compile Include="Areas\Customer\Controllers\PanelController.cs" />
     <Compile Include="Areas\Customer\Controllers\PluginCustomizedController.cs" />
     <Compile Include="Areas\Customer\Controllers\UpgradePlanController.cs" />
@@ -654,10 +656,13 @@
     <Content Include="Areas\Admin\Views\DashboardLog\Comments.cshtml" />
     <Content Include="Areas\Admin\Views\DashboardLog\Index.cshtml" />
     <Content Include="Areas\Admin\Views\AdminLog\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Initialize\Index.cshtml" />
     <Content Include="Areas\Admin\Views\PaymentBills\ShowMyAccountsBills.cshtml" />
     <Content Include="Areas\Admin\Views\Plan\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Plan\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Setting\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Setting\SettingAdvancedForm.cshtml" />
+    <Content Include="Areas\Admin\Views\Setting\SettingForm.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\PricingTable.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout - Copy.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
@@ -690,6 +695,7 @@
     <Content Include="Areas\Customer\Views\MyWebsites\Detail.cshtml" />
     <Content Include="Areas\Customer\Views\MyWebsites\Index.cshtml" />
     <Content Include="Areas\Customer\Views\MyWebsites\SelectWebsiteForPluginGeneration.cshtml" />
+    <Content Include="Areas\Customer\Views\NewWebsiteGuide\Index.cshtml" />
     <Content Include="Areas\Customer\Views\PluginCustomized\Detail.cshtml" />
     <Content Include="Areas\Customer\Views\PluginCustomized\FontsList.cshtml" />
     <Content Include="Areas\Customer\Views\PluginCustomized\MyWebsiteList.cshtml" />
@@ -2059,6 +2065,8 @@
     <Content Include="Content\adminty-master\files\bower_components\modernizr\js\css-scrollbars.js" />
     <Content Include="Content\adminty-master\files\bower_components\modernizr\js\modernizr.js" />
     <Content Include="Content\adminty-master\files\bower_components\popper.js\js\popper.min.js" />
+    <Content Include="Content\Animate\adp.min.css" />
+    <Content Include="Content\Animate\adp.min.js" />
     <Content Include="Content\B4Admin\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Content\B4Admin\bootstrap\js\bootstrap.bundle.js.map" />
     <Content Include="Content\B4Admin\bootstrap\js\bootstrap.bundle.min.js" />

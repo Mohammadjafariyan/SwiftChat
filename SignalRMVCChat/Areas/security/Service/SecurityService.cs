@@ -12,15 +12,47 @@ namespace SignalRMVCChat.Areas.security.Service
     public class SecurityService
     {
         private readonly AppUserService _appUserService;
+        private readonly AppAdminService _adminService;
 
-        public SecurityService(AppUserService appUserService)
+        public SecurityService(AppUserService appUserService,AppAdminService adminService)
         {
             _appUserService = appUserService;
+            _adminService = adminService;
         }
 
      
 
+        public AppAdmin AdminSignInAsync(string userUserName, string userPassword)
+        {
 
+            var user= _adminService.GetByUsername(userUserName,false);
+
+            if (user==null)
+            {
+                throw new Exception("نام کاربری یا رمز عبور اشتباه است");
+            }
+
+
+            if (!string.Equals(user.Password,userPassword))
+            {
+                throw new Exception("نام کاربری یا رمز عبور اشتباه است");
+            }
+           
+            /*if (!string.IsNullOrEmpty(user.Token))
+            {
+                return user;
+            }*/
+           
+            string tokn= GenerateToken(user);
+
+            user.Token = tokn;
+
+
+            _adminService.Save(user);
+
+            return user;
+
+        } 
 
         public AppUser SignInAsync(string userUserName, string userPassword)
         {
@@ -55,6 +87,12 @@ namespace SignalRMVCChat.Areas.security.Service
         } 
         
         public static string GenerateToken(AppUser user)
+        {
+            var encrypt = EncryptionHelper.Encrypt($@"{user.Id}_{DateTime.Now}_{user.UserName}");
+            return encrypt;
+        }
+        
+        public static string GenerateToken(AppAdmin user)
         {
             var encrypt = EncryptionHelper.Encrypt($@"{user.Id}_{DateTime.Now}_{user.UserName}");
             return encrypt;

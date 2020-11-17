@@ -174,7 +174,7 @@ namespace SignalRMVCChat.WebSocket
                             {
                                 try
                                 {
-                                    var parts = language.Split(',')[0].Split('-');
+                                    var parts = language.Split(',')[1].Split('-');
 
                                     language = parts[0];
                                     countryLanguage = parts[1];

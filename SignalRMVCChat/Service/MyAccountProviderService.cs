@@ -32,7 +32,8 @@ namespace SignalRMVCChat.Service
         /// <returns></returns>
         public MyAccount GetSystemMyAccount()
         {
-            var firstOrDefault = GetQuery().Include(c=>c.MySockets).FirstOrDefault(m => m.MyAccountType == MyAccountType.SystemMyAccount);
+            var firstOrDefault = GetQuery().Include(c => c.MySockets)
+                .FirstOrDefault(m => m.MyAccountType == MyAccountType.SystemMyAccount);
 
             if (firstOrDefault == null)
             {
@@ -114,17 +115,39 @@ namespace SignalRMVCChat.Service
 
         public async void CreateNewMyAccount(string username, string pass)
         {
+            var myAccountPlansService = Injector.Inject<MyAccountPlansService>();
+            var SettingService = Injector.Inject<SettingService>();
+            
+
+
             var model = new MyAccount
             {
                 IdentityUsername = username,
                 Username = username,
                 Password = pass,
+                Children = new List<MyAccount>
+                {
+                    new MyAccount
+                    {
+                        Name = "اپراتور",
+                        Username = "admin",
+                        Password = "admin"
+                    }
+                }
             };
 
 
             CheckUsernameUniqness(model);
 
             base.Save(model);
+
+            
+            //IsStartWithTrivialPlan
+            if (SettingService.GetSingle().IsStartWithTrivialPlan)
+            {
+                myAccountPlansService.AddToTrivialPlan(model.Id);
+            }
+
         }
 
         public MyAccountProviderService() : base(null)

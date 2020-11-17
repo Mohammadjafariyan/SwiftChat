@@ -92,5 +92,6 @@ namespace SignalRMVCChat.Service
         public List<MyAccountPlans> MyAccountPlans { get; set; }
         public List<MyAccountPayment> MyAccountPayments { get; set; }
         public bool ShowWatermark { get; set; }
+        public bool IsTrivial { get; set; }
     }
 }
