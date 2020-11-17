@@ -1,25 +1,23 @@
-﻿
+﻿/*---------------------------------------------------speach bubbles--------------------------------------*/
+
+
+/* cursor animations */
+
+@keyframes animated-cursor{
+    from{border-right-color: rgba(0,255,0,.75);}
+    to{border-right-color: transparent;}
+}
 /*---------------------------------------------------animations--------------------------------------*/
 
 /* The animation code */
-@keyframes openChatboxAnim {
-    from  {visibility: hidden}
-    to  {visibility: visible ;}
-}
-@-webkit-keyframes openChatboxAnim{
-    from  {visibility: hidden}
-    to  {visibility: visible ;}
-}
-div {
-    animation-name: openChatboxAnim;
-    animation-duration: 4s;
-    animation-iteration-count: 300;
-  
-    -webkit-animation-name: openChatboxAnim;
-    -webkit-animation-duration:4s;
-    -webkit-animation-iteration-count: 300;
-    -webkit-animation-timing-function: ease;
-    -webkit-animation-fill-mode: forwards;
+
+@keyframes one {
+    0% {
+        transform: rotateX(0);
+    }
+    100% {
+        transform: rotateX(10deg);
+    }
 }
 
 /*---------------------------------------------------END--------------------------------------*/

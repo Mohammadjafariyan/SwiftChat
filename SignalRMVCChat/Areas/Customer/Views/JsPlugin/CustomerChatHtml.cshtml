@@ -27,6 +27,18 @@
 
 <style>
 
+.chatPanel .gapMsg:last-child{
+
+height: 100px;
+}
+
+.msgPlace{
+}
+.onTheFly:hover {
+    animation: one 2s 1 ;
+
+}
+
  svg {
             width: 40px;
             top: 0;
@@ -329,6 +341,7 @@ padding: 10px;
                                  }
 
            .chatPanel{
+           background-image: url("@baseUrl/Content/paterns/double-bubble-outline.png");
            height: 100%;
           width: 100%;
           overflow-y: auto;
@@ -346,6 +359,50 @@ padding: 10px;
 .chatInput{
     display: flex;
 
+}
+
+.gapHe {
+    position: relative;
+      background: @pluginCustomized.GapHeBgColor !important;;
+  border-radius: .4em;
+    left: 20px;
+}
+
+.gapHe:after {
+    content: '';
+       border-right-color: @pluginCustomized.GapHeBgColor !important;;
+ position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-left: 0;
+    border-bottom: 0;
+    margin-top: -10px;
+    margin-left: -20px;
+}
+
+
+.gapMe {
+    position: relative;
+    border-radius: .4em;
+    right: 20px;
+}
+
+.gapMe:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 17px solid transparent;
+    border-left-color: @pluginCustomized.GapMeBgColor !important;;
+    border-right: 0;
+    border-bottom: 0;
+    margin-top: -8.5px;
+    margin-right: -17px;
 }
 
 
@@ -572,7 +629,7 @@ width: 100%;
     text-align: center;
     font-size: 15px !important;
     font-weight: 700;
-    line-height: 40px!important;
+    line-height: 33px!important;
 
 }
 .gap_online_admin_come_right
@@ -934,7 +991,7 @@ color:@pluginCustomized.TopHeaderRightColor !important;
     href="@baseUrl/Content/Animate/adp.min.css"
 />
 
-<script src="@baseUrl/Content/Animate/adp.min.js"></script>
+@*<script src="@baseUrl/Content/Animate/adp.min.js" type="text/javascript"></script>*@
 
 <div class="onTheFly " id="onTheFly">
 
@@ -993,7 +1050,7 @@ color:@pluginCustomized.TopHeaderRightColor !important;
 
 </div>
 
-<div class="gapContent " id="gapContent" style="display: none">
+<div class="gapContent adp-hide" id="gapContent" >
 <div class="gapTopToolsPanel" style=" min-height: 10vh;background-color: rgb(239 239 239);width: 100%;text-align: left">
     <button type="button" style="float: left; border: none;" id="gapCloseButton" title="بستن پنل">
         <i class="fa fa-times" aria-hidden="true"></i>
@@ -1142,6 +1199,7 @@ color:@pluginCustomized.TopHeaderRightColor !important;
 
 
         
+        
         @*voice recorder*@
         
         
@@ -1186,21 +1244,31 @@ color:@pluginCustomized.TopHeaderRightColor !important;
 </div>
 
 <div id="gapwhileWriting" style="
-                 color: #ddd;display: none;
-                     text-align: center;
-                     /* width: 100%; */
-                     bottom: 25px;
-                     position: absolute;
-                     z-index: 1;
-                     left: 22px;
+                   color: @pluginCustomized.TopHeaderRightColor;
+                   text-align: center;
+                   display: none;
+                   bottom: 75px;
+                   position: absolute;
+                   /* z-index: 1; */
+                   left: 27px;
                 ">
-    <span class="lds-ellipsis">
+   
+    
+    <div style="display: flex;">
+          در حال تایپ 
+           <div class="typing_loader">
+                      
+              </div>
+
+    </div>
+   
+    @*<span class="lds-ellipsis">
 
         <div class="whileWriting"></div>
         <div class="whileWriting"></div>
         <div class="whileWriting"></div>
         <div class="whileWriting"></div>
-    </span>
+    </span>*@
 </div>
 
 <div style="
@@ -1235,13 +1303,13 @@ color:@pluginCustomized.TopHeaderRightColor !important;
 
 
     <div class="chatInput" id="chatInput" style=" width: 100%;">
-        <form onsubmit="return false;gapChatSubmit()" id="gapChatForm" style=" width: 100%;">
+        <form onsubmit="return false;gapChatSubmit()" id="gapChatForm" style="margin-bottom: -6px; width: 100%;">
             <input id="gapFileAdder" hidden="hidden" type="file" value="فایل"/>
             <input hidden="hidden" id="gapFileContent" name="gapFileContent"/>
             <input hidden="hidden" id="gapFileUniqId" name="gapFileContent"/>
             <input hidden="hidden" id="gapFileExtention" name="gapFileExtention"/>
 
-        <textarea onkeyup="textAreaAdjust(this)" style="overflow:hidden" placeholder="پیغام خود را بنویسید" id="gapChatInput"></textarea>
+        <textarea  onkeyup="textAreaAdjust(this)" style="resize: none; overflow:hidden" placeholder="پیغام خود را بنویسید" id="gapChatInput"></textarea>
 
             <input id="gapInpSub" type="submit" hidden="hidden"/>
         </form>
@@ -1252,7 +1320,7 @@ color:@pluginCustomized.TopHeaderRightColor !important;
 
             </button>
             <button title="فایل" style="padding: 10px; border-radius: 0px;    border: 1px solid #ddd;" type="button" onclick="getDoc().querySelector('#gapFileAdder').click()">
-                <i style="font-size: 25px" class="gapBottomIcon fa fa-plus" aria-hidden="true"></i>
+                <i style="font-size: 25px" class="gapBottomIcon fa fa-paperclip" aria-hidden="true"></i>
 
             </button>
             @*<button title="تگ" style="padding: 10px; border-radius: 0px;    border: 1px solid #ddd;" type="button" onclick="tagUser()" id="gaptagUser">
@@ -1281,7 +1349,7 @@ color:@pluginCustomized.TopHeaderRightColor !important;
 
 
 
-<div class="gapOnTheFlyMessage" id="gapOnTheFlyMessage" style=" display: none;">
+<div class="gapOnTheFlyMessage adp-hide" id="gapOnTheFlyMessage" >
     
     <div class="gapTopFloor row">
         <div class="row" dir="rtl">

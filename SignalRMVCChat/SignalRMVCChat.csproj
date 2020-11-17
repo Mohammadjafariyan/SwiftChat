@@ -2311,6 +2311,7 @@
     <Content Include="Content\MyMap\marker-icon.png" />
     <Content Include="Content\MyMap\marker-shadow.png" />
     <Content Include="Content\pace.js" />
+    <Content Include="Content\paterns\double-bubble-outline.png" />
     <Content Include="Content\paterns\patterns.png" />
     <Content Include="Content\persianDatepicker-default.css" />
     <Content Include="Content\persianDatepicker.min.js" />

@@ -59,6 +59,8 @@ export default class ChatForm extends Component {
 
         this.setState({text: ''});
 
+        this.bindIsTyping('');
+
         return false;
     }
     
@@ -68,7 +70,7 @@ export default class ChatForm extends Component {
         this.setState({text:prev+" "+text})
     }
 
-    bindIsTyping() {
+    bindIsTyping(text) {
 
         if (!DataHolder.selectedCustomer || !DataHolder.selectedCustomer.Id) {
             // CurrentUserInfo.LayoutPage.showError('کاربری انتخاب نشده است');
@@ -76,7 +78,7 @@ export default class ChatForm extends Component {
         }
 
 
-        if(!(!this.state.text || this.state.text.trim().length === 0)) {
+        if(!(!text || text.trim().length === 0)) {
 
 
 
@@ -147,6 +149,8 @@ export default class ChatForm extends Component {
 
                                  let label=this.state.activeItem && this.state.activeItem.label ? this.state.activeItem.label : '';
                                  this.props.onSubmit(null,label);
+                                 this.bindIsTyping('');
+
 
                                  this.setState({text: ''});
                              }} aria-label="ارسال پیغام" data-microtip-position="top" role="tooltip">
@@ -183,7 +187,7 @@ export default class ChatForm extends Component {
                         this.setState({text: e.target.value});
                         this.props.onChange(e.target.value);
 
-                        this.bindIsTyping();
+                        this.bindIsTyping(e.target.value);
 
                     }}
                                     onPaste={(e) => {

@@ -1,4 +1,6 @@
-﻿var url = '@@@';
+﻿var ADP=function(){var e=function(e){return!e.classList.contains("adp-hide")},n=function(e){e&&e()},i=function(i,t,a){if(e(i))n(a);else{var d=function(){i.classList.remove(t+"-adp-show"),n(a),i.removeEventListener(s,d)};i.addEventListener(s,d),i.classList.remove("adp-hide"),i.classList.add(t+"-adp-show")}},t=function(i,t,a){if(e(i)){var d=function(){i.classList.add("adp-hide"),i.classList.remove(t+"-adp-hide"),n(a),i.removeEventListener(s,d)};i.addEventListener(s,d),i.classList.add(t+"-adp-hide")}else n(a)},s=function(){var e=document.createElement("div");return e.style.webkitAnimation?"webkitAnimationEnd":e.style.mozAnimation?"mozAnimationEnd":"animationend"}();return{show:i,hide:t,toggle:function(n,s,a){e(n)?t(n,s,a):i(n,s,a)}}}();
+
+var url = '@@@';
 var baseUrl = "#baseUrl#";
 var token = "#token#";
 var baseUrlForapi = "#baseUrlForapi#";
@@ -1125,20 +1127,19 @@ function bindChatPanelScrollPaging() {
     getDoc().querySelector('#chatPanel').onscroll = function (e) {
 
 
-        // یعنی نزولی 
-        if (previeusScrollTopchatPanel > this.scrollTop) {
-            if (this.scrollTop < 5) {
-                // element is at the end of its scroll, load more content
+       setTimeout(function (){
+           // یعنی نزولی 
+           if (50 > this.scrollTop) {
+               // element is at the end of its scroll, load more content
 
+               if (!CurrentUserInfo.AllChatsRead){
+                   CurrentUserInfo.pageNumber++;
+                   MyCaller.Send("ReadChat", {targetId: CurrentUserInfo.targetId, pageNumber: CurrentUserInfo.pageNumber});
+               }
+           }
+       },5000)
 
-                CurrentUserInfo.pageNumber++;
-                MyCaller.Send("ReadChat", {targetId: CurrentUserInfo.targetId, pageNumber: CurrentUserInfo.pageNumber});
-
-            }
-
-        }
-
-        previeusScrollTopchatPanel = this.scrollTop;
+     //   previeusScrollTopchatPanel = this.scrollTop;
 
 
     }
@@ -1374,7 +1375,7 @@ function changeDotPic() {
 }
 
 function showNewOnTheFlyMessage(Message) {
-    if (getDoc().querySelector('#dot').style.display === 'none') {
+    if (!getDoc().querySelector('#gapContent').classList.contains('adp-hide')) {
         return;
     }
     getDoc().querySelector('#gapOnTheFlyMessageText').innerHTML = Message;
@@ -1395,11 +1396,13 @@ function showNewOnTheFlyMessage(Message) {
     if ($ && $('#gapOnTheFlyMessage')) {
         $('#gapOnTheFlyMessage').show('fast');
         setTimeout(function () {
-            getDoc().querySelector('#gapOnTheFlyMessage').style.display = null;
+          //  getDoc().querySelector('#gapOnTheFlyMessage').style.display = null;
 
+            toggle(getDoc().querySelector('#gapOnTheFlyMessage'))
         }, 1000)
     } else {
-        getDoc().querySelector('#gapOnTheFlyMessage').style.display = null;
+        toggle(getDoc().querySelector('#gapOnTheFlyMessage'))
+//        getDoc().querySelector('#gapOnTheFlyMessage').style.display = null;
     }
 
 }
@@ -1470,7 +1473,7 @@ class BasePlugin {
                     isDelivered: isDelivered
                 })
             }
-        }, isGapMe, res.Content.gapFileUniqId, res.Content.Chat.UniqId, res.Content.Chat.Time)
+        }, isGapMe, res.Content.gapFileUniqId, res.Content.Chat.Id, res.Content.Chat.Time)
 
 
     }
@@ -1899,6 +1902,10 @@ class BasePlugin {
 
         var arr = [];
         arr = res.Content.EntityList;
+        
+    if(!arr || arr.length==0){
+        CurrentUserInfo.AllChatsRead=true;
+    }
 
 
         let chatPanel = getDoc().querySelector('#chatPanel');
@@ -2169,11 +2176,24 @@ class BasePlugin {
         if (Message) {
 
 
-            var html = CurrentUserInfo.commonDomManager.makeChatDom(Message, isGapMe, false, gapFileUniqId, UniqId);
+            var html = CurrentUserInfo.commonDomManager.makeChatDom(Message, isGapMe, false, gapFileUniqId, UniqId,null
+                ,null,true);
 
-            getDoc().querySelector('#chatPanel').innerHTML = getDoc().querySelector('#chatPanel').innerHTML + html;
+            getDoc().querySelector('#chatPanel').innerHTML = getDoc().querySelector('#chatPanel').innerHTML
+                + html ;
+
+            
+
 
             scrollToBottomChatPanel();
+
+            toggle(getDoc().querySelector(`.msg-${UniqId}`),'slide-up')
+
+
+            setTimeout(function (){
+                scrollToBottomChatPanel();
+
+            },500)
 
             if (callback) {
                 callback();
@@ -3272,10 +3292,12 @@ class DomManager {
 
         let messages = GetChats();
         let uniqId = messages + 1;
-        var html = CurrentUserInfo.commonDomManager.makeChatDom(text, true, false, gapFileUniqId, uniqId, 'همین الان');
+        var html = CurrentUserInfo.commonDomManager.makeChatDom(text, true, false, gapFileUniqId, uniqId, 'همین الان',null,true);
 
         var chatPanel = getDoc().querySelector('#chatPanel');
-        chatPanel.innerHTML = chatPanel.innerHTML + html;
+        chatPanel.innerHTML = chatPanel.innerHTML + html ;
+
+        toggle(getDoc().querySelector(`.msg-${uniqId}`),'slide-right')
 
         scrollToBottomChatPanel()
 
@@ -3289,8 +3311,11 @@ class DomManager {
         gapChatSubmit();
     }
 
-    makeChatDom(msg, gapMe, delivered, gapFileUniqId, uniqId, time, chat) {
-        var dom = "<div uniqid='" + uniqId + "' class=\"gapMsg\"  id='msg_" + gapFileUniqId + "'>\n";
+    makeChatDom(msg, gapMe, delivered, gapFileUniqId, uniqId, time, chat,isAnim) {
+        
+        
+        
+        var dom = ` <div uniqid='${uniqId}' class=\"gapMsg msg-${uniqId} ${isAnim ? 'adp-hide' : ''}\"  id='msg_${gapFileUniqId}'>\n`;
 
         if (gapMe) {
             dom += "<div class=\"gapMe\">\n";
@@ -3535,9 +3560,12 @@ class DomManager {
 
     bindCloseButton() {
         getDoc().querySelector('#gapCloseButton').onclick = function () {
-            toggle(this.parentNode.parentNode);
+           // toggle(this.parentNode.parentNode);
+            ADP.hide(this.parentNode.parentNode, 'flip-down');
+
             var x = getDoc().querySelector('#dot');
             toggle(x);
+
 
 
             if (!CurrentUserInfo.IsCustomer) {
@@ -3610,8 +3638,13 @@ class DomManager {
 
             var x = getDoc().querySelector('#gapContent');
            // toggle(x)
-
             ADP.show(x, 'slide-down');
+
+            
+            setTimeout(()=>{
+
+            },1000)
+          //  ADP.hide(x, 'slide-down');
 
 
 
@@ -3795,17 +3828,20 @@ function positionONTheFly(elementById) {
 }
 
 function scrollToBottomChatPanel() {
-    getDoc().querySelector('#chatPanel').scrollTop = getDoc().querySelector('#chatPanel').scrollHeight;
+    getDoc().querySelector('#chatPanel').scrollTop = 99999999999;//getDoc().querySelector('#chatPanel').scrollHeight;
 
 }
 
 
-function toggle(x) {
-    if (x.style.display === 'none') {
+function toggle(x,type) {
+    /*if (x.style.display === 'none') {
         x.style.display = 'inherit';
     } else {
         x.style.display = 'none';
-    }
+    }*/
+
+    ADP.toggle(x, type? type:'flip-down');
+
 }
 
 /*drag */
@@ -5470,7 +5506,13 @@ function gapStickerOpen(THIS) {
 
     let gapStickers = getDoc().querySelector('#gapStickers');
     if (gapStickers) {
-        gapStickers.remove();
+
+        toggle(getDoc().querySelector('.gapStickerHolder'))
+        setTimeout(function (){
+            gapStickers.remove();
+        },500)
+
+       
 
         return;
     }
@@ -5482,7 +5524,7 @@ function gapStickerOpen(THIS) {
     let j = 0;
     for (let i = 0; i < stickerArrays.length; i++) {
 
-        temp += `<div class="gapEmoji" onclick="addEmoji('&#${stickerArrays[i]}')" style="display: inline; font-size: 24px !important;overflow: hidden">&#${stickerArrays[i]}</div>`;
+        temp += `<div class="gapEmoji  " onclick="addEmoji('&#${stickerArrays[i]}')" style="display: inline; font-size: 24px !important;overflow: hidden">&#${stickerArrays[i]}</div>`;
 
 
     }
@@ -5490,7 +5532,7 @@ function gapStickerOpen(THIS) {
 
     let html = `
 
-            <ul class="gapStickerHolder" id="gapStickers">
+            <ul class="gapStickerHolder adp-hide" id="gapStickers" style="overflow: auto">
 
 ${temp}
 
@@ -5506,6 +5548,9 @@ ${temp}
 
     chatPanel.append(createElementFromHTML(html));
 
+    
+    
+    toggle(getDoc().querySelector('.gapStickerHolder'))
 }
 
 
