@@ -13,7 +13,33 @@ using SignalRMVCChat.SysAdmin.Service;
 
 namespace TelegramBotsWebApplication.ActionFilters
 {
-    public class MyAuthorizeFilter : ActionFilterAttribute
+    public class SetCurrentRequestFilter : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            
+            CurrentRequestSingleton.Init(filterContext.HttpContext);
+
+            CurrentRequestSingleton.CurrentRequest.Token = filterContext.HttpContext.Request.Cookies["gaptoken"]?.Value;
+
+            try
+            {
+                // for setting values
+                var vm = SecurityService.ParseToken(CurrentRequestSingleton.CurrentRequest.Token);
+
+                CurrentRequestSingleton.CurrentRequest.AppLoginViewModel = vm;
+
+            }
+            catch (Exception e)
+            {
+             //ignore
+            }
+
+
+
+        }
+    }
+    public class MyAuthorizeFilter : SetCurrentRequestFilter
     {
         private SettingService _settingService = new SettingService();
 
@@ -33,10 +59,6 @@ namespace TelegramBotsWebApplication.ActionFilters
 
             base.OnActionExecuting(filterContext);
 
-
-            CurrentRequestSingleton.Init(filterContext.HttpContext);
-
-            CurrentRequestSingleton.CurrentRequest.Token = filterContext.HttpContext.Request.Cookies["gaptoken"]?.Value;
 
             try
             {

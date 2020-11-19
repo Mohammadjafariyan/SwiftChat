@@ -9,10 +9,12 @@ import {ShowPlusCount} from "../../Components/Menu";
 import {DataHolder} from "../../Help/DataHolder";
 
 import '../../styles/myStyle.css'
+import CurrentPlanInMenu from "../../Plan/CurrentPlanInMenu";
 
 class B4AdminNavbar extends Component {
     state = {
-        ReceivedPrivateChats: []
+        ReceivedPrivateChats: [],
+        toggled:false   
     };
 
 
@@ -163,12 +165,27 @@ class B4AdminNavbar extends Component {
                     {/* <!-- Topbar Search-->*/}
                     {/* <Menubar model={this.items} end={end}  />*/}
 
-                    <B4AdminSubMenu/>
+                   {/* <B4AdminSubMenu/>*/}
 
+                    
+                        <a className="nav-link " 
+                           role="button" onClick={()=>{
+                            document.getElementById('sidebarToggle').click();
+                            this.setState({toggled:!this.state.toggled})
+                        }}>
+
+                            
+                            {!this.state.toggled && <i className="fa fa-toggle-on" aria-hidden="true"></i>}
+                            {this.state.toggled && <i className="fa fa-toggle-off" aria-hidden="true"></i>}
+
+                        </a>
 
                     {/* <!-- Topbar Navbar-->*/}
                     <ul className="navbar-nav ml-auto">
 
+
+                        {/* <!-- Nav Item - Search Dropdown (Visible Only XS)-->*/}
+                      
                         {/* <!-- Nav Item - Search Dropdown (Visible Only XS)-->*/}
                         <li className="nav-item dropdown no-arrow d-sm-none">
                             <a className="nav-link dropdown-toggle" href="#" id="searchDropdown"
@@ -194,7 +211,26 @@ class B4AdminNavbar extends Component {
                                 </form>
                             </div>
                         </li>
+                        <li className="nav-item  no-arrow mx-1" aria-label="آمار" data-microtip-position="left" role="tooltip">
+                            <a className="nav-link" onClick={()=>{
+                                CurrentUserInfo.B4AdminMainMenu.setPage("StatPage")
+                            }}
+                               role="button" >
+                                <i className="fa fa-tachometer" aria-hidden="true"></i>
 
+                            </a>
+                        </li>
+                        <li className="nav-item  no-arrow mx-1" aria-label="چت باکس" data-microtip-position="left" role="tooltip">
+                            <a className="nav-link" onClick={()=>{
+                                if (CurrentUserInfo.OntTheFlyChatPanel){
+                                    CurrentUserInfo.OntTheFlyChatPanel.showPanel(true);
+                                }
+                            }}
+                               role="button" >
+                                <i className="fa fa-envelope-open-o" aria-hidden="true"></i>
+
+                            </a>
+                        </li>
                         {/* <!-- Nav Item - Alerts-->*/}
                         <li className="nav-item dropdown no-arrow mx-1" aria-label="چت های خصوصی " data-microtip-position="left" role="tooltip">
                             <a className="nav-link dropdown-toggle" href="#" id="alertsDropdown"
@@ -362,6 +398,9 @@ class B4AdminNavbar extends Component {
                                 </a>
                             </div>
                         </li>
+
+                       
+                        <CurrentPlanInMenu/>
 
                     </ul>
 

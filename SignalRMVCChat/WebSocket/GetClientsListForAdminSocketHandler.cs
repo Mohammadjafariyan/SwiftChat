@@ -48,7 +48,7 @@ namespace SignalRMVCChat.WebSocket
 
                     /// لیست کاربران این سایت
                     var customers = db.Customers
-                        .Include(c => c.TrackInfos)
+                        /*.Include(c => c.TrackInfos)*/
                         .Include(c => c.MySockets)
                         .Include(c => c.Chats)
                         .Include(c=>c.CustomerTags)

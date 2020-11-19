@@ -11,7 +11,7 @@ class UserTags extends Component {
     
     render() {
         
-        if (!DataHolder.selectedCustomer){
+        if (!this.props.Customer){
             return  <></>
         }
         
@@ -24,9 +24,9 @@ class UserTags extends Component {
                     </div>
 
                     <div className="card-body">
-                        <TagSingleCustomer customerId={DataHolder.selectedCustomer.Id}/>
+                        <TagSingleCustomer customerId={this.props.Customer.Id}/>
 
-                        <CustomerTags customer={DataHolder.selectedCustomer}/>
+                        <CustomerTags customer={this.props.Customer}/>
                         
                         
                         <TagList/>

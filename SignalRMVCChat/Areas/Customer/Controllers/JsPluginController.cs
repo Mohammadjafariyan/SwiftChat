@@ -12,6 +12,8 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
     [AllowCrossSite]
     public class JsPluginController : Controller
     {
+     
+        
         [HttpGet]
         public ActionResult CustomerChatHtml(string token)
         {

@@ -13,7 +13,7 @@ class OtherTools extends Component {
 
     render() {
 
-        if (!DataHolder.selectedCustomer) {
+        if (!this.props.Customer) {
             return <></>;
         }
 
@@ -33,11 +33,11 @@ class OtherTools extends Component {
                         <Row>
                             <h1 aria-label="تماس صوتی" data-microtip-position="top" role="tooltip" onClick={()=>{
 
-                                if (!DataHolder.selectedCustomer){
+                                if (!this.props.Customer){
                                     _showError('لطفا ابتدا یک بازدیدکننده را انتخاب کنید');
                                     return ;
                                 }
-                                DataHolder.selectedCustomerForCall=DataHolder.selectedCustomer;
+                                this.props.CustomerForCall=this.props.Customer;
                                 
                                 if (CurrentUserInfo.VoiceCall){
                                     CurrentUserInfo.VoiceCall.show();

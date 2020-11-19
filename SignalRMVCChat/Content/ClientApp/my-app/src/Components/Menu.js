@@ -22,6 +22,12 @@ export default class Menu extends Component {
         DataHolder.currentPage = page
         CurrentUserInfo.LayoutPage.setState({ temp: Math.random() });
         this.setState({ temp: Math.random() })
+
+
+
+        if (CurrentUserInfo.OntTheFlyChatPanel){
+            CurrentUserInfo.OntTheFlyChatPanel.showPanel();
+        }
     }
 
     totalUserCountsChangedCallback(res){

@@ -30,15 +30,15 @@ class CustomerData extends Component {
 
     componentDidMount() {
 
-        if (!DataHolder.selectedCustomer) {
+        if (!this.props.Customer) {
             return;
         }
-        MyCaller.Send('GetCustomerDataList', {customerId: DataHolder.selectedCustomer.Id})
+        MyCaller.Send('GetCustomerDataList', {customerId: this.props.Customer.Id})
     }
 
     render() {
 
-        if (!DataHolder.selectedCustomer) {
+        if (!this.props.Customer) {
             return <></>;
         }
 
@@ -169,7 +169,7 @@ class CustomerData extends Component {
         _showMsg('در حال حذف کلید')
         MyCaller.Send('DeleteKey', {
             id: id,
-            customerId:DataHolder.selectedCustomer.Id
+            customerId:this.props.Customer.Id
         })
     }
 
@@ -207,7 +207,7 @@ class CustomerData extends Component {
         MyCaller.Send('SaveKey', {
             Key: this.state.key,
             Value: this.state.value,
-            customerId:DataHolder.selectedCustomer.Id
+            customerId:this.props.Customer.Id
         })
     }
 }

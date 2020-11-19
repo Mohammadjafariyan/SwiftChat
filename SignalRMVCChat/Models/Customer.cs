@@ -21,6 +21,8 @@ namespace SignalRMVCChat.Models
         public Customer()
         {
             this.CreationDateTime = DateTime.Now;
+
+            TrackInfos = new List<CustomerTrackInfo>();
         }
 
 

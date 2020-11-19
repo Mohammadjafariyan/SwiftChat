@@ -11,6 +11,7 @@ import MarkAsResovled from "./MarkAsResovled";
 import {UserInformationService} from "./Service/UserInformationService";
 import {_showError} from "../Pages/LayoutPage";
 import BlockUser from "./BlockUser/BlockUser";
+import CustomerTimeSpent from "./Profile/CustomerTimeSpent";
 
 class CustomerInfo extends Component {
     state = {};
@@ -184,16 +185,20 @@ _showError(' مقدار بازگشتی از سرور نال است ');
                                     
                                     <i className={'fa fa-user'}></i>
                                 </Badge>
-                                نمایش کامل پروفایل کاربر
+                               نمایش جزییات رفتار
                                 
                             </Button>
                         </Form.Group>
                         
                         {(!DataHolder.selectedCustomer || !DataHolder.selectedCustomer.UsersSeparationParams)  && 
                         <small>کاربر عضو نیست</small>}
-                        
-                        
+
+
+
+
                         <Satistification/>
+                        
+                        
                         
                         
                         <BlockUser/>

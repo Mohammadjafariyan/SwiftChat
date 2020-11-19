@@ -9,6 +9,8 @@ import B4AdminBody from "./B4AdminBody";
 import B4AdminMenu from "./B4AdminMenu";
 import B4AdminNavbar from "./B4AdminNavbar";
 import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import B4AdminSubMenu from "./B4AdminSubMenu";
+import OntTheFlyChatPanel from "../../Components/OnTheFlyChatPanel/OntTheFlyChatPanel";
 
 const B4AdminLayoutScripts=()=>{
     useScript('/Content/B4Admin/jquery/jquery.min.js')
@@ -72,8 +74,8 @@ class B4AdminLayout extends Component {
                             <div className="container-fluid">
 
                                  {/* <!-- Page Heading-->*/}
-                                 
-                                 
+
+                                <B4AdminSubMenu/>
                                
                                  <B4AdminBody/>
                                  
@@ -99,6 +101,8 @@ class B4AdminLayout extends Component {
                      {/* <!-- End of Content Wrapper-->*/}
 
                 </div>
+                
+                <OntTheFlyChatPanel/>
             </div>
         );
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
+using Engine.SysAdmin.Models;
 using Fleck;
 using Newtonsoft.Json;
 using SignalRMVCChat.Areas.sysAdmin.Service;
@@ -191,6 +192,51 @@ namespace SignalRMVCChat.Models
             {
                 throw  new Exception("تایم قابل پردازش نیست");
             }
+        }
+
+        public static void OnControllerException(ExceptionContext filterContext, ViewDataDictionary ViewData)
+        {
+            filterContext.ExceptionHandled = true;
+
+            //Log the error!!
+            // _Logger.Error(filterContext.Exception);
+            string msg = MyGlobal.RecursiveExecptionMsg(filterContext.Exception);
+            // OR 
+            var vm = new ViewDataDictionary(filterContext.Controller.ViewData)
+            {
+                Model = new ErrorViewModel
+                {
+                    Msg = msg
+                } // set the model
+            };
+            ViewData["Error"] = msg;
+            filterContext.Result = new ViewResult
+            {
+                ViewName = "~/Views/Shared/Error.cshtml",
+                ViewData = vm
+            };
+        }
+
+        public static string CalculateTimeSpentOnPage(DateTime? dateTime)
+        {
+            if (dateTime.HasValue==false)
+            {
+                return null;
+            }
+
+            var diff = DateTime.Now.Subtract(dateTime.Value);
+            return
+                $@"{diff.Hours}:{diff.Minutes}:{diff.Seconds}";
+        }
+        
+        public static double? CalculateTimeSpentOnPageNum(DateTime? dateTime)
+        {
+            if (dateTime.HasValue==false)
+            {
+                return null;
+            }
+
+            return DateTime.Now.Subtract(dateTime.Value).TotalMinutes;
         }
     }
 }

@@ -141,8 +141,8 @@
     <nav class="navbar header-navbar pcoded-header noLayout">
     <div class="navbar-wrapper">
         <div class="navbar-logo" style="background-color: white;color:black">
-            <a style="    color: black;
-                          font-size: 35px !important;" class="mobile-menu" id="mobile-collapse" href="#!">
+            <a style="text-align: right;    color: black;
+                          font-size: 35px !important;" class="mobile-menu" id="mobile-collapse"  href="#!">
                 <i class="feather icon-menu"></i>
             </a>
             <a href="/Customer/Dashboard" style="color: black">
@@ -413,10 +413,12 @@
      <li class=" @(Request.Url.PathAndQuery.ToString()=="/customer/dashboard" ? "active" : "")">
                     <a href="/customer/dashboard">
                         <span class="pcoded-mtext">پیشخوان</span>
-                        <span class="pcoded-badge label label-info ">جدید</span>
+                        @*
+                        
+                    *@
                     </a>
                 </li>
-    <li class="pcoded-hasmenu pcoded-trigger" dropdown-icon="style1" subitem-icon="style1">
+    @*<li class="pcoded-hasmenu pcoded-trigger" dropdown-icon="style1" subitem-icon="style1">
         <a href="javascript:void(0)" style="padding-right: 0px">
             <span class="pcoded-mtext" style="text-align: right !important;">نصب افزونه </span>
         </a>
@@ -424,25 +426,26 @@
             <li class="@(Request.Url.ToString().Contains("/customer/dashboard/CreatePluginForCustomers") ? "active" : "")">
                 <a href="/customer/dashboard/CreatePluginForCustomers">
                     <span class="pcoded-mtext">افزونه بازدیدکنندگان</span>
-                    <span class="pcoded-badge label label-info ">جدید</span>
+                    
                 </a>
             </li>
             <li class="@(Request.Url.PathAndQuery.ToString().Contains("/customer/dashboard/CreatePluginForAdmins") ? "active" : "")">
                 <a href="/customer/dashboard/CreatePluginForAdmins">
                     <span class="pcoded-mtext">افزونه پشتیبانی و ادمین</span>
-                    <span class="pcoded-badge label label-info ">جدید</span>
+                    
                 </a>
             </li>
 
 
-            @*<li class=" ">
+            $1$<li class=" ">
                                                 <a href="dashboard-analytics.htm">
                                                     <span class="pcoded-mtext">Analytics</span>
                                                     <span class="pcoded-badge label label-info ">NEW</span>
                                                 </a>
-                                            </li>*@
+                                            </li>#1#
         </ul>
     </li>
+    *@
 
     @*<li class="pcoded-hasmenu active pcoded-trigger">
                                     <a href="javascript:void(0)">
@@ -555,7 +558,31 @@
                                     </ul>
                                 </li>*@
 </ul>
+ 
 
+<ul class="pcoded-item pcoded-left-item">
+  <li class="@(Request.Url.PathAndQuery.ToString().Contains("/customer/dashboard/CreatePluginForAdmins") ? "active" : "")">
+      <a href="/customer/dashboard/CreatePluginForAdmins">
+           <span class="pcoded-micon onMobile">
+                          <i class="feather icon-menu"></i>
+                      </span>
+          <span class="pcoded-mtext">افزونه پشتیبانی و ادمین</span>
+
+      </a>
+  </li>
+</ul>
+<ul class="pcoded-item pcoded-left-item">
+    <li class="@(Request.Url.ToString().Contains("/customer/dashboard/CreatePluginForCustomers") ? "active" : "")">
+        <a href="/customer/dashboard/CreatePluginForCustomers">
+             <span class="pcoded-micon onMobile">
+                            <i class="feather icon-menu"></i>
+                        </span>
+            <span class="pcoded-mtext">افزونه بازدیدکنندگان</span>
+
+        </a>
+                </li>
+</ul>
+@*
 <ul class="pcoded-item pcoded-left-item" item-border="true" item-border-style="none" subitem-border="true">
     <li class="pcoded-hasmenu pcoded-trigger" dropdown-icon="style1" subitem-icon="style1">
         <a href="javascript:void(0)" style="padding-right: 0px">
@@ -565,19 +592,19 @@
             <li class=" @(Request.Url.PathAndQuery.ToLower().Contains("/customer/MyWebsites/Index".ToLower()) ? "active" : "")">
                 <a href="/customer/MyWebsites/Index">
                     <span class="pcoded-mtext">سایت های من</span>
-                    <span class="pcoded-badge label label-info ">جدید</span>
+                    
                 </a>
             </li>
             <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/MyAccounts/Index".ToLower()) ? "active" : "")">
                 <a href="/customer/MyAccounts/Index">
                     <span class="pcoded-mtext">تعریف ادمین پشتیبانی</span>
-                    <span class="pcoded-badge label label-info ">جدید</span>
+                    
                 </a>
             </li>
             <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/MyAccounts/AssignWebsites".ToLower()) ? "active" : "")">
                 <a href="/customer/MyAccounts/AssignWebsites">
                     <span class="pcoded-mtext">دسترسی ادمین ها</span>
-                    <span class="pcoded-badge label label-info ">جدید</span>
+                    
                 </a>
             </li>
 
@@ -585,13 +612,47 @@
     </li>
 
 
-</ul>
-<div class="pcoded-navigatio-lavel">UI Element</div>
+</ul>*@
 <ul class="pcoded-item pcoded-left-item">
-    <li class="pcoded-hasmenu">
+      <li class=" @(Request.Url.PathAndQuery.ToLower().Contains("/customer/MyWebsites/Index".ToLower()) ? "active" : "")">
+          <a href="/customer/MyWebsites/Index">
+               <span class="pcoded-micon onMobile">
+                              <i class="feather icon-menu"></i>
+                          </span>
+              <span class="pcoded-mtext">سایت های من</span>
+
+          </a>
+                </li>
+</ul>
+
+<ul class="pcoded-item pcoded-left-item">
+    <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/MyAccounts/Index".ToLower()) ? "active" : "")">
+        <a href="/customer/MyAccounts/Index">
+             <span class="pcoded-micon onMobile">
+                            <i class="feather icon-menu"></i>
+                        </span>
+            <span class="pcoded-mtext">تعریف ادمین پشتیبانی</span>
+
+        </a>
+    </li>
+</ul>
+
+<ul class="pcoded-item pcoded-left-item">
+    <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/MyAccounts/AssignWebsites".ToLower()) ? "active" : "")">
+        <a href="/customer/MyAccounts/AssignWebsites">
+             <span class="pcoded-micon onMobile">
+                            <i class="feather icon-menu"></i>
+                        </span>
+            <span class="pcoded-mtext">دسترسی ادمین ها</span>
+
+        </a>
+               </li>
+</ul>
+<div class="pcoded-navigatio-lavel">عملیات های دیگر</div>
+<ul class="pcoded-item pcoded-left-item">
     <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/UpgradePlan/PlanStatus".ToLower()) ? "active" : "")">
         <a href="/Customer/UpgradePlan/PlanStatus">
-            <span class="pcoded-micon">
+            <span class="pcoded-micon onMobile">
                 <i class="feather icon-menu"></i>
             </span>
             <span class="pcoded-mtext">پلن های کاربری من</span>
@@ -602,7 +663,7 @@
     <li class="pcoded-hasmenu">
     <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/UpgradePlan/MyBills".ToLower()) ? "active" : "")">
         <a href="/Customer/UpgradePlan/MyBills">
-            <span class="pcoded-micon">
+            <span class="pcoded-micon onMobile">
                 <i class="feather icon-menu"></i>
             </span>
             <span class="pcoded-mtext">صورتحساب</span>
@@ -614,13 +675,54 @@
     <li class="pcoded-hasmenu">
     <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/customer/PluginCustomized/MyWebsiteList".ToLower()) ? "active" : "")">
         <a href="/Customer/PluginCustomized/MyWebsiteList">
-            <span class="pcoded-micon">
+            <span class="pcoded-micon onMobile">
                 <i class="feather icon-menu"></i>
             </span>
             <span class="pcoded-mtext">سفارشی سازی پلاگین</span>
         </a>
     </li>
 </ul>
+<ul class="pcoded-item pcoded-left-item onMobile">
+    <li class="pcoded-hasmenu">
+    <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/Customer/UpgradePlan/Index".ToLower()) ? "active" : "")">
+        <a href="/Customer/UpgradePlan/Index">
+            <span class="pcoded-micon">
+                <i class="feather icon-menu"></i>
+            </span>
+            <span class="pcoded-mtext"> پلن : @planName</span>
+        </a>
+    </li>
+</ul>
+
+<ul class="pcoded-item pcoded-left-item onMobile">
+    <li class="pcoded-hasmenu">
+    <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/Customer/CustomerTickets/Index".ToLower()) ? "active" : "")">
+        <a href="/Customer/CustomerTickets/Index">
+            <span class="pcoded-micon ">
+                <i class="feather icon-menu"></i>
+            </span>
+            <span class="pcoded-mtext">  تیکت ها</span>
+        </a>
+    </li>
+</ul>
+
+
+<ul class="pcoded-item pcoded-left-item onMobile">
+    <li class="pcoded-hasmenu">
+    <li class="@(Request.Url.PathAndQuery.ToLower().Contains("/Customer/CustomerTickets/Detail".ToLower()) ? "active" : "")">
+        <a href="/Customer/CustomerTickets/Detail">
+       <span class="pcoded-micon ">
+                      <i class="feather icon-menu"></i>
+                  </span>
+            <span class="pcoded-mtext">  ارسال تیکت</span>
+        </a>
+    </li>
+</ul>
+  
+            
+
+             
+
 </div>
 </nav>
 </div>

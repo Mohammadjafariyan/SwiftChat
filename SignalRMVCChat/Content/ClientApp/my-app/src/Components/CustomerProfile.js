@@ -2,47 +2,102 @@
 import Button from "react-bootstrap/Button";
 import {DataHolder} from "../Help/DataHolder";
 import {CurrentUserInfo} from "../Help/Socket";
-import Badge from "react-bootstrap/Badge";
-import {Form} from "react-bootstrap";
+
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import CustomerTrackingList from "./Profile/CustomerTrackingList";
+import {CustomerProfileSideBar} from "./Profile/CustomerProfileSideBar";
 
 class CustomerProfile extends Component {
+    state = {};
+
+
     render() {
+
+        if (!this.props.Customer) {
+            return <div>{this.showReturn()} </div>;
+        }
         return (
             <div>
-                <Button variant={'light'} onClick={()=>{
+                {this.showReturn()}
+                <hr/>
 
 
-                    CurrentUserInfo.Menu.setPage(DataHolder.Back)
-                }}>
-                    <i className={'fa fa-arrow-left'}></i>
+                <Row>
 
-                    بازگشت
 
-                </Button>
+                    {/*  <Col md={4}>
+                        <CustomerInfo  Customer={this.props.Customer}/>
+
+                        <UsersSeparationData Customer={this.props.Customer}/>
+
+                        <UserDeviceInfo Customer={this.props.Customer}/>
+
+
+
+                        <CustomerTimeSpent Customer={this.props.Customer}/>
+
+                        <CustomerData Customer={this.props.Customer}/>
+
+                        <UserTags Customer={this.props.Customer}/>
+                    </Col>*/}
+                    <Col md={1}>
+                        <Button variant={'light'} onClick={() => {
+
+                            this.setState({customerProfileSideBarVisible: true,rn:Math.random()});
+
+                        }}>
+                            <i className={'fa fa-user'}/>
+
+                            نمایش پروفایل
+
+                        </Button>
+                    </Col>
+                    <Col md={11}>
+
+                        <CustomerTrackingList Customer={this.props.Customer}/>
+
+                    </Col>
+                </Row>
+
+                {this.state.customerProfileSideBarVisible && 
+                <CustomerProfileSideBar parent={this}  Customer={this.props.Customer}
+                                        visible={this.state.customerProfileSideBarVisible}/>
+                }
             </div>
         );
+    }
+
+    showReturn() {
+        return <Button variant={'light'} onClick={() => {
+
+
+            CurrentUserInfo.Menu.setPage(DataHolder.Back)
+        }}>
+            <i className={'fa fa-arrow-left'}/>
+
+            بازگشت
+
+        </Button>;
     }
 }
 
 export default CustomerProfile;
 
 
+export const BackButton = () => {
 
-
-
-export const BackButton=()=>{
-    
-    return   <div>
-        <Button variant={'light'} onClick={()=>{
+    return <div>
+        <Button variant={'light'} onClick={() => {
 
 
             CurrentUserInfo.Menu.setPage(DataHolder.Back)
         }}>
-            <i className={'fa fa-arrow-left'}></i>
+            <i className={'fa fa-arrow-left'}/>
 
             بازگشت
 
         </Button>
     </div>
-    
+
 }

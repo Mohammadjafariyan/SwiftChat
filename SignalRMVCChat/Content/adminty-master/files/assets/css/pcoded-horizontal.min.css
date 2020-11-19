@@ -62,19 +62,19 @@ a:focus {
   .pcoded .pcoded-brand .menu-toggle a i {
     font-size: 18px; }
 .pcoded .pcoded-navbar .pcoded-item {
-  display: block;
+  /*display: block;*/
   list-style: none;
   margin: 0;
   padding: 0;
   position: relative; }
   .pcoded .pcoded-navbar .pcoded-item > li {
-    display: block;
+/*    display: block;*/
     list-style: outside none none;
     margin: 0;
     padding: 0;
     position: relative; }
     .pcoded .pcoded-navbar .pcoded-item > li > a {
-      display: block;
+    /*  display: block;*/
       font-size: 13px;
       padding: 9px 20px;
       text-decoration: none;
@@ -92,13 +92,13 @@ a:focus {
     padding: 0;
     box-shadow: 0 1px 7px -1px rgba(0, 0, 0, 0.4); }
     .pcoded .pcoded-navbar .pcoded-item .pcoded-hasmenu .pcoded-submenu li {
-      display: block;
+    /*  display: block;*/
       list-style: outside none none;
       margin: 0;
       padding: 0;
       position: relative; }
       .pcoded .pcoded-navbar .pcoded-item .pcoded-hasmenu .pcoded-submenu li > a {
-        display: block;
+       /* display: block;*/
         font-size: 14px;
         padding: 5px 10px;
         text-decoration: none;

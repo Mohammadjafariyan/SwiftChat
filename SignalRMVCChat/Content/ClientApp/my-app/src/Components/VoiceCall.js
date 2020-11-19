@@ -15,6 +15,9 @@ class VoiceCall extends Component {
 
     };
 
+   
+
+
     componentDidMount() {
         CurrentUserInfo.VoiceCall = this;
 
@@ -42,7 +45,7 @@ class VoiceCall extends Component {
                 <Dialog rtl={true} modal={false} header="برقراری تماس صوتی  " visible={this.state.displayPosition}
                         position={this.state.position}
                         style={{width: '30vw'}}
-                        onHide={() => this.onHide('displayPosition')}>
+                        onHide={() => this.setState({displayPosition:false})}>
 
                     {this.state.type === 'callToUser' && this.callToUser()}
                     {this.state.type === 'userCalling' && this.userCalling()}

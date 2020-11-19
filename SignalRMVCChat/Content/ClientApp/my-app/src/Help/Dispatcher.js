@@ -3,6 +3,7 @@ import {cookieManager} from "./CookieManager";
 import LoginPage from "./../Pages/LoginPage";
 import {DataHolder} from "./DataHolder";
 import {FormShowerInChatHolder} from "../Components/FormShowerInChat";
+import React from "react";
 
 class dispatcher {
     dispatch(res) {
@@ -12,6 +13,19 @@ class dispatcher {
         }
         console.log("dispatcher===>", res.Name);
         switch (res.Name) {
+            /*-------------------- Tracking--------------------*/
+            case "getCustomerTrackingInfoDetailCallback":
+                if (CurrentUserInfo.CustomerTimeSpent) {
+                    CurrentUserInfo.CustomerTimeSpent.getCustomerTrackingInfoDetailCallback(res);
+                }
+                
+                if (CurrentUserInfo.CustomerProfile) {
+                    CurrentUserInfo.CustomerProfile.getCustomerTrackingInfoDetailCallback(res);
+                }
+                break;
+
+
+            /*-------------------- End--------------------*/
 
             
             /*-------------------- BOT LOG--------------------*/
@@ -628,6 +642,8 @@ class dispatcher {
             case "readChatCallback":
                 CurrentUserInfo.ChatPage.readChatCallback(res);
                 CurrentUserInfo.ChatPage.LoadForms(res);
+                
+                
 
                 break;
             case "adminLoginCallback":
@@ -660,6 +676,8 @@ class dispatcher {
                     }
                 }
 
+
+             
                 /*else{
          
                          CurrentUserInfo.LayoutPage.showError('dispatcher CurrentUserInfo.OnlineCustomerListHolder is null');
@@ -806,9 +824,41 @@ class dispatcher {
                 CurrentUserInfo.ChatPage.EditMessageCallback(res);
                 break;
             case "getVisitedPagesForCurrentSiteCallback":
-                CurrentUserInfo.SepratePerPage.getVisitedPagesForCurrentSiteCallback(
+                if (CurrentUserInfo.SepratePerPage) {
+                    CurrentUserInfo.SepratePerPage.getVisitedPagesForCurrentSiteCallback(
                     res
                 );
+                }
+
+                if (CurrentUserInfo.PageVisitStat) {
+                    CurrentUserInfo.PageVisitStat.getVisitedPagesForCurrentSiteCallback(
+                        res
+                    );
+                }
+
+                if (CurrentUserInfo.PageOnlineCount) {
+                    CurrentUserInfo.PageOnlineCount.getVisitedPagesForCurrentSiteCallback(
+                        res
+                    );
+                }
+
+                if (CurrentUserInfo.StatPerState) {
+                    CurrentUserInfo.StatPerState.getVisitedPagesForCurrentSiteCallback(res);
+                }
+
+                if (CurrentUserInfo.StatPerCity) {
+                    CurrentUserInfo.StatPerCity.getVisitedPagesForCurrentSiteCallback(res);
+                }
+
+                if (CurrentUserInfo.StatInMap) {
+                    CurrentUserInfo.StatInMap.getVisitedPagesForCurrentSiteCallback(res);
+                }
+
+                if (CurrentUserInfo.StatForeignCountries) {
+                    CurrentUserInfo.StatForeignCountries.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                
+                
                 break;
 
             case "getAllTagsForCurrentAdminCallback":
@@ -843,6 +893,12 @@ class dispatcher {
                 if (CurrentUserInfo.B4AdminNavbar) {
                     CurrentUserInfo.B4AdminNavbar.getMyProfileCallback(res);
                 }
+
+                if (CurrentUserInfo.CurrentPlanInMenu) {
+                    CurrentUserInfo.CurrentPlanInMenu.getMyProfileCallback(res);
+                }
+
+                
                 break;
             case "saveMyProfileCallback":
                 if (CurrentUserInfo.ProfilePage) {

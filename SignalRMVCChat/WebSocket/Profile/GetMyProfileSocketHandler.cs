@@ -30,6 +30,10 @@ namespace SignalRMVCChat.WebSocket.Profile
              myAccount.Username = null;
              myAccount.Password = null;
              
+             Plan plan = MyAccountProviderService.GetCurrentPlan(currMySocketReq);
+
+             
+             
              return await Task.FromResult(new MyWebSocketResponse
              {
                  Name = "getMyProfileCallback",
@@ -39,7 +43,8 @@ namespace SignalRMVCChat.WebSocket.Profile
                      Name=myAccount.Name,
                      MyAccount=myAccount,
                      Id=myAccount.Id,
-                     Prof="hiiiiiiiiiiiiiiiiiiiii"
+                     Prof="hiiiiiiiiiiiiiiiiiiiii",
+                     plan
                  }
                  
              });

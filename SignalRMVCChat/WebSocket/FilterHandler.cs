@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenQA.Selenium.DevTools.Debugger;
@@ -145,93 +146,156 @@ namespace SignalRMVCChat.WebSocket
                 if (_request.Name == "Register")
                 {
                     // برای هر کاربر فقط یک بار بخوان
-                    if (currMySocketReq.MySocket.Customer.LastTrackInfo == null)
-                    {
-                        try
-                        {
-                            var ipInfoService = Injector.Inject<IpInfoService>();
 
+                    try
+                    {
+                        var ipInfoService = Injector.Inject<IpInfoService>();
+
+                        IpInfoViewModel inforByIp = null;
+
+
+                        CustomerTrackInfoType trackInfoType=CustomerTrackInfoType.NotDetect;
+                        if (currMySocketReq.MySocket.Customer.LastTrackInfo == null)
+                        {
+                            trackInfoType = CustomerTrackInfoType.EnterWebsite;
+                        }
+
+                        // اگر به تازگی اطلاعاتش را دریافت نکرده باشیم و ایا اینکه ایپی کاربر تغییر کرده باشد مجددا بخواند
+                        if (currMySocketReq.MySocket.Customer.LastTrackInfo == null
+                            || currMySocketReq.MySocket.Customer.LastTrackInfo?.ip != currMySocketReq.MySocket.Socket
+                                .ConnectionInfo
+                                .ClientIpAddress)
+                        {
+                            if (!MyGlobal.IsAttached)
+                            {
+                                trackInfoType = CustomerTrackInfoType.ChangeIp;
+
+                            }
 
                             // اطلاعات کاربر را از سایت شخص ثالث می گیرد
-                            var inforByIp =
+                            inforByIp =
                                 await ipInfoService.GetInforByIp(currMySocketReq.MySocket.Socket.ConnectionInfo
                                     .ClientIpAddress);
-
-                            // اطلاعاتی که خودمان موقع رفرش شدن کاربر از او میگیریم
-                            var url = _request.Body.URL;
-                            var title = _request.Body.Title;
-                            var description = _request.Body.Description;
-
-
-                            /*header infos:*/
-
-                            var browser = currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["User-Agent"];
-                            var language = currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["Accept-Language"];
-
-                            string countryLanguage = "";
-                            /*en-US,en;q=0.9*/
-                            if (string.IsNullOrEmpty(language) == false)
-                            {
-                                try
-                                {
-                                    var parts = language.Split(',')[1].Split('-');
-
-                                    language = parts[0];
-                                    countryLanguage = parts[1];
-                                }
-                                catch (Exception e)
-                                {
-                                    //ignore
-                                }
-                            }
-                            /*end*/
-
-
-                            // ذخیره
-                            var customerTrackerService = Injector.Inject<CustomerTrackerService>();
-                            var track = new CustomerTrackInfo
-                            {
-                                CustomerId = currMySocketReq.CurrentRequest.customerId.Value,
-                                Url = url + "",
-                                PageTitle = title + "",
-                                Descrition = description + "",
-                                CityName = inforByIp.CityName,
-                                Region = inforByIp.Region,
-                                Time = DateTime.Now.ToString("HH:mm"),
-                                TimeDt = DateTime.Now.TimeOfDay,
-                                DateTime = DateTime.Now,
-
-
-                                ip = inforByIp.ip,
-                                type = inforByIp.type,
-                                continent_code = inforByIp.continent_code,
-                                continent_name = inforByIp.continent_name,
-                                country_code = inforByIp.country_code,
-                                country_name = inforByIp.country_name,
-                                region_code = inforByIp.region_code,
-                                region_name = inforByIp.region_name,
-                                city = inforByIp.city,
-                                latitude = inforByIp.latitude,
-                                longitude = inforByIp.longitude,
-
-                                UserCity = SystemDataInitService.GetUserCity(inforByIp.city),
-                                UserState = SystemDataInitService.GetUserState(inforByIp.region_name),
-
-                                Browser = browser,
-                                Language = language,
-                                CountryLanguage = countryLanguage
-                            };
-                            customerTrackerService.Save(track);
-
-                            // چون این اطلاعات در رم است می توانیم آن را به این ابجکت بدهیم و نیازی نیست هر بار از دیتابیس بخوانیم
-                            currMySocketReq.MySocket.Customer.LastTrackInfo = track;
                         }
-                        catch (Exception e)
+                        else
                         {
-                            SignalRMVCChat.Service.LogService.Log(e);
-                            //todo:log
-                            //ignore
+                            if (currMySocketReq.MySocket.Customer.LastTrackInfo?.CustomerTrackInfoType ==
+                                CustomerTrackInfoType.ExitWebsite)
+                            {
+                                trackInfoType = CustomerTrackInfoType.ComeBack;
+                            }
+                            else if (currMySocketReq.MySocket.Customer.LastTrackInfo?.Url!=_request.Body.URL )
+                            {
+                                /*------------------------------ is page changed----------------------------*/
+                                trackInfoType = CustomerTrackInfoType.PageChange;
+
+                            }
+                            else
+                            {
+                                trackInfoType = currMySocketReq.MySocket.Customer.LastTrackInfo?.CustomerTrackInfoType ?? CustomerTrackInfoType.NoChange;
+                            }
+
+                            inforByIp = new IpInfoViewModel
+                            {
+                               
+                                city = currMySocketReq.MySocket.Customer.LastTrackInfo?.city,
+                                continent_code = currMySocketReq.MySocket.Customer.LastTrackInfo?.continent_code,
+                                continent_name = currMySocketReq.MySocket.Customer.LastTrackInfo?.continent_name,
+                                ip = currMySocketReq.MySocket.Customer.LastTrackInfo?.ip,
+                                latitude = currMySocketReq.MySocket.Customer.LastTrackInfo?.latitude,
+                                longitude = currMySocketReq.MySocket.Customer.LastTrackInfo?.longitude,
+                                country_code = currMySocketReq.MySocket.Customer.LastTrackInfo?.country_code,
+                                country_name = currMySocketReq.MySocket.Customer.LastTrackInfo?.country_name,
+                                region_code = currMySocketReq.MySocket.Customer.LastTrackInfo?.region_code,
+                                region_name = currMySocketReq.MySocket.Customer.LastTrackInfo?.region_name,
+                                type = currMySocketReq.MySocket.Customer.LastTrackInfo?.type,
+                                Region = currMySocketReq.MySocket.Customer.LastTrackInfo?.Region,
+                                CityName = currMySocketReq.MySocket.Customer.LastTrackInfo?.CityName,
+                            };
                         }
+
+                        // اطلاعاتی که خودمان موقع رفرش شدن کاربر از او میگیریم
+                        var url = _request.Body.URL;
+                        var title = _request.Body.Title;
+                        var description = _request.Body.Description;
+
+
+                        /*header infos:*/
+
+                        var browser = currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["User-Agent"];
+                        var language = currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["Accept-Language"];
+
+                        string countryLanguage = "";
+                        /*en-US,en;q=0.9*/
+                        if (string.IsNullOrEmpty(language) == false)
+                        {
+                            try
+                            {
+                                var parts = language.Split(',').Length > 1
+                                    ? language.Split(',')[1].Split('-')
+                                    : new[] {language, language};
+
+                                language = parts[0];
+                                countryLanguage = parts[1];
+                            }
+                            catch (Exception e)
+                            {
+                                //ignore
+                            }
+                        }
+                        /*end*/
+
+
+                        // ذخیره
+                        var customerTrackerService = Injector.Inject<CustomerTrackerService>();
+                        var track = new CustomerTrackInfo
+                        {
+                            PrevTrackInfoId = currMySocketReq.MySocket.Customer.LastTrackInfo?.Id ,
+                            PrevTrackInfoDateTime = currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime ,
+                            
+                            TimeSpent=MySpecificGlobal.CalculateTimeSpentOnPage(currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime),
+                            TimeSpentNum=MySpecificGlobal.CalculateTimeSpentOnPageNum(currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime),
+                            CustomerTrackInfoType = trackInfoType,
+                            CustomerId = currMySocketReq.CurrentRequest.customerId.Value,
+                            Url = url + "",
+                            PageTitle = title + "",
+                            Descrition = description + "",
+                            CityName = inforByIp.CityName,
+                            Region = inforByIp.Region,
+                            Time = DateTime.Now.ToString("HH:mm"),
+                            TimeDt = DateTime.Now.TimeOfDay,
+                            DateTime = DateTime.Now,
+
+
+                            ip = inforByIp.ip,
+                            type = inforByIp.type,
+                            continent_code = inforByIp.continent_code,
+                            continent_name = inforByIp.continent_name,
+                            country_code = inforByIp.country_code,
+                            country_name = inforByIp.country_name,
+                            region_code = inforByIp.region_code,
+                            region_name = inforByIp.region_name,
+                            city = inforByIp.city,
+                            latitude = inforByIp.latitude,
+                            longitude = inforByIp.longitude,
+
+                            UserCity = SystemDataInitService.GetUserCity(inforByIp.city),
+                            UserState = SystemDataInitService.GetUserState(inforByIp.region_name),
+
+                            Browser = browser,
+                            Language = language,
+                            CountryLanguage = countryLanguage
+                        };
+                        customerTrackerService.Save(track);
+
+                        // چون این اطلاعات در رم است می توانیم آن را به این ابجکت بدهیم و نیازی نیست هر بار از دیتابیس بخوانیم
+                        currMySocketReq.MySocket.Customer.LastTrackInfo = track;
+                    }
+                    catch (Exception e)
+                    {
+                        SignalRMVCChat.Service.LogService.Log(e);
+                        //todo:log
+                        //ignore
                     }
                 }
             }

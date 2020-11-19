@@ -9,8 +9,9 @@ import CustomerTags from "./CustomerTags";
 import TagSingleCustomer from "./TagSingleCustomer";
 import TagList from "./TagList";
 import WhileWriting from "./WhileWriting";
+import {CustomerProfileSideBar} from "./Profile/CustomerProfileSideBar";
 export default class OnlineCustomerList extends Component {
-
+    state={};
 
     selectCustomer(customer){
         
@@ -39,8 +40,11 @@ export default class OnlineCustomerList extends Component {
                   
               </Col>
           </Row>
-        
-          
+
+          {this.state.customerProfileSideBarVisible &&
+          <CustomerProfileSideBar parent={this}  Customer={DataHolder.selectedCustomer}
+                                  visible={this.state.customerProfileSideBarVisible}/>
+          }
 
           
       </Container>
@@ -104,7 +108,8 @@ export default class OnlineCustomerList extends Component {
                                         CurrentUserInfo.LayoutPage.setState({
                                             temp: Math.random(),
                                         });
-                                        this.setState({ temp: Math.random() });
+                                        this.setState({ temp: Math.random(),
+                                        });
 
                                         if(CurrentUserInfo.CustomersPage){
                                             this.selectCustomer(item);
@@ -113,6 +118,28 @@ export default class OnlineCustomerList extends Component {
                                 >
                                     شروع گفتگو
                                 </Card.Link>
+                                <hr />
+
+                                <Card.Link
+                                    onClick={() =>
+                                    {
+
+
+                                        DataHolder.selectedCustomer = item;
+
+                                        CurrentUserInfo.LayoutPage.setState({
+                                            temp: Math.random(),
+
+                                        });
+                                        this.setState({ temp: Math.random(),
+                                            customerProfileSideBarVisible:true
+                                        });
+
+                                        if(CurrentUserInfo.CustomersPage){
+                                            this.selectCustomer(item);
+                                        }
+                                    }}
+                                >نمایش پروفایل</Card.Link>
                             </Card.Body>
                             <Card.Footer>
                                 <small dir="rtl" className="text-muted">{item.Time}</small>

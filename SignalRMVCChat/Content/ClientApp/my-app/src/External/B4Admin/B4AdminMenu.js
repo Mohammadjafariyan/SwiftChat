@@ -3,6 +3,7 @@ import B4AdminMainMenu from "./B4AdminMainMenu";
 
 import '../../styles/myStyle.css'
 import {CurrentUserInfo} from "../../Help/Socket";
+import {DataHolder} from "../../Help/DataHolder";
 
 class B4AdminMenu extends Component {
 
@@ -36,6 +37,15 @@ class B4AdminMenu extends Component {
                         }} >
                             <i className="fas fa-fw fa-tachometer-alt"></i>
                             <span>نسخه قدیمی</span></a>
+                    </li>
+
+                    <li className={`nav-item ${ DataHolder.currentPage=='dashboard' ? 'active':''}`}>
+                        <a className="nav-link" onClick={()=>{
+                            CurrentUserInfo.B4AdminMainMenu.setPage('dashboard')
+
+                        }} >
+                            <i className="fa fa-cog" aria-hidden="true"></i>
+                            <span>پیشخوان</span></a>
                     </li>
                   
 

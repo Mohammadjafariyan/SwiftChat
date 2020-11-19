@@ -21,6 +21,7 @@ using SignalRMVCChat.WebSocket.PrivateNote;
 using SignalRMVCChat.WebSocket.Rate;
 using SignalRMVCChat.WebSocket.ReadyPm;
 using SignalRMVCChat.WebSocket.RemindMe;
+using SignalRMVCChat.WebSocket.Tracking;
 using SignalRMVCChat.WebSocket.UsersSeparation;
 
 namespace SignalRMVCChat.WebSocket
@@ -69,6 +70,19 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+                #region Tracking
+
+                case "CustomerTabClosed":
+                    return new CustomerTabClosedSocketHandler();
+                    break;
+
+                case "GetCustomerTrackingInfoDetail":
+                    return new GetCustomerTrackingInfoDetailSocketHandler();
+                    break;
+
+                    
+                #endregion
+
                 #region Bot
 
                 case "BotSave":

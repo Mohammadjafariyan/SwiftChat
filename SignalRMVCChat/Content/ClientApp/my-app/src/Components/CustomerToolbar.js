@@ -18,6 +18,7 @@ import ScreenRecordShower from "./ScreenRecordShower";
 import ScreenRecordShowerSendRequest from "./ScreenRecordShowerSendRequest";
 import LiveAssistLayout from "./LiveAssist/LiveAssistLayout";
 import UsersSeparationData from "./UsersSeparation/UsersSeparationData";
+import CustomerTimeSpent from "./Profile/CustomerTimeSpent";
 
 class CustomerToolbar extends Component {
 
@@ -54,12 +55,14 @@ class CustomerToolbar extends Component {
             <div>
 
                 
-                <CustomerInfo/>
+                <CustomerInfo Customer={DataHolder.selectedCustomer}/>
 
-                <OtherTools/>
-                <UsersSeparationData/>
+                <OtherTools Customer={DataHolder.selectedCustomer}/>
+                <UsersSeparationData Customer={DataHolder.selectedCustomer}/>
 
-                <UserDeviceInfo/>
+                <CustomerTimeSpent Customer={DataHolder.selectedCustomer}/>
+
+                <UserDeviceInfo Customer={DataHolder.selectedCustomer}/>
                 <div
                     className={"card adminsPanel" + (CurrentUserInfo.LayoutPage.state.focusForSelectingAdmin ? ' showSingle ' : '')}>
                     <div className="card-header">
@@ -92,12 +95,12 @@ class CustomerToolbar extends Component {
                     </div>
                 </div>
 
-                <CustomerData/>
+                <CustomerData Customer={DataHolder.selectedCustomer}/>
                 
-                <UserTags/>
+                <UserTags Customer={DataHolder.selectedCustomer}/>
              
            
-                {DataHolder.selectedCustomer && <LastPagesVisited/> }
+                {DataHolder.selectedCustomer && <LastPagesVisited Customer={DataHolder.selectedCustomer}/> }
            
 
 

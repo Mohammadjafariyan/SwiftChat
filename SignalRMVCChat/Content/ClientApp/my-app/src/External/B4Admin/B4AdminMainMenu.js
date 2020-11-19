@@ -23,6 +23,10 @@ export default class B4AdminMainMenu extends Component {
         CurrentUserInfo.LayoutPage.setState({temp: Math.random()});
         this.setState({temp: Math.random()})
         CurrentUserInfo.B4AdminBody.route('freeLayout');
+        
+        if (CurrentUserInfo.OntTheFlyChatPanel){
+            CurrentUserInfo.OntTheFlyChatPanel.showPanel();
+        }
     }
 
     totalUserCountsChangedCallback(res) {

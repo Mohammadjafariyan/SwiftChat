@@ -9,6 +9,7 @@ using SignalRMVCChat.Areas.security.Service;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.ManualMigrate;
+using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.ActionFilters;
 using TelegramBotsWebApplication.Areas.Admin.Service;
@@ -76,25 +77,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
         protected override void OnException(ExceptionContext filterContext)
         {
-            filterContext.ExceptionHandled = true;
-
-            //Log the error!!
-            // _Logger.Error(filterContext.Exception);
-            string msg = MyGlobal.RecursiveExecptionMsg(filterContext.Exception);
-            // OR 
-            var vm = new ViewDataDictionary(filterContext.Controller.ViewData)
-            {
-                Model = new ErrorViewModel
-                {
-                    Msg = msg
-                } // set the model
-            };
-            ViewData["Error"] = msg;
-            filterContext.Result = new ViewResult
-            {
-                ViewName = "~/Views/Shared/Error.cshtml",
-                ViewData = vm
-            };
+            MySpecificGlobal.OnControllerException(filterContext,ViewData);
         }
 
 

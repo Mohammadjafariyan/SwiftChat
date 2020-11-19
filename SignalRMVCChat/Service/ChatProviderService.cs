@@ -63,7 +63,7 @@ namespace SignalRMVCChat.Service
                     customers.Count(cus => !onlineCustomersIds.Contains(cus.Id));
 
 
-                var mostVisitedPages = GetVisitedPages(currentRequestInfo.websiteId, db);
+                var mostVisitedPages = GetVisitedPages(currentRequestInfo.websiteId, db).List;
 
                 return new WebsiteStatisticsViewModel
                 {
@@ -82,7 +82,7 @@ namespace SignalRMVCChat.Service
             }
         }
 
-        public static List<CustomerTrackInfoViewModel> GetVisitedPages(int websiteId,
+        public static GetVisitedPagesViewModel  GetVisitedPages(int websiteId,
             GapChatContext db)
         {
             var _logService = Injector.Inject<LogService>();
@@ -107,18 +107,21 @@ namespace SignalRMVCChat.Service
             
             _logService.LogFunc("url:" + url);
 
-            var tracks = db.CustomerTrackInfo
+            var query = db.CustomerTrackInfo
                 .Include(m => m.Customer)
                 .Where(m => m.Url.Contains(url))
-                .GroupBy(m => new {m.PageTitle, m.Url})
-                .Select(m =>
-                    new CustomerTrackInfoViewModel
-                    {
-                        BaseUrl = m.Key.Url,
-                        PageTitle = m.Key.PageTitle,
-                        VisitedCount = m.Count(),
-                        CustomerIds = m.Select(c => c.CustomerId).ToList()
-                    }).ToList();
+                ;
+            
+            var tracks=query.GroupBy(m => new {m.PageTitle, m.Url}).Select(m =>
+                new CustomerTrackInfoViewModel
+                {
+                    BaseUrl = m.Key.Url,
+                    PageTitle = m.Key.PageTitle,
+                    VisitedCount = m.Count(),
+                    CustomerIds = m.Select(c => c.CustomerId).ToList()
+                }).ToList();
+            ;
+                
             _logService.LogFunc("tracks:" + tracks?.Count);
 
             tracks.ForEach(m =>
@@ -129,7 +132,12 @@ namespace SignalRMVCChat.Service
             });
 
             _logService.Save();
-            return tracks;
+            return new GetVisitedPagesViewModel
+            {
+
+                List = tracks,
+                Query=query
+            };
         }
 
         public static List<CustomersWithChatsCountsViewModel> GetCustomersWithChatsCounts(int websiteId)
@@ -331,7 +339,7 @@ namespace SignalRMVCChat.Service
                 }
 
                 var mostVisitedPages = ChatProviderService
-                    .GetVisitedPages(currMySocketReq.MyWebsite.Id, db);
+                    .GetVisitedPages(currMySocketReq.MyWebsite.Id, db).List;
                 var customerIds = mostVisitedPages.Where(m => m.BaseUrl == selectedPage)
                     .SelectMany(m => m.Customers).Select(c => c.Id);
 
@@ -408,5 +416,11 @@ namespace SignalRMVCChat.Service
         public int CustomerId { get; set; }
         public int ChatCounts { get; set; }
         public MySocket Customer { get; set; }
+    }
+
+    public class GetVisitedPagesViewModel
+    {
+        public List<CustomerTrackInfoViewModel> List { get; set; }
+        public IQueryable<CustomerTrackInfo> Query { get; set; }
     }
 }

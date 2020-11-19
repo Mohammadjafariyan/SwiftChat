@@ -33,16 +33,16 @@ class UserDeviceInfo extends Component {
     render() {
    
      
-        if (!DataHolder.selectedCustomer)
+        if (!this.props.Customer)
             return <></>;
 
-       if (!DataHolder.selectedCustomer || !DataHolder.selectedCustomer.LastTrackInfo ||
-           !DataHolder.selectedCustomer.LastTrackInfo.Browser)
+       if (!this.props.Customer || !this.props.Customer.LastTrackInfo ||
+           !this.props.Customer.LastTrackInfo.Browser)
             return <></>;
 
-        var agent = useragent.parse(DataHolder.selectedCustomer.LastTrackInfo.Browser);
+        var agent = useragent.parse(this.props.Customer.LastTrackInfo.Browser);
 
-        var ua = useragent.is(DataHolder.selectedCustomer.LastTrackInfo.Browser)
+        var ua = useragent.is(this.props.Customer.LastTrackInfo.Browser)
         var browser= agent.toAgent(); // 'Chrome 15.0.874'
         var version= agent.toVersion();
         var os= agent.os.toString();
@@ -100,7 +100,7 @@ class UserDeviceInfo extends Component {
                                 <i className={'floatLeft fa fa-cloud'}></i>
                                 <Badge>
 
-                                    {DataHolder.selectedCustomer.LastTrackInfo.ip}
+                                    {this.props.Customer.LastTrackInfo.ip}
 
                                 </Badge>
                             </li>
@@ -108,9 +108,9 @@ class UserDeviceInfo extends Component {
                                 <i className={'floatLeft fa fa-send'}></i>
                                 <Badge className={'text-summary2'} >
 
-                                   <small title= {DataHolder.selectedCustomer.LastTrackInfo.PageTitle}>
-                                       <a className={'smallLink'} href={DataHolder.selectedCustomer.LastTrackInfo.Url} target={'_blank'}>
-                                           {DataHolder.selectedCustomer.LastTrackInfo.PageTitle}
+                                   <small title= {this.props.Customer.LastTrackInfo.PageTitle}>
+                                       <a className={'smallLink'} href={this.props.Customer.LastTrackInfo.Url} target={'_blank'}>
+                                           {this.props.Customer.LastTrackInfo.PageTitle}
                                        </a>
                                    </small>
                                     
@@ -122,7 +122,7 @@ class UserDeviceInfo extends Component {
 
                                 <Badge>
 
-                                    {DataHolder.selectedCustomer.LastTrackInfo.Time}
+                                    {this.props.Customer.LastTrackInfo.Time}
 
                                 </Badge>
                             </li>
@@ -148,13 +148,13 @@ class UserDeviceInfo extends Component {
                             </li>
 
                             
-                            {DataHolder.selectedCustomer.LastTrackInfo.CountryLanguage && 
+                            {this.props.Customer.LastTrackInfo.CountryLanguage && 
                             <li aria-label="زبان مرورگر کاربر" data-microtip-position="left" role="tooltip">
 
                                 <i className={'floatLeft fa fa-globe'}></i>
                                 <Badge pill variant="light">
                                     <img width={50} height={50}
-                                        src={`https://www.countryflags.io/${DataHolder.selectedCustomer.LastTrackInfo.CountryLanguage}/flat/64.png`}/>
+                                        src={`https://www.countryflags.io/${this.props.Customer.LastTrackInfo.CountryLanguage}/flat/64.png`}/>
                                 </Badge>
                             </li>
 

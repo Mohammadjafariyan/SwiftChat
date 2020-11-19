@@ -1,4 +1,26 @@
-﻿/*---------------------------------------------------speach bubbles--------------------------------------*/
+﻿/*---------------------------------------------------customer layut menu--------------------------------------*/
+@media screen and (max-width: 1200px) {
+    .pcoded-mtext {
+        margin-right: 50px !important; /* The width is 100%, when the viewport is 800px or smaller */
+    }
+
+
+    .onMobile{
+        display: block !important;
+    }
+}
+.pcoded[theme-layout="vertical"] .pcoded-navbar .pcoded-item>li>a {
+    height: 50px;
+}
+.pcoded-item :hover {
+   color: red !important;
+}
+
+.onMobile{
+    display: none ;
+}
+
+/*---------------------------------------------------speach bubbles--------------------------------------*/
 
 
 /* cursor animations */

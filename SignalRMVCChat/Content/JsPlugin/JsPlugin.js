@@ -3220,7 +3220,7 @@ function EditMsgOnClick(uniqId, gapFileUniqId, THIS) {
  */
 function GetMakeEditDeleteButtons(uniqId, gapFileUniqId) {
     let dom = "";
-    dom += `<div style="display:inline-flex">
+    dom += `<div style="display:inline-flex;    margin-right: 20px;">
     <button onclick="DeleteMsgOnClick('${uniqId}','${gapFileUniqId}',this)" class="gapB gapRemB"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
     <button  onclick="EditMsgOnClick('${uniqId}','${gapFileUniqId}',this)" class="gapB gapEdB"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 </div>`;
@@ -7049,3 +7049,8 @@ function testDo() {
 }
 
 
+window.addEventListener('beforeunload',function (){
+
+    debugger;
+    MyCaller.Send("CustomerTabClosed");
+});

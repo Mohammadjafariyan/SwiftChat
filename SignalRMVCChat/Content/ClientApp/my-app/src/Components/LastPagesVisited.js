@@ -15,10 +15,10 @@ class LastPagesVisited extends Component {
 
 
     componentDidMount() {
-        if (!DataHolder.selectedCustomer) {
+        if (!this.props.Customer) {
             return;
         }
-        MyCaller.Send("GetLastVisitedPages", {customerId: DataHolder.selectedCustomer.Id})
+        MyCaller.Send("GetLastVisitedPages", {customerId: this.props.Customer.Id})
     }
 
     getLastVisitedPagesCallback(res) {
@@ -30,11 +30,11 @@ class LastPagesVisited extends Component {
         if (!res.Content.length)
             return;
 
-        if (!DataHolder.selectedCustomer) {
+        if (!this.props.Customer) {
             return;
         }
 
-        if (res.Content[0].CustomerId === DataHolder.selectedCustomer.Id) {
+        if (res.Content[0].CustomerId === this.props.Customer.Id) {
             this.setState({list: res.Content})
         }
 
@@ -43,7 +43,7 @@ class LastPagesVisited extends Component {
 
     render() {
 
-        if (!DataHolder.selectedCustomer) {
+        if (!this.props.Customer) {
             return <></>;
         }
 

@@ -1,3 +1,29 @@
+
+
+/*----------------- chat edit delete buttons=-------------------*/
+
+.gapMsg:hover .gapB{
+    border:1px dotted #df1414;
+
+}
+.gapMsg  .gapB{
+   
+    border:1px solid white;
+    margin:2px
+}
+
+.gapMe .gapB{
+}
+
+.gapMe .gapB:hover{
+}
+
+.gapHe .gapB:hover{
+}
+.gapHe .gapB{
+}
+
+
 /*----------------- scrollpanel-demo=-------------------*/
 .scrollpanel-demo .p-scrollpanel p {
     padding: .5rem;

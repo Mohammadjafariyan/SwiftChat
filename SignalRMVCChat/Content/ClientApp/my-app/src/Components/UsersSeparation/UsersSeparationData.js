@@ -6,7 +6,7 @@ import '../../styles/myStyle.css'
 class UsersSeparationData extends Component {
     render() {
         
-        if (!DataHolder.selectedCustomer || !DataHolder.selectedCustomer.UsersSeparationParams){
+        if (!this.props.Customer || !this.props.Customer.UsersSeparationParams){
             return <></>
         }
         
@@ -23,8 +23,8 @@ class UsersSeparationData extends Component {
                 <Table>
 
                     <tbody>
-                    {DataHolder.selectedCustomer && DataHolder.selectedCustomer.UsersSeparationParams &&
-                    DataHolder.selectedCustomer.UsersSeparationParams.map((data, i, arr) => {
+                    {this.props.Customer && this.props.Customer.UsersSeparationParams &&
+                    this.props.Customer.UsersSeparationParams.map((data, i, arr) => {
 
 
                         return <tr>

@@ -39,6 +39,7 @@ namespace SignalRMVCChat.Service
             {
                 firstOrDefault = new MyAccount
                 {
+                    Name = "پشتیبانی",
                     MyAccountType = MyAccountType.SystemMyAccount,
                     MySockets = new List<MySocket>
                     {

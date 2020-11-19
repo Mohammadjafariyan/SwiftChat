@@ -29,7 +29,7 @@ export default class SepratePerPage extends Component {
   getVisitedPagesForCurrentSiteCallback(res) {
     let arr = [];
 
-    let trackinfosViewModellist = res.Content;
+    let trackinfosViewModellist = res.Content.mostVisitedPages;
     if (!trackinfosViewModellist) {
         CurrentUserInfo.LayoutPage.showError(
         ("دیتا نال است")

@@ -1,20 +1,54 @@
-﻿@model Engine.SysAdmin.Models.ErrorViewModel
+﻿@using SignalRMVCChat.Areas.security.Service
+@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.SysAdmin.Service
+@model Engine.SysAdmin.Models.ErrorViewModel
 
 @{
     ViewBag.Title = "Error";
+
+
+    if (string.IsNullOrEmpty(Request.Cookies["gaptoken"]?.Value ?? "") && 
+        CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.AppUserId==null)
+    {
+        Layout = "_Layout.cshtml";
+
+    }
+    else
+    {
+
+        var AppRoleService=Injector.Inject<AppRoleService>();
+        if (CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel!=null &&
+            CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.AppUserId!=0 &&
+            AppRoleService.IsInRole(CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.AppUserId,"superAdmin"))
+        {
+            Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Areas/Customer/Views/Shared/_Layout_Customer.cshtml";
+
+        }
+
+    }
 }
 
-
- <div class="card">
+ <div class="card" style="min-height: 80vh;">
                     <div class="card-header">
-                        <h5>خوش آمدید</h5>
+                        <h5 style="text-align: right">خوش آمدید</h5>
                     </div>
-                    <div class="card-block">
+                <br/>
+    <div class="card-block" style="border: 1px dotted darkred;border-radius: 10%;padding: 30px;margin: 30px">
                      
-<hgroup>
-    <h1 class="text-error">خطا</h1>
-    <h2 class="text-error">@Model.Msg</h2>
-</hgroup></div>
+                        <hgroup style="text-align: center;color: darkred">
+                            
+                            <h1><i style="font-size: 80px" class="fa fa-frown-o" aria-hidden="true"></i>
+                                                           <i style="font-size: 80px" class="fa fa-bolt" aria-hidden="true"></i>
+     </h1>
+                            
+
+                            <h1 class="text-error">خطا</h1>
+                            <h2 class="text-error">@Model.Msg</h2>
+                        </hgroup></div>
                 </div>
     
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Models;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
@@ -55,6 +56,14 @@ namespace SignalRMVCChat.Service
             set { UserCityJSON = JsonConvert.SerializeObject(value); }
         }
 
+
+        [NotMapped]
+        public string DateTimeText
+        {
+            get { return MyGlobal.ToIranianDateWidthTime(DateTime); }
+        }
+
+
         [NotMapped]
         public UserState UserState
         {
@@ -74,5 +83,49 @@ namespace SignalRMVCChat.Service
         [JsonIgnore] public string UserCityJSON { get; set; }
 
         [JsonIgnore] public string UserStateJSON { get; set; }
+        public int? PrevTrackInfoId { get; set; }
+        public DateTime? PrevTrackInfoDateTime { get; set; }
+        public string TimeSpent { get; set; }
+        public double? TimeSpentNum { get; set; }
+        
+        
+        
+        public CustomerTrackInfoType CustomerTrackInfoType { get; set; }
+
+        
+        [NotMapped]
+        public string CustomerTrackInfoTypeText {
+            get
+            {
+                switch (CustomerTrackInfoType)
+                {
+                    case CustomerTrackInfoType.ChangeIp:
+                        return "تغییر آیپی و مکان";
+                    case CustomerTrackInfoType.ComeBack:
+                        return "بازگشت مجدد به سایت";
+                    case CustomerTrackInfoType.EnterWebsite:
+                        return "اولین ورود";
+                    case CustomerTrackInfoType.ExitWebsite:
+                        return "خروج از سایت";
+                    case CustomerTrackInfoType.NoChange:
+                        return "رفرش";
+                    case CustomerTrackInfoType.PageChange:
+                        return "تغییر صفحه";
+                    default:
+                        return "مشخص نیست";
+                }
+            } }
+
+    }
+
+    public enum CustomerTrackInfoType
+    {
+        EnterWebsite,
+        ExitWebsite,
+        ComeBack,
+        NoChange,
+        ChangeIp,
+        PageChange,
+        NotDetect
     }
 }

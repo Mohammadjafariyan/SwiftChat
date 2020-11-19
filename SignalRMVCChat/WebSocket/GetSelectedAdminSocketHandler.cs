@@ -44,6 +44,12 @@ namespace SignalRMVCChat.WebSocket
                  var onlineStatus= currMySocketReq.MyWebsite.Admins.Where(a => a.MyAccountId == chat.MyAccount.Id)
                      .Select(a => a.MyAccount?.OnlineStatus).FirstOrDefault();
 
+                 string accountName = chat.MyAccount.Name;
+                 if (string.IsNullOrEmpty(accountName))
+                 {
+                     accountName = "پشتیبانی";
+                 }
+                 
                  return new MyWebSocketResponse
                  {
                      Name = "adminSelectCustomerCallback",
@@ -53,7 +59,7 @@ namespace SignalRMVCChat.WebSocket
                          AccountId = chat.MyAccount.Id,
                          pageNumber = 1,
                          targetId = currMySocketReq.MySocket.CustomerId,
-                         AccountName =chat.MyAccount.Name,
+                         AccountName =accountName,
                          OnlineStatus = onlineStatus ?? OnlineStatus.Offline,
                          ProfileImageId = chat.MyAccount.ProfileImageId
                      },

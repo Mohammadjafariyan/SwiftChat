@@ -61,7 +61,7 @@ namespace SignalRMVCChat.WebSocket
             int targetId = 0;
 
             bool isParsed = int.TryParse(_request.Body.uniqId?.ToString(), out uniqId);
-            if (_request.IsAdminOrCustomer == (int) MySocketUserType.Customer)
+            if (_request.IsAdminOrCustomer != (int) MySocketUserType.Customer)
             {
                 int.TryParse(_request.Body.targetId?.ToString(), out targetId);
             }

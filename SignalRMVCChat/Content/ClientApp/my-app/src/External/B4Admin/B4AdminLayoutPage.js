@@ -38,6 +38,8 @@ import UsersSeparationLayout from "../../Components/UsersSeparation/UsersSeparat
 import MapPage from "../../Pages/MapPage";
 import BotPage from "../../Pages/BotPage";
 import BotDataPage from "../../Pages/BotDataPage";
+import DashboardPage from "../../Pages/DashboardPage";
+import StatPage from "../../Pages/StatPage";
 
 
 export default class B4AdminLayoutPage extends Component {
@@ -143,7 +145,25 @@ export default class B4AdminLayoutPage extends Component {
 
                     </div>
                 )
-            } else if (DataHolder.currentPage === 'usersSeparation') {
+            }
+
+            else if (DataHolder.currentPage === 'dashboard') {
+                return (
+                    <div>
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+
+                        <MessageAlerts/>
+
+
+                        <DashboardPage></DashboardPage>
+
+
+                    </div>
+                )
+            }
+
+            
+        else if (DataHolder.currentPage === 'usersSeparation') {
                 return (
                     <div>
                         <Toast position="bottom-left" ref={(el) => this.toast = el}/>
@@ -228,8 +248,24 @@ export default class B4AdminLayoutPage extends Component {
 
                         <ProfilePage></ProfilePage>
                     </>)
-            } else if (DataHolder.currentPage === "CustomerProfilePage") {
 
+
+            }
+            else if (DataHolder.currentPage === "StatPage") {
+
+                return (
+                    <>
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
+
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+
+                        <MessageAlerts/>
+                        <StatPage></StatPage>
+                    </>)
+
+
+            }else if (DataHolder.currentPage === "CustomerProfilePage") {
+                
                 return (
                     <>
                         {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}

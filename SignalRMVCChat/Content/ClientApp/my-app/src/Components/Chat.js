@@ -21,13 +21,16 @@ export default class Chat extends Component {
         super(arg);
 
         this.state = {chats: []};
-        CurrentUserInfo.ChatPage = this;
         this.submit = this.submit.bind(this);
     }
 
 
     componentDidMount() {
 
+        if (this.props.chats){
+            this.setState({chats:this.props.chats});
+        }
+        CurrentUserInfo.ChatPage = this;
 
     }
 
@@ -166,6 +169,7 @@ export default class Chat extends Component {
             chats = [];
 
         }
+        
 
         /* if (!arr || !arr.length) {
              this.setState({chats: []})
@@ -195,6 +199,9 @@ export default class Chat extends Component {
             return 0;
         })
         this.setState({chats: chatsSorted})
+
+        DataHolder.selectedCustomerChats=chatsSorted;
+
 
         /*if (arr && arr.length == 0) {
                 this.setState({ chats: arr})
@@ -329,6 +336,9 @@ export default class Chat extends Component {
     }
 
     render() {
+
+       
+        
         return (
             <div>
                 <MarkAsResovled/>
@@ -356,7 +366,7 @@ export default class Chat extends Component {
                             {this.state.chats && this.state.chats.length === 0 && (
                                 <p>هیچ چتی یافت نشد</p>
                             )}
-                            <ChatPannel chats={this.state.chats} parent={this}/>
+                            <ChatPannel  chats={this.state.chats} parent={this} />
                         </div>
 
 
@@ -662,7 +672,7 @@ export default class Chat extends Component {
 
         MyCaller.Send("DeleteMessage", {
             uniqId,
-            targetId: CurrentUserInfo.targetId,
+            targetId: DataHolder.selectedCustomer.Id,
         });
         console.log(" درخواست حذف پیغام ارسال شد ");
     }
@@ -709,6 +719,7 @@ export default class Chat extends Component {
         };
 
         this.submit = (e) => {
+            if (e)
             e.preventDefault();
 
             console.log("انجام ویرایش توسط کاربر");
@@ -716,8 +727,8 @@ export default class Chat extends Component {
 
             MyCaller.Send("EditMessage", {
                 uniqId,
-                targetId: CurrentUserInfo.targetId,
-                message: e.target.value,
+                targetId: DataHolder.selectedCustomer.Id,
+                message: e ? e.target.value:this.state.text,
             });
 
             CurrentUserInfo.ChatForm.setState({text: ""});
@@ -750,7 +761,7 @@ export function ChatPannel(props) {
 
 
         let showChatType =  () =>{
-            return <div className={"card post  offset-md-4 " + getColorBasedOnChatType(el)} key={el.UniqId}>
+            return <div className={"card post gapMsg  offset-md-4 " + getColorBasedOnChatType(el)} key={el.UniqId}>
                 {props.onDelete && (
                     <div className="card-header card-header-left">
                         <button
@@ -760,32 +771,15 @@ export function ChatPannel(props) {
                         >
                             x
                         </button>
-
-                        {props.parent && props.parent.DeleteMsgOnClick && <div style={{display: 'inline-flex'}}>
-                            <button
-                                onClick={() => {
-                                    props.parent.DeleteMsgOnClick(el.UniqId, el);
-                                }}
-                                className="gapB gapRemB"
-                            >
-                                <i className="fa fa-trash-o" aria-hidden="true"></i>
-                            </button>
-                            <button
-                                onClick={() => {
-                                    props.parent.EditMsgOnClick(el.UniqId, el);
-                                }}
-                                className="gapB gapEdB"
-                            >
-                                <i className="fa fa-pencil" aria-hidden="true"></i>
-                            </button>
-                        </div>}
-
                     </div>
                 )}
 
+
+
+
                 <SenderIcon el={el}/>
 
-                <div className="card-body" style={{wordBreak: 'break-all', direction: 'rtl'}}>
+                <div className="card-body " style={{wordBreak: 'break-all', direction: 'rtl'}}>
                   
 
 
@@ -815,6 +809,7 @@ export function ChatPannel(props) {
 
 
                 </div>
+                <DeleteEditButtons parent={props.parent} el={el}/>
             </div>
         }
        /* if (el.ChatType){
@@ -833,7 +828,8 @@ export function ChatPannel(props) {
                 );
             } else {
                 return (
-                    <div className={"card post  offset-md-4 " + getColorBasedOnChatType(el)} key={el.UniqId}>
+                    <div className={"card post gapMsg  offset-md-4 " + getColorBasedOnChatType(el)} key={el.UniqId}>
+                    
                         {props.onDelete && (
                             <div className="card-header card-header-left">
                                 <button
@@ -843,30 +839,11 @@ export function ChatPannel(props) {
                                 >
                                     x
                                 </button>
-                                {el.Delay && <p dir="rtl"> بعد از {el.Delay} دقیقه </p>}
-                                {el.Time && <span style={{fontSize: '10px'}} dir="rtl"> {el.Time} </span>}
-
-                                {props.parent && props.parent.DeleteMsgOnClick && <div style={{display: 'inline-flex'}}>
-                                    <button
-                                        onClick={() => {
-                                            props.parent.DeleteMsgOnClick(el.UniqId, el);
-                                        }}
-                                        className="gapB gapRemB"
-                                    >
-                                        <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            props.parent.EditMsgOnClick(el.UniqId, el);
-                                        }}
-                                        className="gapB gapEdB"
-                                    >
-                                        <i className="fa fa-pencil" aria-hidden="true"></i>
-                                    </button>
-                                </div>}
-
                             </div>
                         )}
+
+
+                           
                         <SenderIcon el={el}/>
 
                         <div className="card-body" style={{wordBreak: 'break-all', display: 'flex', direction: 'rtl'}}>
@@ -887,6 +864,7 @@ export function ChatPannel(props) {
 
 
                         </div>
+                        <DeleteEditButtons parent={props.parent} el={el}/>
                     </div>
                 );
             }
@@ -1077,8 +1055,10 @@ export class AutomaticSendPage extends Chat {
 
 
     render() {
+      
 
         return (
+            
             <div className="container ">
 
                 <div className='row'>
@@ -1092,7 +1072,7 @@ export class AutomaticSendPage extends Chat {
                                 <li>از طرف ادمین های مخصوص هر بخش سایت پیغام ارسال می شود</li>
                             </ul>
                         </div>
-                        <ChatPannel chats={this.state.chats} onDelete={(chat) => {
+                        <ChatPannel parent={this} chats={this.state.chats} onDelete={(chat) => {
 
                             this.state.chats.splice(this.state.chats.indexOf(chat), 1);
                             this.setState({
@@ -1341,4 +1321,27 @@ export const SenderIcon = (props) => {
             backgroundSize: profileUrl ? 'cover' : null
         }}>{profileUrl ? "" : charAt}</span>
     </div>
+}
+
+
+const DeleteEditButtons=(props)=>{
+    let el=props.el;
+    return (<>{props.parent && props.parent.DeleteMsgOnClick && <div style={{display: 'inline-flex'}}>
+            <button
+                onClick={() => {
+                    props.parent.DeleteMsgOnClick(el.UniqId, el);
+                }}
+                className="gapB gapRemB"
+            >
+                <i className="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
+            <button
+                onClick={() => {
+                    props.parent.EditMsgOnClick(el.UniqId, el);
+                }}
+                className="gapB gapEdB"
+            >
+                <i className="fa fa-pencil" aria-hidden="true"></i>
+            </button>
+        </div>}</>);
 }
