@@ -201,7 +201,7 @@ _showError(' مقدار بازگشتی از سرور نال است ');
                         
                         
                         
-                        <BlockUser/>
+                        <BlockUser Customer={DataHolder.selectedCustomer} />
 
                     </div>
                 </div>

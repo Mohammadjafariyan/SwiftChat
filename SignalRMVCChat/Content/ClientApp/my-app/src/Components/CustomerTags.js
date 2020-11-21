@@ -80,31 +80,40 @@ export default class CustomerTags extends Component {
         }
         return (
             <div>
-                {tags.map((el, i, arr) => {
-                    return (
-                        <>
-                            <Badge variant="primary">
-
-                                <i
-                                    style={{fontSize: "14px"}}
-                                    className="fa fa-tags"
-                                    aria-hidden="true"
-                                ></i>
-                                <span>{el.Name}</span>
-                                <span
-                                    style={{color: 'white'}}
-                                    type="button"
-                                    onClick={() => {
-                                        this.deleteTagFormUserTagsById(el.Id);
-                                    }}
-                                >x</span>
-                            </Badge>
-
-
-                        </>
-                    );
-                })}
+               <TagsShow tags={tags}  parent={this}/>
             </div>
         );
     }
+}
+
+
+export const TagsShow=(props)=>{
+    return <>
+        {props.tags.map((el, i, arr) => {
+            return (
+                <>
+                    <Badge variant="primary">
+
+                        <i
+                            style={{fontSize: "14px"}}
+                            className="fa fa-tags"
+                            aria-hidden="true"
+                        ></i>
+                        <span>{el.Name}</span>
+                        
+                        {props.parent &&   <span
+                            style={{color: 'white'}}
+                            type="button"
+                            onClick={() => {
+                                props.parent.deleteTagFormUserTagsById(el.Id);
+                            }}
+                        >x</span>}
+                       
+                    </Badge>
+
+
+                </>
+            );
+        })}
+        </>
 }

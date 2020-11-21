@@ -8,14 +8,14 @@ import {CurrentUserInfo} from "../../Help/Socket";
 import {_GetRandomColor} from "../../Components/Utilities/ColorsList";
 
 class PageVisitStat extends Component {
-    state = {loading: true,
-    title:' آمار بازدید سایت',
-    type:'pie'}
+    state = {
+        loading: true,
+        title: ' آمار بازدید سایت',
+        type: 'pie'
+    }
 
     constructor(props) {
         super(props);
-
-
 
 
         this.lightOptions = {
@@ -30,9 +30,9 @@ class PageVisitStat extends Component {
     }
 
     //استفاده شده در کلاس های فرزند
-    getHorizontalChartData(dataArr){
+    getHorizontalChartData(dataArr) {
         let labels = [];
-        let arr=dataArr;
+        let arr = dataArr;
         let datas = [];
         let datas2 = [];
         let bgColors = [];
@@ -42,9 +42,8 @@ class PageVisitStat extends Component {
             let VisitorsCount = dataArr[i].VisitorsCount;
             let FaName = dataArr[i].FaName;
 
-            
 
-            labels.push(FaName? FaName:Key);
+            labels.push(FaName ? FaName : Key);
             datas.push(VisitCount);
             datas2.push(VisitorsCount);
 
@@ -52,23 +51,23 @@ class PageVisitStat extends Component {
         }
 
         let chartData = {
-            labels: labels,
+            labels: this.getLabels(dataArr, labels),
             datasets: [
                 {
-                    label:' بازدید',
+                    label: ' بازدید',
                     data: datas,
                     backgroundColor: _GetRandomColor(),
                 },
                 {
-                    label:' بازدید کننده',
-                    data: datas,
+                    label: ' بازدید کننده',
+                    data: datas2,
                     backgroundColor: _GetRandomColor(),
                 }
             ]
         };
 
-        if (arr.length==0){
-            chartData= {
+        if (arr.length == 0) {
+            chartData = {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                 datasets: [
                     {
@@ -87,13 +86,17 @@ class PageVisitStat extends Component {
         return chartData;
     }
 
+    getLabels(dataArr, labels) {
+        return labels;
+    }
+
     componentDidMount() {
         CurrentUserInfo.PageVisitStat = this;
     }
-    
-    fill(trackinfosViewModellist){
+
+    fill(trackinfosViewModellist) {
         let labels = [];
-        let arr=[];
+        let arr = [];
         let datas = [];
         let bgColors = [];
         for (let i = 0; i < trackinfosViewModellist.length; i++) {
@@ -101,7 +104,6 @@ class PageVisitStat extends Component {
             let baseUrl = trackinfosViewModellist[i].BaseUrl;
             let VisitedCount = trackinfosViewModellist[i].VisitedCount;
             let Customers = trackinfosViewModellist[i].Customers;
-
 
 
             labels.push(`${GetSummary(pageTitle)} - ${GetSummary(baseUrl)} `);
@@ -131,8 +133,8 @@ class PageVisitStat extends Component {
             ]
         };
 
-        if (arr.length==0){
-            chartData={
+        if (arr.length == 0) {
+            chartData = {
                 labels: ['A', 'B', 'C'],
                 datasets: [
                     {
@@ -157,53 +159,23 @@ class PageVisitStat extends Component {
 
     getVisitedPagesForCurrentSiteCallback(res) {
 
-        if (CurrentUserInfo.UserType == 'GetVisitedPagesForCurrentSite') {
 
+        this.setState({loading: false});
 
-            this.setState({loading: false});
+        let arr = [];
 
-            let arr = [];
-
-            let trackinfosViewModellist = res.Content.mostVisitedPages;
-            if (!trackinfosViewModellist) {
-                CurrentUserInfo.LayoutPage.showError(
-                    ("دیتا نال است")
-                );
-                alert("دیتا نال است");
-                return;
-            }
-            window["trackinfosViewModellist"] = trackinfosViewModellist;
-
-            
-
-          this.fill(trackinfosViewModellist,res.Content)
-
-            //this.setState({ list: arr });
-
-
-            /*  this.chartData = {
-                  labels: ['A', 'B', 'C'],
-                  datasets: [
-                      {
-                          data: [300, 50, 100],
-                          backgroundColor: [
-                              "#42A5F5",
-                              "#66BB6A",
-                              "#FFA726"
-                          ],
-                          hoverBackgroundColor: [
-                              "#64B5F6",
-                              "#81C784",
-                              "#FFB74D"
-                          ]
-                      }
-                  ]
-              };*/
-
-        } else {
-            changeUserTypes('GetVisitedPagesForCurrentSite');
-
+        let trackinfosViewModellist = res.Content.mostVisitedPages;
+        if (!trackinfosViewModellist) {
+            CurrentUserInfo.LayoutPage.showError(
+                ("دیتا نال است")
+            );
+            alert("دیتا نال است");
+            return;
         }
+
+
+        this.fill(trackinfosViewModellist, res.Content)
+
 
     }
 
@@ -223,7 +195,6 @@ class PageVisitStat extends Component {
                         <span className="sr-only">در حال خواندن اطلاعات...</span>
                     </Spinner>}
 
-                 
 
                     {this.state.chartData &&
                     <Chart type={this.state.type} data={this.state.chartData} options={this.lightOptions}/>

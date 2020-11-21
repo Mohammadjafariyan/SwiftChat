@@ -12,7 +12,7 @@ class BlockUser extends Component {
     }
 
     render() {
-        if (!DataHolder.selectedCustomer) {
+        if (!this.props.Customer) {
             return <></>;
         }
 
@@ -21,7 +21,7 @@ class BlockUser extends Component {
             <>
 
 
-                {!DataHolder.selectedCustomer.IsBlocked && <Button variant={'danger'} onClick={() => {
+                {!this.props.Customer.IsBlocked && <Button variant={'danger'} onClick={() => {
 
 
                     this.changeCustomerBlockStatus(true, "در حال بلاک کاربر");
@@ -35,7 +35,7 @@ class BlockUser extends Component {
                     </Badge>
                 </Button>}
 
-                {DataHolder.selectedCustomer.IsBlocked && <Button variant={'danger'} onClick={() => {
+                {this.props.Customer.IsBlocked && <Button variant={'danger'} onClick={() => {
 
 
                     this.changeCustomerBlockStatus(false, "در حال خروج از بلاک ");
@@ -58,7 +58,7 @@ class BlockUser extends Component {
 
     changeCustomerBlockStatusCallback() {
 
-        if (DataHolder.selectedCustomer.IsBlocked) {
+        if (this.props.Customer.IsBlocked) {
             _showMsg("کاربر بلاک شد")
 
         } else {
@@ -71,10 +71,10 @@ class BlockUser extends Component {
 
         _showMsg(msg);
 
-        DataHolder.selectedCustomer.IsBlocked = isBlocked;
+        this.props.Customer.IsBlocked = isBlocked;
 
         MyCaller.Send('changeCustomerBlockStatus',
-            {customerId: DataHolder.selectedCustomer.Id, IsBlocked: isBlocked});
+            {customerId: this.props.Customer.Id, IsBlocked: isBlocked});
     }
 }
 

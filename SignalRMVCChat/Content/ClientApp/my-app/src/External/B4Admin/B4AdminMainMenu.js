@@ -149,6 +149,15 @@ export default class B4AdminMainMenu extends Component {
                 </li>
 
 
+                <li className={'nav-item ' + (DataHolder.currentPage === 'RoutingPage' ? ' active ' : '')}>
+                    <a className="nav-link" onClick={() => {
+                        this.setPage('RoutingPage');
+                    }}>
+                        <i className="fas fa-fw fa-chart-area"></i>
+                        <span>اختصاص اتوماتیک اوپراتور ها به صفحهات </span></a>
+                </li>
+                
+
                 <li className={'nav-item ' + (DataHolder.currentPage === 'AutomaticSend' ? ' active ' : '')}>
                     <a className="nav-link" onClick={() => {
                         this.setPage('AutomaticSend');
@@ -183,6 +192,15 @@ export default class B4AdminMainMenu extends Component {
                 <li className={'nav-item ' + (DataHolder.currentPage === 'FormDataPage' ? ' active ' : '')}>
                     <a className="nav-link" onClick={() => {
                         this.setPage('FormDataPage');
+                    }}>
+                        <i className={'fa fa-map-marker'} aria-hidden="true"></i>
+                        <span>اطلاعات فرم ها</span></a>
+                </li>
+
+
+                <li className={'nav-item ' + (DataHolder.currentPage === 'ContactsPage' ? ' active ' : '')}>
+                    <a className="nav-link" onClick={() => {
+                        this.setPage('ContactsPage');
                     }}>
                         <i className={'fa fa-map-marker'} aria-hidden="true"></i>
                         <span>اطلاعات کاربران</span></a>

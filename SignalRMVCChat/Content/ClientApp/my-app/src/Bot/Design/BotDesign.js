@@ -47,8 +47,12 @@ class BotDesign extends Component {
 
 
     }
-    
-    
+    cancel() {
+
+        CurrentUserInfo.BotLayout.setState({selectedBot: null});
+    }
+
+
     botDeleteCallback(res){
         _showMsg('با موفقیت حذف شد')
 
@@ -56,11 +60,7 @@ class BotDesign extends Component {
     }
 
 
-    cancel() {
-
-        CurrentUserInfo.BotLayout.setState({selectedBot: null});
-    }
-
+    
     render() {
         return (
             <div>

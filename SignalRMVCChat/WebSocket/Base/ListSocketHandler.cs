@@ -19,13 +19,13 @@ namespace SignalRMVCChat.WebSocket.Base
 
 
 
-            var query = FilterAccess(_service.GetQuery(),_request,currMySocketReq).ToList();
+            var query = FilterAccess(_service.GetQuery(),_request,currMySocketReq);
 
             return await ReturnResponse(query, _request, currMySocketReq);
 
         }
 
-        protected virtual async Task<MyWebSocketResponse> ReturnResponse(List<T> query, MyWebSocketRequest request, MyWebSocketRequest currMySocketReq)
+        protected virtual async Task<MyWebSocketResponse> ReturnResponse(IQueryable<T> query, MyWebSocketRequest request, MyWebSocketRequest currMySocketReq)
         {
            return await Task.FromResult(new MyWebSocketResponse
             {

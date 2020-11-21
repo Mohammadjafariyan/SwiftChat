@@ -40,6 +40,12 @@ namespace SignalRMVCChat.Controllers
                     {
                         myAccount = myAccountProviderService.GetById(myAccountId.Value, "کاربر یافت نشد").Single;
 
+
+                        if (myAccount.HasRootPrivilages==false)
+                        {
+                            throw new Exception("فقط ادمین های دارای دسترسی روت مجاز به استفاده از این بخش هستند");
+                        }
+                        
                         if (myAccount != null && myAccount.IsBlocked)
                         {
                             throw new Exception(

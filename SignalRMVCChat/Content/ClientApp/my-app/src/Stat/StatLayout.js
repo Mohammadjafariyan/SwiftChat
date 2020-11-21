@@ -10,10 +10,19 @@ import StatInMap from "./StatInMap/StatInMap";
 import StatPerState from "./StatPerState/StatPerState";
 import StatPerCity from "./StatPerCity/StatPerCity";
 import StatForeignCountries from "./StatForeignCountries/StatForeignCountries";
+import MostExitUrlInSite from "./MostExitUrlInSite/MostExitUrlInSite";
+import SiteViewsMostOnlineTime from "./SiteViewsMostOnlineTime/SiteViewsMostOnlineTime";
+import SiteViewsInLast5Year from "./SiteViewsInLast5Year/SiteViewsInLast5Year";
+import SiteViewsInMonths from "./SiteViewsInMonths/SiteViewsInMonths";
+import SiteViewsInHoursOfToday from "./SiteViewsInHoursOfToday/SiteViewsInHoursOfToday";
+import SiteViewsInWeek from "./SiteViewsInWeek/SiteViewsInWeek";
+import {MyCaller} from "../Help/Socket";
 
 class StatLayout extends Component {
     componentDidMount() {
-        changeUserTypes('GetVisitedPagesForCurrentSite');
+        MyCaller.Send('GetVisitedPagesForCurrentSite',{
+            withStat:true
+        })
 
     }
 
@@ -53,6 +62,59 @@ class StatLayout extends Component {
                     </Col>
 
                 </Row>
+
+
+{/*
+                ------------------------------------ 1.	آمار صفحه ای که بیشترین خروج از سایت را داشته ----------------------------------
+*/}
+                <Col>
+                    <MostExitUrlInSite/>
+                </Col>
+
+
+{/*
+                ------------------------------------ 2.	آمار بازدید در طی هفته ----------------------------------
+*/}
+                <Col>
+                    <SiteViewsInWeek/>
+                </Col>
+
+
+{/*
+                ------------------------------------ 2.	آمار بازدید در طی ساعات روز ----------------------------------
+*/}
+                <Col>
+                    <SiteViewsInHoursOfToday/>
+                </Col>
+
+
+{/*
+                ------------------------------------ 4.	آمار بازدید در ماه های امسال(با مقایسه) ----------------------------------
+*/}
+                <Col>
+                    <SiteViewsInMonths/>
+                </Col>
+
+
+
+{/*
+                ------------------------------------ 5.	آمار بازدید در ماه های امسال(با مقایسه) ----------------------------------
+*/}
+                <Col>
+                    <SiteViewsInLast5Year/>
+                </Col>
+
+
+
+{/*
+                ------------------------------------ 6.	آمار ترتیب صفحه ها بر اساس بیشترین زمان آنلاین ----------------------------------
+*/}
+                <Col>
+                    <SiteViewsMostOnlineTime/>
+                </Col>
+
+
+
 
 
                 <Row>

@@ -20,7 +20,7 @@ namespace SignalRMVCChat.WebSocket.HelpDesk.Language
             return getQuery.Include(c=>c.Language).Where(c => c.MyWebsiteId == currMySocketReq.MyWebsite.Id);
         }
 
-        protected async override Task<MyWebSocketResponse> ReturnResponse(List<Models.HelpDesk.HelpDesk> query, MyWebSocketRequest request, MyWebSocketRequest currMySocketReq)
+        protected async override Task<MyWebSocketResponse> ReturnResponse(IQueryable<Models.HelpDesk.HelpDesk> query, MyWebSocketRequest request, MyWebSocketRequest currMySocketReq)
         {
             return await Task.FromResult(new MyWebSocketResponse
             {

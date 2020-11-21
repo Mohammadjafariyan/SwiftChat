@@ -87,14 +87,25 @@ namespace SignalRMVCChat.Service
         public DateTime? PrevTrackInfoDateTime { get; set; }
         public string TimeSpent { get; set; }
         public double? TimeSpentNum { get; set; }
-        
-        
-        
+
+        [NotMapped]
+        public string ShowCityName
+        {
+            get { return UserCity != null ? UserCity.name : string.IsNullOrEmpty(CityName) == false ? CityName : city; }
+        }
+
+        [NotMapped]
+        public string ShowStateName
+        {
+            get { return UserState != null ? UserState.name : region_name; }
+        }
+
         public CustomerTrackInfoType CustomerTrackInfoType { get; set; }
 
-        
+
         [NotMapped]
-        public string CustomerTrackInfoTypeText {
+        public string CustomerTrackInfoTypeText
+        {
             get
             {
                 switch (CustomerTrackInfoType)
@@ -114,8 +125,8 @@ namespace SignalRMVCChat.Service
                     default:
                         return "مشخص نیست";
                 }
-            } }
-
+            }
+        }
     }
 
     public enum CustomerTrackInfoType

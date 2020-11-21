@@ -125,6 +125,22 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
             {DayOfWeek.Thursday, "پنج شنبه"},
             {DayOfWeek.Friday, "جمعه"},
         };
+        
+        public static readonly Dictionary<int, string> MonthNames = new Dictionary<int, string>
+        {
+            {1, "فروردین"},
+            {2, "اردیبهشت"},
+            {3, "خرداد"},
+            {4, "تیر"},
+            {5, "مرداد"},
+            {6, "شهریور"},
+            {7, "مهر"},
+            {8, "آبان"},
+            {9, "آذر"},
+            {10, "دی"},
+            {11, "بهمن"},
+            {12, "اسفند"},
+        };
 
         public static string ToIranianDate(DateTime mCdate, bool withDayName = false, bool noYear = false)
         {
@@ -448,6 +464,22 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
 
             return Paging<T>(queryable, _take, _skip);
         }
+        
+        public static ThisWeekRangeViewModel GetThisWeekRange()
+        {
+            var traverseDate= DateTime.Now;
+            while (traverseDate.DayOfWeek!=DayOfWeek.Saturday)
+            {
+                traverseDate = traverseDate.AddDays(-1);
+            }
+
+            return new ThisWeekRangeViewModel
+            {
+                StartOfWeek = traverseDate,
+                EndOfWeek = traverseDate.AddDays(6)
+            };
+
+        }
 
         public static string SplitArr(string data)
         {
@@ -459,6 +491,50 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
         public static bool IsUnitTestEnvirementNoSeed = false;
         public static string Version = "0.0.1." + (VersionPublishDateTime.HasValue ?  MyGlobal.ToIranianDateWidthTime(VersionPublishDateTime.Value) : "") ;
         public static DateTime? VersionPublishDateTime = null ;
+
+        public static  List<DateTime> GetThisYearMonthsArrayInGaregorian()
+        {
+            PersianCalendar pc=new PersianCalendar();
+
+            var today= DateTime.Now;
+
+            List<DateTime> monthOfYear = new List<DateTime>();
+
+            for (int i = 1; i <= 12; i++)
+            {
+                var monthFirstDay = new PersianDateTime(pc.GetYear(today),i,1).ToDateTime();
+                
+                monthOfYear.Add(monthFirstDay);
+                
+            }
+            
+            
+
+            return monthOfYear;
+        }
+
+        public static List<DateTime> GetLast5YearInJalaliToGeorgian()
+        {
+            PersianCalendar pc=new PersianCalendar();
+
+            var today= DateTime.Now;
+
+            List<DateTime> years = new List<DateTime>();
+
+            for (int i = 1; i <= 5; i++)
+            {
+                var monthFirstDay = new PersianDateTime(pc.GetYear(today),1,1);
+
+               var iYear= monthFirstDay.AddYears(-i).ToDateTime();
+                
+               years.Add(iYear);
+                
+            }
+            
+            
+
+            return years.OrderByDescending(o=>o.Year).ToList();
+        }
     }
 
     public class DateFromToDateViewModel
@@ -487,5 +563,18 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
                 return default(T);
             }
         }
+        
+        
+       
+       
     }
+    
+  
+    
+    public class ThisWeekRangeViewModel
+    {
+        public DateTime StartOfWeek { get; set; }
+        public DateTime EndOfWeek { get; set; }
+    }
+
 }

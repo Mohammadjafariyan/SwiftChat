@@ -19,7 +19,7 @@ class StatUtility extends Component {
                         </Spinner>}
                         
                         {this.props.chartData &&
-                        <Chart type="horizontalBar" data={this.props.chartData} options={this.props.basicOptions}/>
+                        <Chart type={ this.state.type ? this.state.type :"horizontalBar"} data={this.props.chartData} options={this.props.basicOptions}/>
                         }
 
 

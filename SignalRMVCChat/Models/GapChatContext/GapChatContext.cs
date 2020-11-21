@@ -454,11 +454,29 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #endregion
 
+            
+            #region Routing
+
+            modelBuilder.Entity<MyWebsite>()
+                .HasMany(r => r.Routings)
+                .WithRequired(o => o.MyWebsite)
+                .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
+
+
+            
+            #endregion
 
             base.OnModelCreating(modelBuilder);
         }
 
+        #region Routing
 
+        
+        public DbSet<Routing.Routing> Routings { get; set; }
+
+        #endregion
+        
+        
         #region UsersSeparation
 
         public DbSet<UsersSeparation.UsersSeparation> UsersSeparations { get; set; }

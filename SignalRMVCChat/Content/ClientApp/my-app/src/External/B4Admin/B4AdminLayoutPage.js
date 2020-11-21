@@ -40,6 +40,8 @@ import BotPage from "../../Pages/BotPage";
 import BotDataPage from "../../Pages/BotDataPage";
 import DashboardPage from "../../Pages/DashboardPage";
 import StatPage from "../../Pages/StatPage";
+import ContactsPage from "../../Pages/ContactsPage";
+import RoutingPage from "../../Pages/RoutingPage";
 
 
 export default class B4AdminLayoutPage extends Component {
@@ -145,9 +147,7 @@ export default class B4AdminLayoutPage extends Component {
 
                     </div>
                 )
-            }
-
-            else if (DataHolder.currentPage === 'dashboard') {
+            } else if (DataHolder.currentPage === 'dashboard') {
                 return (
                     <div>
                         <Toast position="bottom-left" ref={(el) => this.toast = el}/>
@@ -161,9 +161,22 @@ export default class B4AdminLayoutPage extends Component {
                     </div>
                 )
             }
+            else if (DataHolder.currentPage === 'RoutingPage') {
+                return (
+                    <div>
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
 
+                        <MessageAlerts/>
+
+
+                        <RoutingPage/>
+
+
+                    </div>
+                )
+            }
             
-        else if (DataHolder.currentPage === 'usersSeparation') {
+            else if (DataHolder.currentPage === 'usersSeparation') {
                 return (
                     <div>
                         <Toast position="bottom-left" ref={(el) => this.toast = el}/>
@@ -236,6 +249,20 @@ export default class B4AdminLayoutPage extends Component {
 
                         <AutomaticSendPage></AutomaticSendPage>
                     </>)
+            } else if (DataHolder.currentPage === "ContactsPage") {
+
+                return (
+                    <>
+                        {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}
+
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+
+                        <MessageAlerts/>
+
+                        <ContactsPage></ContactsPage>
+                    </>)
+
+
             } else if (DataHolder.currentPage === "ProfilePage") {
 
                 return (
@@ -250,8 +277,7 @@ export default class B4AdminLayoutPage extends Component {
                     </>)
 
 
-            }
-            else if (DataHolder.currentPage === "StatPage") {
+            } else if (DataHolder.currentPage === "StatPage") {
 
                 return (
                     <>
@@ -264,8 +290,8 @@ export default class B4AdminLayoutPage extends Component {
                     </>)
 
 
-            }else if (DataHolder.currentPage === "CustomerProfilePage") {
-                
+            } else if (DataHolder.currentPage === "CustomerProfilePage") {
+
                 return (
                     <>
                         {this.state.focusForSelectingAdmin && <div className="hideWhole"></div>}

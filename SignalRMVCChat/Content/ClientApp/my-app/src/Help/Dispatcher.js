@@ -13,6 +13,91 @@ class dispatcher {
         }
         console.log("dispatcher===>", res.Name);
         switch (res.Name) {
+            /*-------------------- Routing--------------------*/
+
+            case "getVisitedPagesForCurrentSiteCallback":
+                if (CurrentUserInfo.PageVisitStat) {
+                    CurrentUserInfo.PageVisitStat.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.PageOnlineCount) {
+                    CurrentUserInfo.PageOnlineCount.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.StatInMap) {
+                    CurrentUserInfo.StatInMap.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.StatPerState) {
+                    CurrentUserInfo.StatPerState.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.StatPerCity) {
+                    CurrentUserInfo.StatPerCity.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.StatForeignCountries) {
+                    CurrentUserInfo.StatForeignCountries.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.MostExitUrlInSite) {
+                    CurrentUserInfo.MostExitUrlInSite.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.SiteViewsInWeek) {
+                    CurrentUserInfo.SiteViewsInWeek.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.SiteViewsInHoursOfToday) {
+                    CurrentUserInfo.SiteViewsInHoursOfToday.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.SiteViewsInMonths) {
+                    CurrentUserInfo.SiteViewsInMonths.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.SiteViewsInLast5Year) {
+                    CurrentUserInfo.SiteViewsInLast5Year.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.SiteViewsMostOnlineTime) {
+                    CurrentUserInfo.SiteViewsMostOnlineTime.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                if (CurrentUserInfo.SiteVisit) {
+                    CurrentUserInfo.SiteVisit.getVisitedPagesForCurrentSiteCallback(res);
+                }
+                break;
+            /*-------------------- end--------------------*/
+
+
+            
+            /*-------------------- Routing--------------------*/
+            case "getRoutingListCallback":
+                if (CurrentUserInfo.RoutingLayout) {
+                    CurrentUserInfo.RoutingLayout.getCallback(res);
+                }
+                break;
+            case "routingSaveCallback":
+                if (CurrentUserInfo.RoutingSave) {
+                    CurrentUserInfo.RoutingSave.routingSaveCallback(res);
+                }
+                break;
+            case "deleteRoutingCallback":
+                if (CurrentUserInfo.RoutingLayout) {
+                    CurrentUserInfo.RoutingLayout.deleteCallback(res);
+                }
+                break;
+            case "setIsEnabledRoutingCallback":
+                if (CurrentUserInfo.RoutingLayout) {
+                    CurrentUserInfo.RoutingLayout.setIsEnabledCallback(res);
+                }
+                break;
+            case "saveRoutingCallback":
+                if (CurrentUserInfo.RoutingLayout) {
+                    CurrentUserInfo.RoutingLayout.saveCallback(res);
+                }
+                break;
+
+            /*-------------------- End--------------------*/
+
+                
+            /*-------------------- Tracking--------------------*/
+            case "getContactsCallback":
+                if (CurrentUserInfo.ContactsIndex) {
+                    CurrentUserInfo.ContactsIndex.getContactsCallback(res);
+                }
+            /*-------------------- End--------------------*/
+
+            
             /*-------------------- Tracking--------------------*/
             case "getCustomerTrackingInfoDetailCallback":
                 if (CurrentUserInfo.CustomerTimeSpent) {
@@ -606,6 +691,12 @@ class dispatcher {
                 if (CurrentUserInfo.BotEventAction) {
                     CurrentUserInfo.BotEventAction.GetAdminsListCallback(res);
                 }
+
+                if (CurrentUserInfo.SelectAdmins) {
+                    CurrentUserInfo.SelectAdmins.GetAdminsListCallback(res);
+                }
+
+                
                 break;
 
             case "getAutomaticSendChatsSocketHandlerCallback":

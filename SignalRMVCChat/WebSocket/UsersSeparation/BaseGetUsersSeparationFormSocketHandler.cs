@@ -19,8 +19,10 @@ namespace SignalRMVCChat.WebSocket.UsersSeparation
         }
 
 
-        protected async override Task<MyWebSocketResponse> ReturnResponse(List<Models.UsersSeparation.UsersSeparation> query, MyWebSocketRequest request, MyWebSocketRequest currMySocketReq)
+        protected async override Task<MyWebSocketResponse> ReturnResponse(IQueryable<Models.UsersSeparation.UsersSeparation> query, MyWebSocketRequest request, MyWebSocketRequest currMySocketReq)
         {
+            
+            
             return await Task.FromResult(new MyWebSocketResponse
             {
                 

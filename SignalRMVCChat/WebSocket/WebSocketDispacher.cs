@@ -6,6 +6,7 @@ using SignalRMVCChat.WebSocket.Bot.Execute;
 using SignalRMVCChat.WebSocket.Bot.Log;
 using SignalRMVCChat.WebSocket.Call.AdminScreenRecord;
 using SignalRMVCChat.WebSocket.Call.ScreenRecord;
+using SignalRMVCChat.WebSocket.Contacts;
 using SignalRMVCChat.WebSocket.CustomerProfile;
 using SignalRMVCChat.WebSocket.EventTrigger;
 using SignalRMVCChat.WebSocket.FormCreator;
@@ -21,6 +22,7 @@ using SignalRMVCChat.WebSocket.PrivateNote;
 using SignalRMVCChat.WebSocket.Rate;
 using SignalRMVCChat.WebSocket.ReadyPm;
 using SignalRMVCChat.WebSocket.RemindMe;
+using SignalRMVCChat.WebSocket.Routing;
 using SignalRMVCChat.WebSocket.Tracking;
 using SignalRMVCChat.WebSocket.UsersSeparation;
 
@@ -70,6 +72,31 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+                #region Routing
+
+                case "GetRoutingList":
+                    return new GetRoutingListSocketHandler();
+                    break;
+                case "RoutingSave":
+                    return new RoutingSaveSocketHandler();
+                    break;
+                case "DeleteRouting":
+                    return new DeleteRoutingSocketHandler();
+                    break;
+                case "SetIsEnabledRouting":
+                    return new SetIsEnabledRoutingSocketHandler();
+                    break;
+
+                #endregion
+
+                #region Contacts
+
+                case "GetContacts":
+                    return new GetContactsSocketHandler();
+                    break;
+
+                #endregion
+
                 #region Tracking
 
                 case "CustomerTabClosed":
@@ -80,7 +107,6 @@ namespace SignalRMVCChat.WebSocket
                     return new GetCustomerTrackingInfoDetailSocketHandler();
                     break;
 
-                    
                 #endregion
 
                 #region Bot
