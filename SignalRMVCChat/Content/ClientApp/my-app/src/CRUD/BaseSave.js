@@ -10,8 +10,12 @@ class BaseSave extends Component {
 
     constructor(props) {
         super(props);
-        this.props.parent.props.parent.setState({Save:this});
+        this.props.parent.props.parent.setState({BaseSave:this});
 
+    }
+    
+    getBaseCrudLayoutState(){
+        return this.props.parent.props.parent.state
     }
 
     save() {
@@ -22,7 +26,7 @@ class BaseSave extends Component {
             }
         }
 
-        MyCaller.Send(this.props.save, this.state.selected);
+        MyCaller.Send(this.props.save,this.getBaseCrudLayoutState() .selected);
 
         _showMsg('در حال ذخیره')
     }
@@ -49,7 +53,7 @@ class BaseSave extends Component {
     }
 
 
-    botDeleteCallback(res){
+    deleteCallback(res){
         _showMsg('با موفقیت حذف شد')
 
         this.cancel();
@@ -88,7 +92,8 @@ class BaseSave extends Component {
 
                     </Col>
                 </Row>
-                <br/>
+                <hr/>
+
 
                 {React.cloneElement(this.props.children, { parent: this })}
 

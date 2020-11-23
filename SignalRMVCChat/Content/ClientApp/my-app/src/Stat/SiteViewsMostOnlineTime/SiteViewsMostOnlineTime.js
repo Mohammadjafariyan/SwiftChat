@@ -8,8 +8,9 @@ class SiteViewsMostOnlineTime extends StatBase {
     componentDidMount() {
         CurrentUserInfo.SiteViewsMostOnlineTime = this;
         this.setState({
-            title: 'آمار ترتیب صفحه ها بر اساس بیشترین زمان آنلاین',
-            type: null
+            title: 'آمار ترتیب صفحه ها بر اساس بیشترین زمان آنلاین (به دقیقه)',
+            type: null,
+            arrName:'SiteViewsMostOnlineTime'
         });
     }
 

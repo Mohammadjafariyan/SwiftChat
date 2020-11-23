@@ -465,6 +465,7 @@ export function IranStates(){
     let tempArr2=_IranStatesEng.split('-');
     for (let i = 0; i < tempArr.length; i++) {
 
+        if (tempArr[i])
         arr.push({name:tempArr[i],engName:tempArr2[i]});
     }
     return arr;
@@ -478,7 +479,8 @@ export function IranCities(){
     let tempArr2=_IranCitiesEng.split('-');
     for (let i = 0; i < tempArr.length; i++) {
 
-        arr.push({name:tempArr[i],engName:tempArr2[i]});
+        if (tempArr[i])
+            arr.push({name:tempArr[i],engName:tempArr2[i]});
     }
     return arr;
 }

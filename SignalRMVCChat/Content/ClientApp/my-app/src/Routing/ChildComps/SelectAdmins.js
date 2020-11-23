@@ -5,7 +5,9 @@ import MyMultiSelect from "./MyMultiSelect";
 
 class SelectAdmins extends MyMultiSelect {
     state = {
-        propName: 'admins'
+        propName: 'admins',
+        label:'انتخاب اوپراتور ها',
+        optionLabel:'Name'
     }
 
     componentDidMount() {
@@ -24,8 +26,12 @@ class SelectAdmins extends MyMultiSelect {
 
        this.makeList(arr);
     }
+    
+    compare(e1, e2): boolean {
+        return  e1.Name==e2.Name;
+    }
 
-   
+
 }
 
 export default SelectAdmins;

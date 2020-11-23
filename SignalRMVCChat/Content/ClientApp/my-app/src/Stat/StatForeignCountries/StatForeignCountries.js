@@ -8,7 +8,8 @@ import StatUtility from "../StatUtility";
 
 class StatForeignCountries extends PageVisitStat {
     state = {
-        title: 'بازدید کنندگان خارجی'
+        title: 'بازدید کنندگان خارجی',
+        arrName:'StatForeignCountries'
     }
 
     constructor(props) {

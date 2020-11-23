@@ -266,7 +266,7 @@ namespace SignalRMVCChat.WebSocket
                             TimeDt = DateTime.Now.TimeOfDay,
                             DateTime = DateTime.Now,
 
-
+Id=0,
                             ip = inforByIp.ip,
                             type = inforByIp.type,
                             continent_code = inforByIp.continent_code,

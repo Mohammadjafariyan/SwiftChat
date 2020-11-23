@@ -8,7 +8,10 @@ import BaseSave from "./BaseSave";
 import Card from "react-bootstrap/cjs/Card";
 import Button from "react-bootstrap/cjs/Button";
 import {_showMsg} from "../Pages/LayoutPage";
+import {InputSwitch} from "primereact/inputswitch";
 
+
+import './CRUDStyle.css';
 class BaseIndex extends Component {
     state={};
 
@@ -25,11 +28,11 @@ class BaseIndex extends Component {
     }
 
     getCallback(res) {
-        if (!res || !res.Content || !res.Content.EntityList) {
+        if (!res || !res.Content) {
             return;
         }
 
-        this.setState({list: res.Content.EntityList});
+        this.setState({list: res.Content});
     }
 
     RenderWelcome() {
@@ -42,12 +45,12 @@ class BaseIndex extends Component {
             <>
                 <Row>
 
-                    <Col md={2}>
+                    <Col md={this.props.menuCols ?this.props.menuCols :2}>
 
                         {this.createNew()}
                         {this.renderMenu()}
                     </Col>
-                    <Col md={10}>
+                    <Col md={this.props.bodyCols ?this.props.bodyCols :10}>
 
                         {!this.state.selected && <>
                             {this.props.RenderWelcome && this.props.RenderWelcome()}
@@ -72,8 +75,8 @@ class BaseIndex extends Component {
         );
     }
 
-    setIsEnabled(isEnabled) {
-        MyCaller.Send(this.props.setIsEnabled, {isEnabled,id:this.props.parent.state.selected.Id});
+    setIsEnabled(isEnabled,row) {
+        MyCaller.Send(this.props.setIsEnabled, {isEnabled,id:row.Id});
 
     }
 
@@ -95,24 +98,39 @@ class BaseIndex extends Component {
 
 
                         <Card.Link onClick={()=>{
-                            
+
                             this.setState({
-                            selected:row
+                                selected:null
                             });
+
+                            this.props.parent.setState({
+                                selected:null
+                            });
+                            
+                           setTimeout(()=>{
+                               this.setState({
+                                   selected:row
+                               });
+
+                               this.props.parent.setState({
+                                   selected:row
+                               });
+                               
+                           },100)
                         }}>
                             {row.Name}
                         </Card.Link>
                         <br/>
-                        <Checkbox
+                        <InputSwitch
                             onChange={e => {
+                                row.IsEnabled = e.value;
+
+                                this.setIsEnabled(row.IsEnabled,row);
+
                                 this.setState({tm: Math.random()})
-                                row.IsEnabled = e.checked;
-
-                                this.setIsEnabled(row.IsEnabled);
-
 
                             }}
-                            checked={row.IsEnabled}></Checkbox>
+                            checked={row.IsEnabled}></InputSwitch>
 
                     </ListGroup.Item>
 
@@ -126,9 +144,9 @@ class BaseIndex extends Component {
     save(){
 
         if (this.props.saveDraft){
-            MyCaller.Send(this.props.saveDraft);
+            MyCaller.Send(this.props.saveDraft,{});
         }else{
-            MyCaller.Send(this.props.save);
+            MyCaller.Send(this.props.save,{});
         }
         _showMsg("در حال ایجاد رکورد جدید")
 
@@ -140,9 +158,13 @@ class BaseIndex extends Component {
         this.componentDidMount();
     }
 
+    saveDraftCallback(res){
+        this.saveCallback(res);
+    }
+
     createNew() {
         return <Button onClick={()=>{
-            this.props.save();
+            this.save();
 
         }}>
             

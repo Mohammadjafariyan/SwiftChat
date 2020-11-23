@@ -13,7 +13,7 @@ class dispatcher {
         }
         console.log("dispatcher===>", res.Name);
         switch (res.Name) {
-            /*-------------------- Routing--------------------*/
+            /*-------------------- stats--------------------*/
 
             case "getVisitedPagesForCurrentSiteCallback":
                 if (CurrentUserInfo.PageVisitStat) {
@@ -58,8 +58,48 @@ class dispatcher {
                 break;
             /*-------------------- end--------------------*/
 
+                
+            /*-------------------- Compaign--------------------*/
 
-            
+                
+            case "searchCustomersCallback":
+                if (CurrentUserInfo.SelectCustomers) {
+                    CurrentUserInfo.SelectCustomers.searchCustomersCallback(res);
+                }
+                break;
+            case "getCompaignListCallback":
+                if (CurrentUserInfo.CompaignLayout) {
+                    CurrentUserInfo.CompaignLayout.getCallback(res);
+                }
+                break;
+            case "compaignSaveCallback":
+                if (CurrentUserInfo.CompaignSave) {
+                    CurrentUserInfo.CompaignSave.compaignSaveCallback(res);
+                }
+
+                if (CurrentUserInfo.CompaignLayout) {
+                    CurrentUserInfo.CompaignLayout.saveCallback(res);
+                    CurrentUserInfo.CompaignLayout.saveDraftCallback(res);
+                }
+
+                break;
+            case "deleteCompaignCallback":
+                if (CurrentUserInfo.CompaignLayout) {
+                    CurrentUserInfo.CompaignLayout.deleteCallback(res);
+                }
+                break;
+            case "setIsEnabledCompaignCallback":
+                if (CurrentUserInfo.CompaignLayout) {
+                    CurrentUserInfo.CompaignLayout.setIsEnabledCallback(res);
+                }
+                break;
+            case "saveCompaignCallback":
+                if (CurrentUserInfo.CompaignLayout) {
+                    CurrentUserInfo.CompaignLayout.saveCallback(res);
+                }
+                break;
+            /*-------------------- end--------------------*/
+
             /*-------------------- Routing--------------------*/
             case "getRoutingListCallback":
                 if (CurrentUserInfo.RoutingLayout) {
@@ -70,6 +110,12 @@ class dispatcher {
                 if (CurrentUserInfo.RoutingSave) {
                     CurrentUserInfo.RoutingSave.routingSaveCallback(res);
                 }
+
+                if (CurrentUserInfo.RoutingLayout) {
+                    CurrentUserInfo.RoutingLayout.saveCallback(res);
+                    CurrentUserInfo.RoutingLayout.saveDraftCallback(res);
+                }
+                
                 break;
             case "deleteRoutingCallback":
                 if (CurrentUserInfo.RoutingLayout) {
@@ -1017,6 +1063,11 @@ class dispatcher {
                 if (CurrentUserInfo.TagList) {
                     CurrentUserInfo.TagList.getTagsCallback(res);
                 }
+
+                if (CurrentUserInfo.SelectSegments) {
+                    CurrentUserInfo.SelectSegments.getTagsCallback(res);
+                }
+
                 break;
             default:
                 if (res && res.Message) {

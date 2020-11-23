@@ -9,7 +9,8 @@ class SiteViewsInLast5Year extends StatBase {
         CurrentUserInfo.SiteViewsInLast5Year = this;
         this.setState({
             title: 'آمار بازدید در سال های گذشته(با مقایسه 5 سال)',
-            type: 'line'
+            type: 'line',
+            arrName:'SiteViewsInLast5Year'
         });
     }
 

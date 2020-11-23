@@ -41,9 +41,13 @@ export function changeUserTypes(type) {
             break;
         case 'ChattedAndReturnedCustomerListPage':
             break;
-            
-            case 'NotChattedLeftCustomerListPage':
-                break;
+
+        case 'NotChattedLeftCustomerListPage':
+            break;
+        case 'AssingedToMe':
+            break;
+
+                
         default:
             alert(' نوع شناخته نشد ' + type);
             return;

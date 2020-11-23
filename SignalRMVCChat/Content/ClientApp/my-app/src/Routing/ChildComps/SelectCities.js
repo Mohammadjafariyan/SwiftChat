@@ -5,7 +5,9 @@ import {IranCities, IranStates} from "../../Components/Utilities/Utility";
 
 class SelectCities extends  MyMultiSelect {
     state = {
-        propName: 'Cities'
+        propName: 'Cities',
+        label:'انتخاب شهر ها',
+        optionLabel:'name'
     }
 
     componentDidMount() {
@@ -13,7 +15,7 @@ class SelectCities extends  MyMultiSelect {
         CurrentUserInfo.SelectCities = this;
 
 
-        this.makeList(IranCities)
+        this.makeList(IranCities())
     }
 
     compare(e1, e2) {

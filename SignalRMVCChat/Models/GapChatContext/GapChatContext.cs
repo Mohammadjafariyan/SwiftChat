@@ -780,6 +780,19 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             gapChatContext.Bots.Add(bot);
 
+
+
+            var operatorAssignRequestJson =
+                @"{'Name':'RoutingSave','Body':{'UrlRoutes':[{'urlRoute':'login','type':{'name':'شامل','code':'contains'}},{'urlRoute':'','type':{'name':'شامل','code':'contains'},'urlTitle':'راهنما'}],'IsAuthenticated':true,'admins':[{'MyAccountType':8,'Tags':[],'IdentityUsername':null,'Username':'ali','Password':'ali','OnlineStatus':0,'Name':'علی صمدی','Token':null,'AccessWebsitesJson':'[1]','AccessWebsites':[1],'Parent':null,'ParentId':1,'Chats':[],'TotalUnRead':0,'PlanType':0,'LastTrackInfo':null,'MyWebsites':[],'Children':[],'MyAccountPlans':[],'MyAccountPayments':[],'ChatAutomatics':null,'Address':null,'Message':null,'NewMessageCount':0,'LastMessage':null,'ProfileImageId':null,'Time':null,'CustomerTags':null,'ProfileImage':null,'Forms':[],'HasRootPrivilages':false,'Email':null,'Phone':null,'EventTriggers':null,'UsersSeparations':null,'UsersSeparationParams':null,'RemindMes':null,'ReadyPms':null,'ReceivedPrivateChatsJson':'[]','ReceivedPrivateChats':[],'RemindMeFiresJson':null,'RemindMeFires':null,'Bots':null,'IsBlocked':false,'IsResolved':false,'IsDeleted':false,'Id':3},{'MyAccountType':8,'Tags':[],'IdentityUsername':null,'Username':'s','Password':'s','OnlineStatus':0,'Name':'سعید درخشان','Token':null,'AccessWebsitesJson':'[1]','AccessWebsites':[1],'Parent':null,'ParentId':1,'Chats':[],'TotalUnRead':0,'PlanType':0,'LastTrackInfo':null,'MyWebsites':[],'Children':[],'MyAccountPlans':[],'MyAccountPayments':[],'ChatAutomatics':null,'Address':null,'Message':null,'NewMessageCount':0,'LastMessage':null,'ProfileImageId':null,'Time':null,'CustomerTags':null,'ProfileImage':null,'Forms':[],'HasRootPrivilages':false,'Email':null,'Phone':null,'EventTriggers':null,'UsersSeparations':null,'UsersSeparationParams':null,'RemindMes':null,'ReadyPms':null,'ReceivedPrivateChatsJson':'[]','ReceivedPrivateChats':[],'RemindMeFiresJson':null,'RemindMeFires':null,'Bots':null,'IsBlocked':false,'IsResolved':false,'IsDeleted':false,'Id':4}],'Cities':[{'name':'آبی‌بیگلو','engName':'Abgarm'},{'name':'آبیک','engName':'Abi'}],'States':[{'name':'آذربایجان شرقی','engName':'East Azerbaijan'},{'name':'آذربایجان غربی','engName':'West Azerbaijan'}],'segments':null,'applyWhick':null,'urlTitle':null,'Name':'اختصاص جدید56-32','MyWebsite':null,'MyWebsiteId':1,'IsEnabled':true,'Id':1},'Token':'JrDThIVKrAswkDTpxfnFGNPVGC5hSi9+VAaL5pocpaBdSF9eKxMVyRvfvkLA5ZxnZFzt8pUOeWVBKfsLiHI6K+6b81kmx6wsru/jFS/7J846nELGevGxi2+tf4+5W0PL3SZvFYBelb7gHdzGEeWVbRB7oaGPQMW0MH2G3XcgBc8=','SelectedTagId':null,'gapIsOnlyOnly':null,'IsAdminMode':null,'WebsiteToken':'N09XVk1peG5Gc2FtQWhLSHk4MjIrazBzZWxab3BoUjd1aFZXRXd3NUE4cFRIS1RCdnlJTGVub2JYT1hUeEVWTkhmY0hMcUpvaWhRZnJiYzFiUUh5cmc9PQ==','IsAdminOrCustomer':1}";
+
+            var operatorAssignRequest = JsonConvert.DeserializeObject<MyWebSocketRequest>(operatorAssignRequestJson);
+
+           Routing.Routing routing =
+                JsonConvert.DeserializeObject<Routing.Routing>((JsonConvert.SerializeObject(operatorAssignRequest.Body)));
+
+           gapChatContext.Routings.Add(routing);
+           
+           
             gapChatContext.SaveChanges();
         }
     }

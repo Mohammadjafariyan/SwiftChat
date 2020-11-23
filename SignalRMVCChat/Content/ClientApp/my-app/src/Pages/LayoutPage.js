@@ -40,6 +40,7 @@ import MapPage from "./MapPage";
 import BotLayout from "../Bot/BotLayout";
 import BotPage from "./BotPage";
 import BotDataPage from "./BotDataPage";
+import AssingedToMeCustomerLists from "../Routing/use/AssingedToMeCustomerLists";
 
 
 export default class LayoutPage extends Component {
@@ -346,6 +347,12 @@ export default class LayoutPage extends Component {
                         {DataHolder.filterType === 'NotChatted' &&
                         <NotChatted/>}
 
+
+                        {DataHolder.filterType === 'AssingedToMe' &&
+                        <AssingedToMeCustomerLists/>}
+
+
+                        
                         {DataHolder.filterType === 'ChattedAndReturnedCustomerListPage' &&
                         <ChattedAndReturnedCustomerListPage/>}
 

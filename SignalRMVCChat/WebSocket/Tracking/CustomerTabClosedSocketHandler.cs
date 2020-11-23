@@ -17,6 +17,15 @@ namespace SignalRMVCChat.WebSocket.Tracking
             var customerTrackerService = Injector.Inject<CustomerTrackerService>();
 
             var trackInfo= MyGlobal.Clone(currMySocketReq.MySocket.Customer.LastTrackInfo);
+            if (trackInfo==null)
+            {
+                trackInfo=new CustomerTrackInfo
+                {
+                    DateTime = DateTime.Now,
+                    CustomerId = currMySocketReq.MySocket.CustomerId.Value,
+                };
+            }
+            
             trackInfo.CustomerTrackInfoType = CustomerTrackInfoType.ExitWebsite;
 
             trackInfo.PrevTrackInfoId = trackInfo.Id;

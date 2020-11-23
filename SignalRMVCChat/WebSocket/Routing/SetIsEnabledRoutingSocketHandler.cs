@@ -20,7 +20,7 @@ namespace SignalRMVCChat.WebSocket.Routing
 
             var record= _service.GetById(id, "رکورد یافت نشد").Single;
 
-            record.IsEnabled = true;
+            record.IsEnabled = !record.IsEnabled;
             _service.Save(record);
             
             

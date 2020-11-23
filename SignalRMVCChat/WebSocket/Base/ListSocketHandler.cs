@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SignalRMVCChat.Areas.sysAdmin.Service;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.WebSocket.Base
@@ -27,6 +28,10 @@ namespace SignalRMVCChat.WebSocket.Base
 
         protected virtual async Task<MyWebSocketResponse> ReturnResponse(IQueryable<T> query, MyWebSocketRequest request, MyWebSocketRequest currMySocketReq)
         {
+            if (MyGlobal.IsAttached)
+            {
+                var list = query.ToList();
+            }
            return await Task.FromResult(new MyWebSocketResponse
             {
                 

@@ -8,20 +8,19 @@ using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.Service.Routing;
 using TelegramBotsWebApplication;
 using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace SignalRMVCChat.WebSocket
 {
-  
-    
     public class GetClientsListForAdminSocketHandler : BaseGetClientsListForAdminSocketHandler
     {
         public GetClientsListForAdminSocketHandler() : base(MySocketUserType.Admin)
         {
         }
 
-        protected  override MyDataTableResponse<MyAccount> GetAllOnlineByType(MyWebSocketRequest currMySocketReq,
+        protected override MyDataTableResponse<MyAccount> GetAllOnlineByType(MyWebSocketRequest currMySocketReq,
             string request)
         {
             var _request = MyWebSocketRequest.Deserialize(request);
@@ -51,8 +50,8 @@ namespace SignalRMVCChat.WebSocket
                         /*.Include(c => c.TrackInfos)*/
                         .Include(c => c.MySockets)
                         .Include(c => c.Chats)
-                        .Include(c=>c.CustomerTags)
-                        .Include(c=>c.CustomerTags.Select(t=>t.Tag))
+                        .Include(c => c.CustomerTags)
+                        .Include(c => c.CustomerTags.Select(t => t.Tag))
                         .Where(c => c.MySockets.Any(m => m.CustomerWebsiteId == currMySocketReq.MyWebsite.Id ||
                                                          m.AdminWebsiteId == currMySocketReq.MyWebsite.Id));
 
@@ -78,30 +77,40 @@ namespace SignalRMVCChat.WebSocket
                                     customers)
                                 .Where(w => w.Chats.All(c => c.MyAccountId.HasValue == false));
                             break;
-                            /*query = chatProviderService.GetTotalChatted(null, new DateFromToDateViewModel(), null,
-                                customers);
+                        /*query = chatProviderService.GetTotalChatted(null, new DateFromToDateViewModel(), null,
+                            customers);
 
-                            query = query.Where(q => q.Chats.All(c => c.MyAccountId.HasValue == false));
-                            
-                            break;*/
+                        query = query.Where(q => q.Chats.All(c => c.MyAccountId.HasValue == false));
                         
+                        break;*/
+
+                        case "AssingedToMe":
+
+
+                            query = RoutingService.GetAssingedToMe(_request, currMySocketReq, customers,db);
+                            break;
+
                         case "SharedChatBox":
                             query = chatProviderService.GetTotalChatted(null, new DateFromToDateViewModel(), null,
-                                    customers);
+                                customers);
 
                             break;
-                        case  "SeparatePerPageCustomerListPage":
-                            
-                            query = chatProviderService.SeparatePerPageCustomerListPage(_request.Body?.selectedPage?.ToString(),currMySocketReq,customers);;
+                        case "SeparatePerPageCustomerListPage":
+
+                            query = chatProviderService.SeparatePerPageCustomerListPage(
+                                _request.Body?.selectedPage?.ToString(), currMySocketReq, customers);
+                            ;
 
                             break;
                         case "answered":
                         case "chatted":
                             query = chatProviderService.GetTotalChatted(null, new DateFromToDateViewModel(), null,
-                                customers).Where(w => w.Chats.Any(c => c.MyAccountId.HasValue == true));;
+                                customers).Where(w => w.Chats.Any(c => c.MyAccountId.HasValue == true));
+                            ;
                             break;
                         case "NotChatted":
-                            query = chatProviderService.GetNotChattedCustomers(null, new DateFromToDateViewModel(), null,
+                            query = chatProviderService.GetNotChattedCustomers(null, new DateFromToDateViewModel(),
+                                null,
                                 customers);
                             break;
                         case "NotChattedLeft":
@@ -132,7 +141,7 @@ namespace SignalRMVCChat.WebSocket
                             break;
                     }
 
-                   
+
 //فقط آفلاین ها
                     if (_request.gapIsOnlyOnly.HasValue && _request.gapIsOnlyOnly == true)
                     {
@@ -146,24 +155,19 @@ namespace SignalRMVCChat.WebSocket
                     }
 
 
-                
-
-
-
                     query = query.OrderBy(o => o.OnlineStatus).OrderByDescending(o => o.CreationDateTime);
 
 
                     //PAGING
 
                     _request.Page = _request.Page ?? 0;
-                    if (_request.Page==0)
+                    if (_request.Page == 0)
                     {
-                        query=query.Take(10);
+                        query = query.Take(10);
                     }
                     else
                     {
                         query = query.Skip(_request.Page.Value).Take(10);
-
                     }
                     //PAGING END
 
@@ -184,14 +188,6 @@ namespace SignalRMVCChat.WebSocket
                         });
 
 
-               
-
-
-
-
-                    
-
-
                     /*NewMessageCount,BotLastMessage,FormLastMessage,MessageوAddress*/
 
                     var myAccounts = list.Select(c => new MyAccount
@@ -201,13 +197,13 @@ namespace SignalRMVCChat.WebSocket
                         OnlineStatus = c.OnlineStatus,
                         LastTrackInfo = c.TrackInfos.FirstOrDefault(),
                         Address = Customer.GetAddress(c.TrackInfos.FirstOrDefault()),
-                        Message=c.LastMessage,
-                        NewMessageCount=c.NewMessageCount,
-                        Time=MyAccount.CalculateOnlineTime(c.CreationDateTime),
-                        CustomerTags=c.CustomerTagsForClientTemp,
-                        Email=c.Email,
-                        Phone=c.Phone,
-                        UsersSeparationParams=c.UsersSeparationParams,
+                        Message = c.LastMessage,
+                        NewMessageCount = c.NewMessageCount,
+                        Time = MyAccount.CalculateOnlineTime(c.CreationDateTime),
+                        CustomerTags = c.CustomerTagsForClientTemp,
+                        Email = c.Email,
+                        Phone = c.Phone,
+                        UsersSeparationParams = c.UsersSeparationParams,
                         IsBlocked = c.IsBlocked,
                         IsResolved = c.IsResolved,
                     }).ToList();
@@ -225,12 +221,11 @@ namespace SignalRMVCChat.WebSocket
                     currMySocketReq.CurrentRequest.GetRequesterId(), currMySocketReq);
 
 
-
                 if (_request.gapIsOnlyOnly.HasValue && _request.gapIsOnlyOnly == true)
                 {
                     res.EntityList = res.EntityList.Where(e => e.OnlineStatus == OnlineStatus.Offline).ToList();
                 }
-                
+
                 /// برچسب انتخاب است
                 if (_request.SelectedTagId.HasValue)
                 {
@@ -252,7 +247,7 @@ namespace SignalRMVCChat.WebSocket
                     TrackInfos = c.TrackInfos,
                     MySockets = c.MySockets,
                     CreationDateTime = c.CreationDateTime,
-                    CustomerTagsForClientTemp = c.CustomerTags.Select(t=>t.Tag),
+                    CustomerTagsForClientTemp = c.CustomerTags.Select(t => t.Tag),
                     LastTrackInfo = c.LastTrackInfo,
                     OnlineStatus = c.OnlineStatus,
                     IsBlocked = c.IsBlocked,
@@ -264,17 +259,15 @@ namespace SignalRMVCChat.WebSocket
                         .OrderByDescending(ch => ch.CreateDateTime).LastOrDefault(),
 
 
-                    NewMessageCount = c.Chats.Where(ch=>ch.DeliverDateTime.HasValue==false).Count() ,
+                    NewMessageCount = c.Chats.Where(ch => ch.DeliverDateTime.HasValue == false).Count(),
 
 
-                    Time=MyGlobal.ToIranianDateWidthTime(c.CreationDateTime),
-                    UsersSeparationParams=c.UsersSeparationParams
-
-
+                    Time = MyGlobal.ToIranianDateWidthTime(c.CreationDateTime),
+                    UsersSeparationParams = c.UsersSeparationParams
                 }).ToList();
         }
 
-        private IQueryable<Customer>  FilterByTagId(int requestSelectedTagId, IQueryable<Customer> list)
+        private IQueryable<Customer> FilterByTagId(int requestSelectedTagId, IQueryable<Customer> list)
         {
             var tagService = Injector.Inject<TagService>();
             tagService.GetById(requestSelectedTagId, "برچسب یافت نشد");
@@ -283,24 +276,25 @@ namespace SignalRMVCChat.WebSocket
 
             // برچسب هایی که مربوط به این کاستومر ها هستند
             var customerTags = customerTagService.GetQuery()
-                .Where(c=>c.TagId==requestSelectedTagId).ToList().Where(c => list.Select(l => l.Id).Contains(c.CustomerId))
+                .Where(c => c.TagId == requestSelectedTagId).ToList()
+                .Where(c => list.Select(l => l.Id).Contains(c.CustomerId))
                 .Select(c => c.CustomerId).ToList();
 
             list = list.Where(l => customerTags.Contains(l.Id));
             return list;
         }
-        
-        private List<MyAccount>  FilterByTagId(int requestSelectedTagId, List<MyAccount> list)
+
+        private List<MyAccount> FilterByTagId(int requestSelectedTagId, List<MyAccount> list)
         {
             var tagService = Injector.Inject<TagService>();
-            
+
             tagService.GetById(requestSelectedTagId, "برچسب یافت نشد");
 
             var customerTagService = Injector.Inject<CustomerTagService>();
 
             // برچسب هایی که مربوط به این کاستومر ها هستند
             var customerTags = customerTagService.GetQuery()
-                .Where(c=>c.TagId==requestSelectedTagId)
+                .Where(c => c.TagId == requestSelectedTagId)
                 .ToList()
                 .Where(c => list.Select(l => l.Id).Contains(c.CustomerId))
                 .Select(c => c.CustomerId).ToList();

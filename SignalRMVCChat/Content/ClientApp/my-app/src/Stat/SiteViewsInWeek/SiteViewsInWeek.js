@@ -9,7 +9,8 @@ class SiteViewsInWeek extends StatBase {
         CurrentUserInfo.SiteViewsInWeek = this;
         this.setState({
             title: 'آمار بازدید در طی هفته ',
-            type: null
+            type: null,
+            arrName:'SiteViewsInWeek'
         });
     }
 

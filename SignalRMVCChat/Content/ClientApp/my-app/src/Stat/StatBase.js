@@ -63,7 +63,11 @@ class StatBase extends PageVisitStat {
     //chartData ,list
     getChartData(Content) {
 
-        let arr = Content.MostExitUrlInSite;
+        let arr = Content[this.state.arrName];
+        
+        if (this.state.arrName=='SiteViewsInMonths'){
+            debugger;
+        }
 
         let chartData = this.getHorizontalChartData(arr)
 

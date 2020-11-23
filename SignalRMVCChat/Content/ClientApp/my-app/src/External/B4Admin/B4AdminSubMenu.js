@@ -142,24 +142,47 @@ export default class B4AdminSubMenu extends Component {
 
                             پاسخ داده شده
                         </Button>
-                        <Button variant='light'
-                                className={
-                                    "btn btn-default " +
-                                    (DataHolder.currentPage === "CustomerList" &&
-                                    DataHolder.filterType === "WaitingForAnswer"
-                                        ? " bg-primary text-white "
-                                        : "")
-                                }
+                      <Button variant='light'
+                              className={
+                                  "btn btn-default " +
+                                  (DataHolder.currentPage === "CustomerList" &&
+                                  DataHolder.filterType === "WaitingForAnswer"
+                                      ? " bg-primary text-white "
+                                      : "")
+                              }
 
-                                onClick={() => {
-                                    this.setPage("WaitingForAnswer");
-                                }}
-                        >
-                            <ShowPlusCount Count={this.state.TotalWaitingForAnswerCount}></ShowPlusCount>
+                              onClick={() => {
+                                  this.setPage("WaitingForAnswer");
+                              }}
+                      >
+                          <ShowPlusCount Count={this.state.TotalWaitingForAnswerCount}></ShowPlusCount>
 
-                            <span>              در انتظار پاسخ
+                          <span>              در انتظار پاسخ
                 </span>
-                        </Button>
+                      </Button>
+
+                      <Button variant='light'
+                              className={
+                                  "btn btn-default " +
+                                  (DataHolder.currentPage === "CustomerList" &&
+                                  DataHolder.filterType === "AssingedToMe"
+                                      ? " bg-primary text-white "
+                                      : "")
+                              }
+
+                              onClick={() => {
+                                  this.setPage("AssingedToMe");
+                              }}
+                      >
+                          <ShowPlusCount Count={this.state.AssingedToMeTotalNewMessages}></ShowPlusCount>
+
+                          <Badge variant={'warning'}>
+                              جدید
+                          </Badge>
+                          
+                          <span>              اختصاص داده شده به من
+                </span>
+                      </Button>
 
                         <Form.Group controlId="formBasicCheckbox" className={'onlyoffline'}>
                             <Form.Check checked={this.state.onlyOfflineChecked} type="checkbox" label="فقط آفلاین ها"

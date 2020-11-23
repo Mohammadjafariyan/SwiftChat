@@ -3,6 +3,14 @@ import {Card, Spinner} from "react-bootstrap";
 import {Chart} from "primereact/chart";
 
 class StatUtility extends Component {
+    state={};
+
+    constructor(props) {
+        super(props);
+        
+    }
+
+
     render() {
         return (
             <>
@@ -19,7 +27,7 @@ class StatUtility extends Component {
                         </Spinner>}
                         
                         {this.props.chartData &&
-                        <Chart type={ this.state.type ? this.state.type :"horizontalBar"} data={this.props.chartData} options={this.props.basicOptions}/>
+                        <Chart type={ this.props.type ? this.props.type :"horizontalBar"} data={this.props.chartData} options={this.props.basicOptions}/>
                         }
 
 
@@ -30,7 +38,7 @@ class StatUtility extends Component {
                     </Card.Body>
                 </Card>
             </>
-        );
+        );   
     }
 }
 

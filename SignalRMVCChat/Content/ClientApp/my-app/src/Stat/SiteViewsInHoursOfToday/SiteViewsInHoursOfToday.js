@@ -9,7 +9,8 @@ class SiteViewsInHoursOfToday extends StatBase {
         CurrentUserInfo.SiteViewsInHoursOfToday = this;
         this.setState({
             title: 'آمار بازدید در طی ساعت های روز ',
-            type: null
+            type: null,
+            arrName:'SiteViewsInHoursOfToday'
         });
     }
 

@@ -10,7 +10,8 @@ class MostExitUrlInSite extends StatBase {
         CurrentUserInfo.MostExitUrlInSite = this;
         this.setState({
             title: 'آمار صفحه ای که بیشترین خروج از سایت را داشته ',
-            type: null
+            type: null,
+            arrName:'MostExitUrlInSite'
         });
     }
 }

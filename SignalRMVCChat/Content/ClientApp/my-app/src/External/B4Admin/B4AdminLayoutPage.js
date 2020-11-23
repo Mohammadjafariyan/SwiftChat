@@ -42,6 +42,7 @@ import DashboardPage from "../../Pages/DashboardPage";
 import StatPage from "../../Pages/StatPage";
 import ContactsPage from "../../Pages/ContactsPage";
 import RoutingPage from "../../Pages/RoutingPage";
+import AssingedToMeCustomerLists from "../../Routing/use/AssingedToMeCustomerLists";
 
 
 export default class B4AdminLayoutPage extends Component {
@@ -401,6 +402,9 @@ export default class B4AdminLayoutPage extends Component {
 
                         {DataHolder.filterType === 'NotChatted' &&
                         <NotChatted/>}
+
+                        {DataHolder.filterType === 'AssingedToMe' &&
+                        <AssingedToMeCustomerLists/>}
 
                         {DataHolder.filterType === 'ChattedAndReturnedCustomerListPage' &&
                         <ChattedAndReturnedCustomerListPage/>}

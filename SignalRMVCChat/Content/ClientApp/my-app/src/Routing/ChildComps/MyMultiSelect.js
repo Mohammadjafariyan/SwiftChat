@@ -5,7 +5,8 @@ import {MultiSelect} from "primereact/multiselect";
 
 class MyMultiSelect extends Component {
     state = {
-        propName: ''
+        propName: '',
+        CountryList:[]
     }
 
     componentDidMount() {
@@ -22,6 +23,11 @@ class MyMultiSelect extends Component {
 
     makeList(arr) {
 
+        if (!arr){
+            arr=[];
+        }
+
+        console.log('makeList',arr);
 
         let selected = this.props.parent.state.selected[this.state.propName] ?
             this.props.parent.state.selected[this.state.propName] : [];
@@ -40,17 +46,28 @@ class MyMultiSelect extends Component {
     }
 
     render() {
+        if (!this.props.parent || !this.props.parent.state ||
+            !this.props.parent.state.selected
+            || !this.props.parent.state.selected[this.state.propName])
+            return <></>
+
         return (
             <>
-                <MultiSelect value={this.props.parent.state.selected[this.state.propName]}
+                
+                {this.state.CountryList && 
+                <MultiSelect  emptyFilterMessage={'هیچ رکوردی یافت نشد'} style={{width:'100%'}} filter  optionLabel={this.state.optionLabel} value={this.props.parent.state.selected[this.state.propName]}
                              options={this.state.CountryList}
+                             selectedItemsLabel={'بتعداد {0} آیتم انتخاب شده'}
+                             name={this.state.label}
+                             tooltip={this.state.label}
                              onChange={(e) => {
-                               
+
                                  this.setState({MATH: Math.random()});
                                  this.props.parent.state.selected[this.state.propName] = e.value;
 
                              }}/>
-
+                }
+                <label>{this.state.label}</label>
             </>
         );
     }

@@ -12,7 +12,8 @@ class PageOnlineCount extends PageVisitStat {
         CurrentUserInfo.PageOnlineCount = this;
         
         this.setState({title:'آمار تعداد آنلاین های هر صفحه اکنون',
-        type:'doughnut'})
+        type:'doughnut',
+            arrName:'PageOnlineCount'})
 
        
     }

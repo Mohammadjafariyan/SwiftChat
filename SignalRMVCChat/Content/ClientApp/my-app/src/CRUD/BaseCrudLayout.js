@@ -27,13 +27,16 @@ class BaseCrudLayout extends Component {
             <div>
                 
                 
-                <BaseIndex parent={this} {...this.props} {...this.state} 
+                <BaseIndex menuCols={this.state.menuCols}
+                           bodyCols={this.state.bodyCols}
+                           
+                           parent={this} {...this.props} {...this.state} 
                            get={this.state.get} 
                            save={this.state.save} 
                            delete={this.state.delete}
-                           setIsEnabled={this.state.setIsEnabled} RenderWelcome={this.RenderWelcome}
+                           setIsEnabled={this.state.setIsEnabled}
+                           RenderWelcome={this.RenderWelcome}
                            saveDraft={this.state.saveDraft}>
-                    
                     
                     
                     {this.RenderForm()}
@@ -56,15 +59,21 @@ class BaseCrudLayout extends Component {
     }
 
     saveDraftCallback(res){
-        this.state.Index.saveDraftCallback(res);
+        this.state.Index.componentDidMount();
     }
 
     saveCallback(res){
-        this.state.Save.saveCallback(res);
+
+        this.state.Index.componentDidMount();
+        this.state.BaseSave.cancel();
+
     }
 
     deleteCallback(res){
-        this.state.Save.deleteCallback(res);
+        this.state.Index.componentDidMount();
+        this.state.BaseSave.cancel();
+
+            /*this.state.Save.deleteCallback(res);*/
     }
     
     

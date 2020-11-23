@@ -57,11 +57,15 @@ class PageVisitStat extends Component {
                     label: ' بازدید',
                     data: datas,
                     backgroundColor: _GetRandomColor(),
+                    fill: false,
+                    borderColor: _GetRandomColor()
                 },
                 {
                     label: ' بازدید کننده',
                     data: datas2,
                     backgroundColor: _GetRandomColor(),
+                    fill: false,
+                    borderColor: _GetRandomColor()
                 }
             ]
         };

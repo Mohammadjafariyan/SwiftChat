@@ -9,7 +9,8 @@ class SiteViewsInMonths extends StatBase {
         CurrentUserInfo.SiteViewsInMonths = this;
         this.setState({
             title: 'آمار بازدید در ماه های امسال(با مقایسه)',
-            type: 'line'
+            type: null,
+            arrName:'SiteViewsInMonths'
         });
     }
 

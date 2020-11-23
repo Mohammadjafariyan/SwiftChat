@@ -236,7 +236,7 @@ namespace SignalRMVCChat.Models
                 return null;
             }
 
-            return DateTime.Now.Subtract(dateTime.Value).TotalMinutes;
+            return Math.Round(DateTime.Now.Subtract(dateTime.Value).TotalMinutes);
         }
     }
 }

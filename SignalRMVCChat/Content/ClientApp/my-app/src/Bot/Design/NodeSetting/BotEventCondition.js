@@ -42,7 +42,7 @@ const yesNo = [
 
 ];
 
-const weekdays = [
+export const weekdays = [
     {name: 'شنبه', code: 6},
     {name: 'یکشنبه', code: 0},
     {name: 'دوشنبه', code: 1},
