@@ -2,6 +2,8 @@
 import {TabMenu} from "primereact/tabmenu";
 import Row from "react-bootstrap/cjs/Row";
 import Col from "react-bootstrap/cjs/Col";
+import {Card} from "primereact/card";
+import {Menubar} from "primereact/menubar";
 
 class CompaignFilter extends Component {
     constructor(props) {
@@ -24,14 +26,18 @@ class CompaignFilter extends Component {
 
     render() {
         return (
+            <Card >
             <Row>
-                <Col>
-                    <TabMenu model={this.items} />
-                </Col>
-                <Col>
-                    <TabMenu model={this.filters} />
-                </Col>
+                    <Col md={4}>
+                        <Menubar model={this.items} />
+                    </Col>
+                    <Col >
+                        <Menubar model={this.filters} />
+                    </Col>
+              
             </Row>
+            </Card>
+
         );
     }
 }

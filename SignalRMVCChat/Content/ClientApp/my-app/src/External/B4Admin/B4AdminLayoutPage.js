@@ -43,6 +43,7 @@ import StatPage from "../../Pages/StatPage";
 import ContactsPage from "../../Pages/ContactsPage";
 import RoutingPage from "../../Pages/RoutingPage";
 import AssingedToMeCustomerLists from "../../Routing/use/AssingedToMeCustomerLists";
+import CompaignPage from "../../Pages/CompaignPage";
 
 
 export default class B4AdminLayoutPage extends Component {
@@ -176,8 +177,22 @@ export default class B4AdminLayoutPage extends Component {
                     </div>
                 )
             }
-            
-            else if (DataHolder.currentPage === 'usersSeparation') {
+            else if (DataHolder.currentPage === 'CompaignPage') {
+                return (
+                    <div>
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+
+                        <MessageAlerts/>
+
+
+                        <CompaignPage/>
+
+
+                    </div>
+                )
+            }
+        
+        else if (DataHolder.currentPage === 'usersSeparation') {
                 return (
                     <div>
                         <Toast position="bottom-left" ref={(el) => this.toast = el}/>

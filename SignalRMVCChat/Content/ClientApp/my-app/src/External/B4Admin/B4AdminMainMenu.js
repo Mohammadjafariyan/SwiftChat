@@ -156,6 +156,15 @@ export default class B4AdminMainMenu extends Component {
                         <i className="fas fa-fw fa-chart-area"></i>
                         <span>اختصاص اتوماتیک اوپراتور ها به صفحهات </span></a>
                 </li>
+
+
+                <li className={'nav-item ' + (DataHolder.currentPage === 'CompaignPage' ? ' active ' : '')}>
+                    <a className="nav-link" onClick={() => {
+                        this.setPage('CompaignPage');
+                    }}>
+                        <i className="fas fa fa-send-o"></i>
+                        <span>کمپین(ارسال گروهی - اتوماتیک)</span></a>
+                </li>
                 
 
                 <li className={'nav-item ' + (DataHolder.currentPage === 'AutomaticSend' ? ' active ' : '')}>

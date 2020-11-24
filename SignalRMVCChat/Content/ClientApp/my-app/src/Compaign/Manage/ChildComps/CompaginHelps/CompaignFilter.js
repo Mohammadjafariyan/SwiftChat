@@ -5,7 +5,7 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {Dropdown} from "primereact/dropdown";
 import {
-    CompaignInputCalendar,
+    CompaignInputCalendar, CompaignInputSwitch,
     CompaignInputText,
     CompaignWeekDays,
     CountryDropDown,
@@ -28,31 +28,56 @@ import {MyCard, MyFieldset} from "../../../../Routing/Manage/RoutingSave";
 import Button from "react-bootstrap/cjs/Button";
 
 class CompaignFilter extends Component {
-    state = {
-        searchTerm: '',
-        arr: [],
-        selectedCriteria: null
-    }
-
     criteriaList = GetCriteriaList();
 
-    applytypeList=[
-        {name:'برابر'},
-        {name:'شامل'},
-        {name:'نابرابر'},
+    applytypeList = [
+        {name: 'برابر'},
+        {name: 'شامل'},
+        {name: 'نابرابر'},
     ]
+state={
+    searchTerm: '',
+    arr: [],
+    selectedCriteria: null,
+    selectedFilter: this.applytypeList[0],
+    selected: {
+        CustomData: []
+    }
+};
+
+    init() {
+        debugger;
+        this.setState( {
+            searchTerm: '',
+            arr: [],
+            selectedCriteria: null,
+            selectedFilter: this.applytypeList[0],
+            selected: {
+                CustomData: []
+            }
+        });
+    }
+
     constructor(props) {
         super(props);
         CurrentUserInfo.CompaignFilter = this;
     }
 
     componentDidMount() {
-        let filters = _GetSelectedCompaign().Filters;
+
+        this.init();
+        let filters = _GetSelectedCompaign()[this.props.fieldName];
 
         filters = filters ? filters : [];
 
         this.setState({filters: filters})
 
+    }
+
+
+    componentWillUnmount() {
+
+        _GetSelectedCompaign()[this.props.fieldName] = this.state.filters;
     }
 
 
@@ -64,37 +89,58 @@ class CompaignFilter extends Component {
                 <MyFieldset title="انتخاب شاخص و نحوه اعمال">
                     <Row>
                         <Col>
-                            <MyCard header={'انتخاب روش فیلتر کردن کاربران'} title={'به چه روشی کاربران انتخاب و ایمیل یا پیغام ارسال شود'}>
-                                <MyDropDown parent={this} title={'شاخص'} name={'selectedCriteria'} list={this.criteriaList}/>
-                                <MyDropDown parent={this} title={'نحوه اعمال'} name={'selectedFilter'} list={this.applytypeList}/>
+                            <MyCard header={'انتخاب روش فیلتر کردن کاربران'}
+                                    title={'به چه روشی کاربران انتخاب و ایمیل یا پیغام ارسال شود'}>
+
+                                <Row>
+                                    <Col>
+                                        <MyDropDown parent={this} title={'نحوه اعمال'} name={'selectedFilter'}
+                                                    options={this.applytypeList}/>
+
+                                    </Col>
+                                    <Col>
+                                        <MyDropDown parent={this} title={'شاخص'} name={'selectedCriteria'}
+                                                    options={this.criteriaList}/>
+
+                                    </Col>
+                                </Row>
+
                             </MyCard>
                         </Col>
                     </Row>
                 </MyFieldset>
-        
 
 
                 <MyFieldset title="تنظیمات یا پیکربندی شاخص">
                     <Row>
-                        <Col>
-                            <MyCard header={'مقادیر رفتار سیستم در شاخص انتخاب شده'} >
+                        <Col md={12}>
+                            <MyCard header={'مقادیر رفتار سیستم در شاخص انتخاب شده'}>
                                 {this.ShowSwich()}
+
+                                <hr/>
+                                <Button variant={'light'} onClick={() => {
+                                    this.addNewFilter();
+                                }}>
+
+                                    افزودن
+                                </Button>
                             </MyCard>
                         </Col>
+                        
+                        
+                       
                     </Row>
+                    
                 </MyFieldset>
 
-                <hr/>
-                
-                <Button onClick={()=>{
-                    this.addNewFilter();
-                }}>
-                    
-                    افزودن
-                </Button>
+
+              
 
                 <hr/>
-                <ShowTable parent={this} list={filters}/>
+                <ShowTable parent={this} list={this.state.filters}/>
+
+                
+
             </div>
         );
     }
@@ -104,61 +150,75 @@ class CompaignFilter extends Component {
             return <></>
         }
 
+        console.log('this.state.selectedCriteria.engName==>', this.state.selectedCriteria.engName)
 
-        switch (this.state.selectedCriteria.engName) {
+        switch (this.state.selectedCriteria.engName.toString().trim()) {
             case 'EmailAddress':
-              return   <CompaignInputText title={this.state.selectedCriteria.name} parent={this}/>
+                return <CompaignInputText title={this.state.selectedCriteria.name}
+                                          name={this.state.selectedCriteria.engName} parent={this}/>
                 break;
             case 'fullName':
-                return   <CompaignInputText title={this.state.selectedCriteria.name} parent={this}/>
+                return <CompaignInputText title={this.state.selectedCriteria.name}
+                                          name={this.state.selectedCriteria.engName} parent={this}/>
                 break;
             case 'gender':
-                return <Gender title={this.state.selectedCriteria.name} parent={this}/>
+                return <Gender title={this.state.selectedCriteria.name} name={this.state.selectedCriteria.engName}
+                               parent={this}/>
                 break;
             case 'customData':
-                return <CustomData title={this.state.selectedCriteria.name} parent={this}/>
+                return <CustomData title={this.state.selectedCriteria.name} name={this.state.selectedCriteria.engName}
+                                   parent={this}/>
                 break;
             case 'phoneNumber':
-                return   <CompaignInputText title={this.state.selectedCriteria.name} parent={this}/>
+                return <CompaignInputText title={this.state.selectedCriteria.name}
+                                          name={this.state.selectedCriteria.engName} parent={this}/>
                 break;
             case 'language':
-                return <CountryDropDown parent={this}/>
+                return <CountryDropDown parent={this} name={this.state.selectedCriteria.engName}/>
                 break;
             case 'country':
-                return <CountryDropDown parent={this}/>
+                return <CountryDropDown parent={this} name={this.state.selectedCriteria.engName}/>
 
                 break;
-                
+
             case 'weekdays':
-               return <CompaignWeekDays parent={this}/>
+                return <CompaignWeekDays parent={this} name={this.state.selectedCriteria.engName}/>
                 break;
             case 'region':
-              return  <SelectStates parent={this}/>
+                return <SelectStates parent={this} name={this.state.selectedCriteria.engName}/>
                 break;
             case 'city':
-                return  <SelectCities parent={this}/>
+                return <SelectCities parent={this} name={this.state.selectedCriteria.engName}/>
 
                 break;
             case 'JobName':
-                return   <CompaignInputText title={this.state.selectedCriteria.name} parent={this}/>
+                return <CompaignInputText title={this.state.selectedCriteria.name} parent={this}
+                                          name={this.state.selectedCriteria.engName}/>
                 break;
             case 'JobTitle':
-                return   <CompaignInputText title={this.state.selectedCriteria.name} parent={this}/>
+                return <CompaignInputText title={this.state.selectedCriteria.name} parent={this}
+                                          name={this.state.selectedCriteria.engName}/>
                 break;
             case 'lastActiveDate':
-                return   <CompaignInputCalendar title={this.state.selectedCriteria.name} parent={this}/>
+                return <CompaignInputCalendar title={this.state.selectedCriteria.name} parent={this}
+                                              name={this.state.selectedCriteria.engName}/>
                 break;
             case 'creationDate':
-                return   <CompaignInputCalendar title={this.state.selectedCriteria.name} parent={this}/>
-                
+                return <CompaignInputCalendar title={this.state.selectedCriteria.name} parent={this}
+                                              name={this.state.selectedCriteria.engName}/>
+
                 break;
             case 'providedRating':
+                return <CompaignInputSwitch name={this.state.selectedCriteria.engName}
+                                            title={this.state.selectedCriteria.name} parent={this}/>
+
                 break;
             case 'segments':
-                return <SelectSegments/>
+                return <SelectSegments name={this.state.selectedCriteria.engName} parent={this}/>
                 break;
             case 'CompanyName':
-                return   <CompaignInputText title={this.state.selectedCriteria.name} parent={this}/>
+                return <CompaignInputText title={this.state.selectedCriteria.name} parent={this}
+                                          name={this.state.selectedCriteria.engName}/>
                 break;
 
         }
@@ -175,16 +235,51 @@ class CompaignFilter extends Component {
         this.state.selected.States
         this.state.selected.Cities
         this.state.selected.SelectedDate
-        this.state.selected.segments*/
+        this.state.selected.segments
         
-        let filters=filters ? filters:[];
+        IsAutomatic
+IsEnabled
+----------
+GetCompaignTemplates
+GetCompaignList
+CompaignSave
+DeleteCompaign
+SetIsEnabledCompaign
+CompaignSave p-invalid p-d-block
+SearchCustomers*/
 
-        filters.push(this.state.selected);
+        let filters = _GetSelectedCompaign()[this.props.fieldName];
+
+        filters = filters ? filters : [];
+
+        let hasError=false;
+
+        if (!this.state.selected.selectedCriteria){
+            this.state.selected.selectedCriteriaInValid=true;
+            this.setState({gm:Math.random()});
+            hasError=true;
+        }
         
-        this.setState({
-            filters:filters,
-            selected:{}
-        })
+        if (!this.state.selected.selectedFilter){
+            this.state.selected.selectedFilterInValid=true;
+            this.setState({gm:Math.random()});
+            hasError=true;
+        }
+        
+        if (hasError){
+            return ;
+        }
+        
+        filters.push(this.state.selected);
+
+        _GetSelectedCompaign()[this.props.fieldName]=filters;
+        this.setState({filters:filters})
+
+        
+        this.init();
+
+
+
     }
 }
 

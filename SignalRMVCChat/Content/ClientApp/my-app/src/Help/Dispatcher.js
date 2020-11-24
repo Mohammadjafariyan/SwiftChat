@@ -58,10 +58,15 @@ class dispatcher {
                 break;
             /*-------------------- end--------------------*/
 
-                
+
             /*-------------------- Compaign--------------------*/
 
                 
+            case "getCompaignTemplatesCallback":
+                if (CurrentUserInfo.CompaignTemplates) {
+                    CurrentUserInfo.CompaignTemplates.getCompaignTemplatesCallback(res);
+                }
+                break;
             case "searchCustomersCallback":
                 if (CurrentUserInfo.SelectCustomers) {
                     CurrentUserInfo.SelectCustomers.searchCustomersCallback(res);
@@ -115,7 +120,7 @@ class dispatcher {
                     CurrentUserInfo.RoutingLayout.saveCallback(res);
                     CurrentUserInfo.RoutingLayout.saveDraftCallback(res);
                 }
-                
+
                 break;
             case "deleteRoutingCallback":
                 if (CurrentUserInfo.RoutingLayout) {
@@ -135,7 +140,7 @@ class dispatcher {
 
             /*-------------------- End--------------------*/
 
-                
+
             /*-------------------- Tracking--------------------*/
             case "getContactsCallback":
                 if (CurrentUserInfo.ContactsIndex) {
@@ -143,13 +148,13 @@ class dispatcher {
                 }
             /*-------------------- End--------------------*/
 
-            
+
             /*-------------------- Tracking--------------------*/
             case "getCustomerTrackingInfoDetailCallback":
                 if (CurrentUserInfo.CustomerTimeSpent) {
                     CurrentUserInfo.CustomerTimeSpent.getCustomerTrackingInfoDetailCallback(res);
                 }
-                
+
                 if (CurrentUserInfo.CustomerProfile) {
                     CurrentUserInfo.CustomerProfile.getCustomerTrackingInfoDetailCallback(res);
                 }
@@ -158,27 +163,34 @@ class dispatcher {
 
             /*-------------------- End--------------------*/
 
-            
+
             /*-------------------- BOT LOG--------------------*/
             case "getBotLogSingleCallback":
                 if (CurrentUserInfo.BotLogLayout) {
                     CurrentUserInfo.BotLogLayout.getBotLogSingleCallback(res);
                 }
                 break;
-                
+
             case "getBotListCallback":
                 if (CurrentUserInfo.BotLogForm) {
                     CurrentUserInfo.BotLogForm.getBotListCallback(res);
                 }
+
+
+                if (CurrentUserInfo.CompaignConditions) {
+                    CurrentUserInfo.CompaignConditions.botListCallback(res);
+                }
+
+                
                 break;
             case "getBotLogListCallback":
                 if (CurrentUserInfo.BotLogTable) {
                     CurrentUserInfo.BotLogTable.getBotLogListCallback(res);
                 }
                 break;
-                
-                
-                
+
+
+
             /*-------------------- BOT--------------------*/
             case "botSaveCallback":
                 if (CurrentUserInfo.BotDesign) {
@@ -323,6 +335,10 @@ class dispatcher {
             case "eventTriggerGetAllCallback":
                 if (CurrentUserInfo.EventTriggerIndex) {
                     CurrentUserInfo.EventTriggerIndex.eventTriggerGetAllCallback(res);
+                }
+
+                if (CurrentUserInfo.CompaignConditions) {
+                    CurrentUserInfo.CompaignConditions.eventTriggerGetAllCallback(res);
                 }
                 break;
 
@@ -742,7 +758,7 @@ class dispatcher {
                     CurrentUserInfo.SelectAdmins.GetAdminsListCallback(res);
                 }
 
-                
+
                 break;
 
             case "getAutomaticSendChatsSocketHandlerCallback":
@@ -779,8 +795,7 @@ class dispatcher {
             case "readChatCallback":
                 CurrentUserInfo.ChatPage.readChatCallback(res);
                 CurrentUserInfo.ChatPage.LoadForms(res);
-                
-                
+
 
                 break;
             case "adminLoginCallback":
@@ -814,7 +829,6 @@ class dispatcher {
                 }
 
 
-             
                 /*else{
          
                          CurrentUserInfo.LayoutPage.showError('dispatcher CurrentUserInfo.OnlineCustomerListHolder is null');
@@ -963,8 +977,8 @@ class dispatcher {
             case "getVisitedPagesForCurrentSiteCallback":
                 if (CurrentUserInfo.SepratePerPage) {
                     CurrentUserInfo.SepratePerPage.getVisitedPagesForCurrentSiteCallback(
-                    res
-                );
+                        res
+                    );
                 }
 
                 if (CurrentUserInfo.PageVisitStat) {
@@ -994,8 +1008,8 @@ class dispatcher {
                 if (CurrentUserInfo.StatForeignCountries) {
                     CurrentUserInfo.StatForeignCountries.getVisitedPagesForCurrentSiteCallback(res);
                 }
-                
-                
+
+
                 break;
 
             case "getAllTagsForCurrentAdminCallback":
@@ -1035,7 +1049,7 @@ class dispatcher {
                     CurrentUserInfo.CurrentPlanInMenu.getMyProfileCallback(res);
                 }
 
-                
+
                 break;
             case "saveMyProfileCallback":
                 if (CurrentUserInfo.ProfilePage) {

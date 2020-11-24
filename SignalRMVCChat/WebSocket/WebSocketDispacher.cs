@@ -6,6 +6,7 @@ using SignalRMVCChat.WebSocket.Bot.Execute;
 using SignalRMVCChat.WebSocket.Bot.Log;
 using SignalRMVCChat.WebSocket.Call.AdminScreenRecord;
 using SignalRMVCChat.WebSocket.Call.ScreenRecord;
+using SignalRMVCChat.WebSocket.Compaign;
 using SignalRMVCChat.WebSocket.Contacts;
 using SignalRMVCChat.WebSocket.CustomerProfile;
 using SignalRMVCChat.WebSocket.EventTrigger;
@@ -72,6 +73,35 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+
+                #region Compaign
+
+                case "GetCompaignTemplates":
+                    return new GetCompaignTemplatesSocketHandler();
+                    break;
+                
+                case "GetCompaignList":
+                    return new GetCompaignListSocketHandler();
+                    break;
+                
+                case "CompaignSave":
+                    return new CompaignSaveSocketHandler();
+                    break;
+                
+                case "DeleteCompaign":
+                    return new DeleteCompaignSocketHandler();
+                    break;
+                
+                case "SetIsEnabledCompaign":
+                    return new SetIsEnabledCompaignSocketHandler();
+                    break;
+                
+                case "SearchCustomers":
+                    return new SearchCustomersSocketHandler();
+                    break;
+
+                #endregion
+
                 #region Routing
 
                 case "GetRoutingList":

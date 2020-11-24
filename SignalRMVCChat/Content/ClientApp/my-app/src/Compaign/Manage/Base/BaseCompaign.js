@@ -5,6 +5,7 @@ import CompaignAnaylics from "../ChildComps/CompaignAnaylics";
 import CompaignRecipients from "../ChildComps/CompaignRecipients";
 import CompaignTemplates from "../ChildComps/CompaignTemplates";
 import {CurrentUserInfo, Socket} from "../../../Help/Socket";
+import {Card} from "primereact/card";
 
 class BaseCompaign extends Component {
     state={};
@@ -17,7 +18,14 @@ class BaseCompaign extends Component {
     render() {
         return (
             <div>
-                <ShowSwitch step={this.state.step}/>
+                <Card >
+                    {this.getSteps()}
+
+                </Card>
+                <br/>
+                <Card >
+                    <ShowSwitch step={this.state.step}/>
+                </Card>
             </div>
         );
     }
@@ -25,6 +33,10 @@ class BaseCompaign extends Component {
     setStep(step){
         this.setState({step:step})
 
+    }
+
+    getSteps(){
+        return <></>
     }
 
    
@@ -49,8 +61,9 @@ const  ShowSwitch=(props)=> {
             return <CompaignRecipients next={'CompaignTemplates'} currentStep={1}/>
             break;
         case 'CompaignTemplates':
-            return <CompaignTemplates  next={'CompaignEditor'} currentStep={3}/>
+            return <CompaignTemplates  next={'CompaignEditor'} currentStep={2}/>
             break;
+            
         default:
             return <></>
             break;

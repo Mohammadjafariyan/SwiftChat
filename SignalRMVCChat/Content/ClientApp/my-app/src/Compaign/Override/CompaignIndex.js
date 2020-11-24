@@ -3,6 +3,7 @@ import BaseIndex from "../../CRUD/BaseIndex";
 import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/cjs/Card";
 import {InputSwitch} from "primereact/inputswitch";
+import CompaignFilter from "../Filter/CompaignFilter";
 
 class CompaignIndex extends BaseIndex {
     getCallback(res) {
@@ -15,7 +16,17 @@ class CompaignIndex extends BaseIndex {
         this.setState({automatic: automatic,
             oneshot:oneshot});
     }
-   
+    
+    
+    render(): * {
+        return  <>
+
+            {!this.state.selected && <>
+                <CompaignFilter></CompaignFilter>            <br/>
+            </>}
+            { super.render()} </>;
+    }
+
     renderMenu() {
      
 
@@ -34,7 +45,7 @@ class CompaignIndex extends BaseIndex {
         }
         return <ListGroup>
 
-            <ListGroup.Item>${title}</ListGroup.Item>
+            <ListGroup.Item>{title}</ListGroup.Item>
             {
                 list.map((row, i, arr) => {
 

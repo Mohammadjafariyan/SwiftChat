@@ -166,6 +166,8 @@ namespace SignalRMVCChat.Models.ET
         /// تعریف کننده
         /// </summary>
         public MyAccount MyAccount { get; set; }
+
+        public List<Compaign.Compaign> Compaigns { get; set; }
     }
 
 

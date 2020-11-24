@@ -403,6 +403,8 @@
     <Compile Include="Models\ChatSenderType.cs" />
     <Compile Include="Models\ChatType.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Compaign\Compaign.cs" />
+    <Compile Include="Models\Compaign\CompaignTemplate.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerData.cs" />
     <Compile Include="Models\CustomerTag.cs" />
@@ -438,6 +440,8 @@
     <Compile Include="Service\Bot\BotService.cs" />
     <Compile Include="Service\ChatProviderService.cs" />
     <Compile Include="Service\CommentService.cs" />
+    <Compile Include="Service\Compaign\CompaignService.cs" />
+    <Compile Include="Service\Compaign\CompaignTemplateService.cs" />
     <Compile Include="Service\CustomerDataService.cs" />
     <Compile Include="Service\CustomerTagService.cs" />
     <Compile Include="Service\CustomerTrackerService.cs" />
@@ -545,6 +549,12 @@
     <Compile Include="WebSocket\Bot\Log\GetBotListSocketHandler.cs" />
     <Compile Include="WebSocket\Bot\Log\GetBotLogListSocketHandler.cs" />
     <Compile Include="WebSocket\Bot\Log\GetBotLogSingleSocketHandler.cs" />
+    <Compile Include="WebSocket\Compaign\CompaignSaveSocketHandler.cs" />
+    <Compile Include="WebSocket\Compaign\SearchCustomersSocketHandler.cs" />
+    <Compile Include="WebSocket\Compaign\DeleteCompaignSocketHandler.cs" />
+    <Compile Include="WebSocket\Compaign\GetCompaignListSocketHandler.cs" />
+    <Compile Include="WebSocket\Compaign\GetCompaignTemplatesSocketHandler.cs" />
+    <Compile Include="WebSocket\Compaign\SetIsEnabledCompaignSocketHandler.cs" />
     <Compile Include="WebSocket\Contacts\GetContactsSocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\DeleteKeySocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\GetCustomerDataListSocketHandler.cs" />
@@ -2145,6 +2155,7 @@
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\CompaignEditor.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\CompaignRecipients.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\CompaignTemplates.js" />
+    <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\EditorStyle.css" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\CompaignSave.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\Manual\ManualCompaign.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\Manual\ManualCompaignStep.js" />
@@ -2266,6 +2277,7 @@
     <Content Include="Content\ClientApp\my-app\src\Pages\BotPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\ChatPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\ChattedAndReturnedCustomerListPage.js" />
+    <Content Include="Content\ClientApp\my-app\src\Pages\CompaignPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\ContactsPage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\CustomerProfilePage.js" />
     <Content Include="Content\ClientApp\my-app\src\Pages\DashboardPage.js" />

@@ -323,6 +323,8 @@ namespace SignalRMVCChat.WebSocket
                     break;
                 case "NotChattedLeft":
                     break;
+                case "AssingedToMe":
+                    break;
 
                 case "ChattedAndReturnedCustomerListPage":
 

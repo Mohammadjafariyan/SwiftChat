@@ -4,7 +4,7 @@ import MyMultiSelect from "./MyMultiSelect";
 
 class SelectSegments extends MyMultiSelect {
     state = {
-        propName: 'segments',
+        propName: this.props.name ? this.props.name: 'segments',
         label:'انتخاب برچسب ها',
         optionLabel:'Name'
     }

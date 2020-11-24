@@ -5,7 +5,7 @@ import {IranCities, IranStates} from "../../Components/Utilities/Utility";
 
 class SelectStates extends MyMultiSelect {
     state = {
-        propName: 'States',
+        propName: this.props.name ? this.props.name :'States',
         label:'انتخاب استان ها',
         optionLabel:'name'
     }

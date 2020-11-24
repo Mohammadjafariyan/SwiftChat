@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using SignalRMVCChat.Models.Compaign;
 using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Models.UsersSeparation;
 using SignalRMVCChat.Service;
@@ -158,6 +159,6 @@ namespace SignalRMVCChat.Models
             set { ContactAdminsJson = JsonConvert.SerializeObject(value); }
         }
         public string ContactAdminsJson { get; set; }
-
+        public List<CompaignTemplate> CompaignTemplates { get; set; }
     }
 }

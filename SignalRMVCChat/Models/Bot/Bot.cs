@@ -24,6 +24,8 @@ namespace SignalRMVCChat.Models.Bot
         /// </summary>
         public MyAccount MyAccount { get; set; }
 
+        public List<Compaign.Compaign> Compaigns { get; set; }
+
         #endregion
     }
 }

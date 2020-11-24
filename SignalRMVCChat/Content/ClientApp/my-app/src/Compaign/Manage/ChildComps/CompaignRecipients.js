@@ -5,13 +5,14 @@ import {TabPanel, TabView} from "primereact/tabview";
 import SelectCustomers from "./CompaginHelps/SelectCustomers";
 import CompaignFilter from "../../Filter/CompaignFilter";
 import SelectSegments from "../../../Routing/ChildComps/SelectSegments";
+import {_GetSelectedCompaign, _SaveSelectedCompaign} from "../CompaignSave";
 
 class CompaignRecipients extends CompaignChildCompBase {
 
     constructor(props) {
         super(props);
-        this.state={
-            activeIndex:0
+        this.state = {
+            activeIndex: 0
         }
         this.justifyOptions = [
             {name: 'ارسال به همه کاربران', value: 'left'},
@@ -22,25 +23,36 @@ class CompaignRecipients extends CompaignChildCompBase {
 
     }
 
+    componentDidMount() {
+
+        this.setState({
+            activeIndex: _GetSelectedCompaign().CompaignRecipientsTypeIndex
+        })
+    }
+
 
     render() {
         return (
             <div>
 
 
+                <TabView activeIndex={this.state.activeIndex}
+                         onTabChange={(e) => {
 
-                <TabView activeIndex={this.state.activeIndex} onTabChange={(e) => this.setState({ activeIndex: e.index })}>
+                             this.setState({activeIndex: e.index})
+                             _GetSelectedCompaign().CompaignRecipientsTypeIndex = e.index;
+                         }}>
                     <TabPanel header="ارسال به همه کاربران">
-                       </TabPanel>
+                    </TabPanel>
                     <TabPanel header="ارسال به کاربران انتخابی">
-                        
+
                         <SelectCustomers/>
                     </TabPanel>
                     <TabPanel header="اعمال فیلتر پیشرفته">
                         <CompaignFilter/>
-                     </TabPanel>
+                    </TabPanel>
                     <TabPanel header="ارسال به برچسب های خاص">
-                        
+
                         <SelectSegments/>
                     </TabPanel>
                 </TabView>

@@ -152,5 +152,6 @@ namespace SignalRMVCChat.Service
         public List<Models.Bot.Bot> Bots { get; set; }
         public List<Tag> Tags { get; set; }
         public List<Models.Routing.Routing> Routings { get; set; }
+        public List<Models.Compaign.Compaign> Compaigns { get; set; }
     }
 }

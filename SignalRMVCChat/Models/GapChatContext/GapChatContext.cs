@@ -28,15 +28,15 @@ namespace SignalRMVCChat.Models.GapChatContext
     {
         public GapChatContext(DbConnection connection) : base(connection, false)
         {
-            
-            
         }
+
         protected override void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
             {
                 Database.Connection.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -207,7 +207,7 @@ namespace SignalRMVCChat.Models.GapChatContext
                 .WithMany(o => o.Tickets)
                 .HasForeignKey(o => o.AppAdminId).WillCascadeOnDelete(false);
 
-            
+
             /*
             modelBuilder.Entity<AppUser>()
                 .HasMany(r => r.Tickets)
@@ -220,6 +220,7 @@ namespace SignalRMVCChat.Models.GapChatContext
                 .HasMany(r => r.MyFiles)
                 .WithRequired(o => o.Ticket)
                 .HasForeignKey(o => o.TicketId).WillCascadeOnDelete(false);
+
             #endregion
 
 
@@ -232,8 +233,6 @@ namespace SignalRMVCChat.Models.GapChatContext
             modelBuilder.Entity<AppRole>().HasMany(r => r.AppAdmins)
                 .WithOptional(o => o.AppRole)
                 .HasForeignKey(o => o.AppRoleId).WillCascadeOnDelete(false);
-
-
 
             #endregion
 
@@ -454,7 +453,47 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #endregion
 
-            
+
+            #region Compaign
+
+            modelBuilder.Entity<MyWebsite>()
+                .HasMany(r => r.Compaigns)
+                .WithRequired(o => o.MyWebsite)
+                .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<MyAccount>()
+                .HasMany(r => r.Compaigns)
+                .WithOptional(o => o.MyAccount)
+                .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<Compaign.Compaign>()
+                .HasOptional(r => r.selectedEventTrigger)
+                .WithMany(o => o.Compaigns)
+                .HasForeignKey(o => o.CompaignId);
+
+            modelBuilder.Entity<Compaign.Compaign>()
+                .HasOptional(r => r.selectedBot)
+                .WithMany(o => o.Compaigns)
+                .HasForeignKey(o => o.CompaignId);
+
+
+            #region CompaignTemplate
+
+            modelBuilder.Entity<Compaign.Compaign>()
+                .HasMany(r => r.CompaignTemplates)
+                .WithOptional(o => o.Compaign)
+                .HasForeignKey(o => o.CompaignId);
+
+            modelBuilder.Entity<Compaign.CompaignTemplate>()
+                .HasRequired(r => r.Customer)
+                .WithMany(o => o.CompaignTemplates)
+                .HasForeignKey(o => o.CustomerId);
+
+            #endregion
+
+            #endregion
+
             #region Routing
 
             modelBuilder.Entity<MyWebsite>()
@@ -462,21 +501,25 @@ namespace SignalRMVCChat.Models.GapChatContext
                 .WithRequired(o => o.MyWebsite)
                 .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
 
-
-            
             #endregion
 
             base.OnModelCreating(modelBuilder);
         }
 
+
+        #region Compaign
+
+        public DbSet<Compaign.Compaign> Compaigns { get; set; }
+
+        #endregion
+
         #region Routing
 
-        
         public DbSet<Routing.Routing> Routings { get; set; }
 
         #endregion
-        
-        
+
+
         #region UsersSeparation
 
         public DbSet<UsersSeparation.UsersSeparation> UsersSeparations { get; set; }
@@ -781,18 +824,18 @@ namespace SignalRMVCChat.Models.GapChatContext
             gapChatContext.Bots.Add(bot);
 
 
-
             var operatorAssignRequestJson =
                 @"{'Name':'RoutingSave','Body':{'UrlRoutes':[{'urlRoute':'login','type':{'name':'شامل','code':'contains'}},{'urlRoute':'','type':{'name':'شامل','code':'contains'},'urlTitle':'راهنما'}],'IsAuthenticated':true,'admins':[{'MyAccountType':8,'Tags':[],'IdentityUsername':null,'Username':'ali','Password':'ali','OnlineStatus':0,'Name':'علی صمدی','Token':null,'AccessWebsitesJson':'[1]','AccessWebsites':[1],'Parent':null,'ParentId':1,'Chats':[],'TotalUnRead':0,'PlanType':0,'LastTrackInfo':null,'MyWebsites':[],'Children':[],'MyAccountPlans':[],'MyAccountPayments':[],'ChatAutomatics':null,'Address':null,'Message':null,'NewMessageCount':0,'LastMessage':null,'ProfileImageId':null,'Time':null,'CustomerTags':null,'ProfileImage':null,'Forms':[],'HasRootPrivilages':false,'Email':null,'Phone':null,'EventTriggers':null,'UsersSeparations':null,'UsersSeparationParams':null,'RemindMes':null,'ReadyPms':null,'ReceivedPrivateChatsJson':'[]','ReceivedPrivateChats':[],'RemindMeFiresJson':null,'RemindMeFires':null,'Bots':null,'IsBlocked':false,'IsResolved':false,'IsDeleted':false,'Id':3},{'MyAccountType':8,'Tags':[],'IdentityUsername':null,'Username':'s','Password':'s','OnlineStatus':0,'Name':'سعید درخشان','Token':null,'AccessWebsitesJson':'[1]','AccessWebsites':[1],'Parent':null,'ParentId':1,'Chats':[],'TotalUnRead':0,'PlanType':0,'LastTrackInfo':null,'MyWebsites':[],'Children':[],'MyAccountPlans':[],'MyAccountPayments':[],'ChatAutomatics':null,'Address':null,'Message':null,'NewMessageCount':0,'LastMessage':null,'ProfileImageId':null,'Time':null,'CustomerTags':null,'ProfileImage':null,'Forms':[],'HasRootPrivilages':false,'Email':null,'Phone':null,'EventTriggers':null,'UsersSeparations':null,'UsersSeparationParams':null,'RemindMes':null,'ReadyPms':null,'ReceivedPrivateChatsJson':'[]','ReceivedPrivateChats':[],'RemindMeFiresJson':null,'RemindMeFires':null,'Bots':null,'IsBlocked':false,'IsResolved':false,'IsDeleted':false,'Id':4}],'Cities':[{'name':'آبی‌بیگلو','engName':'Abgarm'},{'name':'آبیک','engName':'Abi'}],'States':[{'name':'آذربایجان شرقی','engName':'East Azerbaijan'},{'name':'آذربایجان غربی','engName':'West Azerbaijan'}],'segments':null,'applyWhick':null,'urlTitle':null,'Name':'اختصاص جدید56-32','MyWebsite':null,'MyWebsiteId':1,'IsEnabled':true,'Id':1},'Token':'JrDThIVKrAswkDTpxfnFGNPVGC5hSi9+VAaL5pocpaBdSF9eKxMVyRvfvkLA5ZxnZFzt8pUOeWVBKfsLiHI6K+6b81kmx6wsru/jFS/7J846nELGevGxi2+tf4+5W0PL3SZvFYBelb7gHdzGEeWVbRB7oaGPQMW0MH2G3XcgBc8=','SelectedTagId':null,'gapIsOnlyOnly':null,'IsAdminMode':null,'WebsiteToken':'N09XVk1peG5Gc2FtQWhLSHk4MjIrazBzZWxab3BoUjd1aFZXRXd3NUE4cFRIS1RCdnlJTGVub2JYT1hUeEVWTkhmY0hMcUpvaWhRZnJiYzFiUUh5cmc9PQ==','IsAdminOrCustomer':1}";
 
             var operatorAssignRequest = JsonConvert.DeserializeObject<MyWebSocketRequest>(operatorAssignRequestJson);
 
-           Routing.Routing routing =
-                JsonConvert.DeserializeObject<Routing.Routing>((JsonConvert.SerializeObject(operatorAssignRequest.Body)));
+            Routing.Routing routing =
+                JsonConvert.DeserializeObject<Routing.Routing>(
+                    (JsonConvert.SerializeObject(operatorAssignRequest.Body)));
 
-           gapChatContext.Routings.Add(routing);
-           
-           
+            gapChatContext.Routings.Add(routing);
+
+
             gapChatContext.SaveChanges();
         }
     }

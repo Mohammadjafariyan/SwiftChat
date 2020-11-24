@@ -14,8 +14,8 @@ class CompaignLayout extends BaseCrudLayout {
         delete: 'DeleteCompaign',
         setIsEnabled: 'SetIsEnabledCompaign',
         saveDraft: 'CompaignSave',
-        menuCols: 5,
-        bodyCols: 7
+        menuCols: 2,
+        bodyCols: 10
     };
 
     constructor(prp) {
@@ -28,11 +28,10 @@ class CompaignLayout extends BaseCrudLayout {
 
     
     render(): * {
-        return <br>
-        
-        
-            <CompaignFilter></CompaignFilter>
-            <br/>
+        return <>
+
+
+           
             <CompaignIndex menuCols={this.state.menuCols}
                        bodyCols={this.state.bodyCols}
 
@@ -84,7 +83,7 @@ class CompaignLayout extends BaseCrudLayout {
                             <div className="help-screen-wrap">
                                 <div className="help-screen"></div>
                             </div>
-                        </div>
+                        </div>  
 
                         <hr/>
                         در این بخش کمپین های (ارسال ایمیل یا پیغام) با سیاست خاصی به کاربران تعریف و ارسال میشود

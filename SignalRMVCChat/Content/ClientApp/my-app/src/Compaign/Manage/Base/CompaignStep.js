@@ -6,7 +6,7 @@ class CompaignStep extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeIndex: 1
+            activeIndex: 0
         };
         
         CurrentUserInfo.CompaignStep=this;

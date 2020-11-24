@@ -217,6 +217,9 @@ namespace SignalRMVCChat.Models
         /// </summary>
         [NotMapped]
         public bool IsResolved { get; set; }
+
+        public List<Models.Compaign.Compaign> Compaigns { get; set; }
+
     }
 
     public class ReceivedPrivateChat
