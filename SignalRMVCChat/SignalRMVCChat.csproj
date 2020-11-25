@@ -404,7 +404,13 @@
     <Compile Include="Models\ChatType.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Compaign\Compaign.cs" />
+    <Compile Include="Models\Compaign\Compaignfilter.cs" />
+    <Compile Include="Models\Compaign\CompaignHtmlTemplate.cs" />
+    <Compile Include="Models\Compaign\CompaignLog.cs" />
+    <Compile Include="Models\Compaign\CompaignLogReceiver.cs" />
+    <Compile Include="Models\Compaign\CompaignStatus.cs" />
     <Compile Include="Models\Compaign\CompaignTemplate.cs" />
+    <Compile Include="Models\Compaign\NameValue.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerData.cs" />
     <Compile Include="Models\CustomerTag.cs" />
@@ -440,6 +446,8 @@
     <Compile Include="Service\Bot\BotService.cs" />
     <Compile Include="Service\ChatProviderService.cs" />
     <Compile Include="Service\CommentService.cs" />
+    <Compile Include="Service\Compaign\CompaignLogReceiverService.cs" />
+    <Compile Include="Service\Compaign\CompaignLogService.cs" />
     <Compile Include="Service\Compaign\CompaignService.cs" />
     <Compile Include="Service\Compaign\CompaignTemplateService.cs" />
     <Compile Include="Service\CustomerDataService.cs" />
@@ -549,6 +557,8 @@
     <Compile Include="WebSocket\Bot\Log\GetBotListSocketHandler.cs" />
     <Compile Include="WebSocket\Bot\Log\GetBotLogListSocketHandler.cs" />
     <Compile Include="WebSocket\Bot\Log\GetBotLogSingleSocketHandler.cs" />
+    <Compile Include="WebSocket\Compaign\CompaignLog\GetCompaignLogListSocketHandler.cs" />
+    <Compile Include="WebSocket\Compaign\CompaignLog\GetCompaignLogReceiverListSocketHandler.cs" />
     <Compile Include="WebSocket\Compaign\CompaignSaveSocketHandler.cs" />
     <Compile Include="WebSocket\Compaign\SearchCustomersSocketHandler.cs" />
     <Compile Include="WebSocket\Compaign\DeleteCompaignSocketHandler.cs" />
@@ -2142,6 +2152,7 @@
     <Content Include="Content\ClientApp\my-app\src\Bot\Log\BotLogTable.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\CompaignLayout.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Filter\CompaignFilter.js" />
+    <Content Include="Content\ClientApp\my-app\src\Compaign\Filter\CompaignFilterStyle.css" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\Automatic\AutomaticCompaign.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\Automatic\AutomaticCompaignStep.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\Base\BaseCompaign.js" />
@@ -2153,10 +2164,13 @@
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\CompaignChildCompBase.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\CompaignConditions.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\CompaignEditor.js" />
+    <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\CompaignLogTable.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\CompaignRecipients.js" />
+    <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\CompaignTable.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\CompaignTemplates.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\ChildComps\EditorStyle.css" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\CompaignSave.js" />
+    <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\Logs\CompaignLogReceiverTable.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\Manual\ManualCompaign.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Manage\Manual\ManualCompaignStep.js" />
     <Content Include="Content\ClientApp\my-app\src\Compaign\Override\CompaignIndex.js" />

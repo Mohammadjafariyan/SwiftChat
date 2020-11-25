@@ -120,3 +120,26 @@ class Satistification extends Component {
 }
 
 export default Satistification;
+
+
+
+
+export const ShowStatistification=(props)=>{
+
+
+    let stars=[];
+    for (let i = 1; i <= 6; i++) {
+        stars.push(i);
+    }
+    
+    return <>{stars.map((val,i,arr)=>{
+
+            if (i<props.ratingCount.length){
+                return                <i key={i} style={{color:'#f8d007'}} className="fa fa-star" aria-hidden="true"></i>
+
+            }else{
+                return                 <i key={i} style={{color:'black'}} className="fa fa-star" aria-hidden="true"></i>
+                    ;
+            }
+        })}</>
+}

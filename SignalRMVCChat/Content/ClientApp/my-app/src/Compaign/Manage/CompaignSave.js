@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo} from "../../Help/Socket";
+import {CurrentUserInfo,MyCaller} from "../../Help/Socket";
 import {_showError, _showMsg} from "../../Pages/LayoutPage";
 import AutomaticCompaign from "./Automatic/AutomaticCompaign";
 import ManualCompaign from "./Manual/ManualCompaign";
@@ -8,6 +8,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {RadioButton} from "primereact/radiobutton";
 import Button from "react-bootstrap/cjs/Button";
+import {MyModal} from "../../Components/Modal";
+import CompaignLogReceiverTable from "./Logs/CompaignLogReceiverTable";
 
 class CompaignSave extends Component {
     state = {
@@ -22,11 +24,14 @@ class CompaignSave extends Component {
 
         console.log('RoutingSave->this.props.selected', this.props.selected);
         this.setState({
+         
             selected: this.props.selected,
             compaignType: this.props.selected ? this.props.selected.compaignType:null
 
         });
     }
+    
+    
 
     compaignSaveCallback(res) {
         if (this.callback)
@@ -36,7 +41,23 @@ class CompaignSave extends Component {
         this.props.parent.setState({
             selected: null
         });
+
+        CurrentUserInfo.CompaignLayout.setState({changed:false});
+
     }
+    
+    
+    componentWillUnmount() {
+
+        
+        this.props.parent.showSaveModal(this.state.selected,()=>{
+            this.state.selected.IsChanged=true;
+        });
+
+       // CurrentUserInfo.CompaignIndex.componentDidMount();
+    }
+
+
 
     render() {
         if (!this.state.selected) {
@@ -47,9 +68,11 @@ class CompaignSave extends Component {
         return (
             <div>
 
+                
+
                 {!this.state.started && <>
 
-                    <MyFieldset title="انتخاب نوع کمپین">
+                    <MyFieldset title={" انتخاب نوع کمپین " + this.state.selected.Name}>
                         <Row>
                             <Col>
                                 <MyCard header={'نوع کمپین'}
@@ -58,6 +81,7 @@ class CompaignSave extends Component {
                                         <Col>
                                             <RadioButton name="compaignType" value="automatic"
                                                          onChange={(e) => {
+                                                            
                                                              this.setState({compaignType: 'automatic'})
                                                              this.state.selected.compaignType = 'automatic';
 
@@ -116,6 +140,10 @@ class CompaignSave extends Component {
     }
 
     Save(callback) {
+
+       
+      
+        
 
         this.callback = callback;
 

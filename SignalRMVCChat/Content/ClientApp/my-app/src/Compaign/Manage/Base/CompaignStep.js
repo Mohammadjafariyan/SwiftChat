@@ -16,24 +16,29 @@ class CompaignStep extends Component {
                 label: 'دریافت کنندگان',
                 command: (event) => {
                     //   this.toast.show({ severity: 'info', summary: 'First Step', detail: event.item.label });
+                    CurrentUserInfo.CompaignStep.setState(
+                        {activeIndex: 0})
+
+                    CurrentUserInfo.CurrentCompaign.setStep('CompaignRecipients')
                 }
             },
             {
-                label: 'قالب و متن',
+                label: 'قالب ایمیل یا پیغام',
                 command: (event) => {
                     //  this.toast.show({ severity: 'info', summary: 'Seat Selection', detail: event.item.label });
+                    CurrentUserInfo.CompaignStep.setState(
+                        {activeIndex: 1})
+                    CurrentUserInfo.CurrentCompaign.setStep('CompaignTemplates')
                 }
             },
             {
-                label: 'ویرایشگر',
+                label: 'متن ایمیل یا پیغام',
                 command: (event) => {
                     //  this.toast.show({ severity: 'info', summary: 'Pay with CC', detail: event.item.label });
-                }
-            },
-            {
-                label: 'آنالیز',
-                command: (event) => {
-                    //    this.toast.show({ severity: 'info', summary: 'Last Step', detail: event.item.label });
+                    CurrentUserInfo.CompaignStep.setState(
+                        {activeIndex: 2})
+
+                    CurrentUserInfo.CurrentCompaign.setStep('CompaignEditor')
                 }
             }
         ];
@@ -46,7 +51,7 @@ class CompaignStep extends Component {
                 <Steps model={this.items}
                        activeIndex={this.state.activeIndex}
                        onSelect={(e) => this.setState({activeIndex: e.index})}
-                       readOnly={true}/>
+                       readOnly={false}/>
 
             </>
         );

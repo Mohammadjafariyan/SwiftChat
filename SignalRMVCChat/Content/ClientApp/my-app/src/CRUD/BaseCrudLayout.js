@@ -65,13 +65,17 @@ class BaseCrudLayout extends Component {
     saveCallback(res){
 
         this.state.Index.componentDidMount();
+        
+        
+        if ( this.state.BaseSave)
         this.state.BaseSave.cancel();
 
     }
 
     deleteCallback(res){
         this.state.Index.componentDidMount();
-        this.state.BaseSave.cancel();
+        if ( this.state.BaseSave)
+            this.state.BaseSave.cancel();
 
             /*this.state.Save.deleteCallback(res);*/
     }

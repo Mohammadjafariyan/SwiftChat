@@ -4,6 +4,9 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/cjs/Card";
 import {InputSwitch} from "primereact/inputswitch";
 import CompaignFilter from "../Filter/CompaignFilter";
+import {MyModal} from "../../Components/Modal";
+import {CurrentUserInfo} from "../../Help/Socket";
+import Badge from "react-bootstrap/Badge";
 
 class CompaignIndex extends BaseIndex {
     getCallback(res) {
@@ -26,11 +29,20 @@ class CompaignIndex extends BaseIndex {
             </>}
             { super.render()} </>;
     }
+    
+    
+    componentDidMount() {
+        CurrentUserInfo.CompaignIndex=this;
+        
+        super.componentDidMount();
+    }
 
     renderMenu() {
      
 
         return <>
+
+      
             {this.renderMenuHelp('کمپین های اتوماتیک',this.state.automatic)}
             {this.renderMenuHelp('کمپین های دستی',this.state.oneshot)}
             
@@ -64,16 +76,27 @@ class CompaignIndex extends BaseIndex {
 
                             setTimeout(()=>{
                                 this.setState({
+                                    selectedNotChanged:JSON.stringify(row),
                                     selected:row
                                 });
 
                                 this.props.parent.setState({
+                                    selectedNotChanged:JSON.stringify(row),
                                     selected:row
                                 });
 
                             },100)
                         }}>
                             {row.Name}
+                            
+                            
+                            
+                            {row.IsChanged && <Badge variant={'warning'}  aria-label="تغییرات ذخیره نشده" data-microtip-position="right"
+                                                     role="tooltip">
+                                +تغییرات
+
+                            </Badge>}
+                            
                         </Card.Link>
                         <br/>
                         <InputSwitch

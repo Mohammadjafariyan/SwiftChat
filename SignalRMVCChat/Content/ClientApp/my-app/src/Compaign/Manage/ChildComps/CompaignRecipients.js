@@ -6,8 +6,13 @@ import SelectCustomers from "./CompaginHelps/SelectCustomers";
 import CompaignFilter from "../../Filter/CompaignFilter";
 import SelectSegments from "../../../Routing/ChildComps/SelectSegments";
 import {_GetSelectedCompaign, _SaveSelectedCompaign} from "../CompaignSave";
+import {CurrentUserInfo} from "../../../Help/Socket";
 
 class CompaignRecipients extends CompaignChildCompBase {
+
+    state = {
+        selected: {}
+    }
 
     constructor(props) {
         super(props);
@@ -25,9 +30,19 @@ class CompaignRecipients extends CompaignChildCompBase {
 
     componentDidMount() {
 
+
+        CurrentUserInfo.CompaignRecipients = this;
         this.setState({
             activeIndex: _GetSelectedCompaign().CompaignRecipientsTypeIndex
         })
+    }
+
+    componentWillUnmount() {
+        _GetSelectedCompaign()['CompaignRecipientsTypeIndex'] = this.state.activeIndex;
+        _GetSelectedCompaign()['segments'] = this.state.selected.segments;
+        //_GetSelectedCompaign().selectedCustomers
+
+
     }
 
 

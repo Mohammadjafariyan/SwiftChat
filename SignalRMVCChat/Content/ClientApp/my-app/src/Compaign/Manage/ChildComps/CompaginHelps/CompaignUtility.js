@@ -6,7 +6,7 @@ import {Column} from "primereact/column";
 import {SelectButton} from "primereact/selectbutton";
 import {weekdays} from "../../../../Bot/Design/NodeSetting/BotEventCondition";
 import {Countries} from "../../../../Components/HelpDesk/Language/Countries";
-import React, {useEffect, useState} from "react";
+import React, {Component, useEffect, useState} from "react";
 import Card from "react-bootstrap/Card";
 import {Spinner} from "react-bootstrap";
 import {Button} from "primereact/button";
@@ -20,6 +20,7 @@ import {InputSwitch} from "primereact/inputswitch";
 import SelectStates from "../../../../Routing/ChildComps/SelectStates";
 import SelectCities from "../../../../Routing/ChildComps/SelectCities";
 import SelectSegments from "../../../../Routing/ChildComps/SelectSegments";
+import {CurrentUserInfo, MyCaller} from "../../../../Help/Socket";
 
 const criteriaStrList = `آدرس ایمیل-
  نام کامل  -
@@ -156,21 +157,38 @@ export const CompaignInputText = (props) => {
 
 
 export const CompaignInputCalendar = (props) => {
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(props.parent.state.selected[props.name] ? new Date(props.parent.state.selected[props.name]) :null);
 
-    React.useEffect(() => {
-        setValue(props.parent.state.selected[props.name]);
-    }, [props.parent.state.selected[props.name]])
+  /*  React.useEffect(() => {
+        
+        if (props.parent.state.selected[props.name]){
+            setValue(new Date(props.parent.state.selected[props.name]));
+            
+        }
+    }, [props.parent.state.selected[props.name]])*/
 
     return <>
         <label>{props.title}</label><br/>
-        <Calendar dateFormat="yy/mm/dd" value={value} onChange={(e) => {
-            props.parent.state.selected[props.name] = e.target.value;
+        <Calendar dateFormat="yy/mm/dd" value={value}
+                  onChange={(e) => {
+                      let day = e.value.getDate();
+                      let mont = e.value.getMonth();
+                      let year = e.value.getFullYear();
 
-            setValue(e.target.value);
+                      let hour = e.value.getHours();
+                      let min = e.value.getMinutes();
+                      let sec = e.value.getSeconds();
 
-            props.parent.setState({tm: Math.random()});
-        }}/></>
+                     
+
+                      props.parent.state.selected[props.name] = `${day}/${mont}/${year} ${hour}:${min}:${sec}`;
+
+                      setValue(e.value);
+
+                      props.parent.setState({tm: Math.random()});
+                  }}
+                  
+                  /></>
 
 
 }
@@ -189,21 +207,96 @@ export const ShowTable = (props) => {
 
     }
     const showValue=(row)=>{
-        let name;
+        let name='';
 
-     
 
-        if (!name){
-            name=row[row.selectedCriteria.engName].name ? row[row.selectedCriteria.engName].name: name;
+       try{
+           switch (row.selectedCriteria.engName.toString().trim()) {
+               case 'EmailAddress':
+                   name = row[row.selectedCriteria.engName];
+
+               case 'fullName':
+                   name = row[row.selectedCriteria.engName];
+
+               case 'gender':
+
+                   name = row[row.selectedCriteria.engName].name || row[row.selectedCriteria.engName].Name || row[row.selectedCriteria.engName];
+
+                   break;
+               case 'customData':
+                   name = row['customData'] + '<=>' + row['CustomDataValue'];
+
+                   /*return <CustomData title={this.state.selectedCriteria.name} name={this.state.selectedCriteria.engName}
+                                      parent={this}/>*/
+                   break;
+               case 'phoneNumber':
+                   name = row[row.selectedCriteria.engName];
+                   break;
+               case 'language':
+                   name = row[row.selectedCriteria.engName].Name || row[row.selectedCriteria.engName].name;
+
+                   break;
+               case 'country':
+
+                   name = row[row.selectedCriteria.engName].Name || row[row.selectedCriteria.engName].name;
+
+                   break;
+
+               case 'weekdays':
+                   if (row[row.selectedCriteria.engName] && row[row.selectedCriteria.engName].length > 0)
+                       for (let i = 0; i < row[row.selectedCriteria.engName].length; i++) {
+                           name += row[row.selectedCriteria.engName][i].name+'-';
+                       }
+                   break;
+               case 'region':
+                   if (row[row.selectedCriteria.engName] && row[row.selectedCriteria.engName].length > 0)
+                       for (let i = 0; i < row[row.selectedCriteria.engName].length; i++) {
+                           name += row[row.selectedCriteria.engName][i].name+'-';
+                       }
+                   break;
+               case 'city':
+                   if (row[row.selectedCriteria.engName] && row[row.selectedCriteria.engName].length > 0)
+                       for (let i = 0; i < row[row.selectedCriteria.engName].length; i++) {
+                           name += row[row.selectedCriteria.engName][i].name+'-';
+                       }
+
+                   break;
+               case 'JobName':
+                   name = row[row.selectedCriteria.engName];
+                   break;
+               case 'JobTitle':
+                   name = row[row.selectedCriteria.engName];
+                   break;
+               case 'lastActiveDate':
+                   name = row[row.selectedCriteria.engName];
+
+                   break;
+               case 'creationDate':
+                   name = row[row.selectedCriteria.engName];
+
+                   break;
+               case 'providedRating':
+                   name = row[row.selectedCriteria.engName] ? 'بله' : 'خیر';
+
+                   break;
+               case 'segments':
+                   if (row[row.selectedCriteria.engName] && row[row.selectedCriteria.engName].length > 0)
+                       for (let i = 0; i < row[row.selectedCriteria.engName].length; i++) {
+                           name += row[row.selectedCriteria.engName][i].Name;
+                       }
+                   break;
+               case 'CompanyName':
+                   name = row[row.selectedCriteria.engName].name || row[row.selectedCriteria.engName].Name || row[row.selectedCriteria.engName];
+
+                   break;
+           }
+       }catch(e){
+           
         }
 
-        if (!name){
-            name=row[row.selectedCriteria.engName].length  ? ' (انتخاب شده)  '+ row[row.selectedCriteria.engName].length  :null;
-        }
-        
-        if (!name){
-            name=row[row.selectedCriteria.engName];
-        }
+        console.log(row.selectedCriteria.engName ,row[row.selectedCriteria.engName])
+        console.log(row.selectedCriteria.engName ,row)
+
 
         return <span> {name}</span>
     }
@@ -273,10 +366,7 @@ export const CustomData = (props) => {
     const [value, setValue] = useState([]);
 
     React.useEffect(() => {
-        if (!props.parent.state.selected[props.name]){
-            props.parent.state.selected[props.name]=[];
-        }
-        
+      
         setValue(props.parent.state.selected[props.name]);
     }, [props.parent.state.selected[props.name]])
 
@@ -431,4 +521,167 @@ export function GetMonthDays() {
 
     return days;
 
+}
+
+
+
+export const _GoCompaignTable=(dataType,title)=>{
+
+    CurrentUserInfo.CompaignLayout.setState({CompaignChildPage:'CompaignTable',dataType:dataType,title:title})    //<CompaignTable currentStep={4}/>
+}
+
+
+
+export const _GoCompaignDefine=()=>{
+
+    CurrentUserInfo.CompaignLayout.setState({CompaignChildPage:null
+        ,dataType:null,title:null})    //<CompaignTable currentStep={4}/>
+}
+
+
+
+export const _GoCompaignAnalicts=(title)=>{
+    CurrentUserInfo.CompaignLayout.setState({CompaignChildPage:'CompaignAnaylics',title:title})    //<CompaignTable currentStep={4}/>
+}
+
+
+export function _TakeLazyTable(res,parent){
+    parent.setState({loading:false});
+    if (!res || !res.Content) {
+        return;
+    }
+
+
+    parent.setState({
+        list: res.Content.EntityList,
+        totalRecords:res.Content.Total,
+        first:res.Content.First
+    });
+    
+}
+
+
+export class MyLazyTable extends Component {
+    state = {
+        list: [],
+    }
+
+    constructor(props) {
+        super(props);
+
+
+        this.actionBody = this.actionBody.bind(this);
+        this.onPage = this.onPage.bind(this);
+
+    }
+
+
+
+
+    get(rows,first){
+
+        this.setState({ loading: true });
+
+        let data=this.state.CustomData;
+
+        data.rows=rows ? rows : 10;
+        data.first= first ? first : null;
+
+        this.setState({loading:true});
+        MyCaller.Send(this.state.getUrl,
+            data)
+    }
+
+
+
+    actionBody(row) {
+
+        return <>
+        </>
+
+
+    }
+
+    componentDidMount() {
+        CurrentUserInfo.MyLazyTable = this;
+        this.get();
+    }
+
+    /*getCompaignLogReceiverListCallback*/
+    getCallback(res) {
+
+        _TakeLazyTable(res,this);
+    }
+
+    onPage(event) {
+
+        //imitate delay of a backend call
+        const { first, rows } = event;
+
+        this.get(first,rows);
+
+    }
+    render() {
+        return (
+            <div>
+
+
+                {this.state.loading &&
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">در حال خواندن اطلاعات...</span>
+                </Spinner>}
+
+                <MyFieldset title="انتخاب ربات تعریف شده">
+                    <Row>
+                        <Col>
+                            <MyCard header={'انتخاب یک ربات'} title={'وقتی ربات اجرا شد ، کمپین اجرا شود'}>
+
+
+                                <DataTable value={this.state.list} paginator
+                                           emptyMessage={'هیچ اطلاعاتی یافت نشد'}
+                                           paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                                           currentPageReportTemplate="نمایش {first} از {last} کل {totalRecords}"
+                                           rows={10} rowsPerPageOptions={[10, 20, 50]}
+
+                                           totalRecords={this.state.totalRecords}
+                                           lazy first={this.state.first} onPage={this.onPage} loading={this.state.loading}
+                                >
+
+                                    {this.showColumns()}
+                                </DataTable>
+
+
+                            </MyCard>
+                        </Col>
+                    </Row>
+                </MyFieldset>
+
+            </div>
+        );
+    }
+
+    showColumns() {
+        return <>
+            <Column field="CompaignName" header="عنوان"></Column>
+            <Column field="ExecutionDateTimeStr" header="تاریخ اجرا" ></Column>
+            <Column field="StoppedLog" header="لاگ خطای توقف"></Column>
+            <Column field="ReceiverCount" header="تعداد دریافت کننده"></Column>
+            <Column field="DeliverCount" header="تعداد تحویل گیرنده"></Column>
+            <Column field="ProgressPercent" header="عملیات" body={this.actionBody}></Column>
+        </>
+    }
+}
+
+
+export function _SelectCustomerForChat(user){
+    DataHolder.currentPage = null;
+    CurrentUserInfo.LayoutPage.setState({
+        temp: Math.random(),
+    });
+
+    MyCaller.Send('selectCustomerForChat',{
+
+        customerId:user.Id
+
+    })
 }

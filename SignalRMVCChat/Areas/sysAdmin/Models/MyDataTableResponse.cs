@@ -20,8 +20,7 @@ namespace TelegramBotsWebApplication.Areas.Admin.Models
         public int? LastSkip { get; set; }
         public int LastTake { get; set; }
         public dynamic DependEntity { get; set; }
-        
-        
+        public int First { get; set; }
     }
 
     public class MyEntityResponse<T>:MyResponse

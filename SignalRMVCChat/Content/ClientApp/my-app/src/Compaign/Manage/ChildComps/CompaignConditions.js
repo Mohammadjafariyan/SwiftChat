@@ -38,23 +38,38 @@ class CompaignConditions extends CompaignChildCompBase {
     componentDidMount() {
 
         MyCaller.Send('EventTriggerGetAll')
-        MyCaller.Send('BotList')
+        MyCaller.Send('GetBotList')
 
         this.setState({
-            activeIndex: _GetSelectedCompaign().CompaignConditionsTypeIndex
+            activeIndex: _GetSelectedCompaign().CompaignConditionsTypeIndex,
+            everyDateTime: _GetSelectedCompaign()['everyDateTime'] ? new Date(_GetSelectedCompaign()['everyDateTime']) :null ,
+            everyWeekTime: _GetSelectedCompaign()['everyWeekTime']? new Date(_GetSelectedCompaign()['everyWeekTime']) :null ,
+            
+            everyDateTimeFormat: _GetSelectedCompaign()['everyDateTime'],
+            everyWeekTimeFormat: _GetSelectedCompaign()['everyWeekTime'],
+            
+            weekdays: _GetSelectedCompaign()['weekdays'],
+            selectedDayOfEveryMonth: _GetSelectedCompaign()['selectedDayOfEveryMonth'],
+            selectedEventTrigger: _GetSelectedCompaign()['selectedEventTrigger'],
+            selectedBot: _GetSelectedCompaign()['selectedBot'],
         })
     }
-    
+
     componentWillUnmount() {
         //_GetSelectedCompaign()['Conditions']
-        _GetSelectedCompaign()['everyDateTime'] =this.state.everyDateTime;
-        _GetSelectedCompaign()['everyWeekTime'] =this.state.everyWeekTime;
-        _GetSelectedCompaign()['selectedDayOfEveryMonth']=this.state.selectedDayOfEveryMonth;
-        _GetSelectedCompaign()['selectedEventTrigger']=this.state.selectedEventTrigger;
-        _GetSelectedCompaign()['selectedBot']=this.state.selectedBot;
+        _GetSelectedCompaign()['everyDateTime'] = this.state.everyDateTimeFormat;
+        _GetSelectedCompaign()['everyWeekTime'] = this.state.everyWeekTimeFormat;
+        _GetSelectedCompaign()['weekdays'] = this.state.weekdays;
+
+        _GetSelectedCompaign()['selectedDayOfEveryMonth'] = this.state.selectedDayOfEveryMonth;
+        _GetSelectedCompaign()['selectedEventTrigger'] = this.state.selectedEventTrigger;
+        _GetSelectedCompaign()['selectedBot'] = this.state.selectedBot;
+        _GetSelectedCompaign()['CompaignConditionsTypeIndex'] = this.state.activeIndex;
+
+        
 
 
-          }
+    }
 
     eventTriggerGetAllCallback(res) {
         if (!res || !res.Content) {
@@ -62,7 +77,8 @@ class CompaignConditions extends CompaignChildCompBase {
             return;
         }
 
-        this.setState({eventTriggerList: res.Content})
+        let selectedEventTrigger=res.Content.find(f=>f.Id==_GetSelectedCompaign()['selectedEventTriggerId'])
+        this.setState({eventTriggerList: res.Content,selectedEventTrigger:selectedEventTrigger})
     }
 
     botListCallback(res) {
@@ -74,7 +90,9 @@ class CompaignConditions extends CompaignChildCompBase {
             return;
         }
 
-        this.setState({botList: res.Content});
+
+        let selectedBot=res.Content.find(f=>f.Id==_GetSelectedCompaign()['selectedBotId'])
+        this.setState({botList: res.Content,selectedBot:selectedBot});
     }
 
     render() {
@@ -110,7 +128,7 @@ class CompaignConditions extends CompaignChildCompBase {
                         {this.InTimeInterval()}
 
                     </TabPanel>
-                   
+
                 </TabView>
 
                 <hr/>
@@ -144,8 +162,8 @@ class CompaignConditions extends CompaignChildCompBase {
                                           selectedBot: e.value
                                       });
                                   }}
-                                  optionLabel="name" filter showClear
-                                  filterBy="name"
+                                  optionLabel="Name" filter showClear
+                                  filterBy="Name"
                                   placeholder='انتخاب ربات'
                         />
                         <label>انتخاب ربات</label>
@@ -175,8 +193,8 @@ class CompaignConditions extends CompaignChildCompBase {
                                           selectedEventTrigger: e.value
                                       });
                                   }}
-                                  optionLabel="name" filter showClear
-                                  filterBy="name"
+                                  optionLabel="Name" filter showClear
+                                  filterBy="Name"
                                   placeholder='انتخاب رویداد'
                         />
                         <label>انتخاب رویداد</label>
@@ -191,7 +209,7 @@ class CompaignConditions extends CompaignChildCompBase {
 
     InTimeInterval() {
         return <>
-            <MyFieldset title="های تعریف شده event Trigger ">
+            <MyFieldset title="تنظیم اجرای زمانی">
                 <Row>
                     <Col>
                         <MyCard header={'انتخاب یک رویداد'} title={'وقتی یک رویداد اتفاق افتاد ، کمپین اجرا شود'}>
@@ -209,7 +227,20 @@ class CompaignConditions extends CompaignChildCompBase {
                                         <hr/>
                                         <label>ساعتی را انتخاب کنید</label>
                                         <Calendar timeOnly value={this.state.everyWeekTime}
-                                                  onChange={(e) => this.setState({everyWeekTime: e.value})}
+                                                  onChange={(e) => {
+                                                      let day = e.value.getDate();
+                                                      let mont = e.value.getMonth();
+                                                      let year = e.value.getFullYear();
+
+                                                      let hour = e.value.getHours();
+                                                      let min = e.value.getMinutes();
+                                                      let sec = e.value.getSeconds();
+
+                                                      this.setState({
+                                                          everyWeekTime: e.value,
+                                                          everyWeekTimeFormat:  `${year}/${mont}/${day} ${hour}:${min}:${sec}`
+                                                      });
+                                                  }}
                                                   showTime/>
                                     </div>
                                 </AccordionTab>
@@ -218,7 +249,20 @@ class CompaignConditions extends CompaignChildCompBase {
 
                                     <label>ساعتی را انتخاب کنید</label>
                                     <Calendar timeOnly value={this.state.everyDateTime}
-                                              onChange={(e) => this.setState({everyDateTime: e.value})}
+                                              onChange={(e) => {
+                                                  let day = e.value.getDate();
+                                                  let mont = e.value.getMonth();
+                                                  let year = e.value.getFullYear();
+
+                                                  let hour = e.value.getHours();
+                                                  let min = e.value.getMinutes();
+                                                  let sec = e.value.getSeconds();
+
+                                                  this.setState({
+                                                      everyDateTime: e.value,
+                                                      everyDateTimeFormat: `${year}/${mont}/${day} ${hour}:${min}:${sec}`
+                                                  });
+                                              }}
                                               showTime/>
 
 
@@ -234,7 +278,7 @@ class CompaignConditions extends CompaignChildCompBase {
                                                       selectedDayOfEveryMonth: e.value
                                                   });
                                               }}
-                                                
+
 
                                               placeholder='انتخاب روز ماه'
                                     />

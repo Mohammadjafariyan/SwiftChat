@@ -17,6 +17,7 @@ import {OverlayPanel} from "primereact/overlaypanel";
 
 
 import './EditorStyle.css'
+
 class CompaignEditor extends CompaignChildCompBase {
     state = {};
 
@@ -24,12 +25,15 @@ class CompaignEditor extends CompaignChildCompBase {
         super(props);
 
 
-        this.op=React.createRef();
+        this.op = React.createRef();
     }
 
     componentDidMount() {
         CurrentUserInfo.CompaignEditor = this;
 
+        if (!_GetSelectedCompaign().Template) {
+            _GetSelectedCompaign().Template = {};
+        }
         this.setState({
             value: _GetSelectedCompaign().Template.Name,
             text1: _GetSelectedCompaign().Template.Html,
@@ -39,41 +43,50 @@ class CompaignEditor extends CompaignChildCompBase {
             saveAsTemplate: _GetSelectedCompaign().saveAsTemplate,
         })
     }
-    
-    
+
+
+    componentWillUnmount() {
+        _GetSelectedCompaign().Template.Name = this.state.value;
+        _GetSelectedCompaign().Template.Html = this.state.text1;
+        _GetSelectedCompaign().SendToEmail = this.state.SendToEmail;
+        _GetSelectedCompaign().SendToChat = this.state.SendToChat;
+        _GetSelectedCompaign().saveAsTemplateName = this.state.saveAsTemplateName;
+        _GetSelectedCompaign().saveAsTemplate = this.state.saveAsTemplate;
+    }
+
 
     render() {
         return (
             <div>
 
-                <Button variant={'warning'} id={'helpBtn'} type="button" label="راهنما" onClick={(e) => this.op.toggle(e)} >
+                <Button variant={'warning'} id={'helpBtn'} type="button" label="راهنما"
+                        onClick={(e) => this.op.toggle(e)}>
                     راهنما
-                   
+
                 </Button>
-                <OverlayPanel appendTo={this.op.current} ref={(el) => this.op = el} 
-                              showCloseIcon >
+                <OverlayPanel appendTo={this.op.current} ref={(el) => this.op = el}
+                              showCloseIcon>
                     <Help/>
                 </OverlayPanel>
-                
-              
+
+
                 <hr/>
-              
-              
 
-               <Row>
-                   <Col md={2}></Col>
-                   <Col>
-                       <label>عنوان</label><br/>
-                       <InputText style={{width:'100%'}} value={this.state.value}
-                                  onChange={(e) => {
-                                      this.setState({value: e.target.value});
 
-                                      _GetSelectedCompaign().Template.Name = e.target.value;
-                                  }}/>
+                <Row>
+                    <Col md={2}></Col>
+                    <Col>
+                        <label>عنوان</label><br/>
+                        <InputText style={{width: '100%'}} value={this.state.value}
+                                   onChange={(e) => {
+                                       this.setState({value: e.target.value});
 
-                   </Col>
-                   <Col  md={2}></Col>
-               </Row>
+                                       _GetSelectedCompaign().Template.Name = e.target.value;
+                                   }}/>
+
+                    </Col>
+                    <Col md={2}></Col>
+                </Row>
 
 
                 <Editor style={{height: '320px'}}
@@ -86,8 +99,8 @@ class CompaignEditor extends CompaignChildCompBase {
                         }}/>
 
 
-                        <br/>
-                <Row >
+                <br/>
+                <Row>
                     <Col>
                         <Checkbox value={this.state.SendToEmail} onChange={(e) => {
                             this.setState({SendToEmail: e.checked});
@@ -107,7 +120,7 @@ class CompaignEditor extends CompaignChildCompBase {
                     </Col>
 
                 </Row>
-                <hr/>       
+                <hr/>
                 <Row>
                     <Col>
 
@@ -123,21 +136,22 @@ class CompaignEditor extends CompaignChildCompBase {
                             ذخیره بعنوان قالب آماده
                         </Button>
 
-                        <Button className={'p-button-raised  p-button-text'} label="ذخیره" icon="pi pi-check"
+                        {/*     <Button className={'p-button-raised  p-button-text'} label="ذخیره" icon="pi pi-check"
                                 onClick={() => {
 
 
                                     this.saveThenGoNext();
 
                                 }}>
-                            ذخیره و ادامه
-                        </Button>
+                            ارسال
+                        </Button>*/}
                     </Col>
 
 
                 </Row>
 
-                <MyConfirm parent={this} title={'لطفا یک نام برای این قالب اختصاص دهید'} display={this.state.displayConfirm}
+                <MyConfirm parent={this} title={'لطفا یک نام برای این قالب اختصاص دهید'}
+                           display={this.state.displayConfirm}
                            onConfirm={() => {
 
                                _GetSelectedCompaign().Template.saveAsTemplate = true;
@@ -152,7 +166,7 @@ class CompaignEditor extends CompaignChildCompBase {
 
                                    _GetSelectedCompaign().Template.saveAsTemplateName = e.target.value;
                                }}/>
-                
+
                 </>}/>
             </div>
         );
@@ -160,8 +174,8 @@ class CompaignEditor extends CompaignChildCompBase {
 
     saveThenGoNext() {
 
-        _SaveSelectedCompaign(()=>{
-            
+        _SaveSelectedCompaign(() => {
+
             this.goNext();
         });
     }
@@ -195,17 +209,17 @@ export const Help = (props) => {
         <Alert variant={'warning'} className={'text-right'}>
 
             <h6>کدام متغیرها موجود هستند؟</h6>
-      <p>
-می توانید از متغیرهای کاربر زیر در پیام های خود استفاده کنید
-    </p>
+            <p>
+                می توانید از متغیرهای کاربر زیر در پیام های خود استفاده کنید
+            </p>
 
             <h5><b>نحوه استفاده به شکل زیر است</b></h5>
             {msg4}
-           
+
             یا
-           
+
             {msg3}
-            <pre className={'text-left'} dangerouslySetInnerHTML={{__html: msg}} >
+            <pre className={'text-left'} dangerouslySetInnerHTML={{__html: msg}}>
        
     </pre>
         </Alert>

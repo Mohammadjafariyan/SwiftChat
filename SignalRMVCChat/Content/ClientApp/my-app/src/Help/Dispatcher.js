@@ -61,7 +61,27 @@ class dispatcher {
 
             /*-------------------- Compaign--------------------*/
 
+
+           
+           
+            /*--------------------- compaignLog------------*/
+            case "getCompaignLogListCallback":
+                if (CurrentUserInfo.CompaignLogTable) {
+                    CurrentUserInfo.CompaignLogTable.getCompaignLogListCallback(res);
+                }
+                break;
+
+            case "getCompaignLogReceiverListCallback":
+                if (CurrentUserInfo.CompaignLogReceiverTable) {
+                    CurrentUserInfo.CompaignLogReceiverTable.getCallback(res);
+                }
+                break;
+
+
                 
+            /*--------------------- end------------*/
+                
+
             case "getCompaignTemplatesCallback":
                 if (CurrentUserInfo.CompaignTemplates) {
                     CurrentUserInfo.CompaignTemplates.getCompaignTemplatesCallback(res);
@@ -76,6 +96,11 @@ class dispatcher {
                 if (CurrentUserInfo.CompaignLayout) {
                     CurrentUserInfo.CompaignLayout.getCallback(res);
                 }
+
+                if (CurrentUserInfo.CompaignTable) {
+                    CurrentUserInfo.CompaignTable.getCompaignListCallback(res);
+                }
+
                 break;
             case "compaignSaveCallback":
                 if (CurrentUserInfo.CompaignSave) {
@@ -181,7 +206,7 @@ class dispatcher {
                     CurrentUserInfo.CompaignConditions.botListCallback(res);
                 }
 
-                
+
                 break;
             case "getBotLogListCallback":
                 if (CurrentUserInfo.BotLogTable) {

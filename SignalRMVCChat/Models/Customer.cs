@@ -160,5 +160,11 @@ namespace SignalRMVCChat.Models
         }
         public string ContactAdminsJson { get; set; }
         public List<CompaignTemplate> CompaignTemplates { get; set; }
+        
+        
+        
+        
+        public List<CompaignLogReceiver> CompaignLogReceivers { get; set; }
+
     }
 }

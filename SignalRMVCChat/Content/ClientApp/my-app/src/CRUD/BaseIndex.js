@@ -58,7 +58,7 @@ class BaseIndex extends Component {
 
 
                         {this.state.selected && <>
-                            <BaseSave  {...this.props} parent={this} save={this.props.save}
+                            <BaseSave onSaveClick={this.props.onSaveClick}  {...this.props} parent={this} save={this.props.save}
                                       delete={this.props.delete}
                                       item={this.state.selected}>
 
@@ -98,6 +98,8 @@ class BaseIndex extends Component {
 
 
                         <Card.Link onClick={()=>{
+
+
 
                             this.setState({
                                 selected:null

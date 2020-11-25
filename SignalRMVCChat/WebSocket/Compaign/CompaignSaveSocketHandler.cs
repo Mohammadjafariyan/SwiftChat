@@ -20,11 +20,19 @@ namespace SignalRMVCChat.WebSocket.Compaign
                 Throw("این عملیات مخصوص اوپراتور است");
             }
 
+            record.LastChangeDateTime=DateTime.Now;
+            
 
             record.MyWebsiteId = _currMySocketReq.MyWebsite.Id;
             record.MyAccountId = _currMySocketReq.MySocket.MyAccountId.Value;
 
 
+            record.selectedBotId = record.selectedBot != null ? record.selectedBot.Id : record.selectedBotId.HasValue ?  record.selectedBotId: null;
+            record.selectedEventTriggerId = record.selectedEventTrigger != null ? record.selectedEventTrigger.Id : record.selectedEventTriggerId.HasValue ?  record.selectedEventTriggerId: null;
+
+            record.selectedBot = null;
+            record.selectedEventTrigger = null;
+            
             if (record.saveAsTemplate && record.Template != null)
             {
                 record.CompaignTemplates.Add(new CompaignTemplate

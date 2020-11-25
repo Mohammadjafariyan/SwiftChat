@@ -33,6 +33,12 @@ class CompaignTemplates extends CompaignChildCompBase {
 
         this.setState({arr: arr});
     }
+    
+    componentWillUnmount() {
+        
+        
+        
+    }
 
     render() {
         return (

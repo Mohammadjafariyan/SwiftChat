@@ -41,19 +41,16 @@ state={
     selectedCriteria: null,
     selectedFilter: this.applytypeList[0],
     selected: {
-        CustomData: []
     }
 };
 
     init() {
-        debugger;
         this.setState( {
             searchTerm: '',
             arr: [],
             selectedCriteria: null,
             selectedFilter: this.applytypeList[0],
             selected: {
-                CustomData: []
             }
         });
     }
@@ -66,7 +63,7 @@ state={
     componentDidMount() {
 
         this.init();
-        let filters = _GetSelectedCompaign()[this.props.fieldName];
+        let filters = _GetSelectedCompaign()['filters'];
 
         filters = filters ? filters : [];
 
@@ -77,7 +74,7 @@ state={
 
     componentWillUnmount() {
 
-        _GetSelectedCompaign()[this.props.fieldName] = this.state.filters;
+        _GetSelectedCompaign()['filters'] = this.state.filters;
     }
 
 
@@ -118,7 +115,7 @@ state={
                                 {this.ShowSwich()}
 
                                 <hr/>
-                                <Button variant={'light'} onClick={() => {
+                                <Button variant={'info'} onClick={() => {
                                     this.addNewFilter();
                                 }}>
 
@@ -166,8 +163,20 @@ state={
                                parent={this}/>
                 break;
             case 'customData':
-                return <CustomData title={this.state.selectedCriteria.name} name={this.state.selectedCriteria.engName}
-                                   parent={this}/>
+                return <Row>
+                    <Col>
+                        <CompaignInputText title={'نام داده سفارشی'}
+                                           name={this.state.selectedCriteria.engName} parent={this}/>
+                    </Col>
+                    <Col>
+                        <CompaignInputText title={'مقدار داده سفارشی'}
+                                           name={"CustomDataValue"} parent={this}/>
+                    </Col>
+
+            
+        </Row>
+                /*return <CustomData title={this.state.selectedCriteria.name} name={this.state.selectedCriteria.engName}
+                                   parent={this}/>*/
                 break;
             case 'phoneNumber':
                 return <CompaignInputText title={this.state.selectedCriteria.name}
@@ -248,7 +257,7 @@ SetIsEnabledCompaign
 CompaignSave p-invalid p-d-block
 SearchCustomers*/
 
-        let filters = _GetSelectedCompaign()[this.props.fieldName];
+        let filters = _GetSelectedCompaign()['filters'];
 
         filters = filters ? filters : [];
 
@@ -272,7 +281,7 @@ SearchCustomers*/
         
         filters.push(this.state.selected);
 
-        _GetSelectedCompaign()[this.props.fieldName]=filters;
+        _GetSelectedCompaign()['filters']=filters;
         this.setState({filters:filters})
 
         

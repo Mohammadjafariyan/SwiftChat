@@ -20,6 +20,11 @@ class BaseSave extends Component {
 
     save() {
         
+        if (this.props.onSaveClick){
+            this.props.onSaveClick(this.getBaseCrudLayoutState().selected);
+            return ;
+        }
+        
         if (this.props.validateSave){
             if (!this.props.validateSave(this.state)){
                 return ;
