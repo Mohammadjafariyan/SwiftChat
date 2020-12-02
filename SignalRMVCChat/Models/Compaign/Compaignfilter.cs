@@ -117,7 +117,7 @@ namespace SignalRMVCChat.Models.Compaign
         [JsonIgnore] public string cityJson { get; set; }
 
 
-      
+
 
 
         /*---------------------------------------Countries-------------------------------------------*/
@@ -159,7 +159,7 @@ namespace SignalRMVCChat.Models.Compaign
         /*---------------------------------------CustomData-------------------------------------------*/
         public string CustomData { get; set; }
 
-        
+
         public string CustomDataValue { get; set; }
 
         /*---------------------------------------Gender-------------------------------------------*/
@@ -179,7 +179,28 @@ namespace SignalRMVCChat.Models.Compaign
         }
 
         [JsonIgnore] public string GenderJson { get; set; }
-        
+
+
+
+        /*---------------------------------------Gender-------------------------------------------*/
+        [NotMapped]
+        public List<WeekNameCode> weekdays
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(weekdaysJson))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<List<WeekNameCode>>(weekdaysJson);
+            }
+            set { weekdaysJson = JsonConvert.SerializeObject(value); }
+        }
+        [JsonIgnore] public string weekdaysJson { get; set; }
+
 
     }
 }
+
+

@@ -15,9 +15,11 @@ using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Migrations;
 using SignalRMVCChat.Models.Bot;
 using SignalRMVCChat.Models.Compaign;
+using SignalRMVCChat.Models.Compaign.Email;
 using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Models.HelpDesk;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.Service.Compaign;
 using SignalRMVCChat.SysAdmin.Service;
 using SignalRMVCChat.WebSocket;
 using TelegramBotsWebApplication;
@@ -487,9 +489,9 @@ namespace SignalRMVCChat.Models.GapChatContext
                 .HasForeignKey(o => o.CompaignId);
 
             modelBuilder.Entity<Compaign.CompaignTemplate>()
-                .HasRequired(r => r.Customer)
+                .HasOptional(r => r.MyWebsite)
                 .WithMany(o => o.CompaignTemplates)
-                .HasForeignKey(o => o.CustomerId);
+                .HasForeignKey(o => o.MyWebsiteId);
 
             #endregion
 
@@ -503,31 +505,40 @@ namespace SignalRMVCChat.Models.GapChatContext
                 .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
 
             #endregion
-            
+
             #region CompaignLog
             modelBuilder.Entity<Compaign.Compaign>()
                 .HasMany(r => r.CompaignLogs)
                 .WithRequired(o => o.Compaign)
                 .HasForeignKey(o => o.CompaignId).WillCascadeOnDelete(false);
             #endregion
-            
+
             #region CompaignLogReceiver
-          
+
             modelBuilder.Entity<Compaign.CompaignLog>()
                 .HasMany(r => r.CompaignLogReceivers)
                 .WithRequired(o => o.CompaignLog)
                 .HasForeignKey(o => o.CompaignLogId).WillCascadeOnDelete(false);
-            
+
             modelBuilder.Entity<Customer>()
                 .HasMany(r => r.CompaignLogReceivers)
                 .WithRequired(o => o.Customer)
                 .HasForeignKey(o => o.CustomerId).WillCascadeOnDelete(false);
-        
+
             #endregion
 
             base.OnModelCreating(modelBuilder);
         }
 
+
+        #region Email
+        public DbSet<Email> Emails { get; set; }
+
+        #endregion
+
+        #region CompaignTemplate
+        public DbSet<Compaign.CompaignTemplate> CompaignTemplates { get; set; }
+        #endregion
 
         #region CompaignLogReceiver
 
@@ -880,7 +891,7 @@ namespace SignalRMVCChat.Models.GapChatContext
 {'Name':'CompaignSave','Body':{'IsConfigured':false,'LastChangeDateTime':'2020-11-25T17:30:07.4805061+03:30','LastChangeDateTimeStr':'0 ثانیه قبل ','Status':0,'ReceiverCount':0,'DeliverCount':0,'ExecutionCount':0,'ProgressPercent':0,'StoppedLog':null,'Text':null,'Template':{'Name':'sadf','Html':'<p>sdfsdfsdfsdfsdf</p>'},'filters':[{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n روز های هفته ','engName':'weekdays'},'selectedFilter':{'name':'شامل','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':'admin@admin.com','fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'آدرس ایمیل','engName':'EmailAddress'},'selectedFilter':{'name':'برابر','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':'علی','phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n نام کامل  ','engName':'fullName'},'selectedFilter':{'name':'برابر','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n به کاربران زن یا کاربران مرد  ','engName':'gender'},'selectedFilter':{'name':'برابر','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':{'name':'مرد','engName':'man'}},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n با داده های سفارشی  ','engName':'customData'},'selectedFilter':{'name':'برابر','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n با داده های سفارشی  ','engName':'customData'},'selectedFilter':{'name':'برابر','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':'09148980692','JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n شماره تلفن ','engName':'phoneNumber'},'selectedFilter':{'name':'برابر','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':'09458','JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n شماره تلفن ','engName':'phoneNumber'},'selectedFilter':{'name':'شامل','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n زبان ','engName':'language'},'selectedFilter':{'name':'شامل','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':{'Name':'Afghanistan','HelpDesks':null,'nativeName':'افغانستان','alpha2Code':'AF','flag':'https://restcountries.eu/data/afg.svg','Id':0},'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n با کشور  ','engName':'country'},'selectedFilter':{'name':'شامل','engName':null},'segments':null,'region':null,'city':null,'country':{'Name':'Iran (Islamic Republic of)','HelpDesks':null,'nativeName':'ایران','alpha2Code':'IR','flag':'https://restcountries.eu/data/irn.svg','Id':0},'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n روز های هفته ','engName':'weekdays'},'selectedFilter':{'name':'برابر','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n به کاربران یک یا چند استان  ','engName':'region'},'selectedFilter':{'name':'برابر','engName':null},'segments':null,'region':[{'name':'آذربایجان شرقی','engName':'East Azerbaijan','Id':0},{'name':'آذربایجان غربی','engName':'West Azerbaijan','Id':0},{'name':'اردبیل','engName':'Ardabil','Id':0}],'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n  به کاربران یک یا چند شهر','engName':'city'},'selectedFilter':{'name':'برابر','engName':null},'segments':null,'region':null,'city':[{'name':'آب‌بر','engName':'Abbar','Id':null,'section_id':null},{'name':'آبادان','engName':'Pakhsh','Id':null,'section_id':null},{'name':'آباده','engName':'Abadan','Id':null,'section_id':null}],'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':'admin@admin.com','lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n عنوان شغلی','engName':'JobTitle'},'selectedFilter':{'name':'شامل','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':'fac','providedRating':false,'selectedCriteria':{'name':'\n نام شرکت','engName':'CompanyName'},'selectedFilter':{'name':'نابرابر','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':true,'selectedCriteria':{'name':'\n امتیاز داده','engName':'providedRating'},'selectedFilter':{'name':'برابر','engName':null},'segments':[],'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':null,'creationDate':'25/10/2020 0:0:0','CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n تاریخ ایجاد ','engName':'creationDate'},'selectedFilter':{'name':'نابرابر','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':null,'lastActiveDate':'25/10/2020 0:0:0','creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n با آخرین تاریخ فعالیت  ','engName':'lastActiveDate'},'selectedFilter':{'name':'نابرابر','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null},{'EmailAddress':null,'fullName':null,'phoneNumber':null,'JobName':null,'JobTitle':'dev','lastActiveDate':null,'creationDate':null,'CompanyName':null,'providedRating':false,'selectedCriteria':{'name':'\n عنوان شغلی','engName':'JobTitle'},'selectedFilter':{'name':'شامل','engName':null},'segments':null,'region':null,'city':null,'country':null,'language':null,'CustomData':'','Gender':null}],'IsAutomatic':false,'IsEnabled':false,'SendToEmail':true,'SendToChat':true,'compaignType':'automatic','CompaignConditionsTypeIndex':0,'CompaignRecipientsTypeIndex':0,'saveAsTemplateName':null,'saveAsTemplate':false,'everyDateTime':'2020/10/25 17:30:54','everyWeekTime':'2020/10/25 18:29:50','selectedDayOfEveryMonth':2,'selectedEventTriggerId':null,'selectedBotId':null,'weekdays':[{'name':'جمعه','code':5},{'name':'پنج شنبه','code':4},{'name':'سه شنبه','code':2},{'name':'یکشنبه','code':0},{'name':'شنبه','code':6}],'selectedEventTrigger':{'Name':'Event Trigger جدید','IsEnabled':false,'IsShowMessageEnabled':false,'IsOpenChatBox':false,'IsPlayASound':false,'localizedMessages':null,'ExecuteOnlyIfOnline':false,'ExecuteOnlyIfFirstTimeVisit':false,'ExecuteOnlyIfNoOtherTriggerFired':false,'ExecuteOnlyIfFromACountry':false,'countries':null,'EventOnExitTab':false,'EventOnLinkClick':false,'EventSpecificPages':false,'EventAddressParameters':false,'EventUserCustomName':false,'EventDelay':false,'delay':0,'links':null,'pages':null,'pageParameters':null,'userEventNames':null,'RunInMobileDevices':true,'RunInDesktopDevices':true,'MyWebsiteId':1,'MyWebsite':null,'MyAccountId':2,'MyAccount':null,'Compaigns':null,'Id':1},'selectedBot':{'Name':'ربات جدید','Id':2},'Name':'کمپین جدید54-53','MyWebsite':null,'MyWebsiteId':1,'MyAccount':null,'MyAccountId':1,'CompaignTemplates':[],'CompaignLogs':null,'Id':1},'Token':'f/BCROpgaK9HRrjJAZvpjcoAIRAUlRZ3+i9DgrsgP3nnRyVPVYWzMUlaMBCvq4NEBEXYJMPpw194Mx1BdCLW8a78aUQrlnRqHFSBFsLrxqJWVOAWvW8+SF7lnBdXEAwMhF1zNEEmQCjNJeV6jAGMkxo11v9c1l+Mj/87ZUrOgHE=','SelectedTagId':null,'gapIsOnlyOnly':null,'IsAdminMode':null,'WebsiteToken':'N09XVk1peG5Gc2FtQWhLSHk4MjIrcE9UYnBSRGRvMGE0VWxzajRKTmRHcnRrRjlNaWx4MjJsdmRCY2tGNHl5SXZGMlk4dHpFSVBON0hNay8vaTVITFE9PQ==','IsAdminOrCustomer':1}
 
 ";
-            
+
             var compaignRequest = JsonConvert.DeserializeObject<MyWebSocketRequest>(compaign);
 
             Compaign.Compaign Compaign =
@@ -890,14 +901,21 @@ namespace SignalRMVCChat.Models.GapChatContext
             gapChatContext.SaveChanges();
 
             Compaign.selectedBotId = bot.Id;
-            Compaign.selectedEventTriggerId =1;
+            Compaign.selectedEventTriggerId = 1;
 
 
             Compaign.selectedBot = null;
             Compaign.selectedEventTrigger = null;
             gapChatContext.Compaigns.Add(Compaign);
-            
+
             gapChatContext.SaveChanges();
+
+
+            CompaignTemplateService.Init(gapChatContext);
+
+
+            CompaignService.Init(gapChatContext);
+
         }
     }
 

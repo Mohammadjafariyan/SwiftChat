@@ -37,6 +37,8 @@ class BaseCompaign extends Component {
                 <Card>
                     <ShowSwitch step={this.state.step}/>
                 </Card>
+
+               
             </div>
         );
     }

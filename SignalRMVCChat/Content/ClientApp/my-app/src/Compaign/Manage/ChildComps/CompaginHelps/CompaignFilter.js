@@ -31,9 +31,9 @@ class CompaignFilter extends Component {
     criteriaList = GetCriteriaList();
 
     applytypeList = [
-        {name: 'برابر'},
-        {name: 'شامل'},
-        {name: 'نابرابر'},
+        {name: 'برابر',engName:'equals'},
+        {name: 'شامل',engName:'include'},
+        {name: 'نابرابر',engName:'notEquals'},
     ]
 state={
     searchTerm: '',

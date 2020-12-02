@@ -18,7 +18,7 @@ namespace SignalRMVCChat.Service
         public Customer Customer { get; set; }
         public string Time { get; set; }
         public TimeSpan TimeDt { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime? DateTime { get; set; }
 
 
         public string Browser { get; set; }
@@ -60,7 +60,7 @@ namespace SignalRMVCChat.Service
         [NotMapped]
         public string DateTimeText
         {
-            get { return MyGlobal.ToIranianDateWidthTime(DateTime); }
+            get { return MyGlobal.ToIranianDateWidthTime(DateTime.Value); }
         }
 
 

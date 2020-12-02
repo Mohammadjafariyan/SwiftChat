@@ -12,12 +12,20 @@ import {
 
  
 import './CompaignFilterStyle.css';
+import { _GoCompaignSubRoute } from './../Manage/ChildComps/CompaginHelps/CompaignUtility';
 class CompaignFilter extends Component {
     constructor(props) {
         super(props);
 
 
         this.filters = [
+            {
+                label: 'تعریف کمپین', icon: 'pi pi-fw pi-home',
+                command: () => {
+
+                    _GoCompaignDefine();
+                }
+            },
             {
                 label: 'آمار و اطلاعات', icon: 'pi pi-fw pi-home',
                 command: () => {
@@ -26,12 +34,13 @@ class CompaignFilter extends Component {
                 }
             },
             {
-                label: 'تعریف کمپین', icon: 'pi pi-fw pi-home',
+                label: 'تنظیمات سرور ایمیل', icon: 'pi pi-fw pi-home',
                 command: () => {
 
-                    _GoCompaignDefine();
+                    _GoCompaignSubRoute('emailSetting','تنظیمات سرور ایمیل');
                 }
-            },
+            }
+        
             ,{
                 label: 'لیست کمپین ها', icon: 'pi pi-fw pi-home',
 

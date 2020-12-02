@@ -23,8 +23,6 @@ class SelectSegments extends MyMultiSelect {
             CurrentUserInfo.LayoutPage.showError('دیتای خوانده شده برای برچسب ها نال است')
             return;
         }
-        
-        
 
         this.makeList(res.Content.EntityList);
     }

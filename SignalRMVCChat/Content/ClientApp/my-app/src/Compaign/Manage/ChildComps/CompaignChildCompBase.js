@@ -2,6 +2,8 @@
 import {CurrentUserInfo} from "../../../Help/Socket";
 
 class CompaignChildCompBase extends Component {
+
+
  
     goNext() {
         if (this.props.next)

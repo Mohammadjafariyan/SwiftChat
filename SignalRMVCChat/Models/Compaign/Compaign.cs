@@ -35,8 +35,27 @@ namespace SignalRMVCChat.Models.Compaign
         [NotMapped] public int ExecutionCount { get; set; }
         [NotMapped] public int ProgressPercent { get; set; }
         [NotMapped]  public string StoppedLog { get; set; }
-        
-        
+
+
+
+        /*---------------------------------------Template-------------------------------------------*/
+        [NotMapped]
+        public List<Customer> selectedCustomers
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(selectedCustomersJSON))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<List<Customer>>(selectedCustomersJSON);
+            }
+            set { selectedCustomersJSON = JsonConvert.SerializeObject(value); }
+        }
+
+        [JsonIgnore] public string selectedCustomersJSON { get; set; }
+
 
 
         /*---------------------------------------Text-------------------------------------------*/

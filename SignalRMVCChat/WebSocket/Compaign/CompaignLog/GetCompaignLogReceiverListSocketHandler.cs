@@ -24,8 +24,8 @@ namespace SignalRMVCChat.WebSocket.Compaign.CompaignLog
             IQueryable<Customer> getQuery, MyWebSocketRequest request,
             MyWebSocketRequest currMySocketReq)
         {
-            int? CompaignId = GetParam<int?>("CompaignId", true);
-            int? CompaignLogId = GetParam<int?>("CompaignLogId", true);
+            int? CompaignId = GetParam<int?>("CompaignId", false);
+            int? CompaignLogId = GetParam<int?>("CompaignLogId", false);
 
             if (CompaignId.HasValue)
             {

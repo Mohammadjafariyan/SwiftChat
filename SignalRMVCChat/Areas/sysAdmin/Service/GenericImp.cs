@@ -23,7 +23,7 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
         public DbSet<T> Table { get; set; }
 
-        public readonly MyContextBase db;
+        public readonly GapChatContext db;
         public virtual List<T> GetMocklist()
         {
             return  new List<T>();

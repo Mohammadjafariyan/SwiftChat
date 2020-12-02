@@ -6,6 +6,7 @@ using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.Service.Compaign;
 using SignalRMVCChat.Service.EventTrigger;
 using SignalRMVCChat.WebSocket.Base;
 
@@ -24,7 +25,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
 
         public async override Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
         {
-         await base.InitAsync(request, currMySocketReq);
+            await base.InitAsync(request, currMySocketReq);
 
 
             var id = GetParam<int>("id", true, "کمد پارامتر ارسال نشده است");
@@ -45,20 +46,20 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
 
             var eventTrigger = EventTriggerService.GetById(id, "رویداد یافت نشد").Single;
 
-            
-            if (eventTrigger.localizedMessages.Any()==false)
+
+            if (eventTrigger.localizedMessages.Any() == false)
             {
                 return new MyWebSocketResponse();
             }
 
-            var chatUniqId= ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.MySocket.CustomerId).Count();
+            var chatUniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.MySocket.CustomerId).Count();
 
             _currMySocketReq.CurrentRequest.myAccountId = admin.Id;
 
 
             foreach (var eventTriggerLocalizedMessage in eventTrigger.localizedMessages)
             {
-                
+
                 // از نوع پیغام معمولی
                 await new AdminSendToCustomerSocketHandler()
                     .ExecuteAsync(new MyWebSocketRequest
@@ -70,10 +71,20 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
                             uniqId = chatUniqId++,
                             gapFileUniqId = 6161,
                         }
-                    }.Serialize(),currMySocketReq);
+                    }.Serialize(), currMySocketReq);
             }
-       
-         
+
+
+            /*--------------------------- Compaign ----------------------------*/
+            var compaignTriggerService = Injector.Inject<CompaignTriggerService>();
+
+            compaignTriggerService.ExecuteCompaginsOnEventTriggered
+                (currMySocketReq.MySocket.CustomerId.Value,
+                currMySocketReq.MyWebsite.Id, eventTrigger,
+                _request,currMySocketReq);
+            /*--------------------------- END ----------------------------*/
+
+
             return new MyWebSocketResponse();
         }
 
@@ -82,7 +93,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
             var name = GetParam<string>("name", true, "عنوان پارامتر ارسال نشده است");
 
 
-         var customer=   CustomerProviderService.GetById(_currMySocketReq.MySocket.CustomerId.Value, "کاربر یافت نشد").Single;
+            var customer = CustomerProviderService.GetById(_currMySocketReq.MySocket.CustomerId.Value, "کاربر یافت نشد").Single;
 
             var list = customer.FiredEventForCustomers;
             if (list == null)

@@ -159,12 +159,32 @@ namespace SignalRMVCChat.Models
             set { ContactAdminsJson = JsonConvert.SerializeObject(value); }
         }
         public string ContactAdminsJson { get; set; }
-        public List<CompaignTemplate> CompaignTemplates { get; set; }
         
         
         
         
         public List<CompaignLogReceiver> CompaignLogReceivers { get; set; }
+        public string CompanyName { get;  set; }
+        public string JobTitle { get;  set; }
+        public string JobName { get;  set; }
 
+
+        /*---------------------------------------Gender-------------------------------------------*/
+        [NotMapped]
+        public NameValue Gender
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(GenderJson))
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<NameValue>(GenderJson);
+            }
+            set { GenderJson = JsonConvert.SerializeObject(value); }
+        }
+
+        [JsonIgnore] public string GenderJson { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Engine.SysAdmin.Service
 
         private static GapChatContext context;
 
-        public static MyContextBase GetContext(string name)
+        public static GapChatContext GetContext(string name)
         {
             if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
             {
@@ -42,8 +42,6 @@ namespace Engine.SysAdmin.Service
             return new GapChatContext();
 
 
-            var context= Injector.Inject<MyContextBase>();
-            return context;
             // return new TaavoniKhosrowshahDbContext();
             //  return new SampleContext();
             // return new GapChatContext();

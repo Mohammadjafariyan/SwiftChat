@@ -12,6 +12,7 @@ using SignalRMVCChat.Models.Bot;
 using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.Bot;
+using SignalRMVCChat.Service.Compaign;
 using SignalRMVCChat.WebSocket.Base;
 using SignalRMVCChat.WebSocket.BlockUser;
 using SignalRMVCChat.WebSocket.CustomerProfile;
@@ -133,6 +134,20 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                         /*-----------SaveLog---------------*/
                         bot.IsDone = true;
                         SaveLog(bot);
+
+
+                        /*-----------Compaign---------------*/
+                        var compaignTriggerService = Injector.Inject<CompaignTriggerService>();
+
+                        compaignTriggerService.ExecuteCompaginsOnBotEvent(
+                            currMySocketReq.MySocket.CustomerId.Value,
+                            currMySocketReq.MyWebsite.Id,
+                            bot,
+                _request, currMySocketReq);
+
+                        /*-----------END---------------*/
+
+
                     }
                     catch (Exception e)
                     {

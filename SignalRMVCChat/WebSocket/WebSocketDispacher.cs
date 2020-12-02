@@ -27,6 +27,7 @@ using SignalRMVCChat.WebSocket.RemindMe;
 using SignalRMVCChat.WebSocket.Routing;
 using SignalRMVCChat.WebSocket.Tracking;
 using SignalRMVCChat.WebSocket.UsersSeparation;
+using SignalRMVCChat.WebSocket.Compaign.Email;
 
 namespace SignalRMVCChat.WebSocket
 {
@@ -74,6 +75,17 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+                #region Compaign
+
+                case "SaveEmailSetting":
+                    return new SaveEmailSettingSocketHandler();
+                    break;
+
+                case "GetEmailSetting":
+                    return new GetEmailSettingSocketHandler();
+                    break;
+
+                #endregion
                 #region Compaign
 
                 #region CompaignLog

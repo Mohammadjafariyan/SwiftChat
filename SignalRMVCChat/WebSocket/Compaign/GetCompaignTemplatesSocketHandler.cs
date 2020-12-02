@@ -16,8 +16,12 @@ namespace SignalRMVCChat.WebSocket.Compaign
         {
             getQuery = getQuery.Where(q =>
                 q.IsSystemDefaultTemplate ||
-                q.CustomerId == currMySocketReq.MySocket.CustomerId.Value);
+                q.MyWebsiteId == currMySocketReq.MyWebsite.Id);;
 
+            if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
+            {
+                var list = getQuery.ToList();
+            }
             return getQuery;
         }
     }

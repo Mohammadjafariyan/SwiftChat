@@ -62,10 +62,12 @@ class CompaignTemplates extends CompaignChildCompBase {
                                                  emptyMessage={'هیچ الگویی تعریف نشده است یک الگو تعریف کنید'}
                                                  showLinks={(row) => {
 
-                                                     return <Card.Link onClick={()=>{
+                                                     return <Button style={{
+                marginBottom: "20px",
+              }} variant='info' onClick={()=>{
                                                        
                                                          this.useTemplate(row);
-                                                     }}>انتخاب این قالب</Card.Link>
+                                                     }}>انتخاب این قالب</Button>
                                                  }}
 
                                                  body={(row) => {

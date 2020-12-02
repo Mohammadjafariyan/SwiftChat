@@ -154,7 +154,7 @@ namespace SignalRMVCChat.Models
 
             
             
-                var hour=timePart.Split(':')[0];
+                var hour= timePart.Split(':')[0];
                 var minutes=timePart.Split(':')[1];
                 var second=timePart.Split(':')[2];
             
@@ -181,16 +181,57 @@ namespace SignalRMVCChat.Models
 
                 /*botConditionTimeFrom=  botConditionTimeFrom.Substring(0
                     , botConditionTimeFrom.IndexOf(" "));*/
-                var hour=botConditionTimeFrom.Split(':')[0];
-                var minutes=botConditionTimeFrom.Split(':')[1];
-                var second=botConditionTimeFrom.Split(':')[2];
-            
-            
-                return new TimeSpan(int.Parse(hour),int.Parse(minutes),int.Parse(second));
+                var hour = botConditionTimeFrom.Split(':')[0];
+                var minutes = botConditionTimeFrom.Split(':')[1];
+                var second = botConditionTimeFrom.Split(':')[2];
+
+
+                return new TimeSpan(int.Parse(hour), int.Parse(minutes), int.Parse(second));
             }
             catch (Exception e)
             {
-                throw  new Exception("تایم قابل پردازش نیست");
+                throw new Exception("تایم قابل پردازش نیست");
+            }
+        }
+
+
+        public static DateTime ParseDate(string botConditionTimeFrom)
+        {
+            try
+            {
+                string format = "2020/11/12 14:36:28";
+
+                if (botConditionTimeFrom.Contains(" "))
+                {
+                    botConditionTimeFrom = botConditionTimeFrom.Split(' ')[0];
+
+                    /*botConditionTimeFrom=  botConditionTimeFrom.Substring(0
+                        , botConditionTimeFrom.IndexOf(" "));*/
+                    var year = botConditionTimeFrom.Split('/')[0];
+                    var mont = botConditionTimeFrom.Split('/')[1];
+                    var day = botConditionTimeFrom.Split('/')[2];
+
+
+                    return new DateTime(int.Parse(year), int.Parse(mont), int.Parse(day));
+
+                }
+                else
+                {
+                    var year = botConditionTimeFrom.Split('/')[0];
+                    var mont = botConditionTimeFrom.Split('/')[1];
+                    var day = botConditionTimeFrom.Split('/')[2];
+
+
+                    return new DateTime(int.Parse(year), int.Parse(mont), int.Parse(day));
+
+                }
+
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("تایم قابل پردازش نیست");
             }
         }
 

@@ -25,6 +25,11 @@ namespace SignalRMVCChat.WebSocket.Compaign
                 getQuery = getQuery.Where(q => q.Name.ToLower().Contains(searchTerm) == true);
             }
 
+            if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
+            {
+                var list=getQuery.ToList();
+            }
+
             return base.FilterAccess(getQuery, request, currMySocketReq);
         }
 

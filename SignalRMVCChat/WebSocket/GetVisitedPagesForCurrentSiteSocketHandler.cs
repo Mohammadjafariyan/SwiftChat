@@ -168,14 +168,14 @@ namespace SignalRMVCChat.WebSocket
             if (fromTime.HasValue)
             {
                 filtered = filtered.Where(r =>
-                    DbFunctions.CreateTime(r.DateTime.Hour, r.DateTime.Minute, r.DateTime.Second)
+                    DbFunctions.CreateTime(r.DateTime.Value.Hour, r.DateTime.Value.Minute, r.DateTime.Value.Second)
                     >= fromTime.Value.TimeOfDay);
             }
 
             if (toTime.HasValue)
             {
                 filtered = filtered.Where(r =>
-                    DbFunctions.CreateTime(r.DateTime.Hour, r.DateTime.Minute, r.DateTime.Second)
+                    DbFunctions.CreateTime(r.DateTime.Value.Hour, r.DateTime.Value.Minute, r.DateTime.Value.Second)
                     <= fromTime.Value.TimeOfDay);
             }
 
@@ -243,8 +243,8 @@ namespace SignalRMVCChat.WebSocket
                 start = end.AddYears(-1);
 
 
-                var listOfMonth = list.Where(l => start <= l.Key.Date)
-                    .Where(l => l.Key.Date <= end);
+                var listOfMonth = list.Where(l => start <= l.Key.Value.Date)
+                    .Where(l => l.Key.Value.Date <= end);
 
 
                 var statOfYear = new
@@ -304,7 +304,7 @@ namespace SignalRMVCChat.WebSocket
         private async Task<dynamic> GetSiteViewsInHoursOfToday(IQueryable<CustomerTrackInfo> query)
         {
             var list = await query.Where(q => DbFunctions.DiffDays(DateTime.Now, q.DateTime) == 0)
-                .GroupBy(q => q.DateTime.Hour)
+                .GroupBy(q => q.DateTime.Value.Hour)
                 .Select(q => new
                 {
                     Key = q.Key,
@@ -354,7 +354,7 @@ namespace SignalRMVCChat.WebSocket
             {
                 var thisDay = dates.StartOfWeek.AddDays(i);
 
-                var thisDayData = inWeekData.Where(w => w.Key.Date == thisDay.Date);
+                var thisDayData = inWeekData.Where(w => w.Key.Value.Date == thisDay.Date);
 
                 var thisDayStats = new
                 {

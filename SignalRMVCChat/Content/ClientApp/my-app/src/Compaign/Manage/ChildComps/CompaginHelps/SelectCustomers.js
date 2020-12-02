@@ -28,11 +28,11 @@ state={
     searchCustomersCallback(res){
         this.setState({loading:false})
         
-        if (!res || !res.Content || !res.Content.EntityList || !res.Content.EntityList.length) {
+        if (!res || !res.Content) {
             //  CurrentUserInfo.LayoutPage.showError('هیچ اطلاعاتی دریافت نشد');
             return;
         }
-        let arr = res.Content.EntityList;
+        let arr = res.Content.EntityList ? res.Content.EntityList : res.Content;
 
 
         this.setState({arr: arr});
@@ -51,10 +51,10 @@ state={
                 
                 
                 <InputText  value={this.state.searchTerm}
-                         placeholder={'جستجو...'}   onChange={(e) => this.setState({searchTerm: e.target.value})} />
+                         placeholder={'جستجو در کل داده ها...'}   onChange={(e) => this.setState({searchTerm: e.target.value})} />
 
                 <hr/>
-                <ListBox  value={_GetSelectedCompaign().selectedCustomers}
+                <ListBox style={{width:'100%'}} value={_GetSelectedCompaign().selectedCustomers}
                          options={this.state.arr} 
                          onChange={(e) => {
 
@@ -62,7 +62,6 @@ state={
                              this.setState({mat:Math.random()});
                          }}
                          multiple filter optionLabel="Name"
-                         style={{width: '15rem'}} 
                          listStyle={{maxHeight: '250px', width:'100%'}} />
 
 
