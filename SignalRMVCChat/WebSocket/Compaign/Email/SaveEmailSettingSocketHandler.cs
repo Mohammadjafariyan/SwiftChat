@@ -7,7 +7,9 @@ using System.Web;
 
 namespace SignalRMVCChat.WebSocket.Compaign.Email
 {
-    public class SaveEmailSettingSocketHandler : SaveSocketHandler<SignalRMVCChat.Models.Compaign.Email.Email, EmailService>
+    public class SaveEmailSettingSocketHandler : 
+        SaveSocketHandler<SignalRMVCChat.Models.Compaign.Email.Email
+            , EmailService>
     {
         public SaveEmailSettingSocketHandler() : base("saveEmailSettingCallback")
         {

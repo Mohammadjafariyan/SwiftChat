@@ -419,6 +419,7 @@
     <Compile Include="WebSocket\Bot\Log\GetBotLogSingleSocketHandler.cs" />
     <Compile Include="WebSocket\Compaign\CompaignLog\GetCompaignLogListSocketHandler.cs" />
     <Compile Include="WebSocket\Compaign\CompaignLog\GetCompaignLogReceiverListSocketHandler.cs" />
+    <Compile Include="WebSocket\Compaign\CompaignManualExecuteSocketHandler.cs" />
     <Compile Include="WebSocket\Compaign\CompaignSaveSocketHandler.cs" />
     <Compile Include="WebSocket\Compaign\Email\GetEmailSettingSocketHandler.cs" />
     <Compile Include="WebSocket\Compaign\Email\SaveEmailSettingSocketHandler.cs" />
@@ -2228,6 +2229,7 @@
     <Content Include="Content\fonts\primeicons.ttf" />
     <Content Include="Content\fonts\primeicons.woff" />
     <Content Include="Content\fonts\Sahel.ttf" />
+    <Content Include="Content\google-auth\google-auth.js" />
     <Content Include="Content\HelpDesk.css" />
     <Content Include="Content\HelpImages\article.png" />
     <Content Include="Content\HelpImages\chatPanelBgcolor.png" />

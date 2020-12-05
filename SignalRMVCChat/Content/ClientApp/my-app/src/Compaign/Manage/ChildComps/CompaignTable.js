@@ -10,6 +10,7 @@ import Button from "react-bootstrap/cjs/Button";
 import { Spinner } from "react-bootstrap";
 import { MyModal } from "../../../Components/Modal";
 import CompaignLogReceiverTable from "../Logs/CompaignLogReceiverTable";
+import { _showMsg } from "../../../Pages/LayoutPage";
 
 class CompaignTable extends Component {
   state = {
@@ -87,69 +88,61 @@ class CompaignTable extends Component {
   }
 
   actionBody(row) {
-    if (row.IsConfigured) {
-      return (
-        <>
-          <Button
-            onClick={() => {
-              this.setState({
-                showModal: true,
-                selectedCompaignLogId: row.Id,
-              });
-            }}
-          >
-            لیست دریافت کنندگان
-          </Button>
+    return (
+      <>
+        <Button
+          onClick={() => {
+            this.setState({
+              showModal: true,
+              selectedCompaignLogId: row.Id,
+            });
+          }}
+        >
+          <i className="fa fa-list"></i>
+          دریافت کنندگان
+        </Button>
+        <Button
+          variant={"info"}
+          onClick={() => {
+            CurrentUserInfo.CompaignLayout.setState({
+              CompaignChildPage: null,
+              dataType: null,
+              title: null,
+            }); //<CompaignTable currentStep={4}/>
+
+            CurrentUserInfo.CompaignIndex.openAfterLoad(
+              row.CompaignId ? row.CompaignId : row.Id
+            );
+          }}
+        >
+          <i className="fa fa-cog"></i>
+        </Button>
+
+        {!row.IsAutomatic && (
           <Button
             variant={"success"}
             onClick={() => {
-              CurrentUserInfo.CompaignLayout.setState({
-                CompaignChildPage: null,
-                dataType: null,
-                title: null,
-              }); //<CompaignTable currentStep={4}/>
-
-              CurrentUserInfo.CompaignIndex.openAfterLoad(row.CompaignId ? row.CompaignId : row.Id);
-              
+              _showMsg("ارسال درخواست اجرای کمپین");
+              this.compaignManualExecute(
+                row.CompaignId ? row.CompaignId : row.Id
+              );
             }}
           >
+            اجرا
             <i className="fa fa-send"></i>
           </Button>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <Button
-            onClick={() => {
-              this.setState({
-                showModal: true,
-                selectedCompaignLogId: row.Id,
-              });
-            }}
-          >
-            لیست دریافت کنندگان
-          </Button>
-          <Button
-            variant={"primary"}
-            onClick={() => {
-              CurrentUserInfo.CompaignLayout.setState({
-                CompaignChildPage: null,
-                dataType: null,
-                title: null,
-              }); //<CompaignTable currentStep={4}/>
-
-              CurrentUserInfo.CompaignIndex.openAfterLoad(row.CompaignId ? row.CompaignId : row.Id);
-              
-            }}
-          >
-            <i className="fa fa-cogs"></i>
-          </Button>
-        </>
-      );
-    }
+        )}
+      </>
+    );
   }
 
+  compaignManualExecuteCallback() {
+    _showMsg("با موفقیت اجرا شد");
+  }
+
+  compaignManualExecute(compaignId) {
+    MyCaller.Send("CompaignManualExecute", { compaignId: compaignId });
+  }
   componentDidMount() {
     this.setState({ loading: true });
     MyCaller.Send("GetCompaignList", { dataType: this.props.dataType });

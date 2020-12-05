@@ -84,6 +84,7 @@ class CompaignSave extends Component {
                                                             
                                                              this.setState({compaignType: 'automatic'})
                                                              this.state.selected.compaignType = 'automatic';
+                                                             this.state.selected.IsAutomatic=true;
 
                                                          }}
                                                          checked={this.state.compaignType === 'automatic'}/>
@@ -97,6 +98,7 @@ class CompaignSave extends Component {
                                                              this.setState({compaignType: 'manual'});
 
                                                              this.state.selected.compaignType = 'manual';
+                                                             this.state.selected.IsAutomatic=false;
 
                                                          }}
                                                          checked={this.state.compaignType === 'manual'}/>

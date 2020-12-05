@@ -1,0 +1,7 @@
+
+
+
+
+
+
+{'Name':'CompaignSave','Body':{'IsConfigured':true,'LastChangeDateTime':'2020-12-03T14:30:56.6324017+03:30','LastChangeDateTimeStr':'0 ثانیه قبل ','Status':0,'ReceiverCount':0,'DeliverCount':0,'ExecutionCount':0,'ProgressPercent':0,'StoppedLog':null,'selectedCustomers':null,'Text':null,'Template':{'IsSystemDefaultTemplate':true,'CompaignId':null,'Compaign':null,'MyWebsiteId':null,'MyWebsite':null,'Html':,'Name':'نمونه 7','Id':7},'filters':null,'IsAutomatic':false,'IsEnabled':false,'SendToEmail':true,'SendToChat':true,'compaignType':'manual','CompaignConditionsTypeIndex':0,'CompaignRecipientsTypeIndex':0,'saveAsTemplateName':null,'saveAsTemplate':false,'everyDateTime':null,'everyWeekTime':null,'selectedDayOfEveryMonth':null,'selectedEventTriggerId':null,'selectedBotId':null,'weekdays':null,'selectedEventTrigger':null,'selectedBot':null,'Name':'کمپین جدید56-30','MyWebsite':null,'MyWebsiteId':1,'MyAccount':null,'MyAccountId':2,'CompaignTemplates':[],'CompaignLogs':null,'Id':2,'IsChanged':false},'Token':'fx0+zQWrW24KTQshWOIalRhAfAwtLjyCF6sGljgW2AXDsT7M8imj+eOxIkAAY4dvlDngr7065/LjbrQKz8UVv6Vc3l9uLVkhoOB8G0Zaz5OTGRqWx5GvV/aodR1FAZlJGKxW24dANUJ2D2ems8Mzge9Z6ROveIHoCbqWNydMJno=','SelectedTagId':null,'gapIsOnlyOnly':null,'IsAdminMode':null,'WebsiteToken':'N09XVk1peG5Gc2FtQWhLSHk4MjIrc0lBc3ZUMm5jOWlsVWdYc1NnMkViMWZTQTdjN0YwN3JRd2JmaW5LKzQyZE9pV0VLV0dNeTFMMHZ2ekh6R3Zyd0E9PQ==','IsAdminOrCustomer':1}

@@ -88,12 +88,15 @@ namespace SignalRMVCChat.WebSocket
                 #endregion
                 #region Compaign
 
+                case "CompaignManualExecute":
+                    return new CompaignManualExecuteSocketHandler();
+                    break;
                 #region CompaignLog
 
                 case "CompaignLogList":
                     return new GetCompaignLogListSocketHandler();
                     break;
-               
+
                 case "GetCompaignLogReceiverList":
                     return new GetCompaignLogReceiverListSocketHandler();
                     break;

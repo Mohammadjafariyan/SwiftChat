@@ -1,5 +1,8 @@
-﻿using SignalRMVCChat.Models.GapChatContext;
+﻿using Newtonsoft.Json;
+using SignalRMVCChat.Models;
+using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service.Compaign.Email;
+using SignalRMVCChat.WebSocket;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -13,12 +16,107 @@ namespace SignalRMVCChat.Service.Compaign
         private readonly EmailService emailService;
 
         public CustomerProviderService CustomerProviderService { get; }
+        public ChatProviderService ChatProviderService { get; }
+        public MyAccountProviderService MyAccountProviderService { get; }
+        public MyWebsiteService MyWebsiteService { get; }
 
         public CompaignService(CustomerProviderService customerProviderService,
-           Email.EmailService emailService) : base(null)
+           Email.EmailService emailService,
+           ChatProviderService chatProviderService,
+           MyAccountProviderService myAccountProviderService,
+           MyWebsiteService myWebsiteService) : base(null)
         {
             CustomerProviderService = customerProviderService;
             this.emailService = emailService;
+            ChatProviderService = chatProviderService;
+            MyAccountProviderService = myAccountProviderService;
+            MyWebsiteService = myWebsiteService;
+        }
+
+        internal List<Customer> GetManualConditionTargetCustomers
+            (Models.Compaign.Compaign compaign)
+        {
+            switch (compaign.CompaignRecipientsTypeIndex)
+            {
+                case 0://ارسال به همه کاربران
+
+                    var customers = MyWebsiteService.GetQuery()
+                         .Include(c => c.Customers)
+                         .Include("Customers.Customer")
+                         .ToList()
+                         .SelectMany(c => c.Customers.Select(socket => socket.Customer)).ToList();
+
+                    return customers;
+                    break;
+                case 1://ارسال به کاربران انتخابی
+                    return compaign.selectedCustomers;
+
+                    break;
+                case 2://اعمال فیلتر پیشرفته
+
+                    var customersForFilter = MyWebsiteService.GetQuery()
+                        .Include(c => c.Customers)
+                        .Include("Customers.Customer")
+                        .ToList()
+                        .SelectMany(c => c.Customers.Select(socket => socket.Customer)).Where(c=>c!=null).ToList();
+
+
+                    List<Customer> picketCustomers = new List<Customer>();
+                    foreach (var customer in customersForFilter)
+                    {
+                        string isMatchText = ApplyFilter(compaign
+                    , customer.Id);
+
+                        if (string.IsNullOrEmpty(isMatchText) == false)
+                        {
+                            picketCustomers.Add(customer);
+                        }
+                    }
+
+                    return picketCustomers;
+
+                    break;
+                case 3://ارسال به برچسب های خاص
+
+                    var customersForSegments = MyWebsiteService.GetQuery()
+                       .Include(c => c.Customers)
+                       .Include("Customers.Customer")
+                       .ToList()
+                       .SelectMany(c => c.Customers.Select(socket => socket.Customer)).Where(c => c != null).ToList();
+
+                   
+
+                    List<Customer> picketCustomers2 = new List<Customer>();
+                    foreach (var customer in customersForSegments)
+                    {
+
+                        var selectedFilters= compaign.filters.Where(f => f.segments?.Count > 0).ToList();
+
+                        var compaignFilterApplier = new 
+                            CompaignFilterApplier(customer);
+
+                        foreach (var filter in selectedFilters)
+                        {
+                            
+                            bool isMatch = compaignFilterApplier.
+                                     IsMatchTags(filter);
+                            if (isMatch)
+                            {
+                                picketCustomers2.Add(customer);
+                            }
+                        }
+
+                       
+                    }
+
+                    return picketCustomers2;
+
+
+                    break;
+
+            }
+
+            return new List<Customer>();
         }
 
         public IQueryable<Models.Compaign.Compaign> GetConfiguredCompagins(int websiteId)
@@ -29,6 +127,31 @@ namespace SignalRMVCChat.Service.Compaign
 
         internal static void Init(GapChatContext gapChatContext)
         {
+
+      
+
+            SignalRMVCChat.Models.Compaign.Compaign Compaign =
+                new Models.Compaign.Compaign
+                {
+                    IsAutomatic=false,
+                    IsEnabled=true,
+                    Template=new Models.Compaign.CompaignHtmlTemplate
+                    {
+                        Html= CompaignTemplateSamples.Sample1,
+                        Name="sample 1"
+                    },
+                    MyAccountId=1,
+                    MyWebsiteId=1,
+                    SendToChat=true,
+                    SendToEmail=true,
+                    Name="sample1",
+                    compaignType="manual"
+                };
+
+
+            gapChatContext.Compaigns.Add(Compaign);
+
+            gapChatContext.SaveChanges();
             //gapChatContext.Compaigns.Add(new SignalRMVCChat.Models.Compaign.Compaign
             //{
             //    IsConfigured=true,
@@ -163,25 +286,66 @@ namespace SignalRMVCChat.Service.Compaign
         }
 
         public void ExecuteCompagins(List<Models.Compaign.Compaign>
-            compaignsAutomaticList, int customerId, WebSocket.MyWebSocketRequest _request, WebSocket.MyWebSocketRequest currMySocketReq)
+            compaignsAutomaticList, Customer customer, 
+            WebSocket.MyWebSocketRequest _request, 
+            WebSocket.MyWebSocketRequest currMySocketReq)
         {
 
             var list = compaignsAutomaticList.ToList();
+
+            var uniqId = ChatProviderService.GetQuery()
+                .Where(c => c.CustomerId == customer.Id)
+                .Count() ;
+
+            var systemMyAccount = MyAccountProviderService.GetSystemMyAccount();
+
+            /*------------------ send to chat -----------------*/
+
+            int? tempMySocketMyAccountId = currMySocketReq?.MySocket?.MyAccountId;
+            int? tempMyAccountId = currMySocketReq?.MySocket?.MyAccountId;
+            int? tempCustomerId = currMySocketReq?.MySocket?.CustomerId;
+            /*------------------ send to chat -----------------*/
+            if (currMySocketReq!=null)
+            {
+                currMySocketReq.MySocket.MyAccountId = systemMyAccount.Id;
+                currMySocketReq.MySocket.CustomerId = customer.Id;
+
+                currMySocketReq.CurrentRequest.myAccountId = systemMyAccount.Id;
+            }
 
             foreach (var item in list)
             {
                 if (item.SendToEmail)
                 {
-                    emailService.SendEmailByCompagin(item,customerId);
+                  string error=  emailService.SendEmailByCompagin(item, customer, currMySocketReq.MyWebsite.Id);
                 }
                 if (item.SendToChat)
                 {
-                    if (_request!=null && currMySocketReq!=null)
+                    if (_request != null && currMySocketReq != null)
                     {
-                        new CustomerSendTo
+
+                        new AdminSendToCustomerSocketHandler()
+                               .ExecuteAsync(new MyWebSocketRequest
+                               {
+                                   Body = new
+                                   {
+                                       targetUserId = customer.Id,
+                                       typedMessage = item.Template?.Html,
+                                       uniqId = uniqId++,
+                                       gapFileUniqId = 6161,
+                                   }
+                               }.Serialize(), currMySocketReq).GetAwaiter()
+                               .GetResult();
+
                     }
                 }
             }
+
+            currMySocketReq.MySocket.MyAccountId = tempMySocketMyAccountId;
+
+            currMySocketReq.CurrentRequest.myAccountId = tempMyAccountId;
+
+            currMySocketReq.MySocket.CustomerId = tempCustomerId;
         }
 
 

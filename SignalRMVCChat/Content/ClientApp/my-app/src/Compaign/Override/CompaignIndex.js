@@ -7,7 +7,8 @@ import CompaignFilter from "../Filter/CompaignFilter";
 import { MyModal } from "../../Components/Modal";
 import { CurrentUserInfo } from "../../Help/Socket";
 import Badge from "react-bootstrap/Badge";
-import { DataHolder } from './../../Help/DataHolder';
+import { DataHolder } from "./../../Help/DataHolder";
+import { MyCaller } from './../../Help/Socket';
 
 class CompaignIndex extends BaseIndex {
   getCallback(res) {
@@ -19,33 +20,46 @@ class CompaignIndex extends BaseIndex {
     let oneshot = res.Content.filter((f) => !f.IsAutomatic);
     this.setState({ automatic: automatic, oneshot: oneshot });
 
-
     this.openAfterLoadHelp(automatic);
     this.openAfterLoadHelp(oneshot);
-   
+
     DataHolder.openAfterLoadId = null;
+  }
+
+  save(){
+
+    if (this.props.saveDraft){
+       
+      MyCaller.Send(this.props.saveDraft,{
+          SendToChat:true,
+          SendToEmail:true
+        });
+   
+    }else{
+        MyCaller.Send(this.props.save,{});
+    }
+    _showMsg("در حال ایجاد رکورد جدید")
+
 }
 
-  openAfterLoadHelp(list){
-
-    let s=DataHolder.openAfterLoadId;
-    console.log(s)
+  openAfterLoadHelp(list) {
+    let s = DataHolder.openAfterLoadId;
+    console.log(s);
     if (DataHolder.openAfterLoadId && list) {
-        let find = list.find((f) => f.Id == DataHolder.openAfterLoadId);
-  
-        if (find) {
-          this.setState({
-            selectedNotChanged: JSON.stringify(find),
-            selected: find,
-          });
+      let find = list.find((f) => f.Id == DataHolder.openAfterLoadId);
 
-          this.props.parent.setState({
-            selected:find
+      if (find) {
+        this.setState({
+          selectedNotChanged: JSON.stringify(find),
+          selected: find,
         });
-          DataHolder.openAfterLoadId = null;
-        }
-  
+
+        this.props.parent.setState({
+          selected: find,
+        });
+        DataHolder.openAfterLoadId = null;
       }
+    }
   }
 
   render() {
@@ -62,8 +76,6 @@ class CompaignIndex extends BaseIndex {
 
     super.componentDidMount();
   }
-
- 
 
   openAfterLoad(compaignId) {
     DataHolder.openAfterLoadId = compaignId;
@@ -84,7 +96,9 @@ class CompaignIndex extends BaseIndex {
     }
     return (
       <ListGroup>
-        <ListGroup.Item>{title}</ListGroup.Item>
+        <ListGroup.Item className={"bg-info text-white"}>
+          {title}
+        </ListGroup.Item>
         {list.map((row, i, arr) => {
           return (
             <ListGroup.Item>

@@ -24,6 +24,10 @@ namespace SignalRMVCChat.Service.Compaign
 
         public bool IsCityMatch(UserCity userCity)
         {
+            if (string.IsNullOrEmpty(userCity?.engName?.ToLower()?.Trim()))
+            {
+                return false;
+            }
             return customer.TrackInfos.Any(t => t.UserCity?.engName?.ToLower()?.Trim() == userCity?.engName?.ToLower()?.Trim());
         }
 
@@ -72,6 +76,11 @@ namespace SignalRMVCChat.Service.Compaign
             {
                 return false;
             }
+            if (string.IsNullOrEmpty(textToMatch) ||
+                string.IsNullOrEmpty(text2))
+            {
+                return false;
+            }
 
             if (selectedFilter?.engName == "equals")
             {
@@ -95,6 +104,11 @@ namespace SignalRMVCChat.Service.Compaign
         public bool IsMatchGender(Compaignfilter compaignfilter)
         {
             if (compaignfilter?.selectedFilter?.engName == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(customer?.Gender?.engName))
             {
                 return false;
             }
@@ -324,7 +338,7 @@ namespace SignalRMVCChat.Service.Compaign
 
         public static bool StringMatch(string s1, string s2)
         {
-            bool isMatch= s1?.ToLower()?.Trim() ==
+            bool isMatch = s1?.ToLower()?.Trim() ==
             s2?.ToLower()?.Trim();
 
             return isMatch;

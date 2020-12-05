@@ -63,10 +63,13 @@ namespace SignalRMVCChat.Service
 
         public int RegisterNewCustomer(MyWebSocketRequest currMySocketReq)
         {
+
+
             var myEntityResponse = Save(new Customer
             {
                 Name = "کاربر آنلاین" + " " + (currMySocketReq?.MySocket?.MyConnectionInfo?.ClientIpAddress ?? DateTime.Now.ToString("HH:mm")),
-            });
+                Email = MyGlobal.IsAttached ? "pcpc19551@gmail.com" : null
+            }) ;
 
             return myEntityResponse.Single;
         }

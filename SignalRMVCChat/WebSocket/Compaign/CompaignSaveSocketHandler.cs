@@ -35,6 +35,8 @@ namespace SignalRMVCChat.WebSocket.Compaign
             record.selectedBot = null;
             record.selectedEventTrigger = null;
 
+
+
             if (record.saveAsTemplate && record.Template != null)
             {
 
@@ -59,6 +61,10 @@ namespace SignalRMVCChat.WebSocket.Compaign
 
             }
 
+            record.IsConfigured = true;
+
+
+
             if (record.Id == 0)
             {
                 record.Name = "کمپین جدید" + $@"{DateTime.Now.Second}-{DateTime.Now.Minute}";
@@ -69,4 +75,4 @@ namespace SignalRMVCChat.WebSocket.Compaign
             return base.SetParams(record, existRecord);
         }
     }
-}
+    }

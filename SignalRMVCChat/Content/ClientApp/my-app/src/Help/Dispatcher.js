@@ -13,6 +13,8 @@ class dispatcher {
     }
     console.log("dispatcher===>", res.Name);
     switch (res.Name) {
+
+      
       /*-------------------- stats--------------------*/
       case "saveEmailSettingCallback":
         if (CurrentUserInfo.EmailSetting) {
@@ -101,6 +103,12 @@ class dispatcher {
 
       /*-------------------- Compaign--------------------*/
 
+      
+      case "compaignManualExecuteCallback":
+        if (CurrentUserInfo.CompaignTable) {
+          CurrentUserInfo.CompaignTable.compaignManualExecuteCallback(res);
+        }
+        break;
       /*--------------------- compaignLog------------*/
       case "getCompaignLogListCallback":
         if (CurrentUserInfo.CompaignLogTable) {

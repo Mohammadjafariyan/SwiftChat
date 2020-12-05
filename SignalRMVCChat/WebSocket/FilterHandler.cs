@@ -34,7 +34,8 @@ namespace SignalRMVCChat.WebSocket
                 // اگر بر حسب اتفاقی ، کاستومر حذف شده باشد ، اینجا دوباره ایجاد می شود
                 try
                 {
-                    var customer = customerProviderService.GetById(currMySocketReq.CurrentRequest.customerId.Value)
+                    var customer = customerProviderService
+                        .GetById(currMySocketReq.CurrentRequest.customerId.Value)
                         .Single;
 
                     if (customer.IsBlocked)

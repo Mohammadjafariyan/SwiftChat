@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SignalRMVCChat.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -28,7 +29,7 @@ namespace SignalRMVCChat.Service.Compaign
         /// <param name="compaignsList"></param>
         /// <param name="customerId"></param>
         public void ExecuteCompaginsOnEventTriggered(
-            int customerId, int websiteId,
+            Customer customer, int websiteId,
             SignalRMVCChat.Models.ET
                 .EventTrigger eventTrigger, WebSocket.MyWebSocketRequest _request, WebSocket.MyWebSocketRequest currMySocketReq)
         {
@@ -37,12 +38,12 @@ namespace SignalRMVCChat.Service.Compaign
             var compaignsList = compaignsQuery.ToList();
 
             var compaignsAutomaticList = CompaignService
-                .AutomaticCondition(compaignsList, customerId
+                .AutomaticCondition(compaignsList, customer.Id
                 , eventTrigger);
 
             //var compaignsManualQuery = ManualCondition(compaignsList);
 
-            CompaignService.ExecuteCompagins(compaignsAutomaticList, customerId,
+            CompaignService.ExecuteCompagins(compaignsAutomaticList, customer,
                 _request, currMySocketReq);
 
         }
@@ -52,7 +53,7 @@ namespace SignalRMVCChat.Service.Compaign
         /// </summary>
         /// <param name="compaignsList"></param>
         /// <param name="customerId"></param>
-        public void ExecuteCompaginsOnRegularTimeInterval(int customerId, 
+        public void ExecuteCompaginsOnRegularTimeInterval(Customer customer, 
             int websiteId)
         {
             if (this.compaignsList == null || this.compaignsList?.Any() == false)
@@ -66,14 +67,14 @@ namespace SignalRMVCChat.Service.Compaign
                 this.compaignsAutomaticList?.Any() == false)
             {
                 this.compaignsAutomaticList = CompaignService
-               .AutomaticCondition(compaignsList, customerId);
+               .AutomaticCondition(compaignsList, customer.Id);
             }
 
 
             //var compaignsManualQuery = ManualCondition(compaignsList);
 
             CompaignService.ExecuteCompagins(compaignsAutomaticList
-                , customerId,null,null);
+                , customer,null,null);
 
 
         }
@@ -83,20 +84,21 @@ namespace SignalRMVCChat.Service.Compaign
         /// </summary>
         /// <param name="compaignsList"></param>
         /// <param name="customerId"></param>
-        public void ExecuteCompaginsOnBotEvent(int customerId, int websiteId,
-           SignalRMVCChat.Models.Bot.Bot bot, WebSocket.MyWebSocketRequest _request, WebSocket.MyWebSocketRequest currMySocketReq)
+        public void ExecuteCompaginsOnBotEvent(Customer customer, int websiteId,
+           SignalRMVCChat.Models.Bot.Bot bot,
+           WebSocket.MyWebSocketRequest _request, WebSocket.MyWebSocketRequest currMySocketReq)
         {
             var compaignsQuery = CompaignService.GetConfiguredCompagins(websiteId);
 
             var compaignsList = compaignsQuery.ToList();
 
             var compaignsAutomaticList = CompaignService
-                .AutomaticCondition(compaignsList, customerId, null, bot);
+                .AutomaticCondition(compaignsList, customer.Id, null, bot);
 
             //var compaignsManualQuery = ManualCondition(compaignsList);
 
-            CompaignService.ExecuteCompagins(compaignsAutomaticList, customerId
-                , null,null);
+            CompaignService.ExecuteCompagins(compaignsAutomaticList, customer
+                , _request, currMySocketReq);
 
         }
 

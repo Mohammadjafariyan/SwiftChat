@@ -78,8 +78,11 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
             /*--------------------------- Compaign ----------------------------*/
             var compaignTriggerService = Injector.Inject<CompaignTriggerService>();
 
+
+            var customer= CustomerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value).Single;
+
             compaignTriggerService.ExecuteCompaginsOnEventTriggered
-                (currMySocketReq.MySocket.CustomerId.Value,
+                (customer,
                 currMySocketReq.MyWebsite.Id, eventTrigger,
                 _request,currMySocketReq);
             /*--------------------------- END ----------------------------*/

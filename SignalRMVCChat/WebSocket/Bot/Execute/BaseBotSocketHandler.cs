@@ -139,8 +139,10 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                         /*-----------Compaign---------------*/
                         var compaignTriggerService = Injector.Inject<CompaignTriggerService>();
 
+                        var customer = CustomerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value).Single;
+
                         compaignTriggerService.ExecuteCompaginsOnBotEvent(
-                            currMySocketReq.MySocket.CustomerId.Value,
+                           customer,
                             currMySocketReq.MyWebsite.Id,
                             bot,
                 _request, currMySocketReq);

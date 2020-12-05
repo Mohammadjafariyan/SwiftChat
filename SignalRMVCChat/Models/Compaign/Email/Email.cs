@@ -31,7 +31,14 @@ namespace SignalRMVCChat.Models.Compaign.Email
         /// <summary>
         /// مال کدام وب سایت است
         /// </summary>
+        /// 
         public int MyWebsiteId { get; set; }
 
+
+
+        /*----------------------------- email setting : ----------------------*/
+        public string FromMailAddress { get;  set; }
+        public string Host { get;  set; }
+        public string FromMailAddressPassword { get;  set; }
     }
 }

@@ -152,8 +152,8 @@ namespace SignalRMVCChat.Timer
                 foreach (var customer in customers)
                 {
                     CompaignTriggerService.
-                        ExecuteCompaginsOnRegularTimeInterval(website.Id
-                        , customer.Id);
+                        ExecuteCompaginsOnRegularTimeInterval(customer, website.Id
+                        );
                 }
 
 
