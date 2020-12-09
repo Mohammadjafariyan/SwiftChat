@@ -206,6 +206,8 @@ namespace SignalRMVCChat.WebSocket
                         UsersSeparationParams = c.UsersSeparationParams,
                         IsBlocked = c.IsBlocked,
                         IsResolved = c.IsResolved,
+                        TelegramUserId = c.TelegramUserId,
+                        TelegramChatId = c.TelegramChatId,
                     }).ToList();
 
 
@@ -263,7 +265,9 @@ namespace SignalRMVCChat.WebSocket
 
 
                     Time = MyGlobal.ToIranianDateWidthTime(c.CreationDateTime),
-                    UsersSeparationParams = c.UsersSeparationParams
+                    UsersSeparationParams = c.UsersSeparationParams,
+                    TelegramUserId=c.TelegramUserId,
+                    TelegramChatId=c.TelegramChatId,
                 }).ToList();
         }
 
@@ -303,7 +307,7 @@ namespace SignalRMVCChat.WebSocket
             return list;
         }
 
-        private void Validate(string type)
+        public void Validate(string type)
         {
             switch (type)
             {

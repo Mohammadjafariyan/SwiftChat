@@ -1,0 +1,24 @@
+{
+  "Message": {
+    "message_id": 41,
+    "from": {
+      "id": 815162323,
+      "is_bot": false,
+      "first_name": "Mohammad",
+      "last_name": "Jafariyan",
+      "username": "asharsoft",
+      "language_code": "en"
+    },
+    "date": 1607495260,
+    "chat": {
+      "id": 815162323,
+      "type": "private",
+      "username": "asharsoft",
+      "first_name": "Mohammad",
+      "last_name": "Jafariyan"
+    },
+    "text": "ertert"
+  }
+}
+
+{"BotId":1327030395,"Timeout":"00:01:40","IsReceiving":true,"MessageOffset":0}

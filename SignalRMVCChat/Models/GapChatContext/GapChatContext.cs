@@ -18,8 +18,10 @@ using SignalRMVCChat.Models.Compaign;
 using SignalRMVCChat.Models.Compaign.Email;
 using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Models.HelpDesk;
+using SignalRMVCChat.Models.TelegramBot;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.Compaign;
+using SignalRMVCChat.Service.TelegramBot;
 using SignalRMVCChat.SysAdmin.Service;
 using SignalRMVCChat.WebSocket;
 using TelegramBotsWebApplication;
@@ -527,8 +529,38 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #endregion
 
+            #region TELEGRAM BOT
+          
+            modelBuilder.Entity<MyWebsite>()
+             .HasMany(r => r.TelegramBots)
+             .WithRequired(o => o.MyWebsite)
+             .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<MyAccount>()
+                .HasMany(r => r.TelegramBots)
+                .WithRequired(o => o.MyAccount)
+                .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<TelegramBotRegisteredOperator>()
+               .HasRequired(r => r.TelegramBotSetting)
+               .WithMany(o => o.TelegramBotRegisteredOperators)
+               .HasForeignKey(o => o.TelegramBotSettingId).WillCascadeOnDelete(false);
+
+            
+            #endregion
+
             base.OnModelCreating(modelBuilder);
         }
+
+        #region TELEGRAM BOT
+
+        
+        public DbSet<TelegramBotSetting> TelegramBotSettings { get; set; }
+        public DbSet<TelegramBotRegisteredOperator> TelegramBotRegisteredOperators { get; set; }
+        
+        #endregion
 
 
         #region Email
@@ -915,6 +947,9 @@ namespace SignalRMVCChat.Models.GapChatContext
 
 
             CompaignService.Init(gapChatContext);
+
+
+            TelegramBotSettingService.Init(gapChatContext);
 
         }
     }

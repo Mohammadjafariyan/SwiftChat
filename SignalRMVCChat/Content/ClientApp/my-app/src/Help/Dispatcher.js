@@ -13,8 +13,20 @@ class dispatcher {
     }
     console.log("dispatcher===>", res.Name);
     switch (res.Name) {
+      /*-------------------- stats--------------------*/
+      case "getTelegramBotSettingCallback":
+        if (CurrentUserInfo.TelegramBotSave) {
+          CurrentUserInfo.TelegramBotSave.getTelegramBotSettingCallback(res);
+        }
+        break;
 
-      
+      case "telegramBotSettingSaveCallback":
+        if (CurrentUserInfo.TelegramBotSave) {
+          CurrentUserInfo.TelegramBotSave.telegramBotSettingSaveCallback(res);
+        }
+        break;
+      /*-------------------- END--------------------*/
+
       /*-------------------- stats--------------------*/
       case "saveEmailSettingCallback":
         if (CurrentUserInfo.EmailSetting) {
@@ -103,7 +115,6 @@ class dispatcher {
 
       /*-------------------- Compaign--------------------*/
 
-      
       case "compaignManualExecuteCallback":
         if (CurrentUserInfo.CompaignTable) {
           CurrentUserInfo.CompaignTable.compaignManualExecuteCallback(res);

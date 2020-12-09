@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.TelegramBot.CustomerBot.business;
 
 namespace SignalRMVCChat.WebSocket
 {
@@ -103,7 +104,9 @@ namespace SignalRMVCChat.WebSocket
             int gapFileUniqId,
             string request, MyWebSocketRequest currMySocketReq)
         {
-            MySocket customer = currMySocketReq.MyWebsite.Customers.FirstOrDefault(c => c.CustomerId == targetUserId);
+            var CustomerProviderService = Injector.Inject<CustomerProviderService>();
+            var chatProviderService = DependencyInjection.Injector.Inject<ChatProviderService>();
+            var customer = CustomerProviderService.GetQuery().FirstOrDefault(c => c.Id == targetUserId);
 
             if (customer == null)
             {
@@ -126,7 +129,6 @@ namespace SignalRMVCChat.WebSocket
                     , targetUserId, typedMessage, currMySocketReq.MySocket.Id, gapFileUniqId, uniqId);
 
 
-            var chatProviderService = DependencyInjection.Injector.Inject<ChatProviderService>();
             int totalUnseen = chatProviderService.GetTotalUnseen(accountId
                 , targetUserId, ChatSenderType.AccountToCustomer);
 
@@ -146,18 +148,29 @@ namespace SignalRMVCChat.WebSocket
                 ChatId = chat.Single,
                 Chat = chatObject
             };
+            var telegramBotChatService = Injector.Inject<TelegramBotChatService>();
+
+            var customer_target = CustomerProviderService.GetById(customer.Id, "کاربر یافت نشد").Single;
 
 
-            await MySocketManagerService.SendToCustomer(customer.CustomerId.Value, currMySocketReq.MyWebsite.Id,
-                response);
+            if (customer_target.TelegramUserId.HasValue)
+            {
+              await   telegramBotChatService.OperatorSendPmToTelegramUser
+                    (customer_target, typedMessage, currMySocketReq.MyWebsite.Id);
+            }
+            else
+            {
+                await MySocketManagerService.SendToCustomer(customer.Id, currMySocketReq.MyWebsite.Id,
+     response);
+
+            }
+
 
 
             var _ChatObject = chatProviderService.GetById((int) chat.Single).Single;
 
 
-            var CustomerProviderService = Injector.Inject<CustomerProviderService>();
 
-            var customer_target = CustomerProviderService.GetById(customer.CustomerId.Value, "کاربر یافت نشد").Single;
 
             if ( currMySocketReq.IsAdminOrCustomer!=(int)MySocketUserType.Customer &&  customer_target.ContactAdmins != null && customer_target.ContactAdmins.Count > 0)
             {

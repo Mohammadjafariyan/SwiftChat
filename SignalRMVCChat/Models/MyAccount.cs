@@ -8,6 +8,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 using System.ComponentModel.DataAnnotations.Schema;
 using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Models.UsersSeparation;
+using SignalRMVCChat.Models.TelegramBot;
 
 namespace SignalRMVCChat.Models
 {
@@ -110,6 +111,10 @@ namespace SignalRMVCChat.Models
         [NotMapped] public IEnumerable<Tag> CustomerTags { get; set; }
 
         public Image ProfileImage { get; set; }
+
+
+        public List<TelegramBotSetting> TelegramBots { get; internal set; }
+
 
         public string GetPlanTypeTranslate()
         {
@@ -220,6 +225,11 @@ namespace SignalRMVCChat.Models
 
         public List<Models.Compaign.Compaign> Compaigns { get; set; }
 
+        [NotMapped]
+        public int? TelegramUserId { get;  set; }
+        
+        [NotMapped]
+        public long TelegramChatId { get;  set; }
     }
 
     public class ReceivedPrivateChat

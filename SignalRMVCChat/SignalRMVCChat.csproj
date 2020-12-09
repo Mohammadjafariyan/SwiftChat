@@ -290,6 +290,8 @@
     <Compile Include="Models\Routing\Routing.cs" />
     <Compile Include="Models\Setting.cs" />
     <Compile Include="Models\Tag.cs" />
+    <Compile Include="Models\TelegramBot\TelegramBotRegisteredOperator.cs" />
+    <Compile Include="Models\TelegramBot\TelegramBotSetting.cs" />
     <Compile Include="Models\UsersSeparation\UsersSeparation.cs" />
     <Compile Include="Models\ViewModels\Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -343,8 +345,27 @@
     <Compile Include="Service\SettingService.cs" />
     <Compile Include="Service\SocketsSingleton.cs" />
     <Compile Include="Service\TagService.cs" />
+    <Compile Include="Service\TelegramBot\BotUniqCodeNotRecognizedException.cs" />
+    <Compile Include="Service\TelegramBot\TelegramBotRegisteredOperatorService.cs" />
+    <Compile Include="Service\TelegramBot\TelegramBotSettingService.cs" />
     <Compile Include="Service\UsersSeparation\UsersSeparationService.cs" />
     <Compile Include="Service\ViewRendererForHubsService.cs" />
+    <Compile Include="TelegramBot\BotBehaviour\BotBehaviour.cs" />
+    <Compile Include="TelegramBot\BotHelp.cs" />
+    <Compile Include="TelegramBot\CustomerBot\business\TelegramBotChatService.cs" />
+    <Compile Include="TelegramBot\CustomerBot\business\TelegramBotCustomerService.cs" />
+    <Compile Include="TelegramBot\OperatorBot\Behavriour\OpBotHelp.cs" />
+    <Compile Include="TelegramBot\OperatorBot\Bussiness\OpBotChatService.cs" />
+    <Compile Include="TelegramBot\OperatorBot\Bussiness\OpBotCommandDispatcher.cs" />
+    <Compile Include="TelegramBot\OperatorBot\Bussiness\OpBotGetClientListService.cs" />
+    <Compile Include="TelegramBot\OperatorBot\OperatorBotDispatcher.cs" />
+    <Compile Include="TelegramBot\CustomerBot\CustomerBotDispatcher.cs" />
+    <Compile Include="TelegramBot\BotBehaviour\IBotBehaviour.cs" />
+    <Compile Include="TelegramBot\CustomerBot\CustomerBotSingleton.cs" />
+    <Compile Include="TelegramBot\OperatorBot\OperatorBotSingleton.cs" />
+    <Compile Include="TelegramBot\Tests\CustomerBot\CustomerBotReceiveChatBehaviourTests.cs" />
+    <Compile Include="TelegramBot\Tests\OperatorBot\SignUpAdminTests.cs" />
+    <Compile Include="TelegramBot\Tests\OperatorBot\TelegramBotMockService.cs" />
     <Compile Include="Test\IntegrationTests\CreateAccountForPluginsProcess.cs" />
     <Compile Include="Test\SelectPlanInFront\SignUpForPlanTests.cs" />
     <Compile Include="Test\SuperAdminTests\SuperAdminTests.cs" />
@@ -517,6 +538,8 @@
     <Compile Include="WebSocket\SocialChannels\GetSocialChannelsInfoSocketHandler.cs" />
     <Compile Include="WebSocket\SocialChannels\SaveSocialChannelsInfoSocketHandler.cs" />
     <Compile Include="WebSocket\SocketSingleton.cs" />
+    <Compile Include="WebSocket\TelegramBot\GetTelegramBotSettingSocketHandler.cs" />
+    <Compile Include="WebSocket\TelegramBot\TelegramBotSettingSaveSocketHandler.cs" />
     <Compile Include="WebSocket\Tests\AnotherSideNewOnlineInformerHandlerTester.cs" />
     <Compile Include="WebSocket\Tests\DommySharedWebsiteProvider.cs" />
     <Compile Include="WebSocket\Tests\GetCustomerActivityDetailSocketHandlerTests.cs" />
@@ -2476,6 +2499,7 @@
     <Content Include="Views\Account\DisplayEmail.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\AdminLogin.cshtml" />
+    <Content Include="TelegramBot\Tests\OperatorBot\SampleTelegramRequest.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
@@ -2505,6 +2529,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Telegram.Bot-master\Telegram.Bot-master\src\Telegram.Bot\Telegram.Bot.csproj">
+      <Project>{171aaef2-6f44-4d74-9a08-5a5c6b8ea1ce}</Project>
+      <Name>Telegram.Bot</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

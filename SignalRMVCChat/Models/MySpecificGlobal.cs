@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using Engine.SysAdmin.Models;
@@ -15,18 +16,18 @@ namespace SignalRMVCChat.Models
     {
         public static string GetBaseUrl(Uri Url)
         {
-            return Url.Scheme+"://"+ Url.Host + ":"+Url.Port;
+            return Url.Scheme + "://" + Url.Host + ":" + Url.Port;
         }
-        
+
         public static string GetBaseUrl(string Url)
         {
             var uri = new Uri(Url);
             string path = uri.GetLeftPart(UriPartial.Path);
 
-            return path; 
+            return path;
         }
-        
-       
+
+
 
         public static string GetConnectionString()
         {
@@ -36,34 +37,34 @@ namespace SignalRMVCChat.Models
                 return "DefaultConnectionDebug";
 
             }
-            
-            
+
+
             return
-                 SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached ? "DefaultConnectionDebug" 
+                 SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached ? "DefaultConnectionDebug"
                      : "DefaultConnection";
         }
 
         public static T Clone<T>(T t)
         {
-           var json= JsonConvert.SerializeObject(t,new JsonSerializerSettings
+            var json = JsonConvert.SerializeObject(t, new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                
+
             });
 
-           return JsonConvert.DeserializeObject<T>(json);
+            return JsonConvert.DeserializeObject<T>(json);
         }
 
 
         public static string CreateTokenForCustomer(string baseUrl, int mySocketCustomerId, int mySocketWebsiteId)
         {
-            return CreateTokenHelper(baseUrl, mySocketCustomerId, "customer",mySocketWebsiteId,2);
+            return CreateTokenHelper(baseUrl, mySocketCustomerId, "customer", mySocketWebsiteId, 2);
         }
         public static string CreateTokenForAdmin(string baseUrl, int mySocketMyAccountId, int mySocketWebsiteId)
         {
-            return CreateTokenHelper(baseUrl, mySocketMyAccountId, "admin",mySocketWebsiteId,1);
+            return CreateTokenHelper(baseUrl, mySocketMyAccountId, "admin", mySocketWebsiteId, 1);
         }
-        
+
         /// <summary>
         /// admin=1
         /// </summary>
@@ -73,11 +74,11 @@ namespace SignalRMVCChat.Models
         /// <param name="mySocketWebsiteId"></param>
         /// <param name="adminOrCustomer"></param>
         /// <returns></returns>
-        private static string CreateTokenHelper(string baseUrl, int mySocketCustomerId,string name,int mySocketWebsiteId,int adminOrCustomer)
+        private static string CreateTokenHelper(string baseUrl, int mySocketCustomerId, string name, int mySocketWebsiteId, int adminOrCustomer)
         {
             return EncryptionHelper.Encrypt($"{DateTime.Now}_{baseUrl}_{mySocketCustomerId}_{name}_{mySocketWebsiteId}_{adminOrCustomer}");
         }
-        
+
 
 
         public static int ValidateAdminToken(string adminToken)
@@ -93,11 +94,13 @@ namespace SignalRMVCChat.Models
             return 0;
         }
 
-        public static string Base64Encode(string plainText) {
+        public static string Base64Encode(string plainText)
+        {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
-        public static string Base64Decode(string base64EncodedData) {
+        public static string Base64Decode(string base64EncodedData)
+        {
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
@@ -108,32 +111,33 @@ namespace SignalRMVCChat.Models
             return Base64Encode(encrypt);
         }
 
-       
+
 
         public static ParsedCustomerTokenViewModel ParseToken(string token)
         {
             try
             {
-            
-            var decrypt=  EncryptionHelper.Decrypt(token);
-            var dt= DateTime.Parse(decrypt.Split('_')[0]);
-            var baseUrl = decrypt.Split('_')[1];
-            var targetId=  int.Parse(decrypt.Split('_')[2]);
-            var websiteId=  int.Parse(decrypt.Split('_')[4]);
-            var type=  int.Parse(decrypt.Split('_')[5])==1 ? MySocketUserType.Admin : MySocketUserType.Customer;
 
-            return new ParsedCustomerTokenViewModel
-            {
-                dt = dt,
-                baseUrl = baseUrl,
-                customerId = type==MySocketUserType.Customer ? targetId : (int?) null,
-                myAccountId = type==MySocketUserType.Admin ? targetId : (int?) null,
-                websiteId=websiteId,
-                IsAdminOrCustomer=type
-            };
+                var decrypt = EncryptionHelper.Decrypt(token);
+                var dt = DateTime.Parse(decrypt.Split('_')[0]);
+                var baseUrl = decrypt.Split('_')[1];
+                var targetId = int.Parse(decrypt.Split('_')[2]);
+                var websiteId = int.Parse(decrypt.Split('_')[4]);
+                var type = int.Parse(decrypt.Split('_')[5]) == 1 ? MySocketUserType.Admin : MySocketUserType.Customer;
+
+                return new ParsedCustomerTokenViewModel
+                {
+                    dt = dt,
+                    baseUrl = baseUrl,
+                    customerId = type == MySocketUserType.Customer ? targetId : (int?)null,
+                    myAccountId = type == MySocketUserType.Admin ? targetId : (int?)null,
+                    websiteId = websiteId,
+                    IsAdminOrCustomer = type
+                };
             }
             catch (Exception e)
-            {SignalRMVCChat.Service.LogService.Log(e);
+            {
+                SignalRMVCChat.Service.LogService.Log(e);
                 return null;
             }
         }
@@ -144,22 +148,22 @@ namespace SignalRMVCChat.Models
             {
                 string format = "DD/MM/YYYY HH:MM:SS";
 
-                var datePart=value.Split(' ')[0];
-                var timePart=value.Split(' ')[1];
+                var datePart = value.Split(' ')[0];
+                var timePart = value.Split(' ')[1];
 
 
-                var day=datePart.Split('/')[0];
-                var mon=datePart.Split('/')[1];
-                var year=datePart.Split('/')[2];
+                var day = datePart.Split('/')[0];
+                var mon = datePart.Split('/')[1];
+                var year = datePart.Split('/')[2];
 
-            
-            
-                var hour= timePart.Split(':')[0];
-                var minutes=timePart.Split(':')[1];
-                var second=timePart.Split(':')[2];
-            
-            
-                return  new DateTime(int.Parse(year),int.Parse(mon),int.Parse(day),int.Parse(hour),int.Parse(minutes),int.Parse(second));
+
+
+                var hour = timePart.Split(':')[0];
+                var minutes = timePart.Split(':')[1];
+                var second = timePart.Split(':')[2];
+
+
+                return new DateTime(int.Parse(year), int.Parse(mon), int.Parse(day), int.Parse(hour), int.Parse(minutes), int.Parse(second));
 
             }
             catch (Exception e)
@@ -167,7 +171,7 @@ namespace SignalRMVCChat.Models
                 Console.WriteLine(e);
                 throw new Exception("فرم تاریخ صحیح نیست");
             }
-            
+
 
         }
 
@@ -260,7 +264,7 @@ namespace SignalRMVCChat.Models
 
         public static string CalculateTimeSpentOnPage(DateTime? dateTime)
         {
-            if (dateTime.HasValue==false)
+            if (dateTime.HasValue == false)
             {
                 return null;
             }
@@ -269,15 +273,50 @@ namespace SignalRMVCChat.Models
             return
                 $@"{diff.Hours}:{diff.Minutes}:{diff.Seconds}";
         }
-        
+
         public static double? CalculateTimeSpentOnPageNum(DateTime? dateTime)
         {
-            if (dateTime.HasValue==false)
+            if (dateTime.HasValue == false)
             {
                 return null;
             }
 
             return Math.Round(DateTime.Now.Subtract(dateTime.Value).TotalMinutes);
+        }
+
+        public static string GenerateUploadFileNameUniqPath()
+        {
+            var fileName = GenerateName(10);
+
+            string path = System.Web.Hosting.HostingEnvironment.MapPath("~/Content/upload/" + fileName);
+            while (File.Exists(path))
+            {
+                fileName = GenerateName(10);
+                path = System.Web.Hosting.HostingEnvironment.MapPath("~/Content/upload/" + fileName);
+            }
+
+            return path;
+        }
+        public static string GenerateName(int len)
+        {
+            Random r = new Random();
+            string[] consonants = { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "l", "n", "p", "q", "r", "s", "sh", "zh", "t", "v", "w", "x" };
+            string[] vowels = { "a", "e", "i", "o", "u", "ae", "y" };
+            string Name = "";
+            Name += consonants[r.Next(consonants.Length)].ToUpper();
+            Name += vowels[r.Next(vowels.Length)];
+            int b = 2; //b tells how many times a new letter has been added. It's 2 right now because the first two letters are already in the name.
+            while (b < len)
+            {
+                Name += consonants[r.Next(consonants.Length)];
+                b++;
+                Name += vowels[r.Next(vowels.Length)];
+                b++;
+            }
+
+            return Name;
+
+
         }
     }
 }

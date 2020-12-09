@@ -16,5 +16,7 @@ namespace SignalRMVCChat.WebSocket
         public Chat Chat { get; set; }
         public string AccountName { get; set; }
         public int? ProfilePhotoId { get; set; }
+        public bool FromBot { get;  set; }
+        public int CustomerId { get; internal set; }
     }
 }

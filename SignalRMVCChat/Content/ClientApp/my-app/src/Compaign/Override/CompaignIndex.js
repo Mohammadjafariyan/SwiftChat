@@ -9,6 +9,7 @@ import { CurrentUserInfo } from "../../Help/Socket";
 import Badge from "react-bootstrap/Badge";
 import { DataHolder } from "./../../Help/DataHolder";
 import { MyCaller } from './../../Help/Socket';
+import { _showMsg } from "../../Pages/LayoutPage";
 
 class CompaignIndex extends BaseIndex {
   getCallback(res) {

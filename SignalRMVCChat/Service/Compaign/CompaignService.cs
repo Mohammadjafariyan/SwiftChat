@@ -58,7 +58,7 @@ namespace SignalRMVCChat.Service.Compaign
                         .Include(c => c.Customers)
                         .Include("Customers.Customer")
                         .ToList()
-                        .SelectMany(c => c.Customers.Select(socket => socket.Customer)).Where(c=>c!=null).ToList();
+                        .SelectMany(c => c.Customers.Select(socket => socket.Customer)).Where(c => c != null).ToList();
 
 
                     List<Customer> picketCustomers = new List<Customer>();
@@ -84,20 +84,20 @@ namespace SignalRMVCChat.Service.Compaign
                        .ToList()
                        .SelectMany(c => c.Customers.Select(socket => socket.Customer)).Where(c => c != null).ToList();
 
-                   
+
 
                     List<Customer> picketCustomers2 = new List<Customer>();
                     foreach (var customer in customersForSegments)
                     {
 
-                        var selectedFilters= compaign.filters.Where(f => f.segments?.Count > 0).ToList();
+                        var selectedFilters = compaign.filters.Where(f => f.segments?.Count > 0).ToList();
 
-                        var compaignFilterApplier = new 
+                        var compaignFilterApplier = new
                             CompaignFilterApplier(customer);
 
                         foreach (var filter in selectedFilters)
                         {
-                            
+
                             bool isMatch = compaignFilterApplier.
                                      IsMatchTags(filter);
                             if (isMatch)
@@ -106,7 +106,7 @@ namespace SignalRMVCChat.Service.Compaign
                             }
                         }
 
-                       
+
                     }
 
                     return picketCustomers2;
@@ -128,24 +128,24 @@ namespace SignalRMVCChat.Service.Compaign
         internal static void Init(GapChatContext gapChatContext)
         {
 
-      
+
 
             SignalRMVCChat.Models.Compaign.Compaign Compaign =
                 new Models.Compaign.Compaign
                 {
-                    IsAutomatic=false,
-                    IsEnabled=true,
-                    Template=new Models.Compaign.CompaignHtmlTemplate
+                    IsAutomatic = false,
+                    IsEnabled = true,
+                    Template = new Models.Compaign.CompaignHtmlTemplate
                     {
-                        Html= CompaignTemplateSamples.Sample1,
-                        Name="sample 1"
+                        Html = CompaignTemplateSamples.Sample1,
+                        Name = "sample 1"
                     },
-                    MyAccountId=1,
-                    MyWebsiteId=1,
-                    SendToChat=true,
-                    SendToEmail=true,
-                    Name="sample1",
-                    compaignType="manual"
+                    MyAccountId = 1,
+                    MyWebsiteId = 1,
+                    SendToChat = true,
+                    SendToEmail = true,
+                    Name = "sample1",
+                    compaignType = "manual"
                 };
 
 
@@ -286,8 +286,8 @@ namespace SignalRMVCChat.Service.Compaign
         }
 
         public void ExecuteCompagins(List<Models.Compaign.Compaign>
-            compaignsAutomaticList, Customer customer, 
-            WebSocket.MyWebSocketRequest _request, 
+            compaignsAutomaticList, Customer customer,
+            WebSocket.MyWebSocketRequest _request,
             WebSocket.MyWebSocketRequest currMySocketReq)
         {
 
@@ -295,7 +295,7 @@ namespace SignalRMVCChat.Service.Compaign
 
             var uniqId = ChatProviderService.GetQuery()
                 .Where(c => c.CustomerId == customer.Id)
-                .Count() ;
+                .Count();
 
             var systemMyAccount = MyAccountProviderService.GetSystemMyAccount();
 
@@ -305,7 +305,7 @@ namespace SignalRMVCChat.Service.Compaign
             int? tempMyAccountId = currMySocketReq?.MySocket?.MyAccountId;
             int? tempCustomerId = currMySocketReq?.MySocket?.CustomerId;
             /*------------------ send to chat -----------------*/
-            if (currMySocketReq!=null)
+            if (currMySocketReq != null)
             {
                 currMySocketReq.MySocket.MyAccountId = systemMyAccount.Id;
                 currMySocketReq.MySocket.CustomerId = customer.Id;
@@ -317,7 +317,7 @@ namespace SignalRMVCChat.Service.Compaign
             {
                 if (item.SendToEmail)
                 {
-                  string error=  emailService.SendEmailByCompagin(item, customer, currMySocketReq.MyWebsite.Id);
+                    string error = emailService.SendEmailByCompagin(item, customer, currMySocketReq.MyWebsite.Id);
                 }
                 if (item.SendToChat)
                 {
@@ -341,11 +341,21 @@ namespace SignalRMVCChat.Service.Compaign
                 }
             }
 
-            currMySocketReq.MySocket.MyAccountId = tempMySocketMyAccountId;
+            if (currMySocketReq?.MySocket != null)
+            {
+                currMySocketReq.MySocket.MyAccountId = tempMySocketMyAccountId;
 
-            currMySocketReq.CurrentRequest.myAccountId = tempMyAccountId;
+            }
+            if (currMySocketReq?.CurrentRequest != null)
+            {
+                currMySocketReq.CurrentRequest.myAccountId = tempMyAccountId;
+            }
 
-            currMySocketReq.MySocket.CustomerId = tempCustomerId;
+            if (currMySocketReq?.MySocket != null)
+            {
+                currMySocketReq.MySocket.CustomerId = tempCustomerId;
+            }
+
         }
 
 

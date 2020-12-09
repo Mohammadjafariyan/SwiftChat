@@ -18,6 +18,11 @@ namespace SignalRMVCChat.Service
             Host = "smtp.gmail.com";
             FromMailAddressPassword = "m21430037j";
 
+
+            OperatorsBotName = "@operatorsSupBot";
+
+            OperatorBotToken = "1431377672:AAH0sXB1kc4VvuaAFU_is7JP3_YmW5eQXRo";
+
         }
 
         /// <summary>
@@ -33,6 +38,12 @@ namespace SignalRMVCChat.Service
         public bool IsStartWithTrivialPlan { get; set; }
         public string WebsiteName { get; set; }
         public string BaseUrl { get; set; }
+
+
+        /// <summary>
+        /// توکن اوپراتور ها
+        /// </summary>
+        public string OperatorBotToken { get; set; }
 
 
         #region notMapped
@@ -63,6 +74,7 @@ namespace SignalRMVCChat.Service
         public string FromMailAddress { get; set; }
         public string Host { get; set; }
         public string FromMailAddressPassword { get; set; }
+        public string OperatorsBotName { get;  set; }
 
         #endregion
 

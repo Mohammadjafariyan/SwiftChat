@@ -12,6 +12,8 @@ namespace SignalRMVCChat.Models
 {
     public class Customer : Entity
     {
+        public long TelegramChatId { get; set; }
+
         public bool IsResolved { get; set; }
 
 
@@ -186,5 +188,14 @@ namespace SignalRMVCChat.Models
         }
 
         [JsonIgnore] public string GenderJson { get; set; }
+        public CustomerType UserType { get;  set; }
+        public int? TelegramUserId { get;  set; }
+    }
+
+
+    public enum CustomerType
+    {
+        Chat=0,
+        TelegramUser=0
     }
 }

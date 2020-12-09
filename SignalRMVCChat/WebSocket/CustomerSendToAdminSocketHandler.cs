@@ -5,23 +5,24 @@ using System.Threading.Tasks;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.TelegramBot.OperatorBot.Bussiness;
 using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace SignalRMVCChat.WebSocket
 {
     public class CustomerSendToAdminSocketHandler : BaseCustomerSendToAdminSocketHandler
     {
-        
+
     }
-    
+
     public class ForwardChatCustomerSendToAdminSocketHandler : BaseCustomerSendToAdminSocketHandler
     {
-        
+
         protected override async Task NotifySelf(MySocketUserType customer, Chat chatObject, int myWebsiteId, MyWebSocketRequest currMySocketReq)
         {
             //await  MySocketManagerService.NotifySelf(MySocketUserType.Admin,chatObject,currMySocketReq.MyWebsite.Id,currMySocketReq);
         }
-        
+
     }
     public abstract class BaseCustomerSendToAdminSocketHandler : ISocketHandler
     {
@@ -29,8 +30,8 @@ namespace SignalRMVCChat.WebSocket
         {
             var logService = Injector.Inject<LogService>();
             logService.LogFunc(request);
-         
-            
+
+
             var chatProviderService = Injector.Inject<ChatProviderService>();
             var customerProviderService = Injector.Inject<CustomerProviderService>();
 
@@ -38,7 +39,7 @@ namespace SignalRMVCChat.WebSocket
             var _request = MyWebSocketRequest.Deserialize(request);
             logService.LogFunc(_request.Serialize());
 
-            if ( _request.Body.typedMessage==null ||
+            if (_request.Body.typedMessage == null ||
                                                     _request.Body.uniqId == null)
             {
                 logService.LogFunc("ورودی های اشتباه");
@@ -46,17 +47,18 @@ namespace SignalRMVCChat.WebSocket
                 throw new Exception("ورودی های اشتباه");
             }
 
-            if(_request.Body.gapFileUniqId==null){
+            if (_request.Body.gapFileUniqId == null)
+            {
                 logService.LogFunc("gapFileUniqId نال است");
                 logService.Save();
-                
+
                 throw new Exception("gapFileUniqId نال است");
 
             }
-            var gapFileUniqId =int.Parse( _request.Body.gapFileUniqId?.ToString());
+            var gapFileUniqId = int.Parse(_request.Body.gapFileUniqId?.ToString());
 
             int targetAccountId = 0;
-             bool isParsed=   int.TryParse(_request.Body.targetAccountId?.ToString() ?? "",out targetAccountId);
+            bool isParsed = int.TryParse(_request.Body.targetAccountId?.ToString() ?? "", out targetAccountId);
 
             var uniqId = int.Parse(_request.Body.uniqId?.ToString());
 
@@ -67,20 +69,20 @@ namespace SignalRMVCChat.WebSocket
 
             var customerId = currMySocketReq.CurrentRequest.customerId.Value;
 
-            
+
             int? targetAccountIdTEMP = isParsed ? targetAccountId : default(int?);
 
-            MyEntityResponse<int> chat =  chatProviderService
+            MyEntityResponse<int> chat = chatProviderService
                 .CustomerSendToAdmin(targetAccountIdTEMP
-                    ,customerId,typedMessage,currMySocketReq.MySocket.Id,gapFileUniqId, uniqId);
+                    , customerId, typedMessage, currMySocketReq.MySocket.Id, gapFileUniqId, uniqId);
 
-            var w= WebsiteSingleTon.WebsiteService.Websites.ToList();
-            MySocket admin=null;
+            var w = WebsiteSingleTon.WebsiteService.Websites.ToList();
+            MySocket admin = null;
 
-            bool isFindAdmin=true;
+            bool isFindAdmin = true;
             if (isParsed)
             {
-                 admin = currMySocketReq.MyWebsite.Admins.FirstOrDefault(c => c.MyAccountId == targetAccountId);
+                admin = currMySocketReq.MyWebsite.Admins.FirstOrDefault(c => c.MyAccountId == targetAccountId);
 
                 if (admin == null)
                 {
@@ -125,18 +127,18 @@ namespace SignalRMVCChat.WebSocket
             response.Message = typedMessage;
 
 
-            var _ChatObject = chatProviderServices.GetQuery().Where(c=>c.Id==chat.Single).Include(c=>c.Customer)
-                .Include(c=>c.MyAccount).SingleOrDefault();
-            
-            int totalUnseen = chatProviderService.GetTotalUnseen(targetAccountId, customerId,ChatSenderType.CustomerToAccount);
+            var _ChatObject = chatProviderServices.GetQuery().Where(c => c.Id == chat.Single).Include(c => c.Customer)
+                .Include(c => c.MyAccount).SingleOrDefault();
+
+            int totalUnseen = chatProviderService.GetTotalUnseen(targetAccountId, customerId, ChatSenderType.CustomerToAccount);
 
             response.Content = new CustomerSendToAdminViewModel
             {
                 CustomerId = customerId,
                 Message = typedMessage,
                 TotalReceivedMesssages = totalUnseen,
-                ChatId=chat.Single,
-                Chat= _ChatObject
+                ChatId = chat.Single,
+                Chat = _ChatObject
             };
 
 
@@ -145,13 +147,19 @@ namespace SignalRMVCChat.WebSocket
                 await MySocketManagerService.SendToAdmin(admin.MyAccountId.Value, currMySocketReq.MyWebsite.Id, response);
 
             }
-            
 
-            
-        
+
+            if (admin?.MyAccountId!=null)
+            {
+                var _OpBotChatService = Injector.Inject<OpBotChatService>();
+
+                _OpBotChatService.CustomerSendtoOperatorTelegram(
+                    customerId, typedMessage, admin.MyAccountId.Value, currMySocketReq.MyWebsite.Id);
+            }
+
 
             // اگر از جای دیگری هم وصل شده باشد این پیغام را در جای دیگر هم نشان بده
-            await NotifySelf(MySocketUserType.Customer,_ChatObject,currMySocketReq.MyWebsite.Id,currMySocketReq);
+            await NotifySelf(MySocketUserType.Customer, _ChatObject, currMySocketReq.MyWebsite.Id, currMySocketReq);
 
             /*var json = response.Serilize();
 
@@ -171,7 +179,7 @@ namespace SignalRMVCChat.WebSocket
 
         protected virtual async Task NotifySelf(MySocketUserType customer, Chat chatObject, int myWebsiteId, MyWebSocketRequest currMySocketReq)
         {
-          await  MySocketManagerService.NotifySelf(MySocketUserType.Customer,chatObject,currMySocketReq.MyWebsite.Id,currMySocketReq);
+            await MySocketManagerService.NotifySelf(MySocketUserType.Customer, chatObject, currMySocketReq.MyWebsite.Id, currMySocketReq);
         }
     }
     public class CustomerSendToAdminViewModel

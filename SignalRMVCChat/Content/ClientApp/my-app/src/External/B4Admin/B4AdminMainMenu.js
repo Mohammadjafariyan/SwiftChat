@@ -99,6 +99,10 @@ export default class B4AdminMainMenu extends Component {
                             </span></a>
                 </li>
 
+
+              
+
+
                 <li className={'nav-item ' + (DataHolder.currentPage === 'HelpDeskPage' ? ' active ' : '')}>
                     <a className="nav-link" onClick={() => {
                         this.setPage('HelpDeskPage');
@@ -191,6 +195,18 @@ export default class B4AdminMainMenu extends Component {
                             </span></a>
                 </li>
 
+                <li className={'nav-item ' +
+                 (DataHolder.currentPage==='TelegramBotPage' ? ' active ' : '')}>
+                    <a className="nav-link" onClick={() => {
+                        this.setPage("TelegramBotPage");
+
+                    }}>
+                       <i className="fa fa-telegram" aria-hidden="true"></i>
+                        <span>
+
+                                ربات تلگرام
+                            </span></a>
+                </li> 
                 {/* <!-- Divider-->*/}
                 <hr className="sidebar-divider"/>
 

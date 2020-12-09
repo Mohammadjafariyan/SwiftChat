@@ -64,10 +64,17 @@ namespace SignalRMVCChat.WebSocket
                 if (chats.Any(c => c.MyAccountId.HasValue) && chats.Any(c => c.MyAccountId.HasValue == false) &&
                     chats.Count > 0)
                 {
-                    var l = chats.ToList();
-                    LogService.LogFunc("یعنی دارای چت هایی است که هم اکانت دارد و هم اکانت ندارد");
-                    LogService.Save();
-                    throw new Exception("یعنی دارای چت هایی است که هم  دارد و هم اکانت ندارد");
+                    var notAdminChats= chats.Where(c => c.MyAccountId.HasValue == false).ToList();
+                    foreach (var item in notAdminChats)
+                    {
+                        item.MyAccountId = currMySocketReq.MyWebsite.MyAccountId;
+                    }
+                    chatProviderService.Save(notAdminChats);
+
+                //    var l = chats.ToList();
+                //    LogService.LogFunc("یعنی دارای چت هایی است که هم اکانت دارد و هم اکانت ندارد");
+                //    LogService.Save();
+                //    throw new Exception("یعنی دارای چت هایی است که هم  دارد و هم اکانت ندارد");
                 }
             }
 

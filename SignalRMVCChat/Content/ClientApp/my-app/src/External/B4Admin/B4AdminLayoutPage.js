@@ -44,6 +44,7 @@ import ContactsPage from "../../Pages/ContactsPage";
 import RoutingPage from "../../Pages/RoutingPage";
 import AssingedToMeCustomerLists from "../../Routing/use/AssingedToMeCustomerLists";
 import CompaignPage from "../../Pages/CompaignPage";
+import TelegramBotPage from './../../Pages/TelegramBotPage';
 
 
 export default class B4AdminLayoutPage extends Component {
@@ -149,7 +150,25 @@ export default class B4AdminLayoutPage extends Component {
 
                     </div>
                 )
-            } else if (DataHolder.currentPage === 'dashboard') {
+            }
+            else if (DataHolder.currentPage === 'TelegramBotPage') {
+                return (
+                    <div>
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+
+                        <MessageAlerts/>
+
+
+                        <TelegramBotPage></TelegramBotPage>
+
+
+                    </div>
+                )
+            }
+            
+            
+            
+            else if (DataHolder.currentPage === 'dashboard') {
                 return (
                     <div>
                         <Toast position="bottom-left" ref={(el) => this.toast = el}/>

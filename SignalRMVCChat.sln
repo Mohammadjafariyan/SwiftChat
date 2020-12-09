@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRMVCChat", "SignalRMV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRMVCChatTests", "SignalRMVCChatTests\SignalRMVCChatTests.csproj", "{88F62157-11BA-406D-9A72-AEE5FA537BE2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot", "Telegram.Bot-master\Telegram.Bot-master\src\Telegram.Bot\Telegram.Bot.csproj", "{171AAEF2-6F44-4D74-9A08-5A5C6B8EA1CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{88F62157-11BA-406D-9A72-AEE5FA537BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88F62157-11BA-406D-9A72-AEE5FA537BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88F62157-11BA-406D-9A72-AEE5FA537BE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{171AAEF2-6F44-4D74-9A08-5A5C6B8EA1CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{171AAEF2-6F44-4D74-9A08-5A5C6B8EA1CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{171AAEF2-6F44-4D74-9A08-5A5C6B8EA1CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{171AAEF2-6F44-4D74-9A08-5A5C6B8EA1CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,6 +28,7 @@ using SignalRMVCChat.WebSocket.Routing;
 using SignalRMVCChat.WebSocket.Tracking;
 using SignalRMVCChat.WebSocket.UsersSeparation;
 using SignalRMVCChat.WebSocket.Compaign.Email;
+using SignalRMVCChat.WebSocket.TelegramBot;
 
 namespace SignalRMVCChat.WebSocket
 {
@@ -75,6 +76,18 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+
+                #region Telegrambot
+                case "GetTelegramBotSetting":
+                    return new GetTelegramBotSettingSocketHandler();
+                    break;
+                case "TelegramBotSettingSave":
+                    return new TelegramBotSettingSaveSocketHandler();
+                    break;
+                    
+                    #endregion
+
+
                 #region Compaign
 
                 case "SaveEmailSetting":

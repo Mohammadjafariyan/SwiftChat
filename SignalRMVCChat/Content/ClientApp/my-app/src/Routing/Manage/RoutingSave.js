@@ -146,7 +146,7 @@ export default RoutingSave;
 
 
 export const MyCard=(props)=>{
-    return <Card >
+    return <Card className={props.className} >
         <Card.Header>{props.header}</Card.Header>
         <Card.Body>
             <Card.Title>{props.title}</Card.Title>
