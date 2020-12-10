@@ -1465,7 +1465,7 @@ class BasePlugin {
             // در دوجا استفاده شده است ، اگر پغامی که در جای دیگری متصل است انجا فرستاده و اینجا هم میخواهیم نشان دهیم باشد ،
             // لازم نیست خبر رسیدن پیغام را به کسی بدهی چون پیغام خودش است
 
-            if (!isGapMe) {
+            if (!isGapMe && !res.Content.IsFromBot) {
 
                 let isDelivered = CurrentUserInfo.targetId == AccountId + "" ? true : false;
                 MyCaller.Send("CustomerReceivedMsg", {

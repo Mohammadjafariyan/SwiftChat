@@ -358,6 +358,7 @@
     <Compile Include="TelegramBot\OperatorBot\Bussiness\OpBotChatService.cs" />
     <Compile Include="TelegramBot\OperatorBot\Bussiness\OpBotCommandDispatcher.cs" />
     <Compile Include="TelegramBot\OperatorBot\Bussiness\OpBotGetClientListService.cs" />
+    <Compile Include="TelegramBot\OperatorBot\Bussiness\TelegramMultimediaSenderToBotService.cs" />
     <Compile Include="TelegramBot\OperatorBot\OperatorBotDispatcher.cs" />
     <Compile Include="TelegramBot\CustomerBot\CustomerBotDispatcher.cs" />
     <Compile Include="TelegramBot\BotBehaviour\IBotBehaviour.cs" />

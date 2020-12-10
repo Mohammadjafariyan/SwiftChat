@@ -7,7 +7,9 @@ using SignalRMVCChat.WebSocket;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using Telegram.Bot;
 using TelegramBotsWebApplication.Areas.Admin.Models;
@@ -66,6 +68,40 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
             telegramBotRegisteredOperatorService.Save(botViewModel.CurrentTelegramBotRegisteredOperator);
 
 
+
+            // ------------------ select customer -----------
+            new SelectCustomerForChatSocketHandler()
+                .ExecuteAsync(new MyWebSocketRequest
+                {
+
+                    Name = "",
+                    Body = new
+                    {
+                        customerId = customerId,
+                        dontReadChats = "yes"
+                    }
+                }.Serialize(),
+                new MyWebSocketRequest
+                {
+                    MySocket = new MySocket
+                    {
+                        MyAccountId = botViewModel.CurrentTelegramBotRegisteredOperator.MyAccountId
+                    },
+                    MyWebsite = new MyWebsite
+                    {
+                        Id = botViewModel.Setting.MyWebsiteId,
+                        MyAccountId = botViewModel.CurrentTelegramBotRegisteredOperator.MyAccountId
+                    },
+                    IsAdminOrCustomer = (int)MySocketUserType.Admin,
+                    CurrentRequest = new ParsedCustomerTokenViewModel
+                    {
+                        myAccountId = botViewModel.CurrentTelegramBotRegisteredOperator.MyAccountId,
+                        IsAdminOrCustomer = MySocketUserType.Admin,
+
+                    }
+                }).GetAwaiter()
+                .GetResult();
+
         }
 
         private void RenderChats(List<Chat> entityList
@@ -78,19 +114,19 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
             {
                 string senderName = item.MyAccount?.Name ?? item.Customer?.Name;
 
+                item.Message = item.Message?.Replace("<p>", "");
+                item.Message = item.Message?.Replace("</p>", "");
 
-                msg += $@"
-                    {i++}
-                    <b>{senderName }:</b>
-                    <i>{item.Message}</i>
-                    ";
+                msg += $@" #{senderName }:
+    {item.Message}
+";
             }
 
 
 
             botViewModel.botClient.SendTextMessageAsync(
-                message.Chat.Id,
-                msg).GetAwaiter().GetResult();
+                chatId: message.Chat.Id,
+               text: msg).GetAwaiter().GetResult();
         }
 
         internal void OperatorSendMessageToCustomer(string text, BotViewModel botViewModel, Telegram.Bot.Types.Message message)
@@ -104,8 +140,7 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
 
             // --------------- senderSocketId--------------
             var senderSocketId = this.MySocketService.GetQuery()
-                 .Where(c => c.MyAccountId == adminSelectedId)
-                 .Select(c => c.Id).FirstOrDefault();
+                 .Where(c => c.MyAccountId == adminSelectedId).FirstOrDefault();
 
 
             // --------------- uniqId--------------
@@ -115,10 +150,10 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
             var chat = new Chat
             {
                 Message = html,
-                SenderType = Service.ChatSenderType.CustomerToAccount,
+                SenderType = Service.ChatSenderType.AccountToCustomer,
                 ChatContentType = Service.ChatContentType.Normal,
                 CustomerId = customerId,
-                SenderMySocketId = senderSocketId,
+                SenderMySocketId = senderSocketId.Id,
                 MyAccountId = adminSelectedId,
                 UniqId = unique
             };
@@ -140,19 +175,23 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
             var totalUnseen = GetQuery()
                          .Count(c => c.CustomerId == customerId && c.DeliverDateTime.HasValue == false);
 
+            html = html.Replace("<p>", "");
+            html = html.Replace("</p>", "");
+
             MySocketManagerService
                 .SendToCustomer(customerId
                 , botViewModel.Setting.MyWebsiteId,
                 new MyWebSocketResponse
                 {
-                    Name = "customerSendToAdminCallback",
+                    Name = "adminSendToCustomerCallback",
                     Content = new CustomerSendToAdminViewModel
                     {
                         CustomerId = customerId,
                         Message = html,
                         TotalReceivedMesssages = totalUnseen,
                         ChatId = chat.Id,
-                        Chat = chat
+                        Chat = chat,
+                        IsFromBot = true
                     }
 
                 }).GetAwaiter().GetResult();
@@ -161,10 +200,13 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
 
         internal void CustomerSendtoOperatorTelegram
             (int customerId, dynamic typedMessage
-            ,  int myAccountId,
-            int websiteId)
+            , int myAccountId,
+            int websiteId, bool isMultimedia = false)
         {
-
+            if (OperatorBotSingleton.botViewModel==null)
+            {
+                return;
+            }
             TelegramBotClient bot = OperatorBotSingleton.botViewModel.botClient;
 
             if (bot == null)
@@ -196,9 +238,58 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
             // ----------------- آیا کاربر پیغام فرستنده اکنون برای چت انتخاب شده است یا خیر ------------------
             if (operatorInTelegram?.SelectedCustomerIdtoChat == customerId)
             {
-                bot.SendTextMessageAsync(
-                         operatorInTelegram.TelegramChatId,
-                        typedMessage).GetAwaiter().GetResult();
+
+                if (isMultimedia)
+                {
+
+                    var secondPart = typedMessage.Split(',')[1];
+
+                    byte[] bytes = Convert.FromBase64String(secondPart);
+                    MemoryStream stream = new MemoryStream(bytes);
+
+
+                    if (typedMessage.Contains("video"))
+                    {
+                        bot.SendVideoAsync(
+                      operatorInTelegram.TelegramChatId,
+                    new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream)).GetAwaiter().GetResult();
+                    }
+                    if (typedMessage.Contains("voice"))
+                    {
+                        bot.SendVoiceAsync(
+                      operatorInTelegram.TelegramChatId,
+                    new Telegram.Bot.Types.InputFiles.InputOnlineFile(
+                        stream)).GetAwaiter().GetResult();
+                    }
+
+                    if (typedMessage.Contains("audio"))
+                    {
+                        bot.SendAudioAsync(
+                      operatorInTelegram.TelegramChatId,
+                    new Telegram.Bot.Types.InputFiles.InputOnlineFile(
+                       stream)).GetAwaiter().GetResult();
+                    }
+                    if (typedMessage.Contains("image"))
+                    {
+                        bot.SendPhotoAsync(
+                      operatorInTelegram.TelegramChatId,
+                    new Telegram.Bot.Types.InputFiles.InputOnlineFile(
+                       stream)).GetAwaiter().GetResult();
+                    }
+                    else
+                    {
+                        bot.SendTextMessageAsync(
+                      operatorInTelegram.TelegramChatId,
+                     "پیغام پشتیبانی نمی شود برای مشاهده کامل پیغام به وب سایت مراجعه فرمایید ").GetAwaiter().GetResult();
+                    }
+                }
+                else
+                {
+                    bot.SendTextMessageAsync(
+                       operatorInTelegram.TelegramChatId,
+                      typedMessage).GetAwaiter().GetResult();
+                }
+
             }
 
         }

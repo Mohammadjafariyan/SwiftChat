@@ -28,6 +28,12 @@ namespace SignalRMVCChat.TelegramBot
 
         }
 
+        internal static dynamic ConvertContentToHtml(Models.Chat chat)
+        {
+            return "hi";
+           // throw new NotImplementedException();
+        }
+
         internal static string ConvertMessageToHtml(Message message, BotViewModel botViewModel)
         {
             string text = message.Text ?? message.Caption;

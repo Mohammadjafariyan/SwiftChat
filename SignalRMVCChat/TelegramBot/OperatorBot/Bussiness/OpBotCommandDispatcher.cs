@@ -5,6 +5,7 @@ using SignalRMVCChat.WebSocket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using TelegramBotsWebApplication.Areas.Admin.Models;
 
@@ -19,7 +20,7 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
             string _commandName = command.Replace("/", "");
 
 
-            if (command?.StartsWith("/startChat_")==true)
+            if (command?.StartsWith("/startChat_") == true)
             {
                 OpBotChatService OpBotChatService = DependencyInjection.Injector.Inject<OpBotChatService>();
                 OpBotChatService.StartChat(command, botViewModel, message);
@@ -58,6 +59,8 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
             // ------------------ retrive list ------------------
             var list = new OpBotGetClientListService().ShowListOfCustomers(_commandName, botViewModel);
 
+
+
             // ------------------ send message ------------------
             ConvertClientListToMessage(list, botViewModel, message);
 
@@ -66,26 +69,42 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
         private static void ConvertClientListToMessage
             (MyDataTableResponse<MyAccount> list
             , BotViewModel botViewModel
-,Telegram.Bot.Types.Message message)
+, Telegram.Bot.Types.Message message)
         {
 
-            string msg = @"";
+
+            StringBuilder msg = new StringBuilder("");
             foreach (var customer in list.EntityList)
             {
-                msg += $@"
-<b>{customer.Name}</b>
-<i>شروع گفتگو : /startChat_{customer.Id}</i>
-<i>{customer.LastTrackInfo?.UserState?.name}-{customer.LastTrackInfo?.UserCity?.name}</i>
-<i>{customer.LastTrackInfo?.PageTitle}</i>
+
+                string multimedia = string.IsNullOrEmpty(customer.LastMessage?.MultimediaContent) == false ? "پیغام مولتی میدا" : "";
+
+
+                string messg = customer.LastMessage?.Message?.Replace("<p>","");
+                messg = messg?.Replace("</p>","");
+
+
+                msg.Append($@"
+{customer.Name}
+شروع گفتگو : /startChat_{customer.Id}
+آدرس: {customer.LastTrackInfo?.UserState?.name}-{customer.LastTrackInfo?.UserCity?.name}
+آخرین صفحه :{customer.LastTrackInfo?.PageTitle}
+آخرین پیغام :
+{messg } { multimedia}
 ------------------------------------
-";
+");
+            }
+
+            if (string.IsNullOrEmpty(msg.ToString()))
+            {
+                msg.Append("هیچ بازدیدکننده ای در بخش انتخاب شده نیست");
             }
 
 
             botViewModel.botClient
                 .SendTextMessageAsync(
                 message.Chat.Id,
-                msg
+                msg.ToString()
                 ).GetAwaiter().GetResult();
         }
     }

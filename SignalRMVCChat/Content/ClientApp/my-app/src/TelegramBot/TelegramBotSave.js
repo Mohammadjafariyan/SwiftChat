@@ -4,7 +4,7 @@ import { Row, Col, Button, Alert } from "react-bootstrap";
 import { MyCaller, CurrentUserInfo } from "./../Help/Socket";
 import FormBuilder from "@langleyfoxall/react-dynamic-form-builder";
 import { _TelegramBotForm } from "./TelegramBotForm";
-import { _showMsg } from "../Pages/LayoutPage";
+import { _showError, _showMsg } from "../Pages/LayoutPage";
 import  Spinner from 'react-bootstrap/Spinner';
 
 export default class TelegramBotSave extends Component {

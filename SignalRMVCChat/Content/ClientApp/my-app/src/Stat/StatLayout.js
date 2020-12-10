@@ -17,6 +17,9 @@ import SiteViewsInMonths from "./SiteViewsInMonths/SiteViewsInMonths";
 import SiteViewsInHoursOfToday from "./SiteViewsInHoursOfToday/SiteViewsInHoursOfToday";
 import SiteViewsInWeek from "./SiteViewsInWeek/SiteViewsInWeek";
 import {MyCaller} from "../Help/Socket";
+import { TabView } from 'primereact/tabview';
+import { TabPanel } from 'primereact/tabview';
+import SpecialStatsLayout from './SpecialStats/SpecialStatsLayout';
 
 class StatLayout extends Component {
     componentDidMount() {
@@ -30,7 +33,9 @@ class StatLayout extends Component {
         return (
             <div>
 
-                <StatDateFilter/>
+<TabView>
+    <TabPanel header="آمار های عمومی">
+    <StatDateFilter/>
                 <Row>
                     <Col>
                         <PageVisitStat/>
@@ -124,6 +129,15 @@ class StatLayout extends Component {
                     </Col>
 
                 </Row>
+    </TabPanel>
+    <TabPanel header="آمار های خاص">
+       
+
+       <SpecialStatsLayout/>
+    </TabPanel>
+</TabView>
+
+                
                 
             </div>
         );

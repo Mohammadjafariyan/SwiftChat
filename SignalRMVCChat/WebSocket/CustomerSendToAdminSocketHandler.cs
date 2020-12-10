@@ -2,8 +2,10 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Engine.SysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
+using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.TelegramBot.OperatorBot.Bussiness;
 using TelegramBotsWebApplication.Areas.Admin.Models;
@@ -79,6 +81,7 @@ namespace SignalRMVCChat.WebSocket
             var w = WebsiteSingleTon.WebsiteService.Websites.ToList();
             MySocket admin = null;
 
+            MyAccount myAccount = null;
             bool isFindAdmin = true;
             if (isParsed)
             {
@@ -92,7 +95,7 @@ namespace SignalRMVCChat.WebSocket
                     try
                     {
                         // اگر در دیتابیس هم نباشد خطا بدهد
-                        myAccountProviderService.GetById(targetAccountId, "ادمین یافت نشد");
+                        myAccount = myAccountProviderService.GetById(targetAccountId, "ادمین یافت نشد").Single;
                     }
                     catch (Exception e)
                     {
@@ -149,12 +152,35 @@ namespace SignalRMVCChat.WebSocket
             }
 
 
-            if (admin?.MyAccountId!=null)
+            if (myAccount != null || targetAccountId != 0)
             {
-                var _OpBotChatService = Injector.Inject<OpBotChatService>();
 
-                _OpBotChatService.CustomerSendtoOperatorTelegram(
-                    customerId, typedMessage, admin.MyAccountId.Value, currMySocketReq.MyWebsite.Id);
+
+                using (var db = (ContextFactory.GetContext(null) as GapChatContext))
+                {
+
+                    //------------ اپراتور هایی که در تلگرام حضور دارند----------
+                    var thisWebsiteMyAccountsInTelegramIds = db.TelegramBotRegisteredOperators
+                          .Include(c => c.TelegramBotSetting)
+                          .Where(o => o.TelegramBotSetting.MyWebsiteId == currMySocketReq.MyWebsite.Id)
+                          .Select(c => c.MyAccountId);
+
+                    // ----------------- اگر چتی بین اینها صورت گرفته باشد----------
+                    var chattedAccountIds = db.Chats
+                        .Where(c => c.MyAccountId.HasValue && thisWebsiteMyAccountsInTelegramIds.Contains(c.MyAccountId.Value))
+                     .Select(c => c.MyAccountId).ToList();
+
+                    var _OpBotChatService = Injector.Inject<OpBotChatService>();
+
+                    // --------------- برای هر اپراتور تلگرامی چک کن و بفرست--------
+                    foreach (var accountId in chattedAccountIds)
+                    {
+                        _OpBotChatService.CustomerSendtoOperatorTelegram(
+                                    customerId, typedMessage, accountId.Value, currMySocketReq.MyWebsite.Id);
+
+                    }
+                }
+
             }
 
 
@@ -189,6 +215,6 @@ namespace SignalRMVCChat.WebSocket
         public int TotalReceivedMesssages { get; set; }
         public int ChatId { get; set; }
         public Chat Chat { get; set; }
-
+        public bool IsFromBot { get; internal set; }
     }
 }

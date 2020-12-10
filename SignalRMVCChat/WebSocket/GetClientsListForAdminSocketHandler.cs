@@ -56,6 +56,14 @@ namespace SignalRMVCChat.WebSocket
                                                          m.AdminWebsiteId == currMySocketReq.MyWebsite.Id));
 
 
+                    if (_request.Body?.FromBot!=null)
+                    {
+                        customers = customers.Where(c => c.TelegramUserId.HasValue == false);
+
+                    }
+
+
+
                     // لیست آنلاین ها
                     var onlineCustomersIds = WebsiteSingleTon.WebsiteService.Websites
                         ?.Where(w => w.Id == currMySocketReq.MyWebsite.Id)
@@ -208,6 +216,7 @@ namespace SignalRMVCChat.WebSocket
                         IsResolved = c.IsResolved,
                         TelegramUserId = c.TelegramUserId,
                         TelegramChatId = c.TelegramChatId,
+                        LastMessage=c.Chats.OrderByDescending(o=>o.Id).FirstOrDefault() 
                     }).ToList();
 
 

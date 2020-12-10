@@ -5,11 +5,17 @@ using Newtonsoft.Json;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.TelegramBot.CustomerBot.business;
+using SignalRMVCChat.TelegramBot.OperatorBot.Bussiness;
 
 namespace SignalRMVCChat.WebSocket
 {
     public abstract class BaseMultimediaPmSendSocketHandler : ISocketHandler
     {
+
+        private TelegramMultimediaSenderToBotService _telegramMultimediaSenderToBotService = Injector.Inject<TelegramMultimediaSenderToBotService>();
+
+
         public async Task<MyWebSocketResponse> ExecuteAsync(string request
             , MyWebSocketRequest currMySocketReq)
         {
@@ -17,7 +23,7 @@ namespace SignalRMVCChat.WebSocket
 
 
             // اگر ادمین بخواهد پیغامی ارسال بکند چک کن 
-            if (_request.IsAdminOrCustomer == (int) MySocketUserType.Admin)
+            if (_request.IsAdminOrCustomer == (int)MySocketUserType.Admin)
             {
                 PlanService.CheckSendMultimedia(currMySocketReq);
             }
@@ -28,7 +34,8 @@ namespace SignalRMVCChat.WebSocket
                 chat = JsonConvert.DeserializeObject<Chat>(JsonConvert.SerializeObject(_request.Body));
             }
             catch (Exception e)
-            {SignalRMVCChat.Service.LogService.Log(e);
+            {
+                SignalRMVCChat.Service.LogService.Log(e);
                 throw new Exception("پیغام شناسایی نشد");
             }
 
@@ -49,13 +56,13 @@ namespace SignalRMVCChat.WebSocket
         protected virtual void SaveAsTemplate(Chat chat, MyWebSocketRequest currMySocketReq)
         {
             /// اگر ادمین باشد پس قبلا کد آن شناسایی شده است و یا کاستمور باشد که همینطور
-            if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Admin)
+            if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)
             {
-                chat.MyAccountId = (int) currMySocketReq.CurrentRequest.myAccountId;
+                chat.MyAccountId = (int)currMySocketReq.CurrentRequest.myAccountId;
             }
             else
             {
-                chat.CustomerId = (int) currMySocketReq.CurrentRequest.customerId;
+                chat.CustomerId = (int)currMySocketReq.CurrentRequest.customerId;
             }
 
 
@@ -92,65 +99,67 @@ namespace SignalRMVCChat.WebSocket
             }
 
 
-            chat.SenderType = target ==null ? ChatSenderType.CustomerToAccount :
+            chat.SenderType = target == null ? ChatSenderType.CustomerToAccount :
                 GetSenderType(
                     target); // بر اساس کاربر مخاطب می فهمیم که چه کسی به چه کسی ارسال کرده است این یک روش دیگر است
             chat.SendDataTime = DateTime.Now;
             chat.SenderMySocketId = target?.Id;
 
-            
-           
-            
-            int totalUnseen=0;
 
-       
-             
-            
+
+
+            int totalUnseen = 0;
+
+
+
+
 
             var chatProviderService = Injector.Inject<ChatProviderService>();
             chatProviderService.Save(chat);
-            
-            
-              
-            if (target!=null)
+
+
+
+            if (target != null)
             {
-                if (currMySocketReq.IsAdminOrCustomer==(int)MySocketUserType.Admin)
+                if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)
                 {
-                    
+
                     // ادمین در حال ارسال پیام مولتی مدیا به بازدید کننده است و میگوید که این مقدار پیام جدید هم دارید
-                    chat.TotalReceivedMesssages= chatProviderService.GetTotalUnseen(currMySocketReq.MySocket.MyAccountId.Value
-                        , target.CustomerId.Value  ,ChatSenderType.AccountToCustomer);
+                    chat.TotalReceivedMesssages = chatProviderService.GetTotalUnseen(currMySocketReq.MySocket.MyAccountId.Value
+                        , target.CustomerId.Value, ChatSenderType.AccountToCustomer);
 
                 }
                 else
                 {
-                    chat.TotalReceivedMesssages= chatProviderService.GetTotalUnseen( target.MyAccountId.Value
-                        ,currMySocketReq.MySocket.CustomerId.Value ,ChatSenderType.CustomerToAccount);
+                    chat.TotalReceivedMesssages = chatProviderService.GetTotalUnseen(target.MyAccountId.Value
+                        , currMySocketReq.MySocket.CustomerId.Value, ChatSenderType.CustomerToAccount);
                 }
             }
 
 
             if (target != null)
             {
-                await Send(target, currMySocketReq, response,chat);
+                await Send(target, currMySocketReq, response, chat);
 
             }
             else
             {
-                
+
             }
-            
-          
 
 
-       
+
+
+
         }
 
         protected virtual async Task Send(MySocket target, MyWebSocketRequest currMySocketReq,
             MyWebSocketResponse response, Chat chat)
         {
-            if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Admin)
+
+            if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)
             {
+
                 await MySocketManagerService.SendToCustomer(target.CustomerId.Value, currMySocketReq.MyWebsite.Id,
                     response);
 
@@ -158,6 +167,8 @@ namespace SignalRMVCChat.WebSocket
                 // اگر از جای دیگری هم وصل شده باشد این پیغام را در جای دیگر هم نشان بده
                 await MySocketManagerService.NotifySelf(MySocketUserType.Admin, chat, currMySocketReq.MyWebsite.Id,
                     currMySocketReq);
+
+                
             }
             else
             {
@@ -169,6 +180,11 @@ namespace SignalRMVCChat.WebSocket
                 // اگر از جای دیگری هم وصل شده باشد این پیغام را در جای دیگر هم نشان بده
                 await MySocketManagerService.NotifySelf(MySocketUserType.Customer, chat, currMySocketReq.MyWebsite.Id,
                     currMySocketReq);
+
+
+                // ------- with checking if customer from telegram
+                await _telegramMultimediaSenderToBotService.SendToAdmin(chat.CustomerId.Value, currMySocketReq.MyWebsite.Id
+                       , chat);
             }
         }
 
@@ -183,21 +199,21 @@ namespace SignalRMVCChat.WebSocket
         protected virtual MySocket GetTarget(MySocket target, Chat chat, MyWebSocketRequest currMySocketReq)
         {
             /// اگر ادمین باشد پس قبلا کد آن شناسایی شده است و یا کاستمور باشد که همینطور
-            if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Admin)
+            if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)
             {
-                chat.MyAccountId = (int) currMySocketReq.CurrentRequest.myAccountId;
+                chat.MyAccountId = (int)currMySocketReq.CurrentRequest.myAccountId;
                 target = currMySocketReq.MyWebsite.Customers.FirstOrDefault(f => f.CustomerId == chat.targetId);
                 chat.CustomerId = target.CustomerId;
             }
             else
             {
-                chat.CustomerId = (int) currMySocketReq.CurrentRequest.customerId;
+                chat.CustomerId = (int)currMySocketReq.CurrentRequest.customerId;
                 target = currMySocketReq.MyWebsite.Admins.FirstOrDefault(f => f.MyAccountId == chat.targetId);
 
                 if (target != null)
                 {
                     chat.MyAccountId = target.MyAccountId;
-                    
+
                 }
             }
 

@@ -29,7 +29,8 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
                     Body = new
                     {
                         userType = type,
-                        Page= page
+                        Page= page,
+                        FromBot=true
                     }
                 }.Serialize(),
                 new MyWebSocketRequest

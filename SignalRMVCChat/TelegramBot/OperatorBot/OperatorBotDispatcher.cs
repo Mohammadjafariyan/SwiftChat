@@ -89,7 +89,12 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot
             }
             else if (e?.Message?.Text?.Contains("@") == true)
             {
+                bot.SendTextMessageAsync(
 
+                   e.Message.Chat.Id,
+                   "با موفقیت به سیستم وارد شدید"
+
+                   ).GetAwaiter().GetResult();
             }
             else if (e?.Message?.Text?.Contains("/") == true)
             {

@@ -103,8 +103,13 @@ namespace SignalRMVCChat.WebSocket
           CurrentUserInfo.targetStatus = res.Content.OnlineStatus;
           CurrentUserInfo.ProfileImageId = res.Content.ProfileImageId;*/
 
-            // خواندن چت ها سمت ادمین
-            await new ReadChatSocketHandler().ExecuteAsync(res.Serialize(), currMySocketReq);
+            string dontReadChats = (_request.Body.dontReadChats ?? "") + "";
+            if (string.IsNullOrEmpty(dontReadChats) ==true)
+            {
+                // خواندن چت ها سمت ادمین
+                await new ReadChatSocketHandler().ExecuteAsync(res.Serialize(), currMySocketReq);
+
+            }
 
 
             var myAccountProviderService = Injector.Inject<MyAccountProviderService>();

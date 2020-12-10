@@ -168,11 +168,21 @@ _showError(' مقدار بازگشتی از سرور نال است ');
                             
                             
                             
-                            <Form.Text className="text-muted">
+<Form.Text className="text-muted">
                                 {DataHolder.selectedCustomer.Address}
                                 {!DataHolder.selectedCustomer.Address && <p>آدرس کاربر مشخص نیست</p>}
                             </Form.Text>
                             
+                            <Form.Text className="text-muted">
+                                {DataHolder.selectedCustomer.JobTitle}
+                                {!DataHolder.selectedCustomer.JobTitle && <p>شغل کاربر مشخص نیست</p>}
+                            </Form.Text>
+                           
+                            <Form.Text className="text-muted">
+                                {DataHolder.selectedCustomer.CompanyName}
+                                {!DataHolder.selectedCustomer.CompanyName && <p>شرکت کاربر مشخص نیست</p>}
+                            </Form.Text>
+
                             
                             
                             <Button variant={'primary'} onClick={()=>{

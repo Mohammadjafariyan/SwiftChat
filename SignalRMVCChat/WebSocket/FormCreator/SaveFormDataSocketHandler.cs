@@ -30,7 +30,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
 
             #region validation
 
-            if (currMySocketReq.IsAdminOrCustomer != (int) MySocketUserType.Customer)
+            if (currMySocketReq.IsAdminOrCustomer != (int)MySocketUserType.Customer)
             {
                 Throw("این عملیات فقط برای بازدید کننده ها مجاز است");
             }
@@ -109,7 +109,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
 
             #endregion
 
- 
+
             //=============================================================================
             _logService.LogFunc("GET CHAT ");
             //=============================================================================
@@ -120,7 +120,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
             var ChatProviderService = Injector.Inject<ChatProviderService>();
             var chat = ChatProviderService.GetById(chatId, "چت یافت نشد").Single;
 
-            if (chat.MyAccountId.HasValue==false)
+            if (chat.MyAccountId.HasValue == false)
             {
                 Throw("چت کد ادمین ندارد  ");
             }
@@ -132,26 +132,26 @@ namespace SignalRMVCChat.WebSocket.FormCreator
 
             chat.FormPassed = form.AfterMessage;
             ChatProviderService.Save(chat);
-         
+
             #region Bussiness = save values
 
             //=============================================================================
             _logService.LogFunc("CUSTOMER SEND CHAT FORM DATA TO ADMIN ");
             //=============================================================================
 
-            var newChatId= ChatProviderService.CustomerSendToAdmin(chat.MyAccountId.Value,
+            var newChatId = ChatProviderService.CustomerSendToAdmin(chat.MyAccountId.Value,
                 currMySocketReq.MySocket.CustomerId.Value, "", currMySocketReq.MySocket.Id,
-                0, 
-                
-                
-                ChatProviderService.GetQuery().Count(c => c.CustomerId==currMySocketReq.MySocket.CustomerId.Value 
-                                                          && c.MyAccountId==chat.MyAccountId.Value)+1
-                
-                
+                0,
+
+
+                ChatProviderService.GetQuery().Count(c => c.CustomerId == currMySocketReq.MySocket.CustomerId.Value
+                                                          && c.MyAccountId == chat.MyAccountId.Value) + 1
+
+
                 , formId).Single;
 
 
-            
+
             //=============================================================================
             _logService.LogFunc("SAVE FormValues ");
             //=============================================================================
@@ -172,14 +172,19 @@ namespace SignalRMVCChat.WebSocket.FormCreator
 
             FormValueService.Save(FormValues);
 
+            //=============================================================================
+            _logService.LogFunc("چک کن و اگر از اطلاعات کاربر بود ذخیره کن");
+            //=============================================================================
 
-            
+            CheckForUserInfoAndSet(formElements, currMySocketReq, _request);
+
+
             //=============================================================================
             _logService.LogFunc("GENERATE RESPONSE ");
             //=============================================================================
 
-            
-            var response =new MyWebSocketResponse
+
+            var response = new MyWebSocketResponse
             {
                 Name = "saveFormDataCallback",
                 Content = new
@@ -188,11 +193,11 @@ namespace SignalRMVCChat.WebSocket.FormCreator
                     formId,
                     chatId,
                     chat.UniqId
-                    
+
                 }
             };
-            
-           
+
+
             //=============================================================================
             _logService.LogFunc("GENERATE RESPONSE FOR ADMIN WITH FORM AND ITS DATA ");
             //=============================================================================
@@ -207,12 +212,12 @@ namespace SignalRMVCChat.WebSocket.FormCreator
                     FormElementId = formElement.Id,
                     Value = formElement.Value,
                     FormElement = formElement,
-                    ChatId=newChatId
+                    ChatId = newChatId
                 });
             }
 
-            
-              
+
+
             //=============================================================================
             _logService.LogFunc("GET formElements FOR ALL ARGS LIKE TYPE AND ECT.. ");
             //=============================================================================
@@ -220,7 +225,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
 
             formElements = FormElementService.GetQuery().Where(c => c.FormId == formId).ToList();
 
-            
+
             //=============================================================================
             _logService.LogFunc("SET formElements VALUES FOR SHIWING IN UI");
             //=============================================================================
@@ -230,9 +235,9 @@ namespace SignalRMVCChat.WebSocket.FormCreator
                 var i = formElements.FindIndex(f => f.Id == formValue.FormElementId);
                 formElements[i].Value = formValue.Value;
             }
-            
-            
-            var adminresponse =new MyWebSocketResponse
+
+
+            var adminresponse = new MyWebSocketResponse
             {
                 Name = "saveFormDataCallback",
                 Content = new
@@ -242,7 +247,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
                     chatId,
                     FormValues,
                     formElements,
-                    formName=form.Name,
+                    formName = form.Name,
                     chat.UniqId
 
                 }
@@ -253,6 +258,109 @@ namespace SignalRMVCChat.WebSocket.FormCreator
             return response;
 
             #endregion
+        }
+
+        private void CheckForUserInfoAndSet(List<FormElement> formElements, MyWebSocketRequest currMySocketReq, MyWebSocketRequest request)
+        {
+            var customerProviderService = Injector.Inject<CustomerProviderService>();
+            var customer = customerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value).Single;
+            foreach (var formElement in formElements)
+            {
+                if (CheckContains(formElement, "ایمیل") == true ||
+                    CheckContains(formElement, "email") == true ||
+                    CheckContains(formElement, "gmail") == true)
+                {
+                    if (string.IsNullOrEmpty(customer.Email))
+                    {
+                        customer.Email = formElement.Value;
+                    }
+                }
+
+
+                if (CheckContains(formElement, "phone") == true ||
+                  CheckContains(formElement, "شماره") == true ||
+                  CheckContains(formElement, "mobile") == true ||
+                  CheckContains(formElement, "تماس") == true ||
+                  CheckContains(formElement, "تلفن") == true ||
+                  CheckContains(formElement, "telephone") == true ||
+                  CheckContains(formElement, "موبایل") == true)
+                {
+                    if (string.IsNullOrEmpty(customer.Phone))
+                    {
+                        customer.Phone = formElement.Value;
+                    }
+                }
+
+
+                if (CheckContains(formElement, "phone") == true ||
+                CheckContains(formElement, "شماره") == true ||
+                CheckContains(formElement, "mobile") == true ||
+                CheckContains(formElement, "تماس") == true ||
+                CheckContains(formElement, "تلفن") == true ||
+                CheckContains(formElement, "telephone") == true ||
+                CheckContains(formElement, "موبایل") == true)
+                {
+                    if (string.IsNullOrEmpty(customer.Phone))
+                    {
+                        customer.Phone = formElement.Value;
+                    }
+                }
+
+
+                if (CheckContains(formElement, "company") == true ||
+             CheckContains(formElement, "شرکت") == true ||
+             CheckContains(formElement, "دفتر") == true ||
+             CheckContains(formElement, "office") == true)
+                {
+                    if (string.IsNullOrEmpty(customer.CompanyName))
+                    {
+                        customer.CompanyName = formElement.Value;
+                    }
+                }
+
+                if (CheckContains(formElement, "job") == true ||
+          CheckContains(formElement, "work") == true ||
+          CheckContains(formElement, "شغل") == true ||
+          CheckContains(formElement, "صنعت") == true ||
+          CheckContains(formElement, "کار") == true)
+                {
+                    if (string.IsNullOrEmpty(customer.JobTitle))
+                    {
+                        customer.JobTitle = formElement.Value;
+                    }
+                }
+
+            
+
+                if (CheckContains(formElement, "address") == true ||
+       CheckContains(formElement, "آدرس") == true ||
+       CheckContains(formElement, "ادرس") == true)
+                {
+                    if (string.IsNullOrEmpty(customer.Address))
+                    {
+                        customer.Address = formElement.Value;
+                    }
+                }
+
+                //public string Address { get; set; }
+            }
+
+
+
+            customerProviderService.Save(customer);
+        }
+
+        private bool CheckContains(FormElement formElement, string name)
+        {
+            if (formElement?.Name?.Contains(name) == true)
+            {
+                return true;
+            }
+            if (formElement?.FieldName?.Contains(name) == true)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

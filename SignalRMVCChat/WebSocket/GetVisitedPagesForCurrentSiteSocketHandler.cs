@@ -129,9 +129,18 @@ namespace SignalRMVCChat.WebSocket
             StatisticsViewModel.SiteViewsMostOnlineTime = await GetSiteViewsMostOnlineTime(filtered);
 
 
+
+            /*------------------------------------ 7.	رتبه بندی اپراتور ها ----------------------------------*/
+          //  StatisticsViewModel.OperatorsOrderComparedToDates = await GetOperatorsOrderComparedToDates(filtered);
+
+
+
+
+
             return StatisticsViewModel;
         }
 
+      
         private IQueryable<CustomerTrackInfo> FilterForm(IQueryable<CustomerTrackInfo> query)
         {
             /* range:this.state.range,
