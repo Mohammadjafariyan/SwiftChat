@@ -53,6 +53,11 @@ class StatForeignCountries extends PageVisitStat {
                 }]
             }
         };
+
+        
+        if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        }
     }
 
 

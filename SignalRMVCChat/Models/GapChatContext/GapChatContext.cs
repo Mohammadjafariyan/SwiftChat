@@ -548,7 +548,15 @@ namespace SignalRMVCChat.Models.GapChatContext
                .WithMany(o => o.TelegramBotRegisteredOperators)
                .HasForeignKey(o => o.TelegramBotSettingId).WillCascadeOnDelete(false);
 
-            
+
+            #endregion
+            #region Comment
+
+            modelBuilder.Entity<Article>()
+              .HasMany(r => r.Comments)
+              .WithRequired(o => o.Article)
+              .HasForeignKey(o => o.ArticleId).WillCascadeOnDelete(false);
+
             #endregion
 
             base.OnModelCreating(modelBuilder);

@@ -3,6 +3,7 @@ using SignalRMVCChat.WebSocket;
 
 namespace SignalRMVCChat.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class WebSocketServerStatusController
     {
 

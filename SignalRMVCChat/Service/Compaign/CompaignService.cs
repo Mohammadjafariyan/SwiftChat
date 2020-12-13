@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SignalRMVCChat.Models;
+using SignalRMVCChat.Models.Compaign;
 using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service.Compaign.Email;
 using SignalRMVCChat.WebSocket;
@@ -288,7 +289,7 @@ namespace SignalRMVCChat.Service.Compaign
         public void ExecuteCompagins(List<Models.Compaign.Compaign>
             compaignsAutomaticList, Customer customer,
             WebSocket.MyWebSocketRequest _request,
-            WebSocket.MyWebSocketRequest currMySocketReq)
+            WebSocket.MyWebSocketRequest currMySocketReq, CompaignLog compaignLog)
         {
 
             var list = compaignsAutomaticList.ToList();
@@ -315,9 +316,10 @@ namespace SignalRMVCChat.Service.Compaign
 
             foreach (var item in list)
             {
+                
                 if (item.SendToEmail)
                 {
-                    string error = emailService.SendEmailByCompagin(item, customer, currMySocketReq.MyWebsite.Id);
+                    string error = emailService.SendEmailByCompagin(item, customer, currMySocketReq.MyWebsite.Id, compaignLog);
                 }
                 if (item.SendToChat)
                 {

@@ -13,6 +13,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 {
     
     [MyAuthorizeFilter]
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
 
     public class ManageController : Controller
     {

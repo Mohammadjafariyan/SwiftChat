@@ -12,6 +12,7 @@ using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     [MyAuthorizeFilter]
     public class PluginCustomizedController : Controller
     {

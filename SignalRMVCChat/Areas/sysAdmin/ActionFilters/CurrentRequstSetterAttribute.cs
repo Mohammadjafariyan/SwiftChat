@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Engine.SysAdmin.Service;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service;
@@ -13,11 +14,31 @@ using SignalRMVCChat.SysAdmin.Service;
 
 namespace TelegramBotsWebApplication.ActionFilters
 {
+
+    public class MyControllerFilter : ActionFilterAttribute
+    {
+        //private SettingService _settingService = new SettingService();
+
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            //var Setting = _settingService.GetSingle();
+            //if (Setting.BaseUrl == MyGlobal.GetBaseUrl(filterContext.HttpContext.Request.Url))
+            //{
+            //    return;
+            //}
+
+            //Setting.BaseUrl = MyGlobal.GetBaseUrl(filterContext.HttpContext.Request.Url);
+
+           
+            //_settingService.Save(Setting);
+        }
+    }
+
     public class SetCurrentRequestFilter : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            
+
             CurrentRequestSingleton.Init(filterContext.HttpContext);
 
             CurrentRequestSingleton.CurrentRequest.Token = filterContext.HttpContext.Request.Cookies["gaptoken"]?.Value;
@@ -32,7 +53,7 @@ namespace TelegramBotsWebApplication.ActionFilters
             }
             catch (Exception e)
             {
-             //ignore
+                //ignore
             }
 
 

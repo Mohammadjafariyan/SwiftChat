@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using Effort.Internal.DbManagement.Schema;
 using Engine.SysAdmin.Service;
+using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.Areas.Admin.Models;
@@ -148,6 +149,11 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
             var entities = Table;
 
             T newEntity;
+
+            if (MyGlobal.IsAttached)
+            {
+                var list=entities.ToList();
+            }
 
             if (model.Id == 0)
             {

@@ -15,6 +15,7 @@ using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace SignalRMVCChat.Areas.Common.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     [MyAuthorizeFilter]
     public class TicketController : GenericController<Ticket>
     {

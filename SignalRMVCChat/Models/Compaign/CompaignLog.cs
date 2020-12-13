@@ -7,6 +7,11 @@ namespace SignalRMVCChat.Models.Compaign
 {
     public class CompaignLog : BaseEntity
     {
+        public CompaignLog()
+        {
+            LinkClicked = 0;
+            EmailOpened = 0;
+        }
 
         [NotMapped]
         public string CompaignName
@@ -51,5 +56,9 @@ namespace SignalRMVCChat.Models.Compaign
 
         
         public List<CompaignLogReceiver> CompaignLogReceivers { get; set; }
+        public int LinkClicked { get; internal set; }
+        public int EmailOpened { get; internal set; }
+        public int EmailBounced { get; internal set; }
+        public int EmailDelivered { get; internal set; }
     }
 }

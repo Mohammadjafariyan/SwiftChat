@@ -5,6 +5,7 @@ using TelegramBotsWebApplication.Idpay;
 
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class IdPayBaseController:Controller 
     {
 

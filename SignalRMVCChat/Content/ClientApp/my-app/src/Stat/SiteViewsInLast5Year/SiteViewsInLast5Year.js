@@ -5,13 +5,24 @@ import {CurrentUserInfo} from "../../Help/Socket";
 class SiteViewsInLast5Year extends StatBase {
 
 
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        
         CurrentUserInfo.SiteViewsInLast5Year = this;
-        this.setState({
+        this.state={
             title: 'آمار بازدید در سال های گذشته(با مقایسه 5 سال)',
             type: 'line',
             arrName:'SiteViewsInLast5Year'
-        });
+        };
+    }
+    
+    componentDidMount() {
+      
+
+        
+        if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        }
     }
 
   

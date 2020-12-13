@@ -13,12 +13,12 @@
     {
         HeaderText = "مرکز پشتیبانی",
     };
-    if (TempData["helpDesk"]!=null)
+    if (TempData["helpDesk"] != null)
     {
-        helpDesk=TempData["helpDesk"] as HelpDesk;
+        helpDesk = TempData["helpDesk"] as HelpDesk;
     }
 
-    if (helpDesk==null)
+    if (helpDesk == null)
     {
         helpDesk = new HelpDesk
         {
@@ -29,75 +29,71 @@
     }
 }
 <style>
-.cat a {
-font-size: 13px !important;
-}
-
-.card-text h5{
-font-size: 18px !important;
-
-}
-
-.card-text p{
-font-size: 13px !important;
-
-}
-.cat li {
-    font-size: 13.5px;
-    line-height: 18px;
-    letter-spacing: .4px;
-    padding: 5px 0;
-    
-
-}
-
-.cat a{
-color: #141414;
-
-}
-
-.popularity-text{
-padding: 5px;
-}
-.popularity{
-border-left: 1px solid #dddfe2;
-
-}
-.popularity-bulbs{
-display: flex;
-padding: 5px;
-
-}
-
-.text{
-    display: flex;
-    line-height: 1.5em;
-    height: 3em;
-    overflow: hidden;
-    
-    padding-left: 10px;
-}
-    .popularity-bulb-single{
-    background-color: blue;
-    width: 3px;
-    height: 20px;
-    margin: 2px;
-    
+    .cat a {
+        font-size: 13px !important;
     }
-    
-    .card *{
-    direction: rtl;text-align: right
+
+    .card-text h5 {
+        font-size: 18px !important;
     }
-    
-    .card h3, .card h2, .card h1, .card h5, .card h4, .card h6{
-    border-right: 5px solid blue;
-    padding-right: 8px;
-    padding-top: 2px;
+
+    .card-text p {
+        font-size: 13px !important;
     }
-    
-    .card{
-   margin-bottom: 30px;
-   }
+
+    .cat li {
+        font-size: 13.5px;
+        line-height: 18px;
+        letter-spacing: .4px;
+        padding: 5px 0;
+    }
+
+    .cat a {
+        color: #141414;
+    }
+
+    .popularity-text {
+        padding: 5px;
+    }
+
+    .popularity {
+        border-left: 1px solid #dddfe2;
+    }
+
+    .popularity-bulbs {
+        display: flex;
+        padding: 5px;
+    }
+
+    .text {
+        display: flex;
+        line-height: 1.5em;
+        height: 3em;
+        overflow: hidden;
+        padding-left: 10px;
+    }
+
+    .popularity-bulb-single {
+        background-color: blue;
+        width: 3px;
+        height: 20px;
+        margin: 2px;
+    }
+
+    .card * {
+        direction: rtl;
+        text-align: right
+    }
+
+    .card h3, .card h2, .card h1, .card h5, .card h4, .card h6 {
+        border-right: 5px solid blue;
+        padding-right: 8px;
+        padding-top: 2px;
+    }
+
+    .card {
+        margin-bottom: 30px;
+    }
 </style>
 
 <div class="container-fluid " style=" background-color: white;padding: 20px">
@@ -121,12 +117,12 @@ padding: 5px;
             <div class="col" style="border-right: 2px solid #d3d7dd;padding-top: 7px">
 
                 <h6>
-@Model.Article.Title
+                    @Model.Article.Title
                 </h6>
 
             </div>
             <div class="col-md-4">
-                <a  href="/HelpDesk/Detail?categoryTitle=@Model.Article.Category.Title&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]" class="btn btn-primary">@Model.Article.Category.Title</a>
+                <a href="/HelpDesk/Detail?categoryTitle=@Model.Article.Category.Title&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]" class="btn btn-primary">@Model.Article.Category.Title</a>
 
             </div>
 
@@ -148,36 +144,35 @@ padding: 5px;
             <div class="card" style="color: black;">
                 <div class="card-body">
                     <div class="card-text">
-                       @Html.Raw(Model.Article.ArticleContent.HtmlContent)
+                        @Html.Raw(Model.Article.ArticleContent.HtmlContent)
 
                     </div>
                 </div>
             </div>
 
-            
-            
+
+
             <div class="row justify-content-md-center">
                 <div class="justify-content-md-center ">
                     <div style="text-align: center;">
-                                  <p>  <b>آیا این مقاله مفید بود؟</b></p>
-                                    
-                        <div >
-                            <button 
-                                data-toggle="modal" data-target="#exampleModal"
-                                
-                                
-                                type="button" class="btn btn-secondary">بله</button>
-                            <button
-                                data-toggle="modal" data-target="#exampleModal"
-                                
-                                type="button" class="btn btn-secondary">خیر</button>
+                        <p>  <b>آیا این مقاله مفید بود؟</b></p>
+
+                        <div>
+                            <button onclick="setIsHelpful(true)" data-toggle="modal" data-target="#exampleModal"
+                                    type="button" class="btn btn-secondary">
+                                بله
+                            </button>
+                            <button onclick="setIsHelpful(false)" data-toggle="modal" data-target="#exampleModal"
+                                    type="button" class="btn btn-secondary">
+                                خیر
+                            </button>
                         </div>
-                        </div>
+                    </div>
 
                 </div>
             </div>
 
-            </div>
+        </div>
         <div class="col-md-2" style="text-align: right;
         border-left: 2px solid #dddfe2">
 
@@ -185,10 +180,10 @@ padding: 5px;
                 <b>مقالات مرتبط</b>
             </h5>
             <ul class="cat" style="text-decoration: none;list-style-type: none;">
-                
+
                 @foreach (var rel in Model.RelatedArticles)
                 {
-                    
+
                     <li>
                         <a href="/HelpDesk/Article?title=@rel.Title&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]" data-active="true" class="csh-aside-single-line csh-font-sans-bold">
                             <b>@rel.Title</b>
@@ -205,7 +200,7 @@ padding: 5px;
 </div>
 
 
-
+@*------------------------ راضی--------------------------  *@
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -218,8 +213,8 @@ padding: 5px;
                 </button>
             </div>
             <div class="modal-body">
-                
-                
+
+
                 <h3 style="text-align: center;color: #@helpDesk.BgColor" id="callbackMsg"></h3>
                 <textarea id="text" placeholder="بگید در مورد این مقاله چی فکر می کنید ؟
 " style="width: 100%;height: 100%;border: none;direction: rtl;text-align: right" class="form-control"></textarea>
@@ -232,15 +227,22 @@ padding: 5px;
         </div>
     </div>
 </div>
+@*------------------------ END--------------------------  *@
 
 
 
 <script>
+
+    function setIsHelpful(IsHelpful) {
+
+        window['IsHelpful'] = IsHelpful;
+    }
+
 function sendFeedback(){
-    
+
     let text=$('#text').val();
-    
-    
+    let IsHelpful = window['IsHelpful'];
+
     fetch('/HelpDesk/SendFeedback', {
                 method: "POST", headers: {
                     'Accept': 'application/json',
@@ -250,7 +252,8 @@ function sendFeedback(){
                                                  text: text,
                                                  websiteBaseUrl:'@TempData["websiteBaseUrl"]',
                                                  lang:'@TempData["lang"]',
-                                                 title:'@Model.Article.Title'
+                    title: '@Model.Article.Title',
+                    IsHelpful: IsHelpful
                                              },),
                 // -- or --
                 // body : JSON.stringify({
@@ -262,10 +265,10 @@ function sendFeedback(){
               // same as function(response) {return response.text();}
           ).then(
            response => {
-               
+
                $('#callbackMsg').text("باتشکر بازخورد شما دریافت شد")
                $('#text').hide()
-               
+
                $('#send').hide();
 
                   //$('#exampleModal').modal('toggle');
@@ -273,14 +276,14 @@ function sendFeedback(){
                }// .json(), etc.
            // same as function(response) {return response.text();}
        ).catch(function (err){
-           
+
                $('#submitButton button').prop('disabled', false);
-           
+
             $('#callbackMsg').text("باتشکر بازخورد شما دریافت شد")
             console.error(err);
                     //   showError('خطایی رخ داد' + err.responseText);
            })
-    
+
 /*      $.ajax({
         url: '/HelpDesk/SendFeedback',
         data: {
@@ -302,6 +305,6 @@ function sendFeedback(){
         }
 
     })*/
-    
+
     }
 </script>

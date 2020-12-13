@@ -4,14 +4,26 @@ import {CurrentUserInfo} from "../../Help/Socket";
 
 class SiteViewsMostOnlineTime extends StatBase {
 
-
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        
         CurrentUserInfo.SiteViewsMostOnlineTime = this;
-        this.setState({
+        this.state={
             title: 'آمار ترتیب صفحه ها بر اساس بیشترین زمان آنلاین (به دقیقه)',
             type: null,
             arrName:'SiteViewsMostOnlineTime'
-        });
+        };
+    }
+    
+
+    componentDidMount() {
+     
+
+
+        
+        if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        }
     }
 
 }

@@ -8,7 +8,9 @@ import StatUtility from "../StatUtility";
 
 class StatPerState extends PageVisitStat {
     state = {
-        title: 'به تفکیک استان'
+        title: 'به تفکیک استان',
+        arrName:'states'
+
     }
 
     constructor(props) {
@@ -29,6 +31,8 @@ class StatPerState extends PageVisitStat {
                 }
             ]
         };
+
+     
     }
 
     componentDidMount() {
@@ -52,6 +56,11 @@ class StatPerState extends PageVisitStat {
                 }]
             }
         };
+
+           
+        if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        }
     }
 
 

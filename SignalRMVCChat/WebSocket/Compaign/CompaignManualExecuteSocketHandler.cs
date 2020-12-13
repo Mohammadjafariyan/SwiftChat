@@ -1,6 +1,7 @@
 ﻿using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.Compaign;
 using SignalRMVCChat.WebSocket.Base;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace SignalRMVCChat.WebSocket.Compaign
         BaseCrudSocketHandler<Models.Compaign.Compaign, CompaignService>
     {
         private readonly CustomerProviderService customerProviderService = DependencyInjection.Injector.Inject<CustomerProviderService>();
+        private readonly CompaignLogService CompaignLogService = DependencyInjection.Injector.Inject<CompaignLogService>();
         public CompaignManualExecuteSocketHandler() :
             base("compaignManualExecuteCallback")
         {
@@ -27,7 +29,7 @@ namespace SignalRMVCChat.WebSocket.Compaign
             {
                 Throw("کمپین نوع اتوماتیک بصورت دستی نمیتواند اجرا شود");
             }
-        
+
             if (!compaign.SendToChat && !compaign.SendToEmail)
             {
                 Throw("تیک ارسال به ایمیل و ارسال به چت فعال نیست");
@@ -35,26 +37,42 @@ namespace SignalRMVCChat.WebSocket.Compaign
 
 
 
-            var customers =_service.GetManualConditionTargetCustomers(compaign);
+            var customers = _service.GetManualConditionTargetCustomers(compaign);
             if (customers == null ||
                 customers?.Count == 0)
             {
                 Throw("هیج کاربری برای کمپین انتخاب نشده است");
             }
 
-            customers= customers.Where(c => c != null).ToList();
+            customers = customers.Where(c => c != null).ToList();
 
+
+            // ------------- logging
+
+            var compaignLog=CompaignLogService.Init(compaign, customers);
+         
+            // ------------- end logging
 
             foreach (var cus in customers)
             {
-                
-                _service.ExecuteCompagins(new System.Collections.Generic.List<Models.Compaign.Compaign>
+
+                try
+                {
+                    _service.ExecuteCompagins(new System.Collections.Generic.List<Models.Compaign.Compaign>
                     {
                         compaign
-                    }, cus, _request, currMySocketReq);
-             
+                    }, cus, _request, currMySocketReq, compaignLog);
+
+                }
+                catch (Exception e)
+                {
+                    compaignLog.StoppedLog += e.Message;
+                }
 
             }
+
+            compaignLog.Status = Models.Compaign.CompaignStatus.Sent;
+            CompaignLogService.Save(compaignLog);
 
             return new MyWebSocketResponse
             {

@@ -230,6 +230,14 @@ namespace SignalRMVCChat.Models
         
         [NotMapped]
         public long TelegramChatId { get;  set; }
+       
+        [NotMapped]
+        public LeaderBoardStatus LeaderBoardStatus { get;  set; }
+    }
+
+    public enum LeaderBoardStatus
+    {
+        NotChanged=1,Increased=2,Decreased=3
     }
 
     public class ReceivedPrivateChat

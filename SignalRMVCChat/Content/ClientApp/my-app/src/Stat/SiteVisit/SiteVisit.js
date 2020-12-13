@@ -9,6 +9,7 @@ class SiteVisit extends Component {
     }
     constructor(props) {
         super(props);
+        CurrentUserInfo.SiteVisit=this;
 
         this.basicData = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -28,7 +29,6 @@ class SiteVisit extends Component {
     }
     
     componentDidMount() {
-        CurrentUserInfo.SiteVisit=this;
         
         this.basicOptions = {
             legend: {
@@ -49,6 +49,12 @@ class SiteVisit extends Component {
                 }]
             }
         };
+
+        
+        /* if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        } */
+       
     }
 
     render() {

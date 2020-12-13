@@ -7,15 +7,24 @@ import {changeUserTypes} from "../../Help/ChangeUserTypes";
 class PageOnlineCount extends PageVisitStat {
 
     
-
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        
         CurrentUserInfo.PageOnlineCount = this;
         
-        this.setState({title:'آمار تعداد آنلاین های هر صفحه اکنون',
+        this.state={title:'آمار تعداد آنلاین های هر صفحه اکنون',
         type:'doughnut',
-            arrName:'PageOnlineCount'})
+            arrName:'PageOnlineCount'};
 
        
+    }
+    
+
+    componentDidMount() {
+       
+            if(this.props.data){
+                this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+            }
     }
 
 

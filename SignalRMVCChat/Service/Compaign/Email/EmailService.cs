@@ -13,8 +13,7 @@ namespace SignalRMVCChat.Service.Compaign.Email
 {
     public class EmailService:GenericService<SignalRMVCChat.Models.Compaign.Email.Email>
     {
-
-
+        private EmailHtmlManipulator EmailHtmlManipulator = new EmailHtmlManipulator();
 
         public EmailService(SettingService settingService):base(null)
         {
@@ -24,7 +23,7 @@ namespace SignalRMVCChat.Service.Compaign.Email
         public SettingService SettingService { get; }
 
         internal string SendEmailByCompagin(Models.Compaign.Compaign item,
-            Customer  customer,int websiteId)
+            Customer  customer,int websiteId, Models.Compaign.CompaignLog compaignLog)
         {
             if (string.IsNullOrEmpty(customer.Email))
             {
@@ -59,6 +58,8 @@ namespace SignalRMVCChat.Service.Compaign.Email
             try
             {
                 var html = item.Template?.Html ?? item.Template?.Name;
+
+                html=EmailHtmlManipulator.Manipulate(html,item.Id, compaignLog);
 
                 MailMessage message = new MailMessage();
                 SmtpClient smtp = new SmtpClient();

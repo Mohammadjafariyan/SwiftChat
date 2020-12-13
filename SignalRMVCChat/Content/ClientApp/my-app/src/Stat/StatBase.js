@@ -5,7 +5,7 @@ import StatUtility from "./StatUtility";
 
 class StatBase extends PageVisitStat {
     state = {
-        title: 'به تفکیک استان'
+        title: 'مشخص نشده',
     }
 
     constructor(props) {

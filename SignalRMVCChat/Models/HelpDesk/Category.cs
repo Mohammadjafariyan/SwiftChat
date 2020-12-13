@@ -11,7 +11,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Models.HelpDesk
 {
-    public class Category:BaseEntity
+    public class Category : BaseEntity
     {
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace SignalRMVCChat.Models.HelpDesk
         /// </summary>
         public List<Article> Articles { get; set; }
 
-      
+
         /// <summary>
         /// توضیحات
         /// </summary>
@@ -36,7 +36,7 @@ namespace SignalRMVCChat.Models.HelpDesk
         public string Title { get; set; }
 
         public CategoryImage CategoryImage { get; set; }
-               
+
         public int HelpDeskId { get; set; }
         public HelpDesk HelpDesk { get; set; }
 
@@ -44,9 +44,16 @@ namespace SignalRMVCChat.Models.HelpDesk
         [NotMapped]
         public string Content { get; set; }
     }
-    
-    public class Article:BaseEntity
+
+    public class Article : BaseEntity
     {
+        public Article()
+        {
+            Comments = new List<Comment>();
+        }
+
+
+
         /// <summary>
         /// عنوان مقاله
         /// </summary>
@@ -56,20 +63,20 @@ namespace SignalRMVCChat.Models.HelpDesk
         /// متن مقاله
         /// </summary>
         public ArticleContent ArticleContent { get; set; }
-        
+
         /// <summary>
         /// html که موقع ارسال می آید
         /// </summary>
         [NotMapped]
         [AllowHtml]
         public string Content { get; set; }
-        
+
         /// <summary>
         /// متنی که موقع ارسال می آید
         /// </summary>
         public string textValue { get; set; }
-        
-        
+
+
         public DateTime LastUpdatedDateTime { get; set; }
         public string LastUpdatedDescription { get; set; }
 
@@ -88,38 +95,16 @@ namespace SignalRMVCChat.Models.HelpDesk
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         public string Summary { get; set; }
-        
-        
-        
-        
-        
-        
-        
-        [NotMapped]
-        public List<Comment> Comments
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(CommentJson))
-                {
-                    return null;
-                }
 
-                return JsonConvert.DeserializeObject<List<Comment>>(CommentJson);
-            }
-            set { CommentJson = JsonConvert.SerializeObject(value); }
-        }
 
-        [JsonIgnore]
-        public string CommentJson { get; set; }
-        
-        
+        public List<Comment> Comments { get; set; }
+
     }
-    
-    
-    
 
-    public class Language:BaseEntity
+
+
+
+    public class Language : BaseEntity
     {
 
         public string Name { get; set; }
@@ -129,8 +114,8 @@ namespace SignalRMVCChat.Models.HelpDesk
         public string alpha2Code { get; set; }
         public string flag { get; set; }
     }
-    
-    public class HelpDesk:BaseEntity
+
+    public class HelpDesk : BaseEntity
     {
 
 
@@ -139,18 +124,18 @@ namespace SignalRMVCChat.Models.HelpDesk
 
 
         public List<Category> Categories { get; set; }
-        
+
         public Language Language { get; set; }
 
         public int LanguageId { get; set; }
         public bool Selected { get; set; }
-        
+
         /// <summary>
         /// مربوط به کدام وب سایت است
         /// </summary>
         public MyWebsite MyWebsite { get; set; }
-        
-        
+
+
         /// <summary>
         /// مربوط به کدام وب سایت است
         /// </summary>
@@ -159,8 +144,14 @@ namespace SignalRMVCChat.Models.HelpDesk
         public string BgColor { get; set; }
     }
 
-    public class ArticleVisit:BaseEntity
+    public class ArticleVisit : BaseEntity
     {
+        public ArticleVisit()
+        {
+            DateTime = DateTime.Now;
+        }
+
+        public DateTime DateTime { get; set; }
         public int ArticleId { get; set; }
         public Article Article { get; set; }
 
@@ -169,15 +160,19 @@ namespace SignalRMVCChat.Models.HelpDesk
         /// کد ای پی بازدید کننده
         /// </summary>
         public string IpAddress { get; set; }
-        
+
+
+
+
+
     }
 
     public enum ArticleStatus
     {
-        Publish=2,Hidden=1,Draft=0
+        Publish = 2, Hidden = 1, Draft = 0
     }
-    
-    public class CategoryImage:BaseEntity
+
+    public class CategoryImage : BaseEntity
     {
         [ForeignKey("Category")]
         public override int Id { get; set; }
@@ -189,7 +184,7 @@ namespace SignalRMVCChat.Models.HelpDesk
         public string ImageExtention { get; set; }
 
     }
-    public class ArticleContent:BaseEntity
+    public class ArticleContent : BaseEntity
     {
         [ForeignKey("Article")]
         public override int Id { get; set; }
@@ -198,12 +193,13 @@ namespace SignalRMVCChat.Models.HelpDesk
 
 
         public byte[] Content { get; set; }
-      
+
         [NotMapped]
-        public string HtmlContent {
+        public string HtmlContent
+        {
             get
             {
-                if (Content==null)
+                if (Content == null)
                 {
                     return null;
                 }
@@ -211,6 +207,6 @@ namespace SignalRMVCChat.Models.HelpDesk
             }
         }
     }
-    
-    
+
+
 }

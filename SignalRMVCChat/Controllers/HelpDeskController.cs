@@ -9,11 +9,13 @@ using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Models.HelpDesk;
+using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.HelpDesk;
 using SignalRMVCChat.Service.HelpDesk.Article;
 
 namespace SignalRMVCChat.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class HelpDeskController:Controller
     {
 
@@ -60,7 +62,7 @@ namespace SignalRMVCChat.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> SendFeedback(string text, string websiteBaseUrl, string lang,string title)
+        public async Task<ActionResult> SendFeedback(string text, string websiteBaseUrl, string lang,string title,bool IsHelpful)
         {
             
             var article=  await HelpDeskService.GetHelpDeskArticle(title,websiteBaseUrl, lang);
@@ -71,18 +73,22 @@ namespace SignalRMVCChat.Controllers
                 article.Article.Comments=new List<Comment>();
             }
             
-            article.Article.Comments.Add(new Comment
-            {
-              Text  = text,
-            });
 
 
 
             var articleService= Injector.Inject<ArticleService>();
             articleService.Save(article.Article);
 
+            var CommentService = Injector.Inject<CommentService>();
 
-            
+            CommentService.Save(new Comment
+            {
+                ArticleId = article.Article.Id,
+                Text = text,
+                IsHelpful = IsHelpful,
+                CreationDateTime=DateTime.Now,
+            });
+
             return new HttpStatusCodeResult(200);
         }
         

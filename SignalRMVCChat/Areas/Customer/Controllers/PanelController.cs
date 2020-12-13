@@ -13,6 +13,7 @@ using TelegramBotsWebApplication.ActionFilters;
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
 
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     [AllowCrossSite]
     public class PanelController : Controller
     {

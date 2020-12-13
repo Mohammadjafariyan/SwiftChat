@@ -49,6 +49,62 @@ class dispatcher {
       /*-------------------- stats--------------------*/
 
       case "getVisitedPagesForCurrentSiteCallback":
+        console.log('hi');
+          if (CurrentUserInfo.StatLayout) {
+            CurrentUserInfo.StatLayout.getVisitedPagesForCurrentSiteCallback(
+              res
+            );
+          }
+  
+           
+          
+          if (CurrentUserInfo.SpecialStatsLayout) {
+            CurrentUserInfo.SpecialStatsLayout.getVisitedPagesForCurrentSiteCallback(
+              res
+            );
+          }
+  
+  
+          if (CurrentUserInfo.SepratePerPage) {
+            CurrentUserInfo.SepratePerPage.getVisitedPagesForCurrentSiteCallback(
+              res
+            );
+          }
+  
+          if (CurrentUserInfo.PageVisitStat) {
+            CurrentUserInfo.PageVisitStat.getVisitedPagesForCurrentSiteCallback(
+              res
+            );
+          }
+  
+          if (CurrentUserInfo.PageOnlineCount) {
+            CurrentUserInfo.PageOnlineCount.getVisitedPagesForCurrentSiteCallback(
+              res
+            );
+          }
+  
+          if (CurrentUserInfo.StatPerState) {
+            CurrentUserInfo.StatPerState.getVisitedPagesForCurrentSiteCallback(
+              res
+            );
+          }
+  
+          if (CurrentUserInfo.StatPerCity) {
+            CurrentUserInfo.StatPerCity.getVisitedPagesForCurrentSiteCallback(
+              res
+            );
+          }
+  
+          if (CurrentUserInfo.StatInMap) {
+            CurrentUserInfo.StatInMap.getVisitedPagesForCurrentSiteCallback(res);
+          }
+  
+          if (CurrentUserInfo.StatForeignCountries) {
+            CurrentUserInfo.StatForeignCountries.getVisitedPagesForCurrentSiteCallback(
+              res
+            );
+          }
+          
         if (CurrentUserInfo.PageVisitStat) {
           CurrentUserInfo.PageVisitStat.getVisitedPagesForCurrentSiteCallback(
             res
@@ -107,7 +163,7 @@ class dispatcher {
             res
           );
         }
-        if (CurrentUserInfo.SiteVisit) {
+        if (CurrentUserInfo.SiteVisit && CurrentUserInfo.SiteVisit.getVisitedPagesForCurrentSiteCallback) {
           CurrentUserInfo.SiteVisit.getVisitedPagesForCurrentSiteCallback(res);
         }
         break;
@@ -1008,48 +1064,7 @@ class dispatcher {
       case "EditMessageCallback":
         CurrentUserInfo.ChatPage.EditMessageCallback(res);
         break;
-      case "getVisitedPagesForCurrentSiteCallback":
-        if (CurrentUserInfo.SepratePerPage) {
-          CurrentUserInfo.SepratePerPage.getVisitedPagesForCurrentSiteCallback(
-            res
-          );
-        }
-
-        if (CurrentUserInfo.PageVisitStat) {
-          CurrentUserInfo.PageVisitStat.getVisitedPagesForCurrentSiteCallback(
-            res
-          );
-        }
-
-        if (CurrentUserInfo.PageOnlineCount) {
-          CurrentUserInfo.PageOnlineCount.getVisitedPagesForCurrentSiteCallback(
-            res
-          );
-        }
-
-        if (CurrentUserInfo.StatPerState) {
-          CurrentUserInfo.StatPerState.getVisitedPagesForCurrentSiteCallback(
-            res
-          );
-        }
-
-        if (CurrentUserInfo.StatPerCity) {
-          CurrentUserInfo.StatPerCity.getVisitedPagesForCurrentSiteCallback(
-            res
-          );
-        }
-
-        if (CurrentUserInfo.StatInMap) {
-          CurrentUserInfo.StatInMap.getVisitedPagesForCurrentSiteCallback(res);
-        }
-
-        if (CurrentUserInfo.StatForeignCountries) {
-          CurrentUserInfo.StatForeignCountries.getVisitedPagesForCurrentSiteCallback(
-            res
-          );
-        }
-
-        break;
+     
 
       case "getAllTagsForCurrentAdminCallback":
         if (CurrentUserInfo.TagList) {

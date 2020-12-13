@@ -8,7 +8,9 @@ import StatUtility from "../StatUtility";
 
 class StatPerCity extends PageVisitStat {
     state = {
-        title: 'به تفکیک شهر'
+        title: 'به تفکیک شهر',
+        arrName:'cities'
+        
     }
 
     constructor(props) {
@@ -52,6 +54,11 @@ class StatPerCity extends PageVisitStat {
                 }]
             }
         };
+
+        
+        if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        }
     }
 
 

@@ -96,6 +96,12 @@ class PageVisitStat extends Component {
 
     componentDidMount() {
         CurrentUserInfo.PageVisitStat = this;
+
+
+        
+        if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        }
     }
 
     fill(trackinfosViewModellist) {

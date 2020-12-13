@@ -10,6 +10,9 @@ namespace SignalRMVCChat.Service.Compaign
     public class CompaignTriggerService : GenericService
         <Models.Compaign.Compaign>
     {
+        private readonly CompaignLogService CompaignLogService = DependencyInjection.Injector.Inject<CompaignLogService>();
+
+
         private IQueryable<Models.Compaign.Compaign> compaignsQuery;
         private List<Models.Compaign.Compaign> compaignsList;
         private List<Models.Compaign.Compaign> compaignsAutomaticList;
@@ -20,7 +23,7 @@ namespace SignalRMVCChat.Service.Compaign
         {
             this.CompaignService = CompaignService;
         }
-       
+
 
 
         /// <summary>
@@ -43,8 +46,39 @@ namespace SignalRMVCChat.Service.Compaign
 
             //var compaignsManualQuery = ManualCondition(compaignsList);
 
-            CompaignService.ExecuteCompagins(compaignsAutomaticList, customer,
-                _request, currMySocketReq);
+
+            // ------------- logging
+
+
+            // ------------- end logging
+
+            foreach (var item in compaignsAutomaticList)
+            {
+
+                // ------ log
+                var compaignLog = CompaignLogService.Init(item, new List<Customer> { customer });
+
+                try
+                {
+                    CompaignService.ExecuteCompagins(new List<Models.Compaign.Compaign>
+                    {
+                        item
+                    }
+                   , customer, null, null, compaignLog);
+
+                    // ------ log
+                    compaignLog.Status = Models.Compaign.CompaignStatus.Sent;
+                    CompaignLogService.Save(compaignLog);
+                }
+                catch (Exception e)
+                {
+                    // ------ log
+                    compaignLog.StoppedLog += e.Message;
+
+                    compaignLog.Status = Models.Compaign.CompaignStatus.Stopped;
+                    CompaignLogService.Save(compaignLog);
+                }
+            }
 
         }
 
@@ -53,7 +87,7 @@ namespace SignalRMVCChat.Service.Compaign
         /// </summary>
         /// <param name="compaignsList"></param>
         /// <param name="customerId"></param>
-        public void ExecuteCompaginsOnRegularTimeInterval(Customer customer, 
+        public void ExecuteCompaginsOnRegularTimeInterval(Customer customer,
             int websiteId)
         {
             if (this.compaignsList == null || this.compaignsList?.Any() == false)
@@ -66,15 +100,46 @@ namespace SignalRMVCChat.Service.Compaign
             if (this.compaignsAutomaticList == null ||
                 this.compaignsAutomaticList?.Any() == false)
             {
-                this.compaignsAutomaticList = CompaignService
-               .AutomaticCondition(compaignsList, customer.Id);
+                if (customer!=null)
+                {
+                    this.compaignsAutomaticList = CompaignService
+                            .AutomaticCondition(compaignsList, customer.Id);
+                }
+         
             }
 
 
             //var compaignsManualQuery = ManualCondition(compaignsList);
 
-            CompaignService.ExecuteCompagins(compaignsAutomaticList
-                , customer,null,null);
+            foreach (var item in compaignsAutomaticList)
+            {
+
+                // ------ log
+                var compaignLog = CompaignLogService.Init(item, new List<Customer> { customer });
+
+                try
+                {
+                    CompaignService.ExecuteCompagins(new List<Models.Compaign.Compaign>
+                    {
+                        item
+                    }
+                   , customer, null, null, compaignLog);
+
+
+                    // ------ log
+                    compaignLog.Status = Models.Compaign.CompaignStatus.Sent;
+                    CompaignLogService.Save(compaignLog);
+                }
+                catch (Exception e)
+                {
+                    // ------ log
+                    compaignLog.StoppedLog += e.Message;
+
+                    compaignLog.Status = Models.Compaign.CompaignStatus.Stopped;
+                    CompaignLogService.Save(compaignLog);
+                }
+            }
+
 
 
         }
@@ -97,8 +162,35 @@ namespace SignalRMVCChat.Service.Compaign
 
             //var compaignsManualQuery = ManualCondition(compaignsList);
 
-            CompaignService.ExecuteCompagins(compaignsAutomaticList, customer
-                , _request, currMySocketReq);
+
+            foreach (var item in compaignsAutomaticList)
+            {
+
+                // ------ log
+                var compaignLog = CompaignLogService.Init(item, new List<Customer> { customer });
+
+                try
+                {
+                    CompaignService.ExecuteCompagins(new List<Models.Compaign.Compaign>
+                    {
+                        item
+                    }
+                   , customer, null, null, compaignLog);
+
+                    // ------ log
+                    compaignLog.Status = Models.Compaign.CompaignStatus.Sent;
+                    CompaignLogService.Save(compaignLog);
+                }
+                catch (Exception e)
+                {
+                    // ------ log
+                    compaignLog.StoppedLog += e.Message;
+
+                    compaignLog.Status = Models.Compaign.CompaignStatus.Stopped;
+                    CompaignLogService.Save(compaignLog);
+                }
+            }
+        
 
         }
 

@@ -3,6 +3,7 @@ using SignalRMVCChat.Areas.Common.Service;
 
 namespace SignalRMVCChat.Areas.Common.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class FileController:Controller
     {
         private readonly MyFileService _myFileService;

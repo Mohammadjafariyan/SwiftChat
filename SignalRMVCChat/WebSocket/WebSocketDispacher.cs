@@ -29,6 +29,8 @@ using SignalRMVCChat.WebSocket.Tracking;
 using SignalRMVCChat.WebSocket.UsersSeparation;
 using SignalRMVCChat.WebSocket.Compaign.Email;
 using SignalRMVCChat.WebSocket.TelegramBot;
+using SignalRMVCChat.WebSocket.Compaign.Stat;
+using SignalRMVCChat.WebSocket.HelpDesk.Stat;
 
 namespace SignalRMVCChat.WebSocket
 {
@@ -84,11 +86,14 @@ namespace SignalRMVCChat.WebSocket
                 case "TelegramBotSettingSave":
                     return new TelegramBotSettingSaveSocketHandler();
                     break;
-                    
-                    #endregion
+
+                #endregion
 
 
                 #region Compaign
+                case "CompaignActivityStat":
+                    return new CompaignActivityStatSocketHandler();
+                    break;
 
                 case "SaveEmailSetting":
                     return new SaveEmailSettingSocketHandler();
@@ -359,6 +364,14 @@ namespace SignalRMVCChat.WebSocket
                 #endregion
 
                 #region HelpDesk
+
+
+                #region HelpDesk Stats
+                case "HelpdeskFeedbackForArticles":
+                    return new HelpdeskFeedbackForArticlesSocketHandler();
+                    break;
+                #endregion
+
 
                 case "HelpDeskGetById":
                     return new HelpDeskGetByIdSocketHandler();

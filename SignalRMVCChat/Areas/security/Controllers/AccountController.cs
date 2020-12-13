@@ -7,6 +7,7 @@ using TelegramBotsWebApplication;
 
 namespace SignalRMVCChat.Areas.security.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class AccountController : BaseAccountController<AppUserService,AppUser>
     {
         public AccountController()

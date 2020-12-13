@@ -29,8 +29,10 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
 
         public override MyEntityResponse<int> Save(T model)
         {
+            var query = base.GetQuery();
 
-           var single= base.GetQuery().SingleOrDefault();
+
+           var single= query.SingleOrDefault();
             if (single == null)
             {
                 db.Set<T>().Add(model);

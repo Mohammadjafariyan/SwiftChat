@@ -4,14 +4,26 @@ import {CurrentUserInfo} from "../../Help/Socket";
 
 class SiteViewsInMonths extends StatBase {
 
-
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        
         CurrentUserInfo.SiteViewsInMonths = this;
-        this.setState({
+        this.state={
             title: 'آمار بازدید در ماه های امسال(با مقایسه)',
             type: null,
             arrName:'SiteViewsInMonths'
-        });
+        };
+
+    }
+    
+
+    componentDidMount() {
+       
+
+        
+        if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        }
     }
 
    

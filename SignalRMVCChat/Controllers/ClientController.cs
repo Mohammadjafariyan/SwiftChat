@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class ClientController : Controller
     {
         // GET: Client

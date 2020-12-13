@@ -49,7 +49,7 @@ namespace SignalRMVCChat.WebSocket
                 StatisticsViewModel StatisticsViewModel = new StatisticsViewModel();
                 if (withStat)
                 {
-                    StatisticsViewModel = await GetStatistics(query, currMySocketReq);
+                    StatisticsViewModel = await GetStatistics(query, currMySocketReq, db);
                 }
 
                 var states = StatisticsViewModel.states;
@@ -62,6 +62,12 @@ namespace SignalRMVCChat.WebSocket
                 var SiteViewsInMonths = StatisticsViewModel.SiteViewsInMonths;
                 var SiteViewsInLast5Year = StatisticsViewModel.SiteViewsInLast5Year;
                 var SiteViewsMostOnlineTime = StatisticsViewModel.SiteViewsMostOnlineTime;
+
+
+                var LeaderBoardOperators = StatisticsViewModel.LeaderBoardOperators;
+                var Rating = StatisticsViewModel.Rating;
+                var CompaignSent = StatisticsViewModel.CompaignSent;
+                var HelpDeskArticleRead = StatisticsViewModel.HelpDeskArticleRead;
 
 
                 _logService.Save();
@@ -80,6 +86,12 @@ namespace SignalRMVCChat.WebSocket
                         SiteViewsInMonths = SiteViewsInMonths,
                         SiteViewsInLast5Year = SiteViewsInLast5Year,
                         SiteViewsMostOnlineTime = SiteViewsMostOnlineTime,
+
+                        //--- new stats:
+                        LeaderBoardOperators,
+                        Rating,
+                        CompaignSent,
+                        HelpDeskArticleRead
                     },
                     Name = "getVisitedPagesForCurrentSiteCallback",
                 });
@@ -87,7 +99,8 @@ namespace SignalRMVCChat.WebSocket
         }
 
         private async Task<StatisticsViewModel> GetStatistics(IQueryable<CustomerTrackInfo> query,
-            MyWebSocketRequest currMySocketReq)
+            MyWebSocketRequest currMySocketReq,
+            GapChatContext db)
         {
             StatisticsViewModel StatisticsViewModel = new StatisticsViewModel();
 
@@ -130,17 +143,313 @@ namespace SignalRMVCChat.WebSocket
 
 
 
-            /*------------------------------------ 7.	رتبه بندی اپراتور ها ----------------------------------*/
-          //  StatisticsViewModel.OperatorsOrderComparedToDates = await GetOperatorsOrderComparedToDates(filtered);
+            /*------------------------------------ 7.leaderboard	رتبه بندی اپراتور ها ----------------------------------*/
+            StatisticsViewModel.LeaderBoardOperators = GetLeaderBoardOperators(query, db, currMySocketReq);
 
 
 
+            /*------------------------------------ 7.Rating	ا ----------------------------------*/
+            StatisticsViewModel.Rating = GetRating(filtered, db, currMySocketReq);
+
+
+
+            /*------------------------------------ 7.آمار ارسال کمپین	ا ----------------------------------*/
+            StatisticsViewModel.CompaignSent = await GetCompaignSent(db, currMySocketReq);
+
+
+
+            /*------------------------------------ 7آمار بازدید مقالات 	ا ----------------------------------*/
+            StatisticsViewModel.HelpDeskArticleRead = await GetHelpDeskArticleRead(db, currMySocketReq);
 
 
             return StatisticsViewModel;
         }
 
-      
+        private async Task<dynamic> GetHelpDeskArticleRead(GapChatContext db, MyWebSocketRequest currMySocketReq)
+        {
+            var articles = db.Articles
+                .Include("Category")
+                .Include("Category.HelpDesk")
+                 .Where(c => c.Category.HelpDesk.MyWebsiteId == currMySocketReq.MyWebsite.Id)
+                 .Select(c => c.Id);
+
+
+            var visits = db.ArticleVisits.Where(
+v => articles.Contains(v.ArticleId));
+
+            var filterViewModel = GetFilter();
+            if (filterViewModel?.fromTime.HasValue == true)
+            {
+                visits = visits.Where(
+                    c => c.DateTime >= filterViewModel.fromTime);
+            }
+
+            if (filterViewModel?.toTime.HasValue == true)
+            {
+                visits = visits.Where(
+                    c => c.DateTime <= filterViewModel.toTime);
+            }
+
+            if (filterViewModel?.rangeViewModel?.From != null)
+            {
+                visits = visits.Where(
+                    c => c.DateTime >= filterViewModel.rangeViewModel.From);
+            }
+
+            if (filterViewModel?.rangeViewModel?.To !=null)
+            {
+                visits = visits.Where(
+                    c => c.DateTime <= filterViewModel.rangeViewModel.To);
+            }
+
+
+
+            var list = await visits
+             .GroupBy(q => q.ArticleId)
+             .Select(q => new
+             {
+                 Key = q.Key,
+                 // در گرافیک از یک متد استفاده میکنیم بخاطر ان از این عنوان استفاده شد
+                 VisitCount = q.Count(),
+                 VisitorsCount = 0,
+             }).OrderByDescending(o => o.VisitCount).ToListAsync();
+
+
+            return list;
+
+        }
+
+        private async Task<dynamic> GetCompaignSent(GapChatContext db, MyWebSocketRequest currMySocketReq)
+        {
+            var websiteCompaigns = db.Compaigns
+                 .Where(c => c.MyWebsiteId == currMySocketReq.MyWebsite.Id)
+                 .Select(c => c.Id);
+
+            var compaignLogs = db.CompaignLogs.Where(c => websiteCompaigns.Contains(c.CompaignId));
+
+
+            var filterViewModel = GetFilter();
+            if (filterViewModel?.fromTime.HasValue == true)
+            {
+                compaignLogs = compaignLogs.Where(
+                    c => c.ExecutionDateTime >= filterViewModel.fromTime);
+            }
+
+            if (filterViewModel?.toTime.HasValue == true)
+            {
+                compaignLogs = compaignLogs.Where(
+                    c => c.ExecutionDateTime <= filterViewModel.toTime);
+            }
+
+            if (filterViewModel?.rangeViewModel?.From !=null)
+            {
+                compaignLogs = compaignLogs.Where(
+                    c => c.ExecutionDateTime >= filterViewModel.rangeViewModel.From);
+            }
+
+            if (filterViewModel?.rangeViewModel?.To != null)
+            {
+                compaignLogs = compaignLogs.Where(
+                    c => c.ExecutionDateTime <= filterViewModel.rangeViewModel.To);
+            }
+
+
+
+            var list = await compaignLogs
+             .GroupBy(q => q.ExecutionDateTime)
+             .Select(q => new
+             {
+                 Key = q.Key,
+                 // در گرافیک از یک متد استفاده میکنیم بخاطر ان از این عنوان استفاده شد
+                 VisitCount = q.Count(),
+                 VisitorsCount = 0,
+             }).OrderByDescending(o => o.VisitCount).ToListAsync();
+
+
+            return list.Select(q => new
+            {
+                Key = MyGlobal.ToIranianDate(q.Key),
+                // در گرافیک از یک متد استفاده میکنیم بخاطر ان از این عنوان استفاده شد
+                VisitCount = q.VisitCount,
+                VisitorsCount = 0,
+            });
+
+        }
+
+        private RatingStatViewModel GetRating(IQueryable<CustomerTrackInfo> filtered, GapChatContext db, MyWebSocketRequest currMySocketReq)
+        {
+
+            var articleIds = db.Articles
+                 .Include(a => a.Category)
+                 .Include("Category.HelpDesk")
+                 .Where(a => a.Category.HelpDesk.MyWebsiteId == currMySocketReq.MyWebsite.Id)
+                 .Select(a => a.Id);
+
+            var commentsCount = db.Comments.Where(c => articleIds.Contains(c.ArticleId))
+                 .Count();
+
+            var list2=db.Comments.ToList();
+
+            var list = filtered.ToList();
+            var ratingList = list.
+                Select(c=>c.Customer).Distinct().
+              Where(f => f.RatingCount != null).
+              GroupBy(c => c.RatingCount.Count)
+              .Select(c => new
+              {
+                  Rating=c.Key,
+                  Count=c.Count()
+
+              }).ToList();
+
+            for (int i = 0; i < 6; i++)
+            {
+                if (ratingList.Any(r=>r.Rating==i)==false)
+                {
+                    ratingList.Add(new
+                    {
+                        Rating=i,
+                        Count=0
+                    });
+                }
+            }
+            ratingList = ratingList.OrderByDescending(r => r.Rating).ToList();
+
+
+            var av=ratingList.Average(r => r.Rating);
+
+
+
+
+            return new RatingStatViewModel
+            {
+                RatingList = ratingList,
+                CommentsCount = commentsCount,
+                MeanScore = av
+            };
+        }
+
+        private dynamic GetLeaderBoardOperators(IQueryable<CustomerTrackInfo> query, GapChatContext db, MyWebSocketRequest currMySocketReq)
+        {
+            var chatsOfCustomers = db.Chats.Include(c => c.MyAccount).Where(c => query.Any(q => q.CustomerId == c.Id));
+
+
+            var myAccountsChatted = chatsOfCustomers
+                .GroupBy(c => c.MyAccount).ToList();
+
+            if (MyGlobal.IsAttached)
+            {
+                var list=myAccountsChatted.ToList();
+            }
+
+            // ----------------  مرتب سازی 
+            var todayStat = myAccountsChatted.OrderByDescending
+                 (o => o.Count()).Select(m => new
+                 {
+                     Key=m.Key,
+                     TotalChats=m.Count(),
+                     TotalCustomersChat=m.GroupBy(c=>c.CustomerId).Select(c=>c.Key).Count()
+
+                 }).ToList();
+
+            // ---------------- مرتب سازی دیروز
+            var yesterdayStat = myAccountsChatted.OrderByDescending
+               (o => o.Count(c => c.CreateDateTime.Date == DateTime.Now.AddDays(-1).Date)).Select(m => m.Key).ToList();
+
+
+            //----------------- مقایسه مرتبه ها و تصمیم پیشرفت و پسرفت
+
+            for (int i = 0; i < todayStat.Count; i++)
+            {
+                if (i > yesterdayStat.Count)
+                {
+                    continue;
+                }
+
+                if (todayStat[i].Key.Id == yesterdayStat[i].Id)
+                {
+                    //equals not changed
+
+                    todayStat[i].Key.LeaderBoardStatus = LeaderBoardStatus.NotChanged;
+                }
+                else
+                {
+                    var newIndex = yesterdayStat.Select(y => y.Id)
+                        .ToList().IndexOf(todayStat[i].Key.Id);
+
+                    if (newIndex > i)
+                    {
+                        todayStat[i].Key.LeaderBoardStatus = LeaderBoardStatus.Decreased;
+
+                    }
+                    else
+                    {
+                        todayStat[i].Key.LeaderBoardStatus = LeaderBoardStatus.Increased;
+
+                    }
+                }
+
+
+            }
+
+           var myaccounts= db.MyAccounts.ToList()
+                .Where(m => m.MyWebsites.Any(w => w.Id == currMySocketReq.MyWebsite.Id)
+                || m.AccessWebsites.Contains(currMySocketReq.MyWebsite.Id));
+
+            foreach (var acc in myaccounts)
+            {
+                if (todayStat.Any(t => t.Key.Id == acc.Id)==false)
+                {
+                    acc.LeaderBoardStatus = LeaderBoardStatus.NotChanged;
+                    todayStat.Add(new
+                    {
+                        Key= acc,
+                        TotalChats=0,
+                        TotalCustomersChat=0
+                    });
+                }
+            }
+
+
+            return todayStat;
+
+        }
+
+
+        private StatFilterViewModel GetFilter()
+        {
+
+            string range = GetParam<string>("range", false);
+            string from = GetParam<string>("from", false);
+            string to = GetParam<string>("to", false);
+
+
+            DateTime? fromTime = null;
+            DateTime? toTime = null;
+            ParsedRangeDateTime rangeViewModel = null;
+
+            if (string.IsNullOrEmpty(from))
+            {
+                fromTime = MyGlobal.TryParseTime(from);
+            }
+
+            if (string.IsNullOrEmpty(to))
+            {
+                toTime = MyGlobal.TryParseTime(to);
+            }
+
+            if (string.IsNullOrEmpty(range))
+            {
+                rangeViewModel = MyGlobal.TryParseRangeOrOneDate(range);
+            }
+
+            return new StatFilterViewModel
+            {
+                fromTime = fromTime,
+                toTime = toTime,
+                rangeViewModel = rangeViewModel
+            };
+        }
         private IQueryable<CustomerTrackInfo> FilterForm(IQueryable<CustomerTrackInfo> query)
         {
             /* range:this.state.range,
@@ -381,7 +690,7 @@ namespace SignalRMVCChat.WebSocket
         private async Task<dynamic> GetMostExitUrlInSite(IQueryable<CustomerTrackInfo> query)
         {
             return await query.Where(q => q.CustomerTrackInfoType == CustomerTrackInfoType.ExitWebsite)
-                .GroupBy(q => new {q.Url, q.PageTitle})
+                .GroupBy(q => new { q.Url, q.PageTitle })
                 .Select(q => new
                 {
                     Key = q.Key.Url + "(" + q.Key.PageTitle + ")",
@@ -476,5 +785,26 @@ namespace SignalRMVCChat.WebSocket
         public dynamic SiteViewsInMonths { get; set; }
         public dynamic SiteViewsInLast5Year { get; set; }
         public dynamic SiteViewsMostOnlineTime { get; set; }
+
+
+        //------------- new stats:
+        public dynamic LeaderBoardOperators { get; set; }
+        public RatingStatViewModel Rating { get; internal set; }
+        public dynamic CompaignSent { get; internal set; }
+        public dynamic HelpDeskArticleRead { get; internal set; }
+    }
+
+    public class StatFilterViewModel
+    {
+        internal DateTime? fromTime;
+        internal DateTime? toTime;
+        internal ParsedRangeDateTime rangeViewModel;
+    }
+
+    public class RatingStatViewModel
+    {
+        public dynamic RatingList { get; set; }
+        public int CommentsCount { get; internal set; }
+        public double MeanScore { get; internal set; }
     }
 }

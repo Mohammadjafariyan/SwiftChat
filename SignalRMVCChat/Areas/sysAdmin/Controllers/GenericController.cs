@@ -10,6 +10,7 @@ using TelegramBotsWebApplication.Areas.Admin.Models;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 namespace TelegramBotsWebApplication.Areas.Admin.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     [CurrentRequstSetterFilter]
     [MyAuthorizeFilter]
     public abstract class GenericController<T> : Controller where T:class,IEntity,new()

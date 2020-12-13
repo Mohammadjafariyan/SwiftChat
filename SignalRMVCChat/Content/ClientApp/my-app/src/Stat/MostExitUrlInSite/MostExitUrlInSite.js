@@ -5,14 +5,25 @@ import {_GetRandomColor} from "../../Components/Utilities/ColorsList";
 
 class MostExitUrlInSite extends StatBase {
 
-
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        
         CurrentUserInfo.MostExitUrlInSite = this;
-        this.setState({
+        this.state={
             title: 'آمار صفحه ای که بیشترین خروج از سایت را داشته ',
             type: null,
             arrName:'MostExitUrlInSite'
-        });
+        };
+    }
+    
+
+    componentDidMount() {
+       
+
+        
+        if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        }
     }
 }
 

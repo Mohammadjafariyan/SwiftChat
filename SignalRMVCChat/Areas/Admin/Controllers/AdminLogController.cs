@@ -2,6 +2,7 @@
 
 namespace SignalRMVCChat.Areas.Admin.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class AdminLogController : Controller
     {
         // GET

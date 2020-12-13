@@ -16,6 +16,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Areas.security.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public abstract class BaseAccountController<TUserService,T> : Controller where TUserService:GenericService<T>,IAppUserService<T> where  T:Entity,new()
     {
         public TUserService UserService;

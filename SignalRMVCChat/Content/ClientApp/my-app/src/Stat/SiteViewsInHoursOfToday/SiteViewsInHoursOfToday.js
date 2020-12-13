@@ -4,14 +4,26 @@ import {CurrentUserInfo} from "../../Help/Socket";
 
 class SiteViewsInHoursOfToday extends StatBase {
 
-
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        
         CurrentUserInfo.SiteViewsInHoursOfToday = this;
-        this.setState({
+        this.state={
             title: 'آمار بازدید در طی ساعت های روز ',
             type: null,
             arrName:'SiteViewsInHoursOfToday'
-        });
+        };
+    }
+    
+
+    componentDidMount() {
+      
+
+
+        
+        if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        }
     }
 
   

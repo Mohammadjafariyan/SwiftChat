@@ -4,6 +4,7 @@ using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Areas.Admin.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     [MyAuthorizeFilter(Roles = "superAdmin")]
     public class AdminDashboardController:Controller
     {

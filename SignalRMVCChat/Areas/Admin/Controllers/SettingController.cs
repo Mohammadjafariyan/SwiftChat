@@ -7,6 +7,7 @@ using TelegramBotsWebApplication.Areas.Admin.Models;
 namespace SignalRMVCChat.Areas.Admin.Controllers
 {
     
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     [MyAuthorizeFilter(Roles = "superAdmin")]
     public class SettingController:GenericController<Setting>
     {

@@ -11,6 +11,7 @@ using TelegramBotsWebApplication;
 
 namespace SignalRMVCChat.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class HomeController : Controller
     {
         [AllowAnonymous]

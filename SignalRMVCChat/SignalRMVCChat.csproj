@@ -52,6 +52,9 @@
       <HintPath>..\packages\EntityFramework.DynamicFilters.3.2.0\lib\net40\EntityFramework.DynamicFilters.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HtmlMonkey, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SoftCircuits.HtmlMonkey.1.3.1\lib\netstandard2.0\HtmlMonkey.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
       <Private>True</Private>
@@ -223,6 +226,7 @@
     <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\CompaignStatController.cs" />
     <Compile Include="Controllers\fakeUserInfoController.cs" />
     <Compile Include="Controllers\HelpDeskApiController.cs" />
     <Compile Include="Controllers\HelpDeskController.cs" />
@@ -310,6 +314,7 @@
     <Compile Include="Service\Compaign\CompaignTemplateSamples.cs" />
     <Compile Include="Service\Compaign\CompaignTemplateService.cs" />
     <Compile Include="Service\Compaign\CompaignTriggerService.cs" />
+    <Compile Include="Service\Compaign\Email\EmailHtmlManipulator.cs" />
     <Compile Include="Service\Compaign\Email\EmailService.cs" />
     <Compile Include="Service\CustomerDataService.cs" />
     <Compile Include="Service\CustomerTagService.cs" />
@@ -450,6 +455,7 @@
     <Compile Include="WebSocket\Compaign\GetCompaignListSocketHandler.cs" />
     <Compile Include="WebSocket\Compaign\GetCompaignTemplatesSocketHandler.cs" />
     <Compile Include="WebSocket\Compaign\SetIsEnabledCompaignSocketHandler.cs" />
+    <Compile Include="WebSocket\Compaign\Stat\CompaignActivityStatSocketHandler.cs" />
     <Compile Include="WebSocket\Contacts\GetContactsSocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\DeleteKeySocketHandler.cs" />
     <Compile Include="WebSocket\CustomerProfile\GetCustomerDataListSocketHandler.cs" />
@@ -504,6 +510,7 @@
     <Compile Include="WebSocket\HelpDesk\Language\LanguageGetListSocketHandler.cs" />
     <Compile Include="WebSocket\HelpDesk\Language\SelectHelpDeskSocketHandler.cs" />
     <Compile Include="WebSocket\HelpDesk\RemoveLanguageSocketHandler.cs" />
+    <Compile Include="WebSocket\HelpDesk\Stat\HelpdeskFeedbackForArticlesSocketHandler.cs" />
     <Compile Include="WebSocket\ISocketHandler.cs" />
     <Compile Include="WebSocket\LiveAssist\LiveAssistFireEventByAdminSocketHandler.cs" />
     <Compile Include="WebSocket\LiveAssist\LiveAssistFireEventSocketHandler.cs" />

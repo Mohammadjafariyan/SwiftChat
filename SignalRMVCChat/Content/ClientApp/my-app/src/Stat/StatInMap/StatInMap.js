@@ -15,6 +15,11 @@ class StatInMap extends PageVisitStat {
 
 
         this.setState({title: 'نمایش در نقشه'})
+
+        
+        if(this.props.data){
+            this.getVisitedPagesForCurrentSiteCallback(this.props.data)
+        }
     }
 
     fill(trackinfosViewModellist) {
