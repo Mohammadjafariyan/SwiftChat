@@ -18,6 +18,7 @@ using SignalRMVCChat.Models.Compaign;
 using SignalRMVCChat.Models.Compaign.Email;
 using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Models.HelpDesk;
+using SignalRMVCChat.Models.MyWSetting;
 using SignalRMVCChat.Models.TelegramBot;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.Compaign;
@@ -530,7 +531,7 @@ namespace SignalRMVCChat.Models.GapChatContext
             #endregion
 
             #region TELEGRAM BOT
-          
+
             modelBuilder.Entity<MyWebsite>()
              .HasMany(r => r.TelegramBots)
              .WithRequired(o => o.MyWebsite)
@@ -557,17 +558,37 @@ namespace SignalRMVCChat.Models.GapChatContext
               .WithRequired(o => o.Article)
               .HasForeignKey(o => o.ArticleId).WillCascadeOnDelete(false);
 
+
+            modelBuilder.Entity<Customer>()
+              .HasMany(r => r.Comments)
+              .WithOptional(o => o.Customer)
+              .HasForeignKey(o => o.CustomerId).WillCascadeOnDelete(false);
+
+
+
+            #endregion
+
+            #region mywebsite setting
+
+            modelBuilder.Entity<MyWebsiteSetting>()
+             .HasRequired(r => r.MyWebsite)
+             .WithMany(o => o.MyWebsiteSettings)
+             .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
+
             #endregion
 
             base.OnModelCreating(modelBuilder);
         }
 
-        #region TELEGRAM BOT
+        #region mywebsite setting
+        public DbSet<MyWebsiteSetting> MyWebsiteSettings { get; set; }
+        #endregion
 
-        
+
+        #region TELEGRAM BOT
         public DbSet<TelegramBotSetting> TelegramBotSettings { get; set; }
         public DbSet<TelegramBotRegisteredOperator> TelegramBotRegisteredOperators { get; set; }
-        
+
         #endregion
 
 
@@ -881,6 +902,25 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             BotInit(gapChatContext);
 
+
+            gapChatContext.Forms.Add(new Form
+            {
+                MyWebsiteId = 1,
+                MyAccountId = 1,
+                Elements = new List<FormElement>
+                {
+                    new FormElement
+                    {
+                        Name="email",
+                        FieldName="email",
+                        type="text",
+                    }
+                },
+                Name = "فرم ایمیل"
+            });
+            gapChatContext.SaveChanges();
+
+
             IsSeed = true;
         }
 
@@ -906,7 +946,7 @@ namespace SignalRMVCChat.Models.GapChatContext
             Bot.Bot bot =
                 JsonConvert.DeserializeObject<Bot.Bot>((JsonConvert.SerializeObject(requeset.Body)));
 
-            
+
             gapChatContext.Bots.Add(bot);
 
 
@@ -958,6 +998,20 @@ namespace SignalRMVCChat.Models.GapChatContext
 
 
             TelegramBotSettingService.Init(gapChatContext);
+
+
+
+            #region yWebsiteSetting
+            string myWebsiteSettingJson = @" {'IsLockToUrl':true,'InActivePages':[{'Text':'sdf','Title':'www.','ApplyType':'include','rn':0.24517144478153452},{'Text':'login','Title':'login','ApplyType':'include','rn':0.1380750563467894}],'ActivePages':[{'Text':'home','Title':'home','ApplyType':'include','rn':0.9419052469753286}],'WorkingHourSettingMenu':'workingHourSetting_sentForm','workingHourSetting_sentFormTopText':'<p>زمانی که آفلاین هستم ، فرم تماس با مشخصات زیر ، برای کاربر نمایش داده شود</p><p><br></p>','workingHourSetting_sentMessageText':'<p>sdfsdfsdfsdf</p>','workingHourSetting_sentFormSelect':{'OnlyMe':false,'Name':'فرم ایمیل','AfterMessage':null,'Elements':[],'MyAccountId':1,'MyAccount':null,'MyWebsiteId':1,'MyWebsite':null,'FormValues':null,'Message':null,'IsDeleted':false,'Id':1}}";
+
+            MyWebsiteSetting _MyWebsiteSetting = JsonConvert.DeserializeObject<MyWebsiteSetting>(myWebsiteSettingJson);
+
+            _MyWebsiteSetting.MyWebsiteId = 1;
+
+            gapChatContext.MyWebsiteSettings.Add(_MyWebsiteSetting);
+
+            gapChatContext.SaveChanges();
+            #endregion
 
         }
     }

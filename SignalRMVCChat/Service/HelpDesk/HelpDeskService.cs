@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Engine.SysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models.GapChatContext;
@@ -11,7 +12,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Service.HelpDesk
 {
-    public class HelpDeskService:GenericService<Models.HelpDesk.HelpDesk>
+    public class HelpDeskService : GenericService<Models.HelpDesk.HelpDesk>
     {
         private CategoryImageService CategoryImageService = Injector.Inject<CategoryImageService>();
         public HelpDeskService() : base(null)
@@ -33,48 +34,48 @@ namespace SignalRMVCChat.Service.HelpDesk
                     throw new Exception("db is null ::::::");
                 }
 
-                var query= GetHelpDeskQuery(db,websiteBaseUrl,lang);
+                var query = GetHelpDeskQuery(db, websiteBaseUrl, lang);
 
                 var helpDeskIds = query.Select(q => q.Id);
 
-                var cateogies= db.Categories.Where(c => helpDeskIds.Contains(c.HelpDeskId));
+                var cateogies = db.Categories.Where(c => helpDeskIds.Contains(c.HelpDeskId));
 
                 var categoryIds = cateogies.Select(c => c.Id);
 
-                var articles= db.Articles
-                    .Include(a=>a.ArticleVisits)
+                var articles = db.Articles
+                    .Include(a => a.ArticleVisits)
                     .Where(a => categoryIds.Contains(a.CategoryId))
-                    .OrderByDescending(a=>a.ArticleVisits.Count()).Take(10).ToListAsync();
+                    .OrderByDescending(a => a.ArticleVisits.Count()).Take(10).ToListAsync();
 
                 var helpDesk = await query.FirstOrDefaultAsync();
 
-                if (helpDesk==null)
+                if (helpDesk == null)
                 {
                     throw new Exception("مرکز پشتیبانی برای این سایت یافت نشد");
                 }
 
-                var languages= GetLanguages(query, db);
+                var languages = GetLanguages(query, db);
 
-                
+
                 return new HelpDeskHomeViewModel
                 {
                     Articles = await articles,
                     Categories = await cateogies.ToListAsync(),
-                    HelpDesk=helpDesk,
-                    Languages=await languages.ToListAsync(),
+                    HelpDesk = helpDesk,
+                    Languages = await languages.ToListAsync(),
 
                 };
             }
 
-          
-          
-          
+
+
+
 
         }
 
         private IQueryable<Models.HelpDesk.Language> GetLanguages(IQueryable<Models.HelpDesk.HelpDesk> query, GapChatContext db)
         {
-            var thisWebsiteAllHelpDesks= db.HelpDesks.Where(h => query.Select(q => q.MyWebsiteId).Contains(h.MyWebsiteId));
+            var thisWebsiteAllHelpDesks = db.HelpDesks.Where(h => query.Select(q => q.MyWebsiteId).Contains(h.MyWebsiteId));
 
             return thisWebsiteAllHelpDesks.Include(h => h.Language)
                 .Select(h => h.Language);
@@ -83,18 +84,18 @@ namespace SignalRMVCChat.Service.HelpDesk
         private IQueryable<Models.HelpDesk.HelpDesk> GetHelpDeskQuery(GapChatContext gapChatContext,
             string websiteBaseUrl, string lang)
         {
-            var query= gapChatContext.HelpDesks
+            var query = gapChatContext.HelpDesks
                 .Include(c => c.Language)
                 .Include(c => c.MyWebsite)
                 .Where(c => c.MyWebsite.BaseUrl.Contains(websiteBaseUrl));
 
             if (!string.IsNullOrEmpty(lang))
             {
-                query=query.Where(c => c.Language.alpha2Code == lang);
+                query = query.Where(c => c.Language.alpha2Code == lang);
             }
             else
             {
-                query=query.Where(c => c.Selected);
+                query = query.Where(c => c.Selected);
             }
 
             return query;
@@ -107,7 +108,7 @@ namespace SignalRMVCChat.Service.HelpDesk
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<ArticleViewModel> GetHelpDeskArticle(string title, string websiteBaseUrl, string lang)
+        public async Task<ArticleViewModel> GetHelpDeskArticle(string title, string websiteBaseUrl, string lang, HttpRequestBase request)
         {
 
             using (var db = ContextFactory.GetContext(null) as GapChatContext)
@@ -121,37 +122,52 @@ namespace SignalRMVCChat.Service.HelpDesk
 
                 var helpDeskIds = query.Select(q => q.Id);
 
-                var cateogies= db.Categories.Where(c => helpDeskIds.Contains(c.HelpDeskId));
+                var cateogies = db.Categories.Where(c => helpDeskIds.Contains(c.HelpDeskId));
 
                 var categoryIds = cateogies.Select(c => c.Id);
 
                 var articles = db.Articles
-                    .Include(c=>c.Category)
-                    .Include(c=>c.ArticleContent).Where(a => categoryIds.Contains(a.CategoryId));
-                
-                var article= articles.Where(c=>c.Title.Contains(title)).FirstOrDefault();
-                if (article==null)
+                    .Include(c => c.Category)
+                    .Include(c => c.ArticleContent).Where(a => categoryIds.Contains(a.CategoryId));
+
+                var article = articles.Where(c => c.Title.Contains(title)).FirstOrDefault();
+                if (article == null)
                 {
                     throw new Exception("مقاله یافت نشد");
                 }
-                
-                var relatedArticles= articles.Where(c=>c.Id!=article.Id)
-                    .OrderByDescending(o=>o.Id).Take(10).ToList();
 
-                
+                var relatedArticles = articles.Where(c => c.Id != article.Id)
+                    .OrderByDescending(o => o.Id).Take(10).ToList();
+
+
                 var helpDesk = query.FirstOrDefault();
 
 
-                var languages= GetLanguages(query, db);
+                if (request != null)
+                {
+                    db.ArticleVisits.Add(new ArticleVisit
+                    {
+                        ArticleId = article.Id,
+                        DateTime = DateTime.Now,
+                        IpAddress = request.UserHostAddress,
+                        UserAgent = request.UserAgent,
+                        Browser = request.Browser?.Browser,
+                    });
+
+                    db.SaveChanges();
+                }
+
+
+                var languages = GetLanguages(query, db);
 
                 return new ArticleViewModel
                 {
 
-                    Article=article,
-                    RelatedArticles= relatedArticles,
-                    HelpDesk=helpDesk,
-                    Languages=await languages.ToListAsync()
-                    
+                    Article = article,
+                    RelatedArticles = relatedArticles,
+                    HelpDesk = helpDesk,
+                    Languages = await languages.ToListAsync()
+
                 };
             }
         }
@@ -169,40 +185,40 @@ namespace SignalRMVCChat.Service.HelpDesk
 
                 var helpDeskIds = query.Select(q => q.Id);
 
-                var cateogies= db.Categories.Where(c => helpDeskIds.Contains(c.HelpDeskId));
+                var cateogies = db.Categories.Where(c => helpDeskIds.Contains(c.HelpDeskId));
 
                 var categoryIds = cateogies.Select(c => c.Id);
 
                 var articles = db.Articles
-                    .Include(c=>c.Category).Where(a => categoryIds.Contains(a.CategoryId))
+                    .Include(c => c.Category).Where(a => categoryIds.Contains(a.CategoryId))
                     .AsQueryable();
-                
-                
-                
-                 articles= articles.Where(c=>c.Category.Title.Contains(categoryTitle));
 
 
-                 var category= cateogies.Where(c => c.Title.Contains(categoryTitle)).FirstOrDefault();
-                 if (category==null)
-                 {
-                     throw new Exception("دسته بندی یافت نشد");
-                 }
+
+                articles = articles.Where(c => c.Category.Title.Contains(categoryTitle));
 
 
-                 var helpDesk = query.FirstOrDefault();
-                 
-                 var languages= GetLanguages(query, db);
+                var category = cateogies.Where(c => c.Title.Contains(categoryTitle)).FirstOrDefault();
+                if (category == null)
+                {
+                    throw new Exception("دسته بندی یافت نشد");
+                }
+
+
+                var helpDesk = query.FirstOrDefault();
+
+                var languages = GetLanguages(query, db);
 
 
                 return new CategoryArticlesViewModel
                 {
 
-                    Articles=articles.ToList(),
-                    Cateogies= cateogies.ToList(),
-                    Category=category,
-                    HelpDesk=helpDesk,
-                    Languages=await languages.ToListAsync()
-                    
+                    Articles = articles.ToList(),
+                    Cateogies = cateogies.ToList(),
+                    Category = category,
+                    HelpDesk = helpDesk,
+                    Languages = await languages.ToListAsync()
+
                 };
             }
         }

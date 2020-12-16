@@ -3673,10 +3673,7 @@ class DomManager {
 
             }
 
-            if (CurrentUserInfo.targetId) {
                 CurrentUserInfo.plugin.readChat(CurrentUserInfo.targetId);
-
-            }
 
 
             /*     if (!CurrentUserInfo.IsCustomer) {
@@ -3922,7 +3919,10 @@ let MyCaller = {
 
             return;
         } else {
-            clearMsg(null);
+            //if (clearMsg) {
+            //    clearMsg(null);
+
+            //}
 
         }
 

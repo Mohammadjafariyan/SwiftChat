@@ -574,11 +574,29 @@ class dispatcher {
 
         break;
       case "helpDeskSaveDetailCallback":
-        if (CurrentUserInfo.HelpDeskSetting) {
-          CurrentUserInfo.HelpDeskSetting.helpDeskSaveDetailCallback(res);
+        if (CurrentUserInfo.SettingLayout) {
+          CurrentUserInfo.SettingLayout.helpDeskSaveDetailCallback(res);
         }
 
         break;
+
+        
+
+      /*=============MyWebsiteSetting===========*/
+      case "getMyWebsiteSettingCallback":
+        if (CurrentUserInfo.SettingLayout) {
+          CurrentUserInfo.SettingLayout.getMyWebsiteSettingCallback(res);
+        }
+        break;
+
+        case "saveMyWebsiteSettingCallback":
+          if (CurrentUserInfo.SettingBody) {
+            CurrentUserInfo.SettingBody.saveMyWebsiteSettingCallback(res);
+          }
+          break;
+
+      /*=============end===========*/
+
       /*======= helpDeskSettin
                   
                   
@@ -586,6 +604,11 @@ class dispatcher {
                    */
       /*=============article===========*/
 
+      
+      case "helpdeskFeedbackForArticlesCallback":
+        if (CurrentUserInfo.Comments) {
+          CurrentUserInfo.Comments.helpdeskFeedbackForArticlesCallback(res);
+        }
       case "articleSaveCallback":
         if (CurrentUserInfo.SaveArticle) {
           CurrentUserInfo.SaveArticle.articleSaveCallback(res);
@@ -782,6 +805,11 @@ class dispatcher {
       case "getCreatedFormsCallback":
         if (CurrentUserInfo.CreatedForms) {
           CurrentUserInfo.CreatedForms.getCreatedFormsCallback(res);
+        }
+
+
+        if (CurrentUserInfo.FormSelect) {
+          CurrentUserInfo.FormSelect.getCreatedFormsCallback(res);
         }
 
         if (CurrentUserInfo.CustomerToolbar) {

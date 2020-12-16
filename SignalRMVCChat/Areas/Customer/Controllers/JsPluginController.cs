@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.Service.MyWSetting;
 using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Areas.Customer.Controllers
@@ -13,8 +15,8 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
     [AllowCrossSite]
     public class JsPluginController : Controller
     {
-     
-        
+
+
         [HttpGet]
         public ActionResult CustomerChatHtml(string token)
         {
@@ -28,38 +30,86 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
 
             #region CHECK BLOCKING
 
-            if(Request.Cookies["customerToken"]!=null)
+            if (Request.Cookies["customerToken"] != null)
             {
-                
-                var customerToken=Request.Cookies["customerToken"].Value;
+
+                var customerToken = Request.Cookies["customerToken"].Value;
 
                 try
                 {
                     customerToken = Uri.UnescapeDataString(customerToken);
 
-                    var customerId= MySpecificGlobal.ParseToken(customerToken).customerId;
+                    var customerId = MySpecificGlobal.ParseToken(customerToken).customerId;
                     if (customerId.HasValue)
                     {
-                        var customerProviderService=  Injector.Inject<CustomerProviderService>();
+                        var customerProviderService = Injector.Inject<CustomerProviderService>();
 
-                        var customer= customerProviderService.GetById(customerId.Value, "کاربر یافت نشد").Single;
+                        var customer = customerProviderService.GetById(customerId.Value, "کاربر یافت نشد").Single;
 
-                        if (customer!=null && customer.IsBlocked)
+                        if (customer != null && customer.IsBlocked)
                         {
                             return new HttpStatusCodeResult(200);
                         }
                     }
-      
+
                 }
                 catch (Exception e)
                 {
-                   //ignore
+                    //ignore
                 }
             }
 
             #endregion
-            
-            
+
+
+            #region CHECK MYWEBSITE SETTING
+            if (Request.Cookies["customerToken"] != null)
+            {
+
+                var customerToken = Request.Cookies["customerToken"].Value;
+
+                try
+                {
+                    customerToken = Uri.UnescapeDataString(customerToken);
+
+                    var request = MySpecificGlobal.ParseToken(customerToken);
+                    if (request != null)
+                    {
+                        var myWebsiteSettingService = Injector.Inject<MyWebsiteSettingService>();
+
+                        var myWebsiteSetting = myWebsiteSettingService
+                            .GetQuery().FirstOrDefault(c => c.MyWebsiteId == request.websiteId);
+
+                        if (myWebsiteSetting?.CanAccessPage(Request.Url) == false)
+                        {
+                            return new HttpStatusCodeResult(200);
+                        }
+
+                        if (myWebsiteSetting?.IsThisPageInActive(Request.Url) == true)
+                        {
+                            return new HttpStatusCodeResult(200);
+                        }
+
+                        //--------- زمانی که آفلاین هستم ، ابزارک گفتگو در سایت من نمایش داده نشود
+                        if (myWebsiteSetting?.WorkingHourSettingMenu == "workingHourSetting_hide"
+                            &&
+
+                            //------ no admin online:
+                            WebsiteSingleTon.IsAllAdminsOffline(request?.websiteId))
+                        {
+                            return new HttpStatusCodeResult(200);
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    //ignore
+                }
+            }
+
+            #endregion
+
             return PartialView("CustomerChatHtml", pluginCustomized);
         }
 
@@ -83,12 +133,12 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
             return ResourceJsHelper(token);
         }
 
-        private FileContentResult ResourceJsHelper(string token,string requestUrl= "/Customer/JsPlugin/CustomerChatHtml?token=",
-            string filePath= "/Content/JsPlugin/JsPlugin.js")
+        private FileContentResult ResourceJsHelper(string token, string requestUrl = "/Customer/JsPlugin/CustomerChatHtml?token=",
+            string filePath = "/Content/JsPlugin/JsPlugin.js")
         {
             var websiteService = Injector.Inject<MyWebsiteService>();
-           websiteService.ParseWebsiteToken(token);
- 
+            websiteService.ParseWebsiteToken(token);
+
 
 
 

@@ -13,6 +13,8 @@ export default class CompaignSent extends StatBase {
       title: "آمار ارسال های کمپین ها",
       type: "line",
       arrName: "CompaignSent",
+      label1:'ارسال های کمپین ها',
+      label2:'   '
     };
   }
 

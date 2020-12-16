@@ -6,6 +6,8 @@ import CompaignSent from "./CompaignSent/CompaignSent";
 import { CurrentUserInfo } from "../../Help/Socket";
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
+import Comments from './Comments/Comments';
+import CommentsPage from './Comments/CommentsPage';
 
 export default class SpecialStatsLayout extends Component {
   state = {};
@@ -49,6 +51,9 @@ export default class SpecialStatsLayout extends Component {
       <div>
 
         <Rating rating={this.state.stat.Content.Rating}/>
+        <br/>
+
+        <CommentsPage/>
         <br/>
 
         <HelpDeskArticleRead data={this.state.stat}/>

@@ -45,6 +45,7 @@ import RoutingPage from "../../Pages/RoutingPage";
 import AssingedToMeCustomerLists from "../../Routing/use/AssingedToMeCustomerLists";
 import CompaignPage from "../../Pages/CompaignPage";
 import TelegramBotPage from './../../Pages/TelegramBotPage';
+import SettingPage from './../../Pages/SettingPage';
 
 
 export default class B4AdminLayoutPage extends Component {
@@ -146,6 +147,22 @@ export default class B4AdminLayoutPage extends Component {
 
 
                         <FakeServerMonitor></FakeServerMonitor>
+
+
+                    </div>
+                )
+            }
+
+            
+            else if (DataHolder.currentPage === 'SettingPage') {
+                return (
+                    <div>
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+
+                        <MessageAlerts/>
+
+
+                        <SettingPage></SettingPage>
 
 
                     </div>

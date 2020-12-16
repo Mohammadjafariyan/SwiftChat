@@ -10,7 +10,7 @@ export default class HelpDeskArticleRead  extends StatBase {
         CurrentUserInfo.HelpDeskArticleRead = this;
         this.state={
             title: 'آمار بازدید مقالات مرکز پشتیبانی',
-            type: 'line',
+            type: 'bar',
             arrName:'HelpDeskArticleRead'
         };
     }

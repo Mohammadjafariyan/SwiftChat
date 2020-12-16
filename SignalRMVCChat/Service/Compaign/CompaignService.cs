@@ -298,7 +298,7 @@ namespace SignalRMVCChat.Service.Compaign
                 .Where(c => c.CustomerId == customer.Id)
                 .Count();
 
-            var systemMyAccount = MyAccountProviderService.GetSystemMyAccount();
+            var systemMyAccount = MyAccountProviderService.GetSystemMyAccount(currMySocketReq.MyWebsite.Id);
 
             /*------------------ send to chat -----------------*/
 

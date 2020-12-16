@@ -69,6 +69,11 @@ class CategorySave extends Component {
             }
         }
 
+
+        if(!DataHolder.selectedCategory.Order){
+            DataHolder.selectedCategory.Order=10;
+        }
+
     }
     
     
@@ -118,6 +123,11 @@ class CategorySave extends Component {
                                     return ;
                                 }
                                 DataHolder.selectedCategory.HelpDeskId= _getHelpDesk().helpDeskId
+
+            if(!DataHolder.selectedCategory.Order)                    {
+
+                DataHolder.selectedCategory.Order=10;
+            }
                                 
                                 MyCaller.Send("Category_Save",DataHolder.selectedCategory)
                                 

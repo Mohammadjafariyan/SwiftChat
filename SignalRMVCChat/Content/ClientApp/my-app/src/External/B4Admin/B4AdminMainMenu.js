@@ -207,6 +207,9 @@ export default class B4AdminMainMenu extends Component {
                                 ربات تلگرام
                             </span></a>
                 </li> 
+
+
+                
                 {/* <!-- Divider-->*/}
                 <hr className="sidebar-divider"/>
 
@@ -246,6 +249,20 @@ export default class B4AdminMainMenu extends Component {
                         <span>پروفایل</span></a>
                 </li>
 
+
+
+                <li className={'nav-item ' +
+                 (DataHolder.currentPage==='SettingPage' ? ' active ' : '')}>
+                    <a id="settingpage"  className="nav-link" onClick={() => {
+                        this.setPage("SettingPage");
+
+                    }}>
+                       <i className="fa fa-cog" aria-hidden="true"></i>
+ <span>
+
+                                تنظیمات
+                            </span></a>
+                </li> 
 
                 <li className={'nav-item ' + (DataHolder.currentPage === 'SocialChannels' ? ' active ' : '')}>
                     <a className="nav-link" onClick={() => {

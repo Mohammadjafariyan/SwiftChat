@@ -9,6 +9,7 @@ using SignalRMVCChat.Models;
 using SignalRMVCChat.Models.Compaign;
 using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Models.HelpDesk;
+using SignalRMVCChat.Models.MyWSetting;
 using SignalRMVCChat.Models.TelegramBot;
 using SignalRMVCChat.WebSocket;
 using TelegramBotsWebApplication;
@@ -157,5 +158,6 @@ namespace SignalRMVCChat.Service
         public List<Models.Compaign.Compaign> Compaigns { get; set; }
         public List<CompaignTemplate> CompaignTemplates { get; internal set; }
         public List<TelegramBotSetting> TelegramBots { get; internal set; }
+        public List<MyWebsiteSetting> MyWebsiteSettings { get; internal set; }
     }
 }

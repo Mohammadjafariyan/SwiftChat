@@ -92,7 +92,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                     "کاربر درخواستی یافت نشد و یا این عملیات برای ادمین مجاز نیست").Single;
 
 
-                this.SystemMyAccount = MyAccountProviderService.GetSystemMyAccount();
+                this.SystemMyAccount = MyAccountProviderService.GetSystemMyAccount(currMySocketReq.MyWebsite.Id);
 
                 // ربات های این وبسایت و آنهایی که اولشان event است
                 var bots = GetBots();

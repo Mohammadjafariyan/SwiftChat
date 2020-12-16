@@ -174,7 +174,8 @@ namespace SignalRMVCChat.WebSocket
                  .Select(c => c.Id);
 
 
-            var visits = db.ArticleVisits.Where(
+            var visits = db.ArticleVisits.
+                Include(a=>a.Article).Where(
 v => articles.Contains(v.ArticleId));
 
             var filterViewModel = GetFilter();
@@ -205,7 +206,7 @@ v => articles.Contains(v.ArticleId));
 
 
             var list = await visits
-             .GroupBy(q => q.ArticleId)
+             .GroupBy(q => q.Article.Title)
              .Select(q => new
              {
                  Key = q.Key,
@@ -254,8 +255,10 @@ v => articles.Contains(v.ArticleId));
             }
 
 
+            var dates = MyGlobal.GetThisWeekRange();
 
-            var list = await compaignLogs
+            var listtemp = await compaignLogs
+                .Where(q => dates.StartOfWeek <= q.ExecutionDateTime && q.ExecutionDateTime <= dates.EndOfWeek)
              .GroupBy(q => q.ExecutionDateTime)
              .Select(q => new
              {
@@ -266,13 +269,36 @@ v => articles.Contains(v.ArticleId));
              }).OrderByDescending(o => o.VisitCount).ToListAsync();
 
 
-            return list.Select(q => new
+          
+
+            var resList = new List<dynamic>();
+
+            var days = dates.EndOfWeek.Subtract(dates.StartOfWeek).TotalDays;
+            for (int i = 0; i <= days; i++)
             {
-                Key = MyGlobal.ToIranianDate(q.Key),
+                var thisDay = dates.StartOfWeek.AddDays(i);
+
+                var thisDayData = listtemp.Where(w => w.Key.Date == thisDay.Date);
+
+                var thisDayStats = new
+                {
+                    Key = MyGlobal.ToIranianDate(thisDay)+ " " + MyGlobal.WeekNames[thisDay.DayOfWeek],
+                    VisitCount = thisDayData.Sum(s => s.VisitCount),
+                    VisitorsCount = thisDayData.Sum(s => s.VisitorsCount),
+                    FaName = MyGlobal.WeekNames[thisDay.DayOfWeek]
+                };
+                resList.Add(thisDayStats);
+            }
+
+            var list = resList.Select(q => new
+            {
+                Key = q.Key is DateTime ? MyGlobal.ToIranianDate(q.Key) : q.Key,
                 // در گرافیک از یک متد استفاده میکنیم بخاطر ان از این عنوان استفاده شد
                 VisitCount = q.VisitCount,
                 VisitorsCount = 0,
             });
+
+            return list;
 
         }
 
@@ -331,30 +357,41 @@ v => articles.Contains(v.ArticleId));
 
         private dynamic GetLeaderBoardOperators(IQueryable<CustomerTrackInfo> query, GapChatContext db, MyWebSocketRequest currMySocketReq)
         {
-            var chatsOfCustomers = db.Chats.Include(c => c.MyAccount).Where(c => query.Any(q => q.CustomerId == c.Id));
+            var chatsOfCustomers = db.Chats
+                .Include(c => c.MyAccount)
+                .Where(c => c.MyAccountId.HasValue && query.Any(q => q.CustomerId == c.CustomerId));
 
+            var yesterday = DateTime.Now.AddDays(-1).Date;
 
             var myAccountsChatted = chatsOfCustomers
-                .GroupBy(c => c.MyAccount).ToList();
+                .GroupBy(c => c.MyAccount).Select(c=>new
+                {
+                    chatsCount=c.Count(m=>m.Id!=0),
+                    myAccount=c.Key,
+                    TotalCustomersChat= c.GroupBy(m => m.CustomerId).Select(m => m.Key).Count()
+                    ,
+                    TotalInDates= c.Count(m => System.Data.Entity.Core.Objects. EntityFunctions.DiffDays(m.CreateDateTime, yesterday)==0)
+                });
 
             if (MyGlobal.IsAttached)
             {
                 var list=myAccountsChatted.ToList();
+                var list2 = chatsOfCustomers.ToList();
             }
 
             // ----------------  مرتب سازی 
             var todayStat = myAccountsChatted.OrderByDescending
-                 (o => o.Count()).Select(m => new
+                 (o => o.chatsCount).Select(m => new
                  {
-                     Key=m.Key,
-                     TotalChats=m.Count(),
-                     TotalCustomersChat=m.GroupBy(c=>c.CustomerId).Select(c=>c.Key).Count()
+                     Key=m.myAccount,
+                     TotalChats=m.chatsCount,
+                     TotalCustomersChat= m.TotalCustomersChat
 
                  }).ToList();
 
             // ---------------- مرتب سازی دیروز
             var yesterdayStat = myAccountsChatted.OrderByDescending
-               (o => o.Count(c => c.CreateDateTime.Date == DateTime.Now.AddDays(-1).Date)).Select(m => m.Key).ToList();
+               (o => o.TotalInDates).ToList();
 
 
             //----------------- مقایسه مرتبه ها و تصمیم پیشرفت و پسرفت
@@ -366,7 +403,7 @@ v => articles.Contains(v.ArticleId));
                     continue;
                 }
 
-                if (todayStat[i].Key.Id == yesterdayStat[i].Id)
+                if (todayStat[i].Key?.Id!=null && todayStat[i].Key?.Id == yesterdayStat[i]?.myAccount?.Id)
                 {
                     //equals not changed
 
@@ -374,9 +411,13 @@ v => articles.Contains(v.ArticleId));
                 }
                 else
                 {
-                    var newIndex = yesterdayStat.Select(y => y.Id)
-                        .ToList().IndexOf(todayStat[i].Key.Id);
+                    var newIndex = yesterdayStat.Select(y => y.myAccount?.Id)
+                        .ToList().IndexOf(todayStat[i].Key?.Id ?? -1);
 
+                    if (newIndex==-1)
+                    {
+                        continue;
+                    }
                     if (newIndex > i)
                     {
                         todayStat[i].Key.LeaderBoardStatus = LeaderBoardStatus.Decreased;

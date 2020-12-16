@@ -1,5 +1,5 @@
 
-export const baseUrl="http://localhost:60518/Customer/Panel/Index?websiteToken=N09XVk1peG5Gc2FtQWhLSHk4MjIrbFpXMHRTL3M4T0xyWi9IU3UzS25peFJucy9ZRGYxS0VzR05aT2ViendXMTN4eXFLQUFZVDljQ0lVa0QzRUJXZkE9PQ==#";
+export const baseUrl="http://localhost:60518/Customer/Panel/Index?websiteToken=N09XVk1peG5Gc2FtQWhLSHk4MjIrclFubVNZa0VEWDBGdTZrR3NtNDhXbUhQY3EzUWR5bTJzc2d5UjYwelYxeHBGRWxiZ1dtZ0p0aHVrNGlXWmk0eWc9PQ==";
 
 
 export function login(cy){

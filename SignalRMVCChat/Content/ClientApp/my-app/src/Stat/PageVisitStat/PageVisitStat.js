@@ -54,14 +54,14 @@ class PageVisitStat extends Component {
             labels: this.getLabels(dataArr, labels),
             datasets: [
                 {
-                    label: ' بازدید',
+                    label:this.state.label1 ? this.state.label1 : ' بازدید',
                     data: datas,
                     backgroundColor: _GetRandomColor(),
                     fill: false,
                     borderColor: _GetRandomColor()
                 },
                 {
-                    label: ' بازدید کننده',
+                    label: this.state.label2 ? this.state.label2 : ' بازدید کننده',
                     data: datas2,
                     backgroundColor: _GetRandomColor(),
                     fill: false,

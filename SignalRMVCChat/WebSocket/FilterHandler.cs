@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenQA.Selenium.DevTools.Debugger;
@@ -9,6 +10,7 @@ using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.Init;
+using SignalRMVCChat.Service.MyWSetting;
 using TelegramBotsWebApplication;
 
 namespace SignalRMVCChat.WebSocket
@@ -65,7 +67,7 @@ namespace SignalRMVCChat.WebSocket
             if (currMySocketReq.CurrentRequest == null)
             {
                 // اگر ادمین باشد او را لوگین می کنیم
-                if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Admin)
+                if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)
                 {
                     //admin
                     var resp = await new AdminLoginSocketHandler().RegisterAndGenerateToken(request, currMySocketReq);
@@ -112,7 +114,7 @@ namespace SignalRMVCChat.WebSocket
             if (currMySocketReq.MySocket.MyAccountId.HasValue || currMySocketReq.MySocket.CustomerId.HasValue)
             {
                 /// این بخش مهم است زیرا ابجکت ها را نیز وصل می کند
-                if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Admin)
+                if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)
                 {
                     // خبر دار کردن همه کابران ان سایت از انلاین شدن ادمین جدید
                     await new AnotherSideNewOnlineInformerHandler().InformNewAdminRegistered(
@@ -141,7 +143,7 @@ namespace SignalRMVCChat.WebSocket
 
             #region Tracknig
 
-            if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Customer)
+            if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Customer)
             {
                 var _request = MyWebSocketRequest.Deserialize(request);
                 if (_request.Name == "Register")
@@ -155,7 +157,7 @@ namespace SignalRMVCChat.WebSocket
                         IpInfoViewModel inforByIp = null;
 
 
-                        CustomerTrackInfoType trackInfoType=CustomerTrackInfoType.NotDetect;
+                        CustomerTrackInfoType trackInfoType = CustomerTrackInfoType.NotDetect;
                         if (currMySocketReq.MySocket.Customer.LastTrackInfo == null)
                         {
                             trackInfoType = CustomerTrackInfoType.EnterWebsite;
@@ -185,7 +187,7 @@ namespace SignalRMVCChat.WebSocket
                             {
                                 trackInfoType = CustomerTrackInfoType.ComeBack;
                             }
-                            else if (currMySocketReq.MySocket.Customer.LastTrackInfo?.Url!=_request.Body.URL )
+                            else if (currMySocketReq.MySocket.Customer.LastTrackInfo?.Url != _request.Body.URL)
                             {
                                 /*------------------------------ is page changed----------------------------*/
                                 trackInfoType = CustomerTrackInfoType.PageChange;
@@ -198,7 +200,7 @@ namespace SignalRMVCChat.WebSocket
 
                             inforByIp = new IpInfoViewModel
                             {
-                               
+
                                 city = currMySocketReq.MySocket.Customer.LastTrackInfo?.city,
                                 continent_code = currMySocketReq.MySocket.Customer.LastTrackInfo?.continent_code,
                                 continent_name = currMySocketReq.MySocket.Customer.LastTrackInfo?.continent_name,
@@ -234,7 +236,7 @@ namespace SignalRMVCChat.WebSocket
                             {
                                 var parts = language.Split(',').Length > 1
                                     ? language.Split(',')[1].Split('-')
-                                    : new[] {language, language};
+                                    : new[] { language, language };
 
                                 language = parts[0];
                                 countryLanguage = parts[1];
@@ -251,11 +253,11 @@ namespace SignalRMVCChat.WebSocket
                         var customerTrackerService = Injector.Inject<CustomerTrackerService>();
                         var track = new CustomerTrackInfo
                         {
-                            PrevTrackInfoId = currMySocketReq.MySocket.Customer.LastTrackInfo?.Id ,
-                            PrevTrackInfoDateTime = currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime ,
-                            
-                            TimeSpent=MySpecificGlobal.CalculateTimeSpentOnPage(currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime),
-                            TimeSpentNum=MySpecificGlobal.CalculateTimeSpentOnPageNum(currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime),
+                            PrevTrackInfoId = currMySocketReq.MySocket.Customer.LastTrackInfo?.Id,
+                            PrevTrackInfoDateTime = currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime,
+
+                            TimeSpent = MySpecificGlobal.CalculateTimeSpentOnPage(currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime),
+                            TimeSpentNum = MySpecificGlobal.CalculateTimeSpentOnPageNum(currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime),
                             CustomerTrackInfoType = trackInfoType,
                             CustomerId = currMySocketReq.CurrentRequest.customerId.Value,
                             Url = url + "",
@@ -267,7 +269,7 @@ namespace SignalRMVCChat.WebSocket
                             TimeDt = DateTime.Now.TimeOfDay,
                             DateTime = DateTime.Now,
 
-Id=0,
+                            Id = 0,
                             ip = inforByIp.ip,
                             type = inforByIp.type,
                             continent_code = inforByIp.continent_code,
@@ -311,7 +313,7 @@ Id=0,
         {
             if (currMySocketReq.MySocket.MyAccount == null && currMySocketReq.MySocket.Customer == null)
             {
-                if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Admin)
+                if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)
                 {
                     currMySocketReq.MySocket.MyAccountId = currMySocketReq.CurrentRequest.myAccountId;
                     var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
@@ -343,16 +345,32 @@ Id=0,
 
         private async Task Validation(string request, MyWebSocketRequest currMySocketReq)
         {
-            var websiteUrl = currMySocketReq.MyWebsite.BaseUrl;
-            // حساس به آدرس وب سایت استفاده کننده باشد 
 
-            var baseUrl = new Uri(websiteUrl);
-            var requestbaseUrl = new Uri(currMySocketReq.MySocket.MyConnectionInfo.Origin);
-            if (requestbaseUrl.Authority != baseUrl.Authority)
+            var myWebsiteSettingService = Injector.Inject<MyWebsiteSettingService>();
+
+            var myWebsiteSetting = myWebsiteSettingService
+                .GetQuery().FirstOrDefault(c => c.MyWebsiteId == currMySocketReq.MyWebsite.Id);
+
+            // default is true
+            bool isLock = myWebsiteSetting?.IsLockToUrl ?? true;
+            if (isLock)
             {
-                throw new Exception(
-                    "این وب سایت ثبت نام نشده است لطفا برای استفاده از پلاگین گپ چت ابتدا ثبت نام نموده و سپس پلاگین مخصوص وب سایت دلخواه خود را تعریف نمایید");
+
+                #region url security 
+                var websiteUrl = currMySocketReq.MyWebsite.BaseUrl;
+                // حساس به آدرس وب سایت استفاده کننده باشد 
+
+                var baseUrl = new Uri(websiteUrl);
+                var requestbaseUrl = new Uri(currMySocketReq.MySocket.MyConnectionInfo.Origin);
+                if (requestbaseUrl.Authority != baseUrl.Authority)
+                {
+                    throw new Exception(
+                        "این وب سایت ثبت نام نشده است لطفا برای استفاده از پلاگین گپ چت ابتدا ثبت نام نموده و سپس پلاگین مخصوص وب سایت دلخواه خود را تعریف نمایید");
+                }
+
+                #endregion
             }
+
         }
     }
 }

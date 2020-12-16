@@ -62,12 +62,17 @@ namespace SignalRMVCChat.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> SendFeedback(string text, string websiteBaseUrl, string lang,string title,bool IsHelpful)
+        public async Task<ActionResult> SendFeedback
+            (string text, string websiteBaseUrl, string lang,string title,bool IsHelpful,
+            string customerToken=null)
         {
             
-            var article=  await HelpDeskService.GetHelpDeskArticle(title,websiteBaseUrl, lang);
+            var article=  await HelpDeskService.GetHelpDeskArticle(title,websiteBaseUrl, lang,null);
 
 
+            var CurrentRequest = MySpecificGlobal.ParseToken(customerToken);
+
+        
             if (article.Article.Comments==null)
             {
                 article.Article.Comments=new List<Comment>();
@@ -87,6 +92,7 @@ namespace SignalRMVCChat.Controllers
                 Text = text,
                 IsHelpful = IsHelpful,
                 CreationDateTime=DateTime.Now,
+                CustomerId = CurrentRequest?.customerId
             });
 
             return new HttpStatusCodeResult(200);
@@ -99,7 +105,8 @@ namespace SignalRMVCChat.Controllers
             TempData["lang"] = lang;
             
             
-            var article=  await HelpDeskService.GetHelpDeskArticle(title,websiteBaseUrl, lang);
+            var article=  await HelpDeskService.GetHelpDeskArticle(title,websiteBaseUrl, lang,
+                Request);
 
             TempData["helpDesk"] = article.HelpDesk;
             TempData["Languages"] = article.Languages;

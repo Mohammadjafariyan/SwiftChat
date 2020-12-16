@@ -44,7 +44,7 @@ namespace SignalRMVCChat.WebSocket.Base
 
             if (first.HasValue && first!=0)
             {
-                getQuery= getQuery.SkipWhile(q => q.Id == first);
+                getQuery= getQuery.Skip(first.Value);
             }
 
             if (rows.HasValue && rows>0)

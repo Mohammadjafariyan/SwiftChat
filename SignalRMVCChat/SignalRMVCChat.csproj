@@ -293,6 +293,7 @@
     <Compile Include="Models\RemindMe\RemindMe.cs" />
     <Compile Include="Models\Routing\Routing.cs" />
     <Compile Include="Models\Setting.cs" />
+    <Compile Include="Models\MyWSetting\MyWebsiteSetting.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\TelegramBot\TelegramBotRegisteredOperator.cs" />
     <Compile Include="Models\TelegramBot\TelegramBotSetting.cs" />
@@ -341,6 +342,7 @@
     <Compile Include="Service\MySocketManagerService.cs" />
     <Compile Include="Service\MySocketService.cs" />
     <Compile Include="Service\MyWebsiteService.cs" />
+    <Compile Include="Service\MyWebsiteSetting\MyWebsiteSettingService.cs" />
     <Compile Include="Service\PlanException.cs" />
     <Compile Include="Service\PlanService.cs" />
     <Compile Include="Service\PluginCustomizedService.cs" />
@@ -519,6 +521,8 @@
     <Compile Include="WebSocket\LoadReadyPmSocketHandler.cs" />
     <Compile Include="WebSocket\MultimediaDeliverdHandler.cs" />
     <Compile Include="WebSocket\MultimediaPmSendSocketHandler.cs" />
+    <Compile Include="WebSocket\MyWebsiteSetting\GetMyWebsiteSettingSocketHandler.cs" />
+    <Compile Include="WebSocket\MyWebsiteSetting\SaveMyWebsiteSettingSocketHandler.cs" />
     <Compile Include="WebSocket\MyWebSocketRequest.cs" />
     <Compile Include="WebSocket\MyWebSocketResponse.cs" />
     <Compile Include="WebSocket\MyWebSocketResponseType.cs" />

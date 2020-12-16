@@ -100,45 +100,45 @@ namespace SignalRMVCChat.Service.Compaign
             if (this.compaignsAutomaticList == null ||
                 this.compaignsAutomaticList?.Any() == false)
             {
-                if (customer!=null)
+                if (customer != null)
                 {
                     this.compaignsAutomaticList = CompaignService
                             .AutomaticCondition(compaignsList, customer.Id);
                 }
-         
+
             }
 
 
             //var compaignsManualQuery = ManualCondition(compaignsList);
-
-            foreach (var item in compaignsAutomaticList)
-            {
-
-                // ------ log
-                var compaignLog = CompaignLogService.Init(item, new List<Customer> { customer });
-
-                try
+            if (compaignsAutomaticList != null)
+                foreach (var item in compaignsAutomaticList)
                 {
-                    CompaignService.ExecuteCompagins(new List<Models.Compaign.Compaign>
+
+                    // ------ log
+                    var compaignLog = CompaignLogService.Init(item, new List<Customer> { customer });
+
+                    try
+                    {
+                        CompaignService.ExecuteCompagins(new List<Models.Compaign.Compaign>
                     {
                         item
                     }
-                   , customer, null, null, compaignLog);
+                       , customer, null, null, compaignLog);
 
 
-                    // ------ log
-                    compaignLog.Status = Models.Compaign.CompaignStatus.Sent;
-                    CompaignLogService.Save(compaignLog);
+                        // ------ log
+                        compaignLog.Status = Models.Compaign.CompaignStatus.Sent;
+                        CompaignLogService.Save(compaignLog);
+                    }
+                    catch (Exception e)
+                    {
+                        // ------ log
+                        compaignLog.StoppedLog += e.Message;
+
+                        compaignLog.Status = Models.Compaign.CompaignStatus.Stopped;
+                        CompaignLogService.Save(compaignLog);
+                    }
                 }
-                catch (Exception e)
-                {
-                    // ------ log
-                    compaignLog.StoppedLog += e.Message;
-
-                    compaignLog.Status = Models.Compaign.CompaignStatus.Stopped;
-                    CompaignLogService.Save(compaignLog);
-                }
-            }
 
 
 
@@ -190,7 +190,7 @@ namespace SignalRMVCChat.Service.Compaign
                     CompaignLogService.Save(compaignLog);
                 }
             }
-        
+
 
         }
 

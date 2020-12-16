@@ -31,6 +31,8 @@ using SignalRMVCChat.WebSocket.Compaign.Email;
 using SignalRMVCChat.WebSocket.TelegramBot;
 using SignalRMVCChat.WebSocket.Compaign.Stat;
 using SignalRMVCChat.WebSocket.HelpDesk.Stat;
+using SignalRMVCChat.WebSocket.MyWSetting;
+using SignalRMVCChat.WebSocket.MyWebsiteSetting;
 
 namespace SignalRMVCChat.WebSocket
 {
@@ -78,6 +80,16 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+
+                #region MyWebsiteSetting
+
+                case "GetMyWebsiteSetting":
+                    return new GetMyWebsiteSettingSocketHandler();
+                    break;
+                case "SaveMyWebsiteSetting":
+                    return new SaveMyWebsiteSettingSocketHandler();
+                    break;
+                #endregion
 
                 #region Telegrambot
                 case "GetTelegramBotSetting":

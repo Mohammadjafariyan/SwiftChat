@@ -23,6 +23,7 @@ namespace SignalRMVCChat.WebSocket.HelpDesk.Stat
             await base.InitAsync(request, currMySocketReq);
 
            var query= _service.GetQuery()
+                .Include(c=>c.Customer)
                 .Include(c=>c.Article)
                 .Include("Article.Category")
                 .Include("Article.Category.HelpDesk")
@@ -33,9 +34,10 @@ namespace SignalRMVCChat.WebSocket.HelpDesk.Stat
             var helpfulCount = query.Count(q => q.IsHelpful == true);
             var nothelpfulCount = query.Count(q => q.IsHelpful == false);
 
+            var totalRecords = query.Count();
             query = GetPagingOrDefault(query);
 
-
+            var list = query.ToList();
             return new MyWebSocketResponse
             {
                 Name = Callback,
@@ -43,7 +45,8 @@ namespace SignalRMVCChat.WebSocket.HelpDesk.Stat
                 {
                     helpfulCount= helpfulCount,
                     nothelpfulCount= nothelpfulCount,
-                    List= query.ToList()
+                    List= list,
+                    totalRecords= totalRecords
                 }
             };
 

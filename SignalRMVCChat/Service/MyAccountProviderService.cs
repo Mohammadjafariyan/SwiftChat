@@ -30,7 +30,7 @@ namespace SignalRMVCChat.Service
         /// و همچنین بعضی پیغام های بدون ادمین
         /// </summary>
         /// <returns></returns>
-        public MyAccount GetSystemMyAccount()
+        public MyAccount GetSystemMyAccount(int websiteId)
         {
             var firstOrDefault = GetQuery().Include(c => c.MySockets)
                 .FirstOrDefault(m => m.MyAccountType == MyAccountType.SystemMyAccount);
@@ -41,13 +41,27 @@ namespace SignalRMVCChat.Service
                 {
                     Name = "پشتیبانی",
                     MyAccountType = MyAccountType.SystemMyAccount,
-                    MySockets = new List<MySocket>
-                    {
-                        new MySocket()
-                    }
+                    
                 };
                 VanillaSave(firstOrDefault);
+
+
+                var socketService = Injector.Inject<MySocketService>();
+
+                var socket = new MySocket
+                {
+                    MyAccountId = firstOrDefault.Id,
+                    AdminWebsiteId = websiteId,
+                    CustomerWebsiteId = websiteId
+
+                };
+                socketService.Save(socket);
+
+                firstOrDefault.MySockets.Add(socket);
             }
+
+
+
 
             return firstOrDefault;
         }

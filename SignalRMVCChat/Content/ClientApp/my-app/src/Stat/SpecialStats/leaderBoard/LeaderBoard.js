@@ -8,9 +8,32 @@ export default class LeaderBoard extends Component {
         <ListGroup>
           {this.props.list &&
             this.props.list.map((row, i, arr) => {
+              let j=i+1;
               return (
                 <ListGroup.Item>
                   <Row>
+                  <Col>
+
+<button className='btn btn-success' style={{borderRadius:'45%'}}>{j}</button>
+{i==0 && <>
+  <i className="fa fa-star" style={{color:'#d7da1b'}}></i>
+  <i className="fa fa-star" style={{color:'#d7da1b'}}></i>
+  <i className="fa fa-star" style={{color:'#d7da1b'}}></i>
+
+</>}
+
+{i==1 && <>
+  <i className="fa fa-star" style={{color:'#d7da1b'}}></i>
+  <i className="fa fa-star" style={{color:'#d7da1b'}}></i>
+
+</>}
+
+{i==2 && <>
+  <i className="fa fa-star" style={{color:'#d7da1b'}}></i>
+
+</>}
+
+</Col>
                     <Col>
                       <span>{row.Key.Name}</span>
                       <Badge>
@@ -29,8 +52,8 @@ export default class LeaderBoard extends Component {
                     <Col>
                       کل چت ها :
                       <Badge variant="primary">
-                        {row.Key.TotalChats ? (
-                          row.Key.TotalChats
+                        {row.TotalChats ? (
+                          <span>{row.TotalChats}</span>
                         ) : (
                           <span>0</span>
                         )}
@@ -39,8 +62,8 @@ export default class LeaderBoard extends Component {
                     <Col>
                       کل مشتریان :
                       <Badge variant="info">
-                        {row.Key.TotalCustomersChat ? (
-                          row.Key.TotalCustomersChat
+                        {row.TotalCustomersChat ? (
+                          <span>{row.TotalCustomersChat}</span>
                         ) : (
                           <span>0</span>
                         )}

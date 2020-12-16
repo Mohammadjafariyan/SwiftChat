@@ -68,12 +68,12 @@ namespace SignalRMVCChat.WebSocket.FormCreator
             }*/
             
             
-            if (currMySocketReq.MySocket.MyAccountId.HasValue==false)
-            {
-                Throw("ادمین ارسال نشده است");
-            }
+            //if (currMySocketReq.MySocket.MyAccountId.HasValue==false)
+            //{
+            //    Throw("ادمین ارسال نشده است");
+            //}
 
-            MyAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value, "ادمین یافت نشد");
+            //MyAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value, "ادمین یافت نشد");
             
             return base.ExecuteAsync(request, currMySocketReq);
         }

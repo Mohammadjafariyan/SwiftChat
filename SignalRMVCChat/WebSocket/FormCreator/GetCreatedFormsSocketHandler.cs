@@ -59,7 +59,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
 
             if (!myAccont.HasRootPrivilages)
             {
-                hasAccessForms = hasAccessForms.Where(h => h.MyAccountId == myAccont.Id).ToList();
+                //hasAccessForms = hasAccessForms.Where(h => h.Id == myAccont.Id).ToList();
             }
 
             //=============================================================================

@@ -13,6 +13,12 @@ namespace SignalRMVCChat.Models.HelpDesk
 {
     public class Category : BaseEntity
     {
+        public Category()
+        {
+            Order = 0;
+        }
+
+
 
         /// <summary>
         /// مقالات
@@ -160,11 +166,8 @@ namespace SignalRMVCChat.Models.HelpDesk
         /// کد ای پی بازدید کننده
         /// </summary>
         public string IpAddress { get; set; }
-
-
-
-
-
+        public string UserAgent { get; internal set; }
+        public string Browser { get; internal set; }
     }
 
     public enum ArticleStatus

@@ -1,12 +1,15 @@
-﻿@using SignalRMVCChat.Models.HelpDesk
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@using SignalRMVCChat.Service
+@using TelegramBotsWebApplication
+@using SignalRMVCChat.Models.HelpDesk
 <!DOCTYPE html>
 <html>
 <head>
     <title>@ViewData["Title"]</title>
     <link href="/Content/fontAwsome/fontAwsome.css"
-          rel="stylesheet"/>
+          rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/bootstrap4.css">
-    
+
     <link rel="stylesheet" href="~/Content/Site.css" />
     <link rel="stylesheet" href="~/Content/HelpDesk.css" />
 </head>
@@ -16,12 +19,12 @@
     {
         HeaderText = "مرکز پشتیبانی"
     };
-    if (TempData["helpDesk"]!=null)
+    if (TempData["helpDesk"] != null)
     {
-        helpDesk=TempData["helpDesk"] as HelpDesk;
+        helpDesk = TempData["helpDesk"] as HelpDesk;
     }
 
-    if (helpDesk==null)
+    if (helpDesk == null)
     {
         helpDesk = new HelpDesk
         {
@@ -30,61 +33,72 @@
     }
 
     string primary = "bg-primary";
-    if (string.IsNullOrEmpty(helpDesk.BgColor)==false)
+    if (string.IsNullOrEmpty(helpDesk.BgColor) == false)
     {
         primary = "";
     }
 }
 <body style="background-color: #f5f8fb">
 
- <div class="row text-white header @primary" style="margin: 0px;background-color:  #@helpDesk.BgColor">
+    <div class="row text-white header @primary" style="margin: 0px;background-color:  #@helpDesk.BgColor">
         <div class="container ">
-                           @Html.Partial("HelpDesk_Nav")
+            @Html.Partial("HelpDesk_Nav")
 
-        @*header*@
-                           <div class="row header-color justify-content-md-center" style="    margin-top: 20px;">
-                               
-                               @Html.Partial("HelpDeskSearch")
-                           </div>
-        @*header end*@
+            @*header*@
+            <div class="row header-color justify-content-md-center" style="    margin-top: 20px;">
+
+                @Html.Partial("HelpDeskSearch")
+            </div>
+            @*header end*@
+
+        </div>
+    </div>
+    @RenderBody()
+
+
+    <hr style="    margin-top: 50px !important;    margin: 0px;" />
+
+    <div class="" style="background-color: white">
+        <div class="bg-default justify-content-md-center"
+             style="padding-top:50px;height: 150px; text-align: center;background-color: white;width: 100%">
+            <h6><b> چیزی رو که دنبالش بودین رو پیدا نکردین ؟</b></h6>
+
+            <p style="color:#adb5bd ">با ما صحبت کنید یا ایمیل بفرستید</p>
+
+            <button class="btn btn-light">
+
+
+                چت با ما
+                <i class="fa fa-comments-o" aria-hidden="true"></i>
+
+            </button>
+        </div>
+        <hr />
+
+        <div class="bg-default justify-content-md-center"
+             style="padding-top:50px;padding-bottom: 50px; text-align: center;background-color: white;width: 100%">
+
+            <p style="color:#adb5bd ">قدرت گرفته از نرم افزار گپ</p>
+            <a href="/" target="_blank" style="color:#adb5bd ">وبسایت ما</a>
+
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+
+
+    <div id="gapPlugin"></div>
+
+    @{ 
         
-        </div>
-        </div>
-@RenderBody()
+    }
 
-
- <hr style="    margin-top: 50px !important;    margin: 0px;"/>
-     
-      <div class="" style="background-color: white">
-           <div class="bg-default justify-content-md-center" 
-                     style="padding-top:50px;height: 150px; text-align: center;background-color: white;width: 100%">
-                    <h6><b> چیزی رو که دنبالش بودین رو پیدا نکردین ؟</b></h6>
-                                              
-                    <p style="color:#adb5bd ">با ما صحبت کنید یا ایمیل بفرستید</p>
-                                              
-                    <button class="btn btn-light">
-                        
-                        
-                        چت با ما
-                        <i class="fa fa-comments-o" aria-hidden="true"></i>
-          
-                    </button>
-                </div>
-                      <hr />
-          
-                <div class="bg-default justify-content-md-center" 
-                           style="padding-top:50px;padding-bottom: 50px; text-align: center;background-color: white;width: 100%">
-                                                    
-                    <p style="color:#adb5bd ">قدرت گرفته از نرم افزار گپ</p>
-                    <a href="/" target="_blank" style="color:#adb5bd ">وبسایت ما</a>
-                         
-                      </div>
-      </div>
-
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+    @Html.Partial("~/Areas/Customer/Views/Shared/ExampleJsPlugin.cshtml"
+    , helpDesk.MyWebsite, null)
 </body>
 </html>

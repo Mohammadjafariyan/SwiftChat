@@ -147,9 +147,9 @@ export default RoutingSave;
 
 export const MyCard=(props)=>{
     return <Card className={props.className} >
-        <Card.Header>{props.header}</Card.Header>
+        <Card.Header style={{textAlign:'right'}}>{props.header}</Card.Header>
         <Card.Body>
-            <Card.Title>{props.title}</Card.Title>
+            <Card.Title style={{textAlign:'right'}}>{props.title}</Card.Title>
             <Card.Text>
                 {props.children}
             </Card.Text>

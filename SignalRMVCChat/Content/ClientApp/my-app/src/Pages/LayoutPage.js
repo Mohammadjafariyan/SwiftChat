@@ -118,7 +118,7 @@ export default class LayoutPage extends Component {
             {this.state.focusForSelectingAdmin && (
               <div className="hideWhole"></div>
             )}
-            <Toast position="bottom-left" ref={(el) => (this.toast = el)} />
+            <Toast position="top-left" ref={(el) => (this.toast = el)} />
 
             <Menu />
             <MessageAlerts />

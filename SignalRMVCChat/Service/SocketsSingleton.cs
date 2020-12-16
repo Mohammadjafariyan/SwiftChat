@@ -15,6 +15,13 @@ namespace SignalRMVCChat.Service
     public class WebsiteSingleTon
     {
         public static readonly IWebsiteService WebsiteService = new WebsiteService();
+
+        internal static bool IsAllAdminsOffline(int? websiteId)
+        {
+            return WebsiteSingleTon.WebsiteService?.Websites?
+                            .Where(w => w.Id == websiteId)
+                            .Any(w => w.Admins?.All(a => a.Socket?.IsAvailable == false) == true) == true;
+        }
     }
 
 

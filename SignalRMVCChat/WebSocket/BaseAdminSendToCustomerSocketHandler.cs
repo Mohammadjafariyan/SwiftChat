@@ -11,6 +11,7 @@ namespace SignalRMVCChat.WebSocket
 {
     public abstract class BaseAdminSendToCustomerSocketHandler : BaseMySocket
     {
+        MyAccountProviderService MyAccountProviderService = Injector.Inject<MyAccountProviderService>();
         public override async Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
         {
             if (currMySocketReq.Name == "AdminSendToCustomer")
@@ -121,12 +122,14 @@ namespace SignalRMVCChat.WebSocket
             response.Name = "adminSendToCustomerCallback";
             response.Message = typedMessage;
 
+            var systemMyAccount = MyAccountProviderService.GetSystemMyAccount(currMySocketReq.MyWebsite.Id);
 
-            int accountId = currMySocketReq.CurrentRequest.myAccountId.Value;
+            int accountId = currMySocketReq?.CurrentRequest?.myAccountId ?? systemMyAccount.Id;
 
+            int socketId = currMySocketReq?.CurrentRequest?.myAccountId != null ? currMySocketReq.MySocket.Id : systemMyAccount.MySockets.Select(m => m.Id).FirstOrDefault();
             var chat = chatProviderServices
                 .AdminSendToCustomer(accountId
-                    , targetUserId, typedMessage, currMySocketReq.MySocket.Id, gapFileUniqId, uniqId);
+                    , targetUserId, typedMessage, socketId, gapFileUniqId, uniqId);
 
 
             int totalUnseen = chatProviderService.GetTotalUnseen(accountId

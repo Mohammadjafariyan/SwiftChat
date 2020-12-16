@@ -693,8 +693,8 @@ export class MyLazyTable extends Component {
 
     let data = this.state.CustomData;
 
-    data.rows = rows ? rows : 10;
-    data.first = first ? first : null;
+    data.rows = rows;
+    data.first = first;
 
     this.setState({ loading: true });
     MyCaller.Send(this.state.getUrl, data);
@@ -706,7 +706,7 @@ export class MyLazyTable extends Component {
 
   componentDidMount() {
     CurrentUserInfo.MyLazyTable = this;
-    this.get();
+    this.get(10);
   }
 
   /*getCompaignLogReceiverListCallback*/
@@ -718,7 +718,10 @@ export class MyLazyTable extends Component {
     //imitate delay of a backend call
     const { first, rows } = event;
 
-    this.get(first, rows);
+    this.setState({
+      first:first
+    })
+    this.get(rows,first );
   }
   render() {
     return (
@@ -736,6 +739,8 @@ export class MyLazyTable extends Component {
                 header={this.props.header ?this.props.header :"انتخاب یک ربات"}
                 title={this.props.title ?this.props.title :  "وقتی ربات اجرا شد ، کمپین اجرا شود"}
               >
+
+              {this.state.list && 
                 <DataTable
                   value={this.state.list}
                   paginator
@@ -752,6 +757,7 @@ export class MyLazyTable extends Component {
                 >
                   {this.showColumns()}
                 </DataTable>
+              }
               </MyCard>
             </Col>
           </Row>

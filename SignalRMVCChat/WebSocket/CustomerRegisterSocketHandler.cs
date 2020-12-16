@@ -8,19 +8,24 @@ using SignalRMVCChat.Areas.HubPartials.Controllers;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.Service.MyWSetting;
+using SignalRMVCChat.WebSocket.FormCreator;
 using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace SignalRMVCChat.WebSocket
 {
     public class CustomerRegisterSocketHandler : BaseRegistrationHandler
     {
+        MyWebsiteSettingService myWebsiteSettingService = Injector.Inject<MyWebsiteSettingService>();
+        ChatProviderService ChatProviderService = Injector.Inject<ChatProviderService>();
+        FormService FormService = Injector.Inject<FormService>();
         public async override Task<MyWebSocketResponse> RegisterAndGenerateToken(string request,
             MyWebSocketRequest currMySocketReq)
         {
             var customerProviderService = Injector.Inject<CustomerProviderService>();
 
 
-// هر کاربر ابتدا این کلاس را فراخانی میکند و ریجستر می شود            
+            // هر کاربر ابتدا این کلاس را فراخانی میکند و ریجستر می شود            
             int customerId = customerProviderService.RegisterNewCustomer(currMySocketReq);
 
 
@@ -28,7 +33,7 @@ namespace SignalRMVCChat.WebSocket
 
             var clerkProviderService = Injector.Inject<MyAccountProviderService>();
             MyDataTableResponse<MyAccount> allAdmins =
-                clerkProviderService.GetAllAdminsForWebsite(websiteUrl, customerId,currMySocketReq);
+                clerkProviderService.GetAllAdminsForWebsite(websiteUrl, customerId, currMySocketReq);
 
 
 
@@ -37,13 +42,13 @@ namespace SignalRMVCChat.WebSocket
             if (allAdmins.EntityList == null || allAdmins.EntityList.Count == 0)
             {
 
-                allAdmins= await InDatabaseAdmins( currMySocketReq);
+                allAdmins = await InDatabaseAdmins(currMySocketReq);
 
             }
 
 
             #endregion
-          
+
 
             //var html= new HubHelperController().AllAdminsPartial();
 
@@ -57,7 +62,7 @@ namespace SignalRMVCChat.WebSocket
             {
                 Type = MyWebSocketResponseType.Success,
                 Content = allAdmins,
-                Temp = new Customer {Id = customerId},
+                Temp = new Customer { Id = customerId },
                 Token = base.GenerateTokenForCustomer(customerId, currMySocketReq),
                 Name = "registerCallback"
             };
@@ -65,16 +70,100 @@ namespace SignalRMVCChat.WebSocket
 
 
             await MySocketManagerService.SendToCaller(currMySocketReq, response);
+
+
+            // ------------------- mywebsite setting
+            #region تنظیمات ساعت کاری
+
+            var myWebsiteSetting = myWebsiteSettingService
+                .GetQuery().FirstOrDefault(c => c.MyWebsiteId == currMySocketReq.MyWebsite.Id);
+
+
+            if (myWebsiteSetting?.WorkingHourSettingMenu == "workingHourSetting_sentMessage" ||
+                myWebsiteSetting?.WorkingHourSettingMenu == "workingHourSetting_sentForm")
+                if (WebsiteSingleTon.IsAllAdminsOffline(currMySocketReq.MyWebsite.Id))
+                {
+                    if (myWebsiteSetting?.WorkingHourSettingMenu == "workingHourSetting_sentMessage")
+                    {
+                        var handler = new AdminSendToCustomerSocketHandler();
+
+
+                        var uniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.MySocket.CustomerId).Count() +
+                                     1;
+
+                        new AdminSendToCustomerSocketHandler()
+                       .ExecuteAsync(new MyWebSocketRequest
+                       {
+                           Body = new
+                           {
+                               targetUserId = currMySocketReq.MySocket.CustomerId,
+                               typedMessage = myWebsiteSetting?.workingHourSetting_sentMessageText,
+                               uniqId = uniqId++,
+                               gapFileUniqId = 6161,
+                           }
+                       }.Serialize(), currMySocketReq).GetAwaiter()
+                       .GetResult();
+
+                    }
+                    else
+                    {
+
+                        #region Check Defined Form is Correct :
+                        if (myWebsiteSetting.workingHourSetting_sentFormSelect != null)
+                        {
+                            try
+                            {
+                                FormService.GetById(myWebsiteSetting.workingHourSetting_sentFormSelect.Id);
+                            }
+                            catch (Exception)
+                            {
+
+                                //ignore : form is deleted before 
+                                return response;
+                            }
+                        }
+                        #endregion
+
+                        try
+                        {
+
+                            var uniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.MySocket.CustomerId).Count() +
+                                         1;
+                            new AdminSendFormToCustomerSocketHandler()
+                      .ExecuteAsync(new MyWebSocketRequest
+                      {
+                          Body = new
+                          {
+                              formId = myWebsiteSetting.workingHourSetting_sentFormSelect?.Id,
+                              customerId = currMySocketReq.MySocket.CustomerId,
+                              UniqId= uniqId
+                          }
+                      }.Serialize(), currMySocketReq).GetAwaiter()
+                      .GetResult();
+                       
+                        
+                        }
+                        catch (Exception e)
+                        {
+
+                            //ignore
+                        }
+                    }
+                }
+
+            #endregion
+
+
             //await currMySocketReq.MySocket.Socket.Send(response.Serilize());
             return response;
         }
 
-        private async Task<MyDataTableResponse<MyAccount>> InDatabaseAdmins( MyWebSocketRequest currMySocketReq)
+        private async Task<MyDataTableResponse<MyAccount>> InDatabaseAdmins(MyWebSocketRequest currMySocketReq)
         {
             var myWebsiteService = Injector.Inject<MyWebsiteService>();
-            var admins= myWebsiteService.GetQuery().Include(c => c.Admins)
-                .Include(c => c.Admins.Select(a=>a.MyAccount))
-                .Where(c => c.Id == currMySocketReq.MyWebsite.Id).SelectMany(c => c.Admins.Select(a=>a.MyAccount)).Where(c=>c!=null).ToList();
+            var admins = myWebsiteService.GetQuery().Include(c => c.Admins)
+                .Include(c => c.Admins.Select(a => a.MyAccount))
+                .Where(c => c.Id == currMySocketReq.MyWebsite.Id).SelectMany(c => c.Admins.Select(a => a.MyAccount)).Where(c => c != null).ToList();
 
             var allAdmins = new MyDataTableResponse<MyAccount>
             {
@@ -96,7 +185,7 @@ namespace SignalRMVCChat.WebSocket
             var clerkProviderService = Injector.Inject<MyAccountProviderService>();
             MyDataTableResponse<MyAccount> allAdmins =
                 clerkProviderService.GetAllAdminsForWebsite(websiteUrl,
-                    currMySocketReq.CurrentRequest.GetRequesterId(),currMySocketReq);
+                    currMySocketReq.CurrentRequest.GetRequesterId(), currMySocketReq);
 
 
             //var html= new HubHelperController().AllAdminsPartial();
@@ -106,7 +195,7 @@ namespace SignalRMVCChat.WebSocket
             if (allAdmins.EntityList == null || allAdmins.EntityList.Count == 0)
             {
 
-                allAdmins= await InDatabaseAdmins(currMySocketReq);
+                allAdmins = await InDatabaseAdmins(currMySocketReq);
 
             }
 

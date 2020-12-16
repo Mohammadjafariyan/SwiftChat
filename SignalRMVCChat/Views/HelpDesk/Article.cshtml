@@ -143,8 +143,8 @@
 
             <div class="card" style="color: black;">
                 <div class="card-body">
-                    <div class="card-text">
-                        @Html.Raw(Model.Article.ArticleContent.HtmlContent)
+                    <div class="card-text" style="overflow:auto">
+                        @Html.Raw(Model.Article?.ArticleContent?.HtmlContent ?? "<p></p>")
 
                     </div>
                 </div>
@@ -243,6 +243,8 @@ function sendFeedback(){
     let text=$('#text').val();
     let IsHelpful = window['IsHelpful'];
 
+    let customerToken = CurrentUserInfo && CurrentUserInfo.customerToken ? CurrentUserInfo.customerToken: '';
+
     fetch('/HelpDesk/SendFeedback', {
                 method: "POST", headers: {
                     'Accept': 'application/json',
@@ -253,7 +255,8 @@ function sendFeedback(){
                                                  websiteBaseUrl:'@TempData["websiteBaseUrl"]',
                                                  lang:'@TempData["lang"]',
                     title: '@Model.Article.Title',
-                    IsHelpful: IsHelpful
+                    IsHelpful: IsHelpful,
+                    customerToken: customerToken
                                              },),
                 // -- or --
                 // body : JSON.stringify({
@@ -308,3 +311,8 @@ function sendFeedback(){
 
     }
 </script>
+
+
+
+
+

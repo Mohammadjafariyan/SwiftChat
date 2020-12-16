@@ -35,7 +35,7 @@ const yesNo = [
 ];
 
 class BotEventAction extends Component {
-    state: {
+    state= {
         adminList: [],
     }
 

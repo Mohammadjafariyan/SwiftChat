@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Service;
 
@@ -7,6 +8,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
     public class AdminSendFormToCustomerSocketHandler : BaseFormCreatorSocketHandler
     {
         private ChatProviderService ChatProviderService = Injector.Inject<ChatProviderService>();
+        private MyAccountProviderService MyAccountProviderService = Injector.Inject<MyAccountProviderService>();
 
         public async override Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
         {
@@ -42,25 +44,29 @@ namespace SignalRMVCChat.WebSocket.FormCreator
             _logService.LogFunc("GET UNIQ ID");
             //=============================================================================
 
-            
+
             int UniqId = GetParam<int>("UniqId", true, "UniqId not found");
 
-            
-            
+
+
             //=============================================================================
             _logService.LogFunc("save chat");
             //=============================================================================
+            var systemMyAccount = MyAccountProviderService.GetSystemMyAccount(currMySocketReq.MyWebsite.Id);
 
-            int chatId=ChatProviderService.AdminSendToCustomer(currMySocketReq.MySocket.MyAccountId.Value,
-                customerId, "", currMySocketReq.MySocket.Id, 0, UniqId, form.Id).Single;
+            int myAccountId = currMySocketReq.MySocket.MyAccountId ?? systemMyAccount.Id;
+            int mySocketId = currMySocketReq.MySocket.MyAccountId.HasValue ? currMySocketReq.MySocket.Id : systemMyAccount.MySockets.ToList().Select(t => t.Id).FirstOrDefault();
+
+            int chatId = ChatProviderService.AdminSendToCustomer(myAccountId,
+                customerId, "", mySocketId, 0, UniqId, form.Id).Single;
 
             //=============================================================================
             _logService.LogFunc("END");
             //=============================================================================
 
-            
-            
-            
+
+
+
             await MySocketManagerService.SendToCustomer(customerId, currMySocketReq.MyWebsite.Id,
                 new MyWebSocketResponse
                 {
