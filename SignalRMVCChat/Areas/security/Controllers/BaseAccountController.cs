@@ -108,15 +108,15 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
 
 
-                var appRoleService = Injector.Inject<AppRoleService>();
-                bool isSuperAdmin = appRoleService.IsInRole(result.Id, "superAdmin");
+                //var appRoleService = Injector.Inject<AppRoleService>();
+                //bool isSuperAdmin = appRoleService.IsInRole(result.Id, "superAdmin");
 
 
-                if (isSuperAdmin)
-                {
-                    throw new Exception("ادمین اصلی مجاز به ورود به این بخش نیست");
-                 //   return RedirectToAction("Index", "AdminDashboard", new {area = "Admin"});
-                }
+                //if (isSuperAdmin)
+                //{
+                //    throw new Exception("ادمین اصلی مجاز به ورود به این بخش نیست");
+                // //   return RedirectToAction("Index", "AdminDashboard", new {area = "Admin"});
+                //}
                 
                 Response.Cookies.Add(new HttpCookie("gaptoken", result.Token));
 

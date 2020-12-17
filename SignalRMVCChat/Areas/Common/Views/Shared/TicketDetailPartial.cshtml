@@ -22,30 +22,33 @@
 }
 
 <form action="/Common/Ticket/Save" method="post" enctype="multipart/form-data">
-    
-    @if (isCustomer)
+
+    @if (!CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
     {
-        <input hidden="hidden" name="AppUserId" value="@appUserId"/>
-        
+        <input hidden="hidden" name="AppUserId" value="@appUserId" />
+
+        @Html.Hidden("IsAdmin", false)
+
     }
     else
     {
-        <input hidden="hidden" name="AppAdminId" value="@appUserId"/>
-        
+        <input hidden="hidden" name="AppAdminId" value="@appUserId" />
+        @Html.Hidden("IsAdmin", true)
+
     }
 
 
 
 
-    <input hidden="hidden" name="ReturnUrl" value="@Model.Single.ReturnUrl"/>
-    <input hidden="hidden" name="ParentId" value="@ticketIdstr"/>
-    <input hidden="hidden" name="Status" value="@Model.Single.Status"/>
+    <input hidden="hidden" name="ReturnUrl" value="@Model.Single.ReturnUrl" />
+    <input hidden="hidden" name="ParentId" value="@ticketIdstr" />
+    <input hidden="hidden" name="Status" value="@Model.Single.Status" />
 
     <div class="form-group">
         <label>
             عنوان
         </label>
-        <input required="required" class="form-control" name="Title" value="@Model.Single.Title"/>
+        <input required="required" class="form-control" name="Title" value="@Model.Single.Title" />
 
     </div>
 
@@ -61,7 +64,7 @@
         <label>
             فایل
         </label>
-        <input multiple="multiple" type="file" id="file" name="files" accept="application/pdf,application/zip,image/*"/>
+        <input multiple="multiple" type="file" id="file" name="files" accept="application/pdf,application/zip,image/*" />
         <span> فایل های pdf ، Zip و تصاویر مورد قبول است</span>
     </div>
 

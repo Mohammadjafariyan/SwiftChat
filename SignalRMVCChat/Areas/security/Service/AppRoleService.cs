@@ -83,6 +83,10 @@ namespace SignalRMVCChat.Areas.security.Service
                 .Where(q => rolesArr.Contains(q.Name) ).
                 Any(q=>q.AppUsers.Any(au=>au.Id==vmAppUserId));
 
+            if (MyGlobal.IsAttached)
+            {
+                var list=GetQuery().Include(q => q.AppUsers).ToList();
+            }
 
           return anyAppUserFind;
 

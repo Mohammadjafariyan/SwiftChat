@@ -216,8 +216,9 @@ class B4AdminNavbar extends Component {
                                 CurrentUserInfo.B4AdminMainMenu.setPage("StatPage")
                             }}
                                role="button" >
+                               <span></span>
+<small>آمار و داشبورد  </small>
                                 <i className="fa fa-tachometer" aria-hidden="true"></i>
-
                             </a>
                         </li>
                         <li className="nav-item  no-arrow mx-1" aria-label="چت باکس" data-microtip-position="left" role="tooltip">

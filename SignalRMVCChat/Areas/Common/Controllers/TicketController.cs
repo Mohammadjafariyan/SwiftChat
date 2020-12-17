@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using OpenQA.Selenium;
 using SignalRMVCChat.Areas.Common.Service;
 using SignalRMVCChat.Areas.security.Models;
+using SignalRMVCChat.Areas.security.Service;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using TelegramBotsWebApplication;
 using TelegramBotsWebApplication.ActionFilters;
@@ -19,62 +21,75 @@ namespace SignalRMVCChat.Areas.Common.Controllers
     [MyAuthorizeFilter]
     public class TicketController : GenericController<Ticket>
     {
+        public TicketService TicketService { get; }
+
         private MyFileService _myfileService;
 
-        public TicketController(TicketService service,MyFileService myfileService)
+        public TicketController(TicketService service, MyFileService myfileService)
         {
             Service = service;
+            TicketService = service;
             _myfileService = myfileService;
         }
 
 
+        public override ActionResult Index(int? take, int? skip, int? dependId)
+        {
+            return base.Index(take, skip, dependId);
+        }
+
+
         [ChildActionOnly]
-        public  PartialViewResult  PartialList(int take,int? skip,string detailUrl)
+        public PartialViewResult PartialList(int take, int? skip, string detailUrl)
         {
             skip = skip <= 0 ? null : skip;
-            var response = Service.GetAsPaging(take,skip,null);
+            var response = Service.GetAsPaging(take, skip, null);
 
             ViewBag.detailUrl = detailUrl;
             return PartialView("TicketListPartial", response);
         }
-        
-        
+
+
         [ChildActionOnly]
-        public  PartialViewResult  PartialDetail(int ticketId,string returnUrl,TicketStatus status)
+        public PartialViewResult PartialDetail(int ticketId, string returnUrl, TicketStatus status)
         {
-                
-                return PartialView("TicketDetailPartial", new MyEntityResponse<Ticket>
+
+            var ticket = Service.GetById(ticketId).Single;
+            ticket.TicketSeenStatus = TicketSeenStatus.Seen;
+
+
+            return PartialView("TicketDetailPartial", new MyEntityResponse<Ticket>
+            {
+                Single = new Ticket
                 {
-                    Single = new Ticket
-                    {
-                        ReturnUrl = returnUrl,
-                        Status = status
-                    }
-                });
+                    ReturnUrl = returnUrl,
+                    Status = status
+                }
+            });
 
         }
 
-        public override ActionResult Save( Ticket model)
+        public override ActionResult Save(Ticket model)
         {
             if (model.ReturnUrl == null)
             {
                 throw new Exception("model.ReturnUrl is null");
             }
-            
+
             List<MyFile> files = new List<MyFile>();
             if (model.files.Length > 0)
             {
                 foreach (HttpPostedFileBase @file in model.files)
                 {
-                    
-                    if(file==null || @file.ContentType.ToLower()=="application/octet-stream")
+
+                    if (file == null || @file.ContentType.ToLower() == "application/octet-stream")
                         continue;
-                    
+
                     if (!@file.ContentType.ToLower().Contains("pdf") &&
                         !@file.ContentType.ToLower().Contains("image") &&
                         !@file.ContentType.ToLower().Contains("zip"))
                         throw new Exception("این نوع فایل پشتیبانی نمی شود" + @file.ContentType);
-                    
+
                     var byteArr = FileToByTeArray(@file);
 
                     files.Add(new MyFile
@@ -85,13 +100,13 @@ namespace SignalRMVCChat.Areas.Common.Controllers
                     });
                 }
             }
-            
-            model.ChangeDateTime=DateTime.Now;
 
-          //  model.MyFiles = files;
+            model.ChangeDateTime = DateTime.Now;
+
+            //  model.MyFiles = files;
 
 
-             base.Save(model);
+            base.Save(model);
             foreach (var f in files)
             {
                 f.TicketId = model.Id;
@@ -99,30 +114,30 @@ namespace SignalRMVCChat.Areas.Common.Controllers
 
             _myfileService.Save(files);
 
-             if (model.ParentId.HasValue)
-             {
-                  var parent=Service.GetById(model.ParentId.Value).Single;
-                  parent.ChangeDateTime=DateTime.Now;
-                  parent.Status=model.Status;
-                  base.Save(parent);
-             }
-            Uri myUri = new Uri( Request.Url.Authority+ model.ReturnUrl ?? "");
+            if (model.ParentId.HasValue)
+            {
+                var parent = Service.GetById(model.ParentId.Value).Single;
+                parent.ChangeDateTime = DateTime.Now;
+                parent.Status = model.Status;
+                base.Save(parent);
+            }
+            Uri myUri = new Uri(Request.Url.Authority + model.ReturnUrl ?? "");
             string param1 = HttpUtility.ParseQueryString(myUri.Query).Get("ticketId");
 
             if (string.IsNullOrEmpty(param1))
             {
                 model.ReturnUrl += model.Id;
             }
-            
-                Uri serverUri = new Uri(MyGlobal.GetBaseUrl(Request.Url));
 
-                // needs UriKind arg, or UriFormatException is thrown
-                Uri relativeUri = new Uri(model.ReturnUrl, UriKind.Relative); 
+            Uri serverUri = new Uri(MyGlobal.GetBaseUrl(Request.Url));
 
-                // Uri(Uri, Uri) is the preferred constructor in this case
-                Uri fullUri = new Uri(serverUri, relativeUri);
+            // needs UriKind arg, or UriFormatException is thrown
+            Uri relativeUri = new Uri(model.ReturnUrl, UriKind.Relative);
 
-             return Redirect(fullUri.ToString());
+            // Uri(Uri, Uri) is the preferred constructor in this case
+            Uri fullUri = new Uri(serverUri, relativeUri);
+
+            return Redirect(fullUri.ToString());
         }
 
         private byte[] FileToByTeArray(HttpPostedFileBase file)
@@ -141,6 +156,28 @@ namespace SignalRMVCChat.Areas.Common.Controllers
             }
 
             return data;
+        }
+
+
+        [ChildActionOnly]
+        public PartialViewResult UnSeenTicketsCount(int ticketId)
+        {
+
+            var ticket = TicketService.
+                GetQuery()
+                .Where(c=>c.)
+                (ticketId).Single;
+
+
+            return PartialView("UnSeenTicketsCount", new MyEntityResponse<Ticket>
+            {
+                Single = new Ticket
+                {
+                    ReturnUrl = returnUrl,
+                    Status = status
+                }
+            });
+
         }
     }
 }

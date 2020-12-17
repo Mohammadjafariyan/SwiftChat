@@ -1006,6 +1006,8 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             MyWebsiteSetting _MyWebsiteSetting = JsonConvert.DeserializeObject<MyWebsiteSetting>(myWebsiteSettingJson);
 
+
+            _MyWebsiteSetting.ActivePages = new List<ActivePage>();
             _MyWebsiteSetting.MyWebsiteId = 1;
 
             gapChatContext.MyWebsiteSettings.Add(_MyWebsiteSetting);

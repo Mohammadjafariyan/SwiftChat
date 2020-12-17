@@ -12,6 +12,10 @@ namespace SignalRMVCChat.Areas.security.Models
     public class Ticket : Entity,ISelfReferenceEntity<Ticket>
       {
 
+        public Ticket()
+        {
+            TicketSeenStatus = TicketSeenStatus.NotSeen;
+        }
           
           [NotMapped]
           public HttpPostedFileBase[] files { get; set; }  
@@ -31,10 +35,11 @@ namespace SignalRMVCChat.Areas.security.Models
           public Ticket Parent { get; set; }
           public int? ParentId { get; set; }
           public List<MyFile> MyFiles { get; set; }
-        public bool IsAdmin { get; internal set; }
+        public bool IsAdmin { get;  set; }
         public AppAdmin AppAdmin { get; set; }
         public int? AppAdminId { get; set; }
-      }
+        public TicketSeenStatus TicketSeenStatus { get; set; }
+    }
 
     public class MyFile:Entity
     {
@@ -44,10 +49,18 @@ namespace SignalRMVCChat.Areas.security.Models
         public byte[] FileContent { get; set; }
         public Ticket Ticket { get; set; }
         public int TicketId { get; set; }
+
+
     }
-      
 
 
+    public enum TicketSeenStatus
+    {
+        [EnumName("مشاهده شده")]
+        Seen,
+        [EnumName("مشاهده نشده")]
+        NotSeen,
+    }
     public enum TicketStatus
     {
         [EnumName("در انتظار پاسخ")]

@@ -29,7 +29,7 @@ namespace TelegramBotsWebApplication.ActionFilters
 
             //Setting.BaseUrl = MyGlobal.GetBaseUrl(filterContext.HttpContext.Request.Url);
 
-           
+
             //_settingService.Save(Setting);
         }
     }
@@ -95,42 +95,18 @@ namespace TelegramBotsWebApplication.ActionFilters
                     {
                         throw new Exception("دسترسی ندارید");
                     }
-
-                    /*if (Roles.Contains("superAdmin"))
-                    {
-                        if (!_settingService.GetSingle().IsSystemInitialized)
-                        {
-                            string controllerName = filterContext.RouteData.Values["controller"]?.ToString();
-                            if (controllerName?.ToLower() != "initialize")
-                            {
-                                if (controllerName?.ToLower() == "plan")
-                                {
-                                }
-                                else
-                                {
-                                    filterContext.Result = new RedirectToRouteResult(
-                                        new RouteValueDictionary
-                                        {
-                                            {"area", "Admin"},
-                                            {"action", "Index"},
-                                            {"controller", "Initialize"},
-                                        });
-                                }
-                            }
-                            else
-                            {
-                            }
-
-
-                            return;
-                        }
-                    }*/
                 }
-
 
                 try
                 {
-                    SecurityService.GetCurrentUser();
+                    if (CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+                    {
+                        SecurityService.GetCurrentAdmin();
+                    }
+                    else
+                    {
+                        SecurityService.GetCurrentUser();
+                    }
                 }
                 catch (Exception e)
                 {

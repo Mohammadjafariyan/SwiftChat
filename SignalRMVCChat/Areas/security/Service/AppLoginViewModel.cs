@@ -7,5 +7,6 @@ namespace SignalRMVCChat.Areas.security.Service
         public int AppUserId { get; set; }
         public DateTime LoginDateTime { get; set; }
         public string Username { get; set; }
+        public bool IsAdmin { get; internal set; }
     }
 }
