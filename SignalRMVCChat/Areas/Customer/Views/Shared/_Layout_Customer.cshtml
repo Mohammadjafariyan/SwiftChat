@@ -230,12 +230,12 @@
                     </div>
                 </li>*@
                 <li class="header-notification">
-                    <a id="CurrentPlan" href="/Customer/CustomerTickets/Index">
+                    <a id="ticketsPage" href="/Customer/CustomerTickets/Index">
                         تیکت ها
                     </a>
                 </li>
                 <li class="header-notification">
-                    <a id="CurrentPlan" href="/Customer/CustomerTickets/Detail">
+                    <a id="sendTicketPage" href="/Customer/CustomerTickets/Detail">
                         ارسال تیکت
                     </a>
                 </li>
@@ -250,7 +250,7 @@
                 </li>
 
                 <li class="user-profile header-notification">
-                    <div class="dropdown-primary dropdown">
+                    <div class="dropdown-primary dropdown" id="profilelink">
                         <div class="dropdown-toggle" data-toggle="dropdown">
                             <span>پروفایل</span>
                             <i class="feather icon-chevron-down"></i>
@@ -282,7 +282,7 @@
                                 {
                                     @Html.AntiForgeryToken()
                                 }
-                                <a href="javascript:document.getElementById('logoutForm').submit()">
+                                <a id="logout" href="javascript:document.getElementById('logoutForm').submit()">
                                     <i class="feather icon-log-out"></i> خروج
                                 </a>
                             </li>
@@ -701,7 +701,11 @@
             <span class="pcoded-micon ">
                 <i class="feather icon-menu"></i>
             </span>
-            <span class="pcoded-mtext">  تیکت ها</span>
+            <span class="pcoded-mtext">
+                @Html.Partial("~/Areas/Common/Views/Shared/UnSeenTicketsCount.cshtml")
+                
+                تیکت ها
+            </span>
         </a>
     </li>
 </ul>

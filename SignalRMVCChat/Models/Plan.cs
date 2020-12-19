@@ -7,10 +7,15 @@ namespace SignalRMVCChat.Service
 {
     public class Plan : EntitySafeDelete
     {
+
+        public Plan()
+        {
+            ShowWatermark = true;
+        }
         /// <summary>
         /// اختصاص صفحات خاص به پشتیبان های خاص
         /// </summary>
-        public bool URLSpecificSupporter{ get; set; }
+        public bool URLSpecificSupporter { get; set; }
 
         /// <summary>
         /// قیمت ماهانه
@@ -78,7 +83,7 @@ namespace SignalRMVCChat.Service
 
 
 
-        
+
         /// <summary>
         /// مشاهده آنلاین مانیتور کاربر
         /// </summary>

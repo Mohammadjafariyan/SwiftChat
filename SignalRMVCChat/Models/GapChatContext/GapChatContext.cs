@@ -579,6 +579,10 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             base.OnModelCreating(modelBuilder);
         }
+        #region weblog
+        public DbSet<weblog.Blog> Blogs { get; set; }
+
+        #endregion
 
         #region mywebsite setting
         public DbSet<MyWebsiteSetting> MyWebsiteSettings { get; set; }

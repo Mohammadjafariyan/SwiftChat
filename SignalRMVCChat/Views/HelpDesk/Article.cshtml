@@ -1,10 +1,6 @@
 ﻿@using SignalRMVCChat.Models.HelpDesk
 @model SignalRMVCChat.Service.HelpDesk.ArticleViewModel
 
-@{
-    ViewBag.Title = "title";
-    Layout = "~/Views/Shared/_HelpDesk_Layout.cshtml";
-}
 
 
 
@@ -28,7 +24,32 @@
         };
     }
 }
+
+@{
+    ViewBag.Title = helpDesk.HeaderText + "-" + Model.Article.Title;
+    Layout = "~/Views/Shared/_HelpDesk_Layout.cshtml";
+}
+
 <style>
+
+
+    .visibilityUnset {
+        display: unset;
+    }
+
+    .visibilityHidden {
+        display: none;
+    }
+
+    .keywords {
+        height: 200px;
+        overflow: auto;
+    }
+
+    .hiddenKeyword {
+        margin: 2px
+    }
+
     .cat a {
         font-size: 13px !important;
     }
@@ -146,6 +167,46 @@
                     <div class="card-text" style="overflow:auto">
                         @Html.Raw(Model.Article?.ArticleContent?.HtmlContent ?? "<p></p>")
 
+
+
+                        <hr />
+
+
+                        <div class="keywords">
+                            @if (string.IsNullOrEmpty(Model.Article.Keywords) == false)
+                            {
+                                var split = Model.Article.Keywords.Split(',');
+                                int c = 0;
+                                foreach (var key in split)
+                                {
+                                    if (string.IsNullOrEmpty(key))
+                                    {
+                                        continue;
+                                    }
+                                    c++;
+                                    if (c < 20)
+                                    {
+                                        <a href="/HelpDesk/Search?searchTerm=@key&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]" class="btn btn-info">
+                                            @key
+                                        </a>
+                                    }
+                                    else if (c == 20)
+                                    {
+                                        <a style="color:#00b1ff;cursor:pointer" onclick="toggleKeyWords()">
+                                            ادامه کلمات کلیدی
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/HelpDesk/Search?searchTerm=@key&websiteBaseUrl=@TempData["websiteBaseUrl"]&lang=@TempData["lang"]"
+                                           class="btn btn-info hiddenKeyword visibilityHidden">
+                                            @key
+                                        </a>
+                                    }
+
+                                }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -308,6 +369,11 @@ function sendFeedback(){
         }
 
     })*/
+
+    }
+
+    function toggleKeyWords() {
+        $('.hiddenKeyword').toggleClass('visibilityHidden');
 
     }
 </script>

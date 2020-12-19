@@ -1,0 +1,43 @@
+﻿@model List<SignalRMVCChat.Areas.Admin.Controllers.BlogViewModel>
+
+@{
+    ViewBag.Title = "لیست صفحات سایت ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<td><a href="/admin/Editor/Detail?blogId=0">ثبت رکورد جدید</a></td>
+
+<hr />
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>عنوان مطلب</th>
+            <th>صفحه</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><a href="/admin/Editor/Detail?blogId=@item.Id">@item.Title</a></td>
+
+                <td>
+                    @if (item.Type == SignalRMVCChat.Models.weblog.BlogType.AboutUs)
+                    {
+                        <span>درباره ما</span>
+                    }
+                    @if (item.Type == SignalRMVCChat.Models.weblog.BlogType.Rules)
+                    {
+                        <span>قوانین</span>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

@@ -12,13 +12,32 @@
 
 
     var _appRoleService = Injector.Inject<AppRoleService>();
-    
-    bool isCustomer= _appRoleService.IsInRole(appUserId, "customer");
+    var _ticketService = Injector.Inject<TicketService>();
 
-}
+    bool isCustomer = _appRoleService.IsInRole(appUserId, "customer");
+    var ticketIdstr = Request.Params["ticketId"] ?? "";
 
-@{
-    var ticketIdstr = @Request.Params["ticketId"] ?? "";
+    int ticketId = 0;
+    int.TryParse(ticketIdstr, out ticketId);
+
+    if (ticketId != 0)
+    {
+        var ticket = _ticketService.GetById(ticketId).Single;
+
+        if (CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+        {
+            ticket.AdminTicketSeenStatus =
+       SignalRMVCChat.Areas.security.Models.TicketSeenStatus.Seen;
+        }
+        else
+        {
+            ticket.CustomerTicketSeenStatus =
+           SignalRMVCChat.Areas.security.Models.TicketSeenStatus.Seen;
+        }
+
+
+        _ticketService.Save(ticket);
+    }
 }
 
 <form action="/Common/Ticket/Save" method="post" enctype="multipart/form-data">

@@ -131,12 +131,16 @@
                 </ul>*@
                 <!-- Footer Links -->
                 <ul class="footer-links list-inline">
-                    <li> <a style="color: white" class="scrollTo" href="/Account/AdminLogin">ورود به سیستم</a></li>
-                    
+                    <li> <a id="sysAdminLogin" style="color: white" class="scrollTo" href="/Account/AdminLogin">ورود به سیستم</a></li>
+
                     @if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
                     {
-                        <li><a style="color: white"  href="/Account/RegisterAdmin">ثبت نام ادمین</a></li>
+                        <li><a style="color: white" href="/Account/RegisterAdmin">ثبت نام ادمین</a></li>
                     }
+
+                    <li><a style="color: white" href="/Home/AboutUs">درباره ما</a></li>
+                    <li><a style="color: white" href="/Home/Rules">قوانین </a></li>
+
                 </ul>
             </div>
         </div>

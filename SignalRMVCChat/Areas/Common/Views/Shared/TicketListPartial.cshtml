@@ -16,7 +16,7 @@
     <tbody>
     @foreach (var rec in Model.EntityList)
     {
-        <tr >
+        <tr  >
             <td>@MyGlobal.GetSummary(rec.Title)</td>
             <td>@MyGlobal.GetSummary(rec.Body)</td>
             <td>@MyGlobal.ToIranianDate(rec.ChangeDateTime)</td>
@@ -27,7 +27,7 @@
                 }
             </td>
             <td>
-                <a href="@ViewBag.detailUrl?ticketId=@rec.Id">مشاهده</a>
+                <a class="visitTicket" href="@ViewBag.detailUrl?ticketId=@rec.Id">مشاهده</a>
             </td>
         </tr>
     }

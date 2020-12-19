@@ -169,7 +169,7 @@ namespace SignalRMVCChat.Service
         {
         }
 
-        public MyAccount GetAccountIdByUsername(string identityName)
+        public MyAccount GetAccountIdByUsername(string identityName,bool loadwebsites=true)
         {
             var myAccounts = Impl.GetQuery();
             var @default = myAccounts.Include("MyWebsites").FirstOrDefault(a => a.IdentityUsername == identityName);
@@ -180,11 +180,18 @@ namespace SignalRMVCChat.Service
             }
 
 
-            var wbsiteService = Injector.Inject<MyWebsiteService>();
-            @default.MyWebsites = wbsiteService.GetQuery().Where(w => w.MyAccountId == @default.Id).ToList();
+            if (loadwebsites)
+            {
+                var wbsiteService = Injector.Inject<MyWebsiteService>();
+                @default.MyWebsites = wbsiteService.GetQuery().Where(w => w.MyAccountId == @default.Id).ToList();
+
+            }
 
             return @default;
         }
+
+
+       
 
         public MyDataTableResponse<MyAccount> GetAsPaging(string identityName)
         {

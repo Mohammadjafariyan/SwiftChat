@@ -24,7 +24,7 @@ namespace SignalRMVCChat.Service.HelpDesk
             return entities.Include(e => e.MyWebsite).Include(c => c.Language);
         }
 
-        public async Task<HelpDeskHomeViewModel> GetHelpDeskHome(string websiteBaseUrl, string lang)
+        public async Task<HelpDeskHomeViewModel> GetHelpDeskHome(string websiteBaseUrl, string lang, string searchTerm = null)
         {
 
             using (var db = ContextFactory.GetContext(null) as GapChatContext)
@@ -42,7 +42,27 @@ namespace SignalRMVCChat.Service.HelpDesk
 
                 var categoryIds = cateogies.Select(c => c.Id);
 
-                var articles = db.Articles
+
+                var articlesQuery = db.Articles
+                    .AsQueryable();
+
+                // -------------------- search
+                if (string.IsNullOrEmpty(searchTerm) == false)
+                {
+                    articlesQuery = articlesQuery.Where(
+                        a => a.Title.ToLower().Trim().Contains(searchTerm.ToLower().Trim()) ||
+                        a.Description.ToLower().Trim().Contains(searchTerm.ToLower().Trim()) ||
+                        a.Summary.ToLower().Trim().Contains(searchTerm.ToLower().Trim()) ||
+                        a.textValue.ToLower().Trim().Contains(searchTerm.ToLower().Trim()) ||
+                        a.Keywords.ToLower().Contains(searchTerm.ToLower())
+                        );
+
+                }
+                // -------------------- search end
+
+
+
+                var articles = articlesQuery
                     .Include(a => a.ArticleVisits)
                     .Where(a => categoryIds.Contains(a.CategoryId))
                     .OrderByDescending(a => a.ArticleVisits.Count()).Take(10).ToListAsync();
@@ -89,6 +109,8 @@ namespace SignalRMVCChat.Service.HelpDesk
                 .Include(c => c.MyWebsite)
                 .Where(c => c.MyWebsite.BaseUrl.Contains(websiteBaseUrl));
 
+
+
             if (!string.IsNullOrEmpty(lang))
             {
                 query = query.Where(c => c.Language.alpha2Code == lang);
@@ -97,7 +119,6 @@ namespace SignalRMVCChat.Service.HelpDesk
             {
                 query = query.Where(c => c.Selected);
             }
-
             return query;
         }
 
@@ -216,6 +237,70 @@ namespace SignalRMVCChat.Service.HelpDesk
                     Articles = articles.ToList(),
                     Cateogies = cateogies.ToList(),
                     Category = category,
+                    HelpDesk = helpDesk,
+                    Languages = await languages.ToListAsync()
+
+                };
+            }
+        }
+
+
+        public async Task<CategoryArticlesViewModel> Search(string websiteBaseUrl, string lang,
+            string searchTerm)
+        {
+            using (var db = ContextFactory.GetContext(null) as GapChatContext)
+            {
+                if (db == null)
+                {
+                    throw new Exception("db is null ::::::");
+                }
+
+                var query = GetHelpDeskQuery(db, websiteBaseUrl, lang);
+
+                var helpDeskIds = query.Select(q => q.Id);
+
+                var cateogies = db.Categories.Where(c => helpDeskIds.Contains(c.HelpDeskId));
+
+                var categoryIds = cateogies.Select(c => c.Id);
+
+
+                var articlesQuery = db.Articles.AsQueryable();
+
+                // -------------------- search
+                if (string.IsNullOrEmpty(searchTerm) == false)
+                {
+                    articlesQuery = articlesQuery.Where(
+                        a => a.Title.ToLower().Trim().Contains(searchTerm.ToLower().Trim()) ||
+                        a.Description.ToLower().Trim().Contains(searchTerm.ToLower().Trim()) ||
+                        a.Summary.ToLower().Trim().Contains(searchTerm.ToLower().Trim()) ||
+                        a.textValue.ToLower().Trim().Contains(searchTerm.ToLower().Trim()) ||
+                        a.Keywords.ToLower().Contains(searchTerm.ToLower()) ||
+                        a.Category.Title.ToLower().Contains(searchTerm.ToLower())
+                        );
+
+                }
+                // -------------------- search end
+
+                var articles = articlesQuery
+                    .Include(c => c.Category).Where(a => categoryIds.Contains(a.CategoryId))
+                    .AsQueryable();
+
+
+
+                var helpDesk = query.FirstOrDefault();
+
+                var languages = GetLanguages(query, db);
+
+
+                return new CategoryArticlesViewModel
+                {
+
+                    Articles = articles.ToList(),
+                    Cateogies = cateogies.ToList(),
+                    Category = new Category
+                    {
+                        Title="جستجو"
+                    },
                     HelpDesk = helpDesk,
                     Languages = await languages.ToListAsync()
 

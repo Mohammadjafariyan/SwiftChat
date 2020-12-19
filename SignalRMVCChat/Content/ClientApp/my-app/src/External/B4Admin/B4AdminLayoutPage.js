@@ -46,6 +46,7 @@ import AssingedToMeCustomerLists from "../../Routing/use/AssingedToMeCustomerLis
 import CompaignPage from "../../Pages/CompaignPage";
 import TelegramBotPage from './../../Pages/TelegramBotPage';
 import SettingPage from './../../Pages/SettingPage';
+import ArchivePage from './../../Pages/ArchivePage';
 
 
 export default class B4AdminLayoutPage extends Component {
@@ -152,8 +153,22 @@ export default class B4AdminLayoutPage extends Component {
                     </div>
                 )
             }
-
             
+                  
+            else if (DataHolder.currentPage === 'ArchivePage') {
+                return (
+                    <div>
+                        <Toast position="bottom-left" ref={(el) => this.toast = el}/>
+
+                        <MessageAlerts/>
+
+
+                        <ArchivePage></ArchivePage>
+
+
+                    </div>
+                )
+            }
             else if (DataHolder.currentPage === 'SettingPage') {
                 return (
                     <div>

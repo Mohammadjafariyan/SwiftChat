@@ -65,13 +65,21 @@
 
             <p style="color:#adb5bd ">با ما صحبت کنید یا ایمیل بفرستید</p>
 
-            <button class="btn btn-light">
+            <button class="btn btn-light" onclick="openChatPanel()">
 
 
                 چت با ما
                 <i class="fa fa-comments-o" aria-hidden="true"></i>
 
             </button>
+            @*یا
+            <button class="btn btn-light">
+
+
+                پیشنهاد مقاله
+                <i class="fa fa-send" aria-hidden="true"></i>
+
+            </button>*@
         </div>
         <hr />
 
@@ -94,11 +102,29 @@
 
     <div id="gapPlugin"></div>
 
-    @{ 
-        
+    @if (helpDesk.MyWebsite != null)
+    {
+        <span>
+            @Html.Partial("~/Areas/Customer/Views/Shared/ExampleJsPlugin.cshtml"
+      , helpDesk.MyWebsite, null)
+        </span>
     }
 
-    @Html.Partial("~/Areas/Customer/Views/Shared/ExampleJsPlugin.cshtml"
-    , helpDesk.MyWebsite, null)
+
+
+    <script>
+        function openChatPanel() {
+
+
+            if (getDoc().querySelector('#dot')) {
+                getDoc().querySelector('#dot').click();
+
+            } else {
+
+                alert('چت فعال نیست')
+            }
+
+        }
+    </script>
 </body>
 </html>

@@ -3,8 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using Engine.SysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
+using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.MyWSetting;
 using TelegramBotsWebApplication.ActionFilters;
@@ -102,6 +104,45 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
                     }
 
                 }
+                catch (Exception e)
+                {
+                    //ignore
+                }
+            }
+
+            #endregion
+
+
+            #region MyAccount
+            if (Request.Cookies["customerToken"] != null)
+            {
+
+                var customerToken = Request.Cookies["customerToken"].Value;
+
+                try
+                {
+                    customerToken = Uri.UnescapeDataString(customerToken);
+
+                    var request = MySpecificGlobal.ParseToken(customerToken);
+
+                    using (var db = ContextFactory.GetContext(null) as GapChatContext)
+                    {
+                        if (db == null)
+                        {
+                            throw new Exception("db is null ::::::");
+                        }
+
+
+
+                        var rootMyAccountId = db.MyWebsites.Where(w => w.Id == request.websiteId)
+                            .Select(w => w.MyAccountId).FirstOrDefault();
+
+
+                        TempData["currentPlan"]= db.MyAccountPlans.Include("Plan")
+                            .Where(p => p.MyAccountId == rootMyAccountId).Select(p => p.Plan).FirstOrDefault();
+                    }
+
+                    }
                 catch (Exception e)
                 {
                     //ignore

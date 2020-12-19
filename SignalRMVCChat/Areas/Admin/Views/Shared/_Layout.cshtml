@@ -129,7 +129,7 @@
             
 
                 <li class="user-profile header-notification">
-                    <div class="dropdown-primary dropdown">
+                    <div class="dropdown-primary dropdown" id="profilelink">
                         <div class="dropdown-toggle" data-toggle="dropdown">
                             <span>پروفایل</span>
                             <i class="feather icon-chevron-down"></i>
@@ -161,7 +161,7 @@
                                 {
                                     @Html.AntiForgeryToken()
                                 }
-                                <a href="javascript:document.getElementById('logoutForm').submit()">
+                                <a id="logout" href="javascript:document.getElementById('logoutForm').submit()">
                                     <i class="feather icon-log-out"></i> خروج
                                 </a>
                             </li>
@@ -287,19 +287,31 @@
 <div class="pcoded-inner-navbar main-menu">
     <div class="pcoded-navigatio-lavel">منوی اصلی</div>
     <ul class="pcoded-item pcoded-left-item">
-    
-                    <li> <a href="/Admin/SignUsers/Index">لیست کاربران</a></li>
-                    <li> <a href="/Admin/PaymentBills/ShowMyAccountsBills">	صورتحساب ها</a></li>
-                    <li> <a href="/Admin/Plan/Index">	پلن ها</a></li>
-                    <li> <a href="/Admin/AdminTickets/Index">	تیکت ها</a></li>
-                    <li> <a href="/Admin/SignWebsites/Index">سایت های ثبت نام شده</a></li>
-                    <li> <a href="/Admin/Setting/Detail?id=0">تنظیمات سیستم</a></li>
-                    <li> <a href="/Admin/DashboardLog/Index">لاگ سیستم</a></li>
-                    <li> <a href="/Admin/DashboardLog/Comments">نظرات دریافت شده</a></li>
-        <li> <a href="/Admin/AdminHelpDeskList/Index">
-            
-         های ایجاد شده   HelpDesk
-        </a></li>
+
+        <li> <a href="/Admin/SignUsers/Index">لیست کاربران</a></li>
+        <li> <a href="/Admin/PaymentBills/ShowMyAccountsBills">	صورتحساب ها</a></li>
+        <li> <a href="/Admin/Plan/Index">	پلن ها</a></li>
+        <li>
+            <a id="sendTicketPage" href="/Admin/AdminTickets/Index">
+
+                @Html.Partial("~/Areas/Common/Views/Shared/UnSeenTicketsCount.cshtml")
+
+                تیکت ها
+            </a>
+        </li>
+        <li> <a href="/Admin/SignWebsites/Index">سایت های ثبت نام شده</a></li>
+        <li> <a href="/Admin/Setting/Detail?id=0">تنظیمات سیستم</a></li>
+        <li> <a href="/Admin/DashboardLog/Index">لاگ سیستم</a></li>
+        <li> <a href="/Admin/DashboardLog/Comments">نظرات دریافت شده</a></li>
+        <li>
+            <a href="/Admin/AdminHelpDeskList/Index">
+
+                های ایجاد شده   HelpDesk
+            </a>
+        </li>
+
+        <li> <a href="/Admin/Editor/Index">صفحات معمول</a></li>
+
 
     </ul>
 

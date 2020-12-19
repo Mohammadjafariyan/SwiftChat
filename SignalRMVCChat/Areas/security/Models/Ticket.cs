@@ -14,7 +14,8 @@ namespace SignalRMVCChat.Areas.security.Models
 
         public Ticket()
         {
-            TicketSeenStatus = TicketSeenStatus.NotSeen;
+            AdminTicketSeenStatus = TicketSeenStatus.NotSeen;
+            CustomerTicketSeenStatus = TicketSeenStatus.NotSeen;
         }
           
           [NotMapped]
@@ -38,7 +39,8 @@ namespace SignalRMVCChat.Areas.security.Models
         public bool IsAdmin { get;  set; }
         public AppAdmin AppAdmin { get; set; }
         public int? AppAdminId { get; set; }
-        public TicketSeenStatus TicketSeenStatus { get; set; }
+        public TicketSeenStatus AdminTicketSeenStatus { get; set; }
+        public TicketSeenStatus CustomerTicketSeenStatus { get; set; }
     }
 
     public class MyFile:Entity

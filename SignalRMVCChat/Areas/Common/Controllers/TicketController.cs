@@ -10,6 +10,7 @@ using SignalRMVCChat.Areas.Common.Service;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.security.Service;
 using SignalRMVCChat.Areas.sysAdmin.Service;
+using SignalRMVCChat.SysAdmin.Service;
 using TelegramBotsWebApplication;
 using TelegramBotsWebApplication.ActionFilters;
 using TelegramBotsWebApplication.Areas.Admin.Controllers;
@@ -54,8 +55,7 @@ namespace SignalRMVCChat.Areas.Common.Controllers
         public PartialViewResult PartialDetail(int ticketId, string returnUrl, TicketStatus status)
         {
 
-            var ticket = Service.GetById(ticketId).Single;
-            ticket.TicketSeenStatus = TicketSeenStatus.Seen;
+           
 
 
             return PartialView("TicketDetailPartial", new MyEntityResponse<Ticket>
@@ -121,23 +121,39 @@ namespace SignalRMVCChat.Areas.Common.Controllers
                 parent.Status = model.Status;
                 base.Save(parent);
             }
-            Uri myUri = new Uri(Request.Url.Authority + model.ReturnUrl ?? "");
-            string param1 = HttpUtility.ParseQueryString(myUri.Query).Get("ticketId");
-
-            if (string.IsNullOrEmpty(param1))
+            try
             {
-                model.ReturnUrl += model.Id;
+                Uri myUri = new Uri( MyGlobal.GetBaseUrl(Request.Url )+ model.ReturnUrl ?? "");
+                string param1 = HttpUtility.ParseQueryString(myUri.Query).Get("ticketId");
+
+                if (string.IsNullOrEmpty(param1))
+                {
+                    model.ReturnUrl += model.Id;
+                }
             }
+            catch (Exception e)
+            {
 
-            Uri serverUri = new Uri(MyGlobal.GetBaseUrl(Request.Url));
+                throw new Exception(e.Message + "\n"+ "پارت اول " + Request.Url.Authority + model.ReturnUrl ?? "");
+            }
+            try
+            {
+                Uri serverUri = new Uri(MyGlobal.GetBaseUrl(Request.Url));
 
-            // needs UriKind arg, or UriFormatException is thrown
-            Uri relativeUri = new Uri(model.ReturnUrl, UriKind.Relative);
+                // needs UriKind arg, or UriFormatException is thrown
+                Uri relativeUri = new Uri(model.ReturnUrl, UriKind.Relative);
 
-            // Uri(Uri, Uri) is the preferred constructor in this case
-            Uri fullUri = new Uri(serverUri, relativeUri);
+                // Uri(Uri, Uri) is the preferred constructor in this case
+                Uri fullUri = new Uri(serverUri, relativeUri);
 
-            return Redirect(fullUri.ToString());
+                return Redirect(fullUri.ToString());
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message + "\n" + "پارت دوم  ");
+            }
+          
         }
 
         private byte[] FileToByTeArray(HttpPostedFileBase file)
@@ -159,25 +175,26 @@ namespace SignalRMVCChat.Areas.Common.Controllers
         }
 
 
-        [ChildActionOnly]
-        public PartialViewResult UnSeenTicketsCount(int ticketId)
-        {
+        //[ChildActionOnly]
+        //public PartialViewResult UnSeenTicketsCount()
+        //{
 
-            var ticket = TicketService.
-                GetQuery()
-                .Where(c=>c.)
-                (ticketId).Single;
+        //    var QUERY = TicketService.
+        //        GetQuery();
 
+        //    if (CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+        //    {
+        //        QUERY = QUERY.Where(c => c.TicketSeenStatus == TicketSeenStatus.NotSeen
+        //        && c.AppAdminId == CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.AppUserId);
+        //    }
+        //    else
+        //    {
+        //        QUERY = QUERY.Where(c => c.TicketSeenStatus == TicketSeenStatus.NotSeen
+        //         && c.AppUserId == CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.AppUserId);
+        //    }
 
-            return PartialView("UnSeenTicketsCount", new MyEntityResponse<Ticket>
-            {
-                Single = new Ticket
-                {
-                    ReturnUrl = returnUrl,
-                    Status = status
-                }
-            });
+        //    return PartialView("UnSeenTicketsCount", QUERY.Count());
 
-        }
+        //}
     }
 }

@@ -1,0 +1,112 @@
+﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+@model SignalRMVCChat.Models.weblog.Blog
+
+
+@{
+    ViewBag.Title = "ویرایشگر صفحات سایت";
+
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+
+<link href="~/Content/Quill/Quill.css" rel="stylesheet" />
+<link href="~/Content/Quill/Highlight.css" rel="stylesheet" />
+
+
+
+<a style="float:left;margin-left:50px" href="/admin/Editor/index">بازگشت به لیست</a>
+<div style="padding: 50px">
+
+    <div class="form-group">
+
+
+        <label>عنوان</label>
+        <input name="" id="titleTemp" value="@Model.Title" class="form-control" />
+    </div>
+
+
+    <div class="form-group">
+        @{
+            int type = (int)@Model.Type;
+        }
+
+
+        @Html.EnumDropDownListFor(
+    x => x.Type,
+    "انتخاب صفحه",
+    new { @id = "type" })
+
+       
+        <br/>
+        <small style="color:orange">در صورت تعریف بیش از یک مطلب برای یک صفحه ، تمامی صفحات نمایش داده خواهند شد</small>
+    </div>
+
+
+    <div class="form-group">
+
+        <div id="editor" style="height:350px">
+
+           @Html.Raw(Model.Content)
+        </div>
+    </div>
+
+
+    <div class="form-group">
+
+        <button class="btn btn-info" onclick="Save()">ذخیره</button>
+    </div>
+
+
+
+
+
+</div>
+
+<form style="display:none" id="myfo" method="post" action="/admin/Editor/Save">
+    <input name="Title" id="Title" value="@Model.Title" />
+    <input name="Type" id="Type" value="" />
+    <input name="Id" id="Id" value="@Model.Id" />
+    <input name="Content" id="Content" value="@Model.Content" />
+
+
+    <input type="submit" />
+</form>
+
+@section scripts{
+
+    <script src="~/Content/Quill/Highlight.js" type="text/javascript"></script>
+    <script src="~/Content/Quill/Quill.js" type="text/javascript"></script>
+    <script>
+        var quill = new Quill('#editor', {
+            bounds: '#editor',
+            modules: {
+                'syntax': true,
+                'toolbar': [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'script': 'super' }, { 'script': 'sub' }],
+                    [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }, { 'align': [] }],
+                    ['link', 'image', 'video', 'formula'],
+                    ['clean']
+                ],
+            },
+            theme: 'snow'
+        });
+
+        function Save() {
+
+            $('#Title').val($('#titleTemp').val())
+            $('#Type').val($('#type').val())
+            $('#Content').val(quill.root.innerHTML)
+
+            console.log('typpppppppppppppe', $('#type').val())
+
+            debugger;
+            $('#myfo').submit();
+        }
+    </script>
+
+
+}

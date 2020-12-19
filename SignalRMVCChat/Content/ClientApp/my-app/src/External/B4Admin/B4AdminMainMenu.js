@@ -264,6 +264,19 @@ export default class B4AdminMainMenu extends Component {
                             </span></a>
                 </li> 
 
+
+                <li className={'nav-item ' +
+                 (DataHolder.currentPage==='ArchivePage' ? ' active ' : '')}>
+                    <a id="ArchivePage"  className="nav-link" onClick={() => {
+                        this.setPage("ArchivePage");
+
+                    }}>
+                       <i className="fa fa-cog" aria-hidden="true"></i>
+ <span>
+
+                                آرشیو گفتگو ها
+                            </span></a>
+                </li> 
                 <li className={'nav-item ' + (DataHolder.currentPage === 'SocialChannels' ? ' active ' : '')}>
                     <a className="nav-link" onClick={() => {
                         this.setPage('SocialChannels');

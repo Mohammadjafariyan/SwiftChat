@@ -1,4 +1,5 @@
-﻿@using System.Data.Entity
+﻿@using SignalRMVCChat.SysAdmin.Service
+@using System.Data.Entity
 @using SignalRMVCChat.Areas.Common.Service
 @using SignalRMVCChat.Areas.security.Models
 @using SignalRMVCChat.DependencyInjection
@@ -9,116 +10,127 @@
 
 @if (Request.Params["ticketId"] != null)
 {
-    int ticketId = 0;
-    bool parsed = int.TryParse(Request.Params["ticketId"], out ticketId);
-    if (parsed == false)
+    using (var db = Engine.SysAdmin.Service.ContextFactory.GetContext(null) as SignalRMVCChat.Models.GapChatContext.GapChatContext)
     {
-        throw new Exception("کد تیکت قابل شناسایی نیست");
-    }
+        int ticketId = 0;
+        bool parsed = int.TryParse(Request.Params["ticketId"], out ticketId);
+        if (parsed == false)
+        {
+            throw new Exception("کد تیکت قابل شناسایی نیست");
+        }
 
-    var ticketService = Injector.Inject<TicketService>();
-    var tickets = ticketService.GetTicketChildernById(ticketId)
-        .Include(e => e.AppUser)
-        .Include(e => e.AppAdmin)
-        .Include(e => e.MyFiles);
+        var query=db.Tickets;
 
-    var parent = ticketService.GetQuery()
-        .Include(c => c.AppUser)
-        .Include(c => c.AppAdmin)
-        .Include(d => d.MyFiles).Where(t => t.Id == ticketId).First();
-
-    tickets = tickets.OrderByDescending(o => o.Id);
-
-    var resp = new MyDataTableResponse<Ticket>();
-    resp.Total = tickets.Count();
-
-    ;
-    int LastTake, LastSkip;
-    bool hasLastTake = int.TryParse(Request.Params["take"] ?? "", out LastTake);
-    bool hasLastSkip = int.TryParse(Request.Params["skip"] ?? "", out LastSkip);
-    if (!hasLastTake)
-    {
-        hasLastTake = true;
-        LastTake = 10;
-    }
-    resp.LastTake = LastTake;
-    resp.LastSkip = LastSkip;
+        var ticketService = Injector.Inject<TicketService>();
+        var tickets = query.Where(q => q.ParentId == ticketId)
+            .Include(e => e.AppUser)
+            .Include(e => e.AppAdmin)
+            .Include(e => e.MyFiles);
 
 
+        var parent = query
+                    .Include(c => c.AppUser)
+                    .Include(c => c.AppAdmin)
+                    .Include(d => d.MyFiles).Where(t => t.Id == ticketId).First();
 
-    if (hasLastSkip)
-    {
-        tickets = tickets.Skip(LastSkip);
-    }
-    if (hasLastTake)
-    {
-        tickets = tickets.Take(LastTake);
-    }
+        tickets = tickets.OrderByDescending(o => o.Id);
 
-    resp.EntityList = tickets.ToList();
+        var resp = new MyDataTableResponse<Ticket>();
+        resp.Total = tickets.Count();
 
-    resp.EntityList.Add(parent);
-
-    @Html.Partial("~/Areas/sysAdmin/Views/Shared/pagingPartial.cshtml", resp)
-
-
-    var appRoleService = Injector.Inject<SignalRMVCChat.Areas.security.Service.AppRoleService>();
-    // resp.EntityList = appRoleService.SetIsInRole(resp.EntityList, "superAdmin");
-
-    foreach (var tick in resp.EntityList)
-    {
-
-        <div class="card">
-            <div class="card-header">
-
-                @if (tick.IsAdmin)
-                {
-                    <p>ادمین :@tick.AppAdmin.Name @tick.AppAdmin.LastName </p>
-                }
-                else
-                {
-                    <p>کاربر : @tick.AppUser.Name @tick.AppUser.LastName</p>
-                }
-
-                <span style="float: left">@tick.ChangeDateTime</span>
-
-                <div>@tick.Title</div>
-                @*<span >
-                        @{
-                            string name = tick.Status.GetAttributeOfType<EnumName>()?.Name;
-                            <span> @name</span>
-                        }
-                    </span>*@
-
-            </div>
-            <div class="card-block">
+        ;
+        int LastTake, LastSkip;
+        bool hasLastTake = int.TryParse(Request.Params["take"] ?? "", out LastTake);
+        bool hasLastSkip = int.TryParse(Request.Params["skip"] ?? "", out LastSkip);
+        if (!hasLastTake)
+        {
+            hasLastTake = true;
+            LastTake = 10;
+        }
+        resp.LastTake = LastTake;
+        resp.LastSkip = LastSkip;
 
 
-                <textarea class="form-control" readonly="readonly">@tick.Body</textarea>
 
-                <div>
-                    @if (tick.MyFiles != null && tick.MyFiles.Count > 0)
+        if (hasLastSkip)
+        {
+            tickets = tickets.Skip(LastSkip);
+        }
+        if (hasLastTake)
+        {
+            tickets = tickets.Take(LastTake);
+        }
+
+        resp.EntityList = tickets.ToList();
+
+        resp.EntityList.Add(parent);
+
+        @Html.Partial("~/Areas/sysAdmin/Views/Shared/pagingPartial.cshtml", resp)
+
+
+        var appRoleService = Injector.Inject<SignalRMVCChat.Areas.security.Service.AppRoleService>();
+
+        foreach (var tick in resp.EntityList)
+        {
+
+            <div class="card">
+                <div class="card-header">
+
+                    @if (tick.IsAdmin)
                     {
-                        <hr />
-                        <p>فایل ها</p>
-
-                        foreach (var file in tick.MyFiles)
-                        {
-                            if (file.FileExtention.Contains("image"))
-                            {
-                                <a target="_blank" href="/Common/file/download?fileId=@file.Id">
-
-                                    <img src="/Common/file/download?fileId=@file.Id" width="50" height="50" />
-                                </a>
-                            }
-                            <a target="_blank" href="/Common/file/download?fileId=@file.Id">@file.FileName</a>
-                        }
+                        <p>ادمین :@tick.AppAdmin.Name @tick.AppAdmin.LastName </p>
                     }
-                </div>
+                    else
+                    {
 
+                        if (CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+                        {
+                            <a target="_blank" href="/admin/operator/detail?operatorId=@tick.AppUser.Id">کاربر : @tick.AppUser.Name @tick.AppUser.LastName</a>
+
+                        }
+                        else
+                        {
+                            <p>کاربر : @tick.AppUser.Name @tick.AppUser.LastName</p>
+
+                        }
+
+                    }
+
+                    <span style="float: left">@tick.ChangeDateTime</span>
+
+                    <div>@tick.Title</div>
+
+
+                </div>
+                <div class="card-block">
+
+
+                    <textarea class="form-control" readonly="readonly">@tick.Body</textarea>
+
+                    <div>
+                        @if (tick.MyFiles != null && tick.MyFiles.Count > 0)
+                        {
+                            <hr />
+                            <p>فایل ها</p>
+
+                            foreach (var file in tick.MyFiles)
+                            {
+                                if (file.FileExtention.Contains("image"))
+                                {
+                                    <a target="_blank" href="/Common/file/download?fileId=@file.Id">
+
+                                        <img src="/Common/file/download?fileId=@file.Id" width="50" height="50" />
+                                    </a>
+                                }
+                                <a target="_blank" href="/Common/file/download?fileId=@file.Id">@file.FileName</a>
+                            }
+                        }
+                    </div>
+
+                </div>
             </div>
-        </div>
+        }
+        @Html.Partial("~/Areas/sysAdmin/Views/Shared/pagingPartial.cshtml", resp)
     }
-    @Html.Partial("~/Areas/sysAdmin/Views/Shared/pagingPartial.cshtml", resp)
 
 }

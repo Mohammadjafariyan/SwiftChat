@@ -4,21 +4,25 @@
 
 <div class="col-md-6 ">
     
-    <form >
+    <form method="get" action="/HelpDesk/Search">
         <div class="form-group" style="text-align: center">
             <h4 style="font-size: 23.4px;    margin-bottom: 20px;" for="exampleFormControlInput1">چطور میتونیم کمکتون کنیم ؟</h4>
   
-    
+     
+            <input type="hidden" name="websiteBaseUrl" value="@TempData["websiteBaseUrl"]"/>
+            <input type="hidden" name="lang" value="@TempData["lang"]"/>
+
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" style="background-color: white;border: none">
+                    <span class="input-group-text" style="background-color: white;border: none" onclick="$('form').submit()">
                         <i class="fa fa-search" style="font-size: 21px"></i>
                     </span>
           
                 </div>
-                <input style="text-align: right;
+
+                <input name="searchTerm" style="text-align: right;
                          height: 57px;border: none;"
-                       dir="rtl" type="email" class="form-control" id="exampleFormControlInput1" placeholder="جستجو در مرکز پشتیبانی ما...">
+                       dir="rtl" type="text" class="form-control" placeholder="سوال تون رو اینجا جستجو کنید...">
             </div>
         </div>
 

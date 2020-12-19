@@ -1,0 +1,145 @@
+﻿@model SignalRMVCChat.Areas.Admin.Controllers.OperatorDetailViewModel
+@{
+    ViewBag.Title = "صفحه ثبت نام کننده ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<style>
+    .myBorder {
+        border: 1px solid orange;
+        border-top-color: orange;
+        border-top-style: solid;
+        border-top-width: 1px;
+        border-right-color: orange;
+        border-right-style: solid;
+        border-right-width: 1px;
+        border-bottom-color: orange;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-left-color: orange;
+        border-left-style: solid;
+        border-left-width: 1px;
+        border-image-source: initial;
+        border-image-slice: initial;
+        border-image-width: initial;
+        border-image-outset: initial;
+        border-image-repeat: initial;
+        margin-top: 20px;
+        border-radius: 20px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-bottom-left-radius: 20px;
+        padding: 10px;
+    }
+</style>
+<h3 style="text-align:center">صفحه کاربر</h3>
+<div class="container">
+
+
+    <div class="row">
+
+        <div class="col-md-4 myBorder">
+            <h4>اطلاعات عمومی</h4>
+            <div class="row">
+                <div class="col-md-6">ایمیل</div>
+                <div class="col-md-6">@Model.admin.Email</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">نام </div>
+                <div class="col-md-6">@Model.admin.Name</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">نام خانوادگی </div>
+                <div class="col-md-6">@Model.admin.LastName</div>
+            </div>
+
+
+        </div>
+        <div class="col-md-2">
+</div>
+        <div class="col-md-4 myBorder">
+            <div class="col-md-6">@Model.notExpiredPlan.Name</div>
+            <div class="col-md-6">عنوان پلن کنونی </div>
+        </div>
+            <div class="col-md-12 ">
+
+                <hr />
+                <div class="row">
+                    <div class="col-md-6 myBorder">
+                        <h4>لیست اپراتور های کاربر</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td>نام اپراتور</td>
+                                    <td>نام کاربری اپراتور</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var acc in Model.children.Children)
+                                {
+                                    <tr>
+                                        <td>@acc.Name</td>
+                                        <td>@acc.Username</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 myBorder">
+                        <h4>وب سایت های کاربر</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td>آدرس وب سایت</td>
+                                    <td>تعداد کاربران</td>
+                                    <td>عنوان وب سایت</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var website in Model.myAcccount.MyWebsites)
+                                {
+                                    <tr>
+                                        <td>@website.BaseUrl</td>
+                                        <td>@website.Customers.Select(c=>c.MyConnectionInfo.ClientIpAddress).Distinct().Count()</td>
+                                        <td>@website.WebsiteTitle</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+
+            </div>
+            <div class="col-md-6"></div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6"></div>
+            <div class="col-md-6"></div>
+        </div>
+
+    </div>
+
+
+
+

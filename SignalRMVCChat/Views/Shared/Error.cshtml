@@ -17,9 +17,7 @@
     {
 
         var AppRoleService=Injector.Inject<AppRoleService>();
-        if (CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel!=null &&
-            CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.AppUserId!=0 &&
-            AppRoleService.IsInRole(CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.AppUserId,"superAdmin"))
+        if (CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.IsAdmin==true)
         {
             Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
         }

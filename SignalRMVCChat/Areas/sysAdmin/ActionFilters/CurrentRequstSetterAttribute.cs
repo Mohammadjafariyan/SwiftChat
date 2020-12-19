@@ -99,13 +99,13 @@ namespace TelegramBotsWebApplication.ActionFilters
 
                 try
                 {
-                    if (CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+                    if (!CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
                     {
-                        SecurityService.GetCurrentAdmin();
+                        SecurityService.GetCurrentUser();
                     }
                     else
                     {
-                        SecurityService.GetCurrentUser();
+                        SecurityService.GetCurrentAdmin();
                     }
                 }
                 catch (Exception e)
@@ -115,9 +115,15 @@ namespace TelegramBotsWebApplication.ActionFilters
             }
             catch (Exception e)
             {
+
                 SignalRMVCChat.Service.LogService.Log(e);
                 string requestURL = filterContext.RequestContext.HttpContext.Request.Url.PathAndQuery;
-                filterContext.Result = new RedirectToRouteResult(
+             
+                
+                if (!CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+                {
+
+                    filterContext.Result = new RedirectToRouteResult(
                     new RouteValueDictionary
                     {
                         {"area", "Security"},
@@ -125,6 +131,19 @@ namespace TelegramBotsWebApplication.ActionFilters
                         {"controller", "Account"},
                         {"requestUrl", requestURL}
                     });
+                }
+                else
+                {
+                    filterContext.Result = new RedirectToRouteResult(
+                 new RouteValueDictionary
+                 {
+                        {"area", ""},
+                        {"action", "AdminLogin"},
+                        {"controller", "Account"},
+                        {"requestUrl", requestURL}
+                 });
+                }
+              
                 ; // new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
         }

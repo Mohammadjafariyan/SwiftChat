@@ -1,0 +1,34 @@
+﻿@using SignalRMVCChat.Areas.security.Models
+@using SignalRMVCChat.SysAdmin.Service
+@using SignalRMVCChat.Areas.Common.Service
+@model dynamic
+
+@{
+
+    var TicketService = SignalRMVCChat.DependencyInjection.Injector.Inject<TicketService>();
+
+    var QUERY = TicketService.
+               GetQuery();
+
+    if (CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+    {
+        QUERY = QUERY.Where(c => c.AdminTicketSeenStatus == TicketSeenStatus.NotSeen
+       && c.AppUserId.HasValue);
+
+
+    }
+    else
+    {
+        QUERY = QUERY.Where(c => c.CustomerTicketSeenStatus == TicketSeenStatus.NotSeen
+&& c.AppAdminId == CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.AppUserId);
+    }
+
+    var list=TicketService.
+               GetQuery().ToList();
+
+    var count = QUERY.Count();
+}
+
+
+
+<span><button class="btn btn-info" style="border-radius:40%">@count</button></span>

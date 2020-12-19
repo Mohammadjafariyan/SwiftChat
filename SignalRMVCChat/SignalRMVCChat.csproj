@@ -140,6 +140,7 @@
     <Compile Include="Areas\Admin\Controllers\DashboardLogController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminLogController.cs" />
     <Compile Include="Areas\Admin\Controllers\InitializeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OperatorController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentBillsController.cs" />
     <Compile Include="Areas\Admin\Controllers\PlanController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingController.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Areas\Customer\Controllers\ArchiveController.cs" />
     <Compile Include="Areas\Customer\Controllers\CustomerTicketsController.cs" />
     <Compile Include="Areas\Customer\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Admin\Controllers\EditorController.cs" />
     <Compile Include="Areas\Customer\Controllers\IdPayBaseController.cs" />
     <Compile Include="Areas\Customer\Controllers\IdPayController.cs" />
     <Compile Include="Areas\Customer\Controllers\JsPluginController.cs" />
@@ -299,6 +301,7 @@
     <Compile Include="Models\TelegramBot\TelegramBotSetting.cs" />
     <Compile Include="Models\UsersSeparation\UsersSeparation.cs" />
     <Compile Include="Models\ViewModels\Enums.cs" />
+    <Compile Include="Models\weblog\Blog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AdminModeChatProviderService.cs" />
     <Compile Include="Service\AutomaticChatService.cs" />
@@ -357,6 +360,7 @@
     <Compile Include="Service\TelegramBot\TelegramBotSettingService.cs" />
     <Compile Include="Service\UsersSeparation\UsersSeparationService.cs" />
     <Compile Include="Service\ViewRendererForHubsService.cs" />
+    <Compile Include="Service\Weblog\BlogService.cs" />
     <Compile Include="TelegramBot\BotBehaviour\BotBehaviour.cs" />
     <Compile Include="TelegramBot\BotHelp.cs" />
     <Compile Include="TelegramBot\CustomerBot\business\TelegramBotChatService.cs" />
@@ -2316,6 +2320,10 @@
     <Content Include="Content\paterns\patterns.png" />
     <Content Include="Content\persianDatepicker-default.css" />
     <Content Include="Content\persianDatepicker.min.js" />
+    <Content Include="Content\Quill\Highlight.css" />
+    <Content Include="Content\Quill\Highlight.js" />
+    <Content Include="Content\Quill\Quill.css" />
+    <Content Include="Content\Quill\Quill.js" />
     <Content Include="Content\ThemeFlikr\lifetrakr\css\maps\style.css.map" />
     <Content Include="Content\ThemeFlikr\lifetrakr\css\style.css" />
     <Content Include="Content\ThemeFlikr\lifetrakr\images\app-badge\app-store.png" />
@@ -2414,7 +2422,11 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="libman.json" />
+    <Content Include="Areas\Admin\Views\Operator\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Editor\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Editor\Detail.cshtml" />
     <None Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Common\Views\Shared\UnSeenTicketsCount.cshtml" />
     <None Include="Areas\Common\Views\web.config" />
     <Content Include="Areas\Customer\Views\MyAccounts\AssignWebsites.cshtml" />
     <Content Include="Areas\Customer\Views\MyAccounts\ChildWebsiteList.cshtml" />
@@ -2512,6 +2524,9 @@
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\AdminLogin.cshtml" />
     <Content Include="TelegramBot\Tests\OperatorBot\SampleTelegramRequest.json" />
+    <Content Include="Views\Home\AboutUs.cshtml" />
+    <Content Include="Views\Home\Rules.cshtml" />
+    <Content Include="Views\Shared\BlogPart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />

@@ -22,21 +22,28 @@ namespace SignalRMVCChat.Controllers
         private HelpDeskService HelpDeskService = Injector.Inject<HelpDeskService>();
 
         [HttpGet()]
-        public async Task<ActionResult> Index(string websiteBaseUrl,string lang)
+        public async Task<ActionResult> Index(string websiteBaseUrl, string lang,
+            string searchTerm=null)
         {
 
             TempData["websiteBaseUrl"] = websiteBaseUrl;
             TempData["lang"] = lang;
-            
-       
-          var helpDeskHomeView=  await HelpDeskService.GetHelpDeskHome(websiteBaseUrl, lang);
 
-          TempData["helpDesk"] = helpDeskHomeView.HelpDesk;
-          TempData["Languages"] = helpDeskHomeView.Languages;
-            
-            return View("Index",helpDeskHomeView);
+
+            var helpDeskHomeView = await HelpDeskService.GetHelpDeskHome(websiteBaseUrl, lang, searchTerm);
+
+            TempData["helpDesk"] = helpDeskHomeView.HelpDesk;
+            TempData["Languages"] = helpDeskHomeView.Languages;
+
+            return View("Index", helpDeskHomeView);
         }
-        
+
+
+
+
+
+       
+
         protected override void OnException(ExceptionContext filterContext)
         {
             filterContext.ExceptionHandled = true;
@@ -113,24 +120,42 @@ namespace SignalRMVCChat.Controllers
 
             return View("Article",article);
         }
-        
-        
+
+
         [HttpGet()]
-        public async Task<ActionResult> Detail(string categoryTitle, string websiteBaseUrl,string lang )
+        public async Task<ActionResult> Detail(string categoryTitle, string websiteBaseUrl, string lang)
         {
             TempData["websiteBaseUrl"] = websiteBaseUrl;
             TempData["lang"] = lang;
-            
-            
-            var CategoryArticlesViewModel=  await HelpDeskService.GetHelpDeskArticleByCategoryTitle(categoryTitle,websiteBaseUrl, lang);
+
+
+            var CategoryArticlesViewModel = await HelpDeskService.GetHelpDeskArticleByCategoryTitle(categoryTitle, websiteBaseUrl, lang);
 
             TempData["helpDesk"] = CategoryArticlesViewModel.HelpDesk;
             TempData["Languages"] = CategoryArticlesViewModel.Languages;
 
 
-            return View("Detail",CategoryArticlesViewModel);
+            return View("Detail", CategoryArticlesViewModel);
         }
-        
+
+
+
+        [HttpGet()]
+        public async Task<ActionResult> Search( string websiteBaseUrl, string lang,string searchTerm)
+        {
+            TempData["websiteBaseUrl"] = websiteBaseUrl;
+            TempData["lang"] = lang;
+
+
+            var CategoryArticlesViewModel = await HelpDeskService.Search( websiteBaseUrl, lang, searchTerm);
+
+            TempData["helpDesk"] = CategoryArticlesViewModel.HelpDesk;
+            TempData["Languages"] = CategoryArticlesViewModel.Languages;
+
+
+            return View("Detail", CategoryArticlesViewModel);
+        }
+
         [HttpGet()]
         public async Task<ActionResult> CategoryImage(int id)
         {

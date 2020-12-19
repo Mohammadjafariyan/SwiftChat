@@ -104,7 +104,7 @@ namespace SignalRMVCChat.Models.HelpDesk
 
 
         public List<Comment> Comments { get; set; }
-
+        public string Keywords { get;  set; }
     }
 
 

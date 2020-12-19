@@ -578,6 +578,12 @@ class dispatcher {
           CurrentUserInfo.SettingLayout.helpDeskSaveDetailCallback(res);
         }
 
+        if (CurrentUserInfo.HelpDeskSetting) {
+          CurrentUserInfo.HelpDeskSetting.helpDeskSaveDetailCallback(res);
+        }
+
+        
+
         break;
 
         

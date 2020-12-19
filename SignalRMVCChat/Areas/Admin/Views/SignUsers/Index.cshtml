@@ -47,10 +47,7 @@
     <tbody>
     @foreach (var m in list)
     {
-        if (m.Id == CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.AppUserId)
-        {
-            continue;
-        }
+       
         var account = myAccounts.FirstOrDefault(f => f.IdentityUsername == m.UserName);
         if (account == null)
         {

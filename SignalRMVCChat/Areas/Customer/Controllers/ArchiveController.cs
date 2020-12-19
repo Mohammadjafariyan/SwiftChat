@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -19,15 +20,22 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
     public class ArchiveController : Controller
     {
         [System.Web.Mvc.HttpPost]
-        public ActionResult GetChats([FromUri] string token, [FromUri] string adminToken,
+        public ActionResult GetChats([FromUri] string adminToken,
             [FromBody] int? page, [FromBody] int myAccountId, [FromBody] int customerId,
-            [FromBody] string dateFrom ,[FromBody] string dateTo)
+            [FromBody] string dateFrom, [FromBody] string dateTo)
         {
             try
             {
+
+                ParsedCustomerTokenViewModel CurrentRequest = MySpecificGlobal.ParseToken(adminToken);
+
                 ViewBag.page = page ?? 1;
                 var websiteService = Injector.Inject<MyWebsiteService>();
-                var website = websiteService.ParseWebsiteToken(token,true);
+                var website = websiteService.GetQuery()
+                    .Include(c => c.Admins)
+                    .Include(c => c.Customers)
+                    .Where(c => c.Id == CurrentRequest.websiteId)
+                    .FirstOrDefault();
 
                 //ParsedCustomerTokenViewModel CurrentRequest = MySpecificGlobal.ParseToken(adminToken);
 
@@ -35,94 +43,105 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
 
 
                 var chats = chatProviderService.GetChats
-                    (page, myAccountId, customerId, website.Id,dateFrom,dateTo);
+                    (page, myAccountId, customerId, website.Id, dateFrom, dateTo);
 
                 return PartialView(chats);
             }
             catch (Exception e)
-            {SignalRMVCChat.Service.LogService.Log(e);
+            {
+                SignalRMVCChat.Service.LogService.Log(e);
                 TempData["err"] = MyGlobal.RecursiveExecptionMsg(e);
                 return PartialView();
             }
         }
 
         [System.Web.Mvc.HttpPost]
-        public ActionResult GetAllCustomers([FromUri] string token, [FromUri] string adminToken,
+        public ActionResult GetAllCustomers( [FromUri] string adminToken,
             [FromBody] int? page, [FromBody] int? chatedMyAccountId, [FromBody] string searchTerm,
-            [FromBody] string dateFrom ,[FromBody] string dateTo)
+            [FromBody] string dateFrom, [FromBody] string dateTo)
         {
             try
             {
+                ParsedCustomerTokenViewModel CurrentRequest = MySpecificGlobal.ParseToken(adminToken);
+
                 ViewBag.page = page ?? 1;
                 var websiteService = Injector.Inject<MyWebsiteService>();
-                var website = websiteService.ParseWebsiteToken(token,false);
+                var website = websiteService.GetQuery()
+              .Where(c => c.Id == CurrentRequest.websiteId)
+              .FirstOrDefault();
 
                 //ParsedCustomerTokenViewModel CurrentRequest = MySpecificGlobal.ParseToken(adminToken);
 
                 var customerProviderService = Injector.Inject<CustomerProviderService>();
 
 
-                var customers= customerProviderService
+                var customers = customerProviderService
                     .GetChatedWithMyAccountIdViaSearch(page, null
-                        , searchTerm, website.Id,dateFrom,dateTo);
+                        , searchTerm, website.Id, dateFrom, dateTo);
 
 
                 ViewBag.CustomersTitle = "لیست کل کاربران بازدید کننده";
-                return PartialView("GetCustomers",customers);
+                return PartialView("GetCustomers", customers);
             }
             catch (Exception e)
-            {SignalRMVCChat.Service.LogService.Log(e);
+            {
+                SignalRMVCChat.Service.LogService.Log(e);
                 TempData["err"] = MyGlobal.RecursiveExecptionMsg(e);
                 return PartialView("GetCustomers");
             }
         }
         [System.Web.Mvc.HttpPost]
-        public ActionResult GetCustomers([FromUri] string token, [FromUri] string adminToken,
+        public ActionResult GetCustomers( [FromUri] string adminToken,
             [FromBody] int? page, [FromBody] int? chatedMyAccountId, [FromBody] string searchTerm,
-            [FromBody] string dateFrom ,[FromBody] string dateTo)
+            [FromBody] string dateFrom, [FromBody] string dateTo)
         {
             try
             {
                 ViewBag.page = page ?? 1;
                 var websiteService = Injector.Inject<MyWebsiteService>();
-                var website = websiteService.ParseWebsiteToken(token,false);
+
+                ParsedCustomerTokenViewModel CurrentRequest = MySpecificGlobal.ParseToken(adminToken);
+
+                var website = websiteService.GetQuery()
+         .Where(c => c.Id == CurrentRequest.websiteId)
+         .FirstOrDefault();
 
                 //ParsedCustomerTokenViewModel CurrentRequest = MySpecificGlobal.ParseToken(adminToken);
 
                 var customerProviderService = Injector.Inject<CustomerProviderService>();
 
 
-                var customers= customerProviderService.GetChatedWithMyAccountIdViaSearch(page, chatedMyAccountId, searchTerm, website.Id,
-                    dateFrom,dateTo);
+                var customers = customerProviderService.GetChatedWithMyAccountIdViaSearch(page, chatedMyAccountId, searchTerm, website.Id,
+                    dateFrom, dateTo);
 
                 ViewBag.CustomersTitle = "لیست کاربران چت کرده";
 
                 return PartialView(customers);
             }
             catch (Exception e)
-            {SignalRMVCChat.Service.LogService.Log(e);
+            {
+                SignalRMVCChat.Service.LogService.Log(e);
                 TempData["err"] = MyGlobal.RecursiveExecptionMsg(e);
                 return PartialView();
             }
         }
 
         [System.Web.Mvc.HttpPost]
-        public ActionResult GetStatistics([FromUri] string token,[FromUri] string adminToken,
-           [FromBody] string dateFrom,[FromBody] string dateTo)
+        public ActionResult GetStatistics( [FromUri] string adminToken,
+           [FromBody] string dateFrom, [FromBody] string dateTo)
         {
-            TempData["token"] = token;
             TempData["adminToken"] = adminToken;
 
-           var currentRequestInfo= this.Validate(token, adminToken);
-            
-            var chatprovider= Injector.Inject<ChatProviderService>();
+            var currentRequestInfo = this.Validate( adminToken);
 
-            var vm= chatprovider.GetStatisticsViewModel(dateFrom,dateTo
+            var chatprovider = Injector.Inject<ChatProviderService>();
+
+            var vm = chatprovider.GetStatisticsViewModel(dateFrom, dateTo
             , currentRequestInfo);
-            return PartialView("GetStatistics",vm);
+            return PartialView("GetStatistics", vm);
         }
 
-        public ParsedCustomerTokenViewModel Validate(string token, string adminToken)
+        public ParsedCustomerTokenViewModel Validate( string adminToken)
         {
             var websiteService = Injector.Inject<MyWebsiteService>();
 
@@ -145,14 +164,13 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
         }
 
         // GET: Customer/Archive
-        public ActionResult Index(string token, string adminToken)
+        public ActionResult Index(string adminToken)
         {
             try
             {
-                TempData["token"] = token;
                 TempData["adminToken"] = adminToken;
 
-                
+
 
                 var websiteService = Injector.Inject<MyWebsiteService>();
 
@@ -170,7 +188,7 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
                     throw new Exception("درخواست کننده شناسایی نشد");
                 }
 
-                var website = websiteService.ParseWebsiteToken(token);
+                var website = websiteService.GetById(CurrentRequest.websiteId).Single;
 
                 if (string.IsNullOrEmpty(website.WebsiteTitle))
                 {
@@ -181,7 +199,8 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
                 }
 
                 var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
-                var myAccount = myAccountProviderService.GetQuery().SingleOrDefault(s =>
+                var myAccount = myAccountProviderService.GetQuery()
+                    .Include(m=>m.MyWebsites).SingleOrDefault(s =>
                     s.IsDeleted == false && s.Id == CurrentRequest.myAccountId.Value);
 
                 if (myAccount == null)
@@ -221,7 +240,7 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
                 }
 
 
-               
+
 
                 #endregion
 
@@ -239,11 +258,12 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
                 {
                     Admins = myAccountStatisticsViewModel,
                     HasAccessWebsites = hasAccessWebsites,
-                    Website=website,
+                    Website = website,
                 });
             }
             catch (Exception e)
-            {SignalRMVCChat.Service.LogService.Log(e);
+            {
+                SignalRMVCChat.Service.LogService.Log(e);
                 TempData["err"] = MyGlobal.RecursiveExecptionMsg(e);
                 return View();
             }

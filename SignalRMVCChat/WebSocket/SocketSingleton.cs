@@ -50,8 +50,17 @@ namespace SignalRMVCChat.WebSocket
                     
                   
                   TimerService.Config();
-                  
-                 await   WebSocketRequestThreadMaker.HandleRequest(message,socket);
+
+                    try
+                    {
+                        await WebSocketRequestThreadMaker.HandleRequest(message, socket);
+                    }
+                    catch (Exception)
+                    {
+
+                        // خطاها سعی شده در لایه های پایین گرفته شود ، اگر اینجا خطا داد لازم نیست 
+                        // برنامه استوپ شود
+                    }
 
                 };
             });
