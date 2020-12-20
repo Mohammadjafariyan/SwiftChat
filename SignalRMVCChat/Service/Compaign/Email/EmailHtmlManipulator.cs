@@ -1,4 +1,5 @@
-﻿using SoftCircuits.HtmlMonkey;
+﻿using SignalRMVCChat.Areas.security.Models;
+using SoftCircuits.HtmlMonkey;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,6 +63,14 @@ fetch('" + emailOpenedCallbackUrl + @"', {
                 return link;
             }
             return $@"{Setting.BaseUrl}/CompaignStat/LinkClick?compaignLogId={compaignLog.Id}&redirectUrl={link}";
+        }
+
+        internal string Manipulate(string html, AppUser user)
+        {
+
+            //todo:
+            return html;
+
         }
     }
 }

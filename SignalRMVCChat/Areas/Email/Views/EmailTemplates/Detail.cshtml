@@ -1,0 +1,128 @@
+﻿@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model SignalRMVCChat.Areas.Email.Model.EmailTemplate
+
+<style>
+    input {
+        direction: ltr;
+    }
+
+    #editor {
+        overflow: auto;
+    }
+
+    form * {
+        direction: rtl;
+        text-align: right;
+    }
+</style>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+
+    ViewBag.Title = "ثبت قالب آماده ایمیل";
+
+
+}
+
+
+
+
+
+
+
+@using (Html.BeginForm("Save", "EmailTemplates", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myfo" , enctype = "multipart/form-data" }))
+{
+    @Html.Hidden("Id", Model.Id)
+    @Html.AntiForgeryToken()
+    <div class="form-group" th>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+        </div>
+        @Html.LabelFor(m => m.Title, new { @class = "col-md-2 control-label" })
+    </div>
+
+
+    <div class="form-group" th>
+        <div class="col-md-10">
+            @Html.EnumDropDownListFor(
+ x => x.EmailTemplateType,
+ "انتخاب نوع قالب",
+ new { @id = "type" })
+
+        </div>
+        @Html.LabelFor(m => m.EmailTemplateType, new { @class = "col-md-2 control-label" })
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+
+            <div id="editor" style="height:350px">
+
+                <textarea name="Html" id="textareaEdit" onchange="preview()" rows="10" class="form-control">@Html.Raw(Model.Html)</textarea>
+            </div>
+        </div>
+        @Html.LabelFor(m => m.Html, new { @class = "col-md-2 control-label" })
+
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-1">
+            <button  id="submit" class="btn btn-info" type="submit">ذخیره</button>
+
+        </div>
+
+
+    </div>
+
+    if (TempData["lastSent"] != null)
+    {
+        <small>آخرین ارسال : @TempData["lastSent"] </small>
+    }
+
+
+
+    <h3 style="text-align:center">پیش نمایش</h3>
+    <div id="preview"></div>
+
+}
+
+
+
+@section scripts{
+
+    <script>
+
+
+        function createElementFromHTML(htmlString) {
+            var div = document.createElement('div');
+            div.innerHTML = htmlString.trim();
+
+            // Change this to div.childNodes to support multiple top-level nodes
+            return div.firstChild;
+        }                
+
+
+        const root = document.getElementById('preview').attachShadow({ mode: 'closed' });
+
+        function preview() {
+            let html = $('#textareaEdit').val();
+
+            root.innerHTML = html;
+
+          //  root.append(createElementFromHTML(html));
+
+        }
+        function Save() {
+
+            $('#Html').val(flask.getCode())
+
+
+            $('#myfo').submit();
+        }
+    </script>
+
+
+}
+
+

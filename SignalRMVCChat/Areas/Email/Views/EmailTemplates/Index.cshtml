@@ -1,0 +1,80 @@
+﻿@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model TelegramBotsWebApplication.Areas.Admin.Models.MyDataTableResponse<SignalRMVCChat.Areas.Email.Model.EmailTemplate>
+
+<style>
+    input {
+        direction: ltr;
+    }
+</style>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Title = "قالب های آماده ایمیل";
+
+}
+
+
+
+<a id="newEmailTemplate" href="/Email/EmailTemplates/Detail?id=0">قالب ایمیل جدید</a>
+<hr />
+
+<div>
+
+    <h4>@ViewBag.Title</h4>
+
+    <table class="table">
+
+        <thead>
+
+            <tr>
+                <th>عنوان</th>
+                <th>نمایش ارسال ها</th>
+                <th>حذف</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var rec in Model.EntityList)
+            {
+                <tr>
+                    <td>
+                        <a href="/Email/EmailTemplates/Detail?id=@rec.Id">@rec.Title</a>
+
+                    </td>
+                    <td>
+                        
+                        <a href="/Email/SentEmail/Sents?templateId=@rec.Id">@rec.Title</a>
+                    </td>
+                    <td>
+
+                        <form method="post" action="/Email/EmailTemplates/Delete?id=ec.Id">
+                            @Html.Hidden("Id", rec.Id)
+                            <button type="submit" class="btn btn-danger">حذف</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+
+    @Html.Partial("~/Areas/sysAdmin/Views/Shared/pagingPartial.cshtml")
+</div>
+
+
+@section scripts{
+
+
+    <script>
+        $(document).ready(function () {
+
+
+
+        })
+    </script>
+}

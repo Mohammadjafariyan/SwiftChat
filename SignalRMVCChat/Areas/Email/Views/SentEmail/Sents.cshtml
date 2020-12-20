@@ -1,0 +1,96 @@
+﻿@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@using SignalRMVCChat.Extentions
+@model List<SignalRMVCChat.Areas.Email.Model.EmailSent>
+
+<style>
+    input {
+        direction: ltr;
+    }
+</style>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Title = "دریافت کنندگان ایمیل ارسال شده";
+
+}
+
+
+
+<a href="/Email/SentEmail/Index">بازگشت به لیست</a>
+<hr/>
+<div>
+
+    <h4>@ViewBag.Title</h4>
+    <h4>@ViewBag.TemplateTitle</h4>
+
+    <table class="table">
+
+        <thead>
+
+            <tr>
+                <th>
+                    عنوان
+                </th>
+                <th>
+                    نام خانوادگی
+                </th>
+                <th>
+                   نام کاربری
+                </th>
+
+                <th>
+                   وضعیت
+                </th>
+                <th>
+                    علت خطا
+                </th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var rec in Model)
+            {
+            <tr>
+                <td>
+                    @rec.AppUser.Name
+                </td>
+                <td>
+                    @rec.AppUser.LastName
+                </td>
+                <td>
+                    @rec.AppUser.UserName
+                </td>
+
+                <td>
+                    @rec.Status.GetDisplayName()
+                </td>
+                <td>
+                    @rec.StatusLog
+                </td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+
+    @Html.Partial("~/Areas/sysAdmin/Views/Shared/pagingPartial.cshtml")
+</div>
+
+
+@section scripts{
+
+
+    <script>
+        $(document).ready(function () {
+
+
+
+        })
+    </script>
+}

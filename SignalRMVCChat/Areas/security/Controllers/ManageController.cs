@@ -228,7 +228,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
         // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<ActionResult> ChangePassword(SignalRMVCChat.Areas.security.Models.ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {

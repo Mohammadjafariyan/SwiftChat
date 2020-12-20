@@ -10,6 +10,7 @@ using Engine.SysAdmin.Service;
 using EntityFramework.DynamicFilters;
 using Newtonsoft.Json;
 using SignalRMVCChat.Areas.Customer.Service;
+using SignalRMVCChat.Areas.Email.Model;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Migrations;
@@ -577,8 +578,28 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #endregion
 
+            #region EmailTemplates
+            modelBuilder.Entity<EmailSent>()
+       .HasRequired(r => r.EmailTemplate)
+       .WithMany(o => o.EmailSents)
+       .HasForeignKey(o => o.EmailTemplateId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<EmailSent>()
+       .HasRequired(r => r.AppUser)
+       .WithMany(o => o.EmailSents)
+       .HasForeignKey(o => o.AppUserId).WillCascadeOnDelete(false);
+
+            #endregion
+
             base.OnModelCreating(modelBuilder);
         }
+        #region EmailTemplates
+        
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public DbSet<EmailSent> EmailSents { get; set; }
+        #endregion
+
+
         #region weblog
         public DbSet<weblog.Blog> Blogs { get; set; }
 

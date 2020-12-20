@@ -111,7 +111,7 @@ namespace SignalRMVCChat.Areas.security.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "ایمیل")]
         public string Email { get; set; }
     }
 }

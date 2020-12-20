@@ -75,6 +75,7 @@ namespace SignalRMVCChat.Service
         public string Host { get; set; }
         public string FromMailAddressPassword { get; set; }
         public string OperatorsBotName { get;  set; }
+        public string EmailTemplate_ForgetPassword { get;  set; }
 
         #endregion
 

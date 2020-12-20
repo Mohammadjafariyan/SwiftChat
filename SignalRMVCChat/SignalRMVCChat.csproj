@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -48,9 +47,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework.DynamicFilters, Version=3.2.0.0, Culture=neutral, PublicKeyToken=59b66d028979105b">
-      <HintPath>..\packages\EntityFramework.DynamicFilters.3.2.0\lib\net40\EntityFramework.DynamicFilters.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="EntityFramework.DynamicFilters, Version=3.1.1.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.DynamicFilters.3.1.1\lib\net40\EntityFramework.DynamicFilters.dll</HintPath>
     </Reference>
     <Reference Include="HtmlMonkey, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SoftCircuits.HtmlMonkey.1.3.1\lib\netstandard2.0\HtmlMonkey.dll</HintPath>
@@ -173,12 +171,21 @@
     <Compile Include="Areas\Customer\Service\MyAccountPaymentService.cs" />
     <Compile Include="Areas\Customer\Service\MyAccountPlansService.cs" />
     <Compile Include="Areas\Customer\Service\MyPaymentProcessService.cs" />
+    <Compile Include="Areas\Email\Controllers\EmailTemplatesController.cs" />
+    <Compile Include="Areas\Email\Controllers\SendEmailController.cs" />
+    <Compile Include="Areas\Email\Controllers\SentEmailController.cs" />
+    <Compile Include="Areas\Email\EmailAreaRegistration.cs" />
+    <Compile Include="Areas\Email\Model\EmailSent.cs" />
+    <Compile Include="Areas\Email\Model\EmailTemplate.cs" />
+    <Compile Include="Areas\Email\Service\EmailSentService.cs" />
+    <Compile Include="Areas\Email\Service\EmailTemplateService.cs" />
     <Compile Include="Areas\HubPartials\Controllers\HubHelperController.cs" />
     <Compile Include="Areas\HubPartials\HubPartialsAreaRegistration.cs" />
     <Compile Include="Areas\security\Controllers\AccountController.cs" />
     <Compile Include="Areas\security\Controllers\AccountControllerTests.cs" />
     <Compile Include="Areas\security\Controllers\AdminsAccountController.cs" />
     <Compile Include="Areas\security\Controllers\BaseAccountController.cs" />
+    <Compile Include="Areas\security\Controllers\ForgetPasswordController.cs" />
     <Compile Include="Areas\security\Controllers\ManageController.cs" />
     <Compile Include="Areas\security\Models\AccountViewModels.cs" />
     <Compile Include="Areas\security\Models\AppAdmin.cs" />
@@ -2258,6 +2265,7 @@
     <Content Include="Content\ClientApp\my-app\src\styles\primeicons.css" />
     <Content Include="Content\ClientApp\my-app\src\styles\Tooltip.css" />
     <Content Include="Content\ClientApp\my-app\src\styles\whileWriting.css" />
+    <Content Include="Content\codeflask\codeflask.js" />
     <Content Include="Content\customerIframe.css" />
     <Content Include="Content\fontAwsome\fontAwsome.css" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
@@ -2320,6 +2328,8 @@
     <Content Include="Content\paterns\patterns.png" />
     <Content Include="Content\persianDatepicker-default.css" />
     <Content Include="Content\persianDatepicker.min.js" />
+    <Content Include="Content\prismJs\prism.css" />
+    <Content Include="Content\prismJs\prism.js" />
     <Content Include="Content\Quill\Highlight.css" />
     <Content Include="Content\Quill\Highlight.js" />
     <Content Include="Content\Quill\Quill.css" />
@@ -2441,7 +2451,16 @@
     <Content Include="Areas\Customer\Views\JsPlugin\AdminChatHtml.cshtml" />
     <Content Include="Areas\Customer\Views\Shared\ExampleJsPluginAdmins.cshtml" />
     <None Include="Areas\Customer\Views\web.config" />
+    <Content Include="Areas\Email\Views\web.config" />
+    <Content Include="Areas\Email\Views\EmailTemplates\Detail.cshtml" />
+    <Content Include="Areas\Email\Views\EmailTemplates\Index.cshtml" />
+    <Content Include="Areas\Email\Views\SentEmail\Index.cshtml" />
+    <Content Include="Areas\Email\Views\SentEmail\Sents.cshtml" />
     <None Include="Areas\HubPartials\Views\web.config" />
+    <Content Include="Areas\security\Views\ForgetPassword\Index.cshtml" />
+    <Content Include="Areas\security\Views\ForgetPassword\CodeConfirmPage.cshtml" />
+    <Content Include="Areas\security\Views\ForgetPassword\ChangePasswordPage.cshtml" />
+    <Content Include="Areas\security\Views\ForgetPassword\Resend.cshtml" />
     <None Include="Areas\security\Views\web.config" />
     <None Include="Areas\sysAdmin\Views\web.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
@@ -2531,7 +2550,11 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Service\" />
+    <Folder Include="Areas\Admin\Views\EmailSetting\" />
     <Folder Include="Areas\Common\Models\" />
+    <Folder Include="Areas\Email\Data\" />
+    <Folder Include="Areas\Email\Views\SendEmail\" />
+    <Folder Include="Areas\Email\Views\Shared\" />
     <Folder Include="Areas\HubPartials\Models\" />
     <Folder Include="Areas\HubPartials\Views\HubHelper\" />
     <Folder Include="Areas\HubPartials\Views\Shared\" />
@@ -2539,6 +2562,7 @@
     <Folder Include="Content\ClientApp\my-app\src\Content\" />
     <Folder Include="Test\UpgradePlanTests\" />
     <Folder Include="Views\Client\" />
+    <Folder Include="Views\Email\" />
     <Folder Include="Views\Scripts\" />
   </ItemGroup>
   <ItemGroup>
@@ -2598,11 +2622,8 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.12.0\build\NUnit.props'))" />
     <Error Condition="!Exists('..\packages\Selenium.WebDriver.ChromeDriver.83.0.4103.3910\build\Selenium.WebDriver.ChromeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.ChromeDriver.83.0.4103.3910\build\Selenium.WebDriver.ChromeDriver.targets'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
   </Target>
   <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.83.0.4103.3910\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.83.0.4103.3910\build\Selenium.WebDriver.ChromeDriver.targets')" />
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

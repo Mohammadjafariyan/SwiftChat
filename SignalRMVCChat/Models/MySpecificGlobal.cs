@@ -1,5 +1,8 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using Engine.SysAdmin.Models;
@@ -14,6 +17,9 @@ namespace SignalRMVCChat.Models
 {
     public class MySpecificGlobal
     {
+        public readonly static string ErrorMessageTempData = "Error";
+        public readonly static string SuccessMessageTempData = "Success";
+        
         public static string GetBaseUrl(Uri Url)
         {
             return Url.Scheme + "://" + Url.Host + ":" + Url.Port;
@@ -317,6 +323,18 @@ namespace SignalRMVCChat.Models
             return Name;
 
 
+        }
+    }
+
+    public static class EnumExtensions
+    {
+        public static string GetDisplayName(this Enum enumValue)
+        {
+            return enumValue.GetType()
+                            .GetMember(enumValue.ToString())
+                            .First()
+                            .GetCustomAttribute<DisplayAttribute>()
+                            .GetName();
         }
     }
 }

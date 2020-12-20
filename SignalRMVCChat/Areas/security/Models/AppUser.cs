@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.DynamicData;
+using SignalRMVCChat.Areas.Email.Model;
 using SignalRMVCChat.Models;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
@@ -29,5 +30,8 @@ namespace SignalRMVCChat.Areas.security.Models
         public DateTime SignUpDateTime { get; set; }
         public AppRole AppRole { get; set; }
         public int? AppRoleId { get; set; }
+        public string ForgetPasswordCode { get;  set; }
+        public DateTime ForgetPasswordCreationDateTime { get;  set; }
+        public List<EmailSent> EmailSents { get;  set; }
     }
 }

@@ -120,7 +120,7 @@ namespace TelegramBotsWebApplication.ActionFilters
                 string requestURL = filterContext.RequestContext.HttpContext.Request.Url.PathAndQuery;
              
                 
-                if (!CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+                if (!CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.IsAdmin==true)
                 {
 
                     filterContext.Result = new RedirectToRouteResult(
