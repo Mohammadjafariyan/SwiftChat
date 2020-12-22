@@ -7,7 +7,8 @@ import {DataHolder} from "../../Help/DataHolder";
 
 class B4AdminMenu extends Component {
 
-    state={};
+    state={
+    };
     constructor(props) {
         super(props);
         CurrentUserInfo.B4AdminMenu=this;
@@ -30,10 +31,10 @@ class B4AdminMenu extends Component {
                     <hr className="sidebar-divider my-0" />
 
                     {/* <!-- Nav Item - Dashboard-->*/}
-                    <li className={`nav-item ${ (!this.state.activeRoute) ? 'active':''}`}>
+                    <li className={`nav-item ${ this.state.activeRoute=='old' ? 'active':''}`}>
                         <a className="nav-link" onClick={()=>{
-                            CurrentUserInfo.B4AdminBody.route(null);
-
+                            CurrentUserInfo.B4AdminBody.route('old');
+   
                         }} >
                             <i className="fas fa-fw fa-tachometer-alt"></i>
                             <span>نسخه قدیمی</span></a>

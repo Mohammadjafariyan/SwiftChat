@@ -1,0 +1,46 @@
+﻿@model SignalRMVCChat.Areas.Email.Controllers.SendEmailViewModel
+
+@{
+    ViewBag.Title = "Users";
+    Layout = null;
+}
+
+
+<table class="table" id="example">
+
+    <thead>
+
+        <tr>
+            <th>
+               کد
+
+            </th>
+            <th>نام</th>
+            <th>نام خانوادگی</th>
+            <th>نام کاربری</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var rec in Model.AppUsers)
+        {
+        <tr>
+            <td>
+                @rec.Id
+
+            </td>
+            <td>
+                @rec.Name
+            </td>
+            <td>
+                @rec.LastName
+            </td>
+            <td>
+                @rec.UserName
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -17,6 +17,7 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
     [AllowCrossSite]
     public class JsPluginController : Controller
     {
+        private CustomerProviderService customerProviderService = Injector.Inject<CustomerProviderService>();
 
 
         [HttpGet]
@@ -41,12 +42,11 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
                 {
                     customerToken = Uri.UnescapeDataString(customerToken);
 
-                    var customerId = MySpecificGlobal.ParseToken(customerToken).customerId;
-                    if (customerId.HasValue)
+                    var _customerId = MySpecificGlobal.ParseToken(customerToken).customerId;
+                    if (_customerId.HasValue)
                     {
-                        var customerProviderService = Injector.Inject<CustomerProviderService>();
 
-                        var customer = customerProviderService.GetById(customerId.Value, "کاربر یافت نشد").Single;
+                        var customer = this.customerProviderService.GetById(_customerId.Value, "کاربر یافت نشد").Single;
 
                         if (customer != null && customer.IsBlocked)
                         {
@@ -150,6 +150,47 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
             }
 
             #endregion
+
+
+
+            #region Register and Generate token
+            bool isTokenExpired = false;
+            if (Request.Cookies["customerToken"] != null)
+            {
+                var cook = Request.Cookies["customerToken"];
+
+                try
+                {
+                    var request = MySpecificGlobal.ParseToken(cook?.Value);
+
+                    var customer = customerProviderService
+                        .GetById(request.customerId.Value)
+                        .Single;
+
+                    
+                }
+                catch (Exception e)
+                {
+                    isTokenExpired = true;
+                }
+            }
+
+
+            if (isTokenExpired || Request.Cookies["customerToken"] == null)
+            {
+                var customerProviderService = Injector.Inject<CustomerProviderService>();
+
+                // هر کاربر ابتدا این کلاس را فراخانی میکند و ریجستر می شود            
+                int customerId = customerProviderService.RegisterNewCustomer(null);
+                string customerToken = MySpecificGlobal.CreateTokenForCustomer(website.BaseUrl, customerId, website.Id);
+                Request.Cookies.Add(new System.Web.HttpCookie("customerToken", customerToken));
+                Response.Cookies.Add(new System.Web.HttpCookie("customerToken", customerToken));
+
+            }
+
+            #endregion
+
+
 
             return PartialView("CustomerChatHtml", pluginCustomized);
         }

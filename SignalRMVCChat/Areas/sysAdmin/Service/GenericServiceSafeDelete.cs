@@ -58,13 +58,14 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
      
         public override MyEntityResponse<bool> DeleteById(int id)
         {
+            var entities=db.Set<T>();
+            var record = entities.Find(id);
 
-            var myEntityResponse = GetById(id);
+            //  db.Set<T>().Attach(myEntityResponse.Single);
+            record.IsDeleted = true;
+            db.Entry(record).Property(s => s.IsDeleted).IsModified = true;
 
-            db.Set<T>().Attach(myEntityResponse.Single);
-            myEntityResponse.Single.IsDeleted = true;
-            db.Entry(myEntityResponse.Single).Property(s => s.IsDeleted).IsModified = true;
-
+            db.Entry(record).State = EntityState.Modified;
             db.SaveChanges();
 
             return new MyEntityResponse<bool>

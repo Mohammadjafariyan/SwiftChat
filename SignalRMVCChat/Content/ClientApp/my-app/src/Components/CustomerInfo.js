@@ -54,7 +54,7 @@ _showError(' مقدار بازگشتی از سرور نال است ');
                         <span className="p-toast-message-icon pi pi-check"></span>
                     </div>
 
-                    <div className="card-body">
+                    <div className="card-body" style={{overflow:'auto'}}>
                         <Badge pill variant="light">
                             <img width={100} height={100}
                                  src={`${process.env.PUBLIC_URL}/Content/HelpImages/user-icon.png`}/>

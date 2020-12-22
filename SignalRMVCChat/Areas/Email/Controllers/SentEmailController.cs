@@ -6,10 +6,14 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TelegramBotsWebApplication.ActionFilters;
 using TelegramBotsWebApplication.Areas.Admin.Controllers;
+using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace SignalRMVCChat.Areas.Email.Controllers
 {
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [MyAuthorizeFilter(Roles = "superAdmin")]
     public class SentEmailController : GenericController<EmailTemplate>
     {
 
@@ -23,6 +27,14 @@ namespace SignalRMVCChat.Areas.Email.Controllers
         public EmailSentService EmailSentService { get; }
 
 
+        public override ActionResult Index(int? take, int? skip, int? dependId)
+        {
+            take = take ?? 20;
+            skip = skip == 0 ? null : skip;
+            MyDataTableResponse<EmailTemplate> response = (Service as EmailTemplateService).GetAsPagingSentOnly(take.Value, skip, dependId);
+            return View(response);
+        }
+
         // GET: Email/SentEmail
         public ActionResult Sents(int templateId)
         {
@@ -34,7 +46,7 @@ namespace SignalRMVCChat.Areas.Email.Controllers
 
             ViewBag.TemplateTitle = emailSents.Select(e => e.EmailTemplate).Select(e => e.Title).FirstOrDefault();
 
-            return View(emailSents);
+            return View(emailSents.ToList());
         }
     }
 }

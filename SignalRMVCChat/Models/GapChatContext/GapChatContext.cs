@@ -579,14 +579,14 @@ namespace SignalRMVCChat.Models.GapChatContext
             #endregion
 
             #region EmailTemplates
-            modelBuilder.Entity<EmailSent>()
-       .HasRequired(r => r.EmailTemplate)
-       .WithMany(o => o.EmailSents)
+            modelBuilder.Entity<EmailTemplate>()
+       .HasMany(r => r.EmailSents)
+       .WithRequired(o => o.EmailTemplate)
        .HasForeignKey(o => o.EmailTemplateId).WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<EmailSent>()
-       .HasRequired(r => r.AppUser)
-       .WithMany(o => o.EmailSents)
+            modelBuilder.Entity<AppUser>()
+       .HasMany(r => r.EmailSents)
+       .WithRequired(o => o.AppUser)
        .HasForeignKey(o => o.AppUserId).WillCascadeOnDelete(false);
 
             #endregion

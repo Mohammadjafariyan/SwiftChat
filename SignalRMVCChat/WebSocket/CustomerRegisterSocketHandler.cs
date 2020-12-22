@@ -22,11 +22,12 @@ namespace SignalRMVCChat.WebSocket
         public async override Task<MyWebSocketResponse> RegisterAndGenerateToken(string request,
             MyWebSocketRequest currMySocketReq)
         {
-            var customerProviderService = Injector.Inject<CustomerProviderService>();
+            // var customerProviderService = Injector.Inject<CustomerProviderService>();
 
+            int customerId = currMySocketReq.MySocket.CustomerId.Value;
 
             // هر کاربر ابتدا این کلاس را فراخانی میکند و ریجستر می شود            
-            int customerId = customerProviderService.RegisterNewCustomer(currMySocketReq);
+            //int customerId = customerProviderService.RegisterNewCustomer(currMySocketReq);
 
 
             var websiteUrl = currMySocketReq.MyWebsite.BaseUrl;
@@ -56,14 +57,17 @@ namespace SignalRMVCChat.WebSocket
             currMySocketReq.MySocket.Customer = new Customer
             {
                 Id = customerId,
+                OnlineStatus=OnlineStatus.Online
             };
 
             var response = new MyWebSocketResponse
             {
                 Type = MyWebSocketResponseType.Success,
                 Content = allAdmins,
-                Temp = new Customer { Id = customerId },
-                Token = base.GenerateTokenForCustomer(customerId, currMySocketReq),
+                Temp = new Customer { Id = customerId,
+                OnlineStatus=OnlineStatus.Online
+                },
+              //  Token = base.GenerateTokenForCustomer(customerId, currMySocketReq),
                 Name = "registerCallback"
             };
 

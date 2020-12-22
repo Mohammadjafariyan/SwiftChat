@@ -1,4 +1,5 @@
 ﻿using SignalRMVCChat.Areas.security.Models;
+using System.ComponentModel.DataAnnotations;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Areas.Email.Model
@@ -20,7 +21,13 @@ namespace SignalRMVCChat.Areas.Email.Model
     
     public enum EmailSentStatus
     {
-        Sent,Fail,
+        [Display(Name ="ارسال شده")]
+        Sent,
+        
+        [Display(Name = "دارای خطا - ارسال نشده")]
+        Fail,
+  
+        [Display(Name = "تعیین تکلیف نشده")]
         NotDetermined
     }
 }

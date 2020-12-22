@@ -10,10 +10,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Areas.Email.Controllers
 {
-
+    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [MyAuthorizeFilter(Roles = "superAdmin")]
     public class SendEmailController : Controller
     {
         public EmailService EmailService { get; }
@@ -34,16 +36,17 @@ namespace SignalRMVCChat.Areas.Email.Controllers
                 }
 
                 var appUsers = (from m in db.AppUsers
-                                select new AppUser { Id = m.Id, Name = m.Name, LastName = m.LastName, UserName = m.UserName }).ToListAsync();
+                                select new  { Id = m.Id, Name = m.Name, LastName = m.LastName, UserName = m.UserName })
+                                .ToListAsync();
 
                 var templates = (from m in db.EmailTemplates
-                                 select new EmailTemplate { Id = m.Id, Title = m.Title }).ToListAsync();
+                                 select new  { Id = m.Id, Title = m.Title }).ToListAsync();
 
 
                 return View(new SendEmailViewModel
                 {
-                    AppUsers = await appUsers,
-                    Templates = await templates
+                    AppUsers = (await appUsers).Select(m => new AppUser { Id = m.Id, Name = m.Name, LastName = m.LastName, UserName = m.UserName }).ToList(),
+                    Templates = (await templates).Select(m=>new EmailTemplate { Id = m.Id, Title = m.Title }).ToList()
                 });
             }
 
@@ -79,13 +82,19 @@ namespace SignalRMVCChat.Areas.Email.Controllers
                 db.SaveChanges();
                 // ----------- END
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Success",new { templateId =templateId});
             }
         }
 
 
+        public async Task<ActionResult> Success(int templateId)
+        {
+            ViewBag.templateId = templateId;
+            return View();
+        }
 
-    }
+
+        }
 
 
     public class SendEmailViewModel

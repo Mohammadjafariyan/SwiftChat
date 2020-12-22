@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Fleck;
 using SignalRMVCChat.DependencyInjection;
+using SignalRMVCChat.Models;
 using SignalRMVCChat.WebSocket;
 using TelegramBotsWebApplication.Service;
 
@@ -137,22 +138,28 @@ namespace SignalRMVCChat.Service
             // هر کانکشن اتصال به دیتابیس 
             MySocket mysocket = null;
 
+
+
+            
             if (!string.IsNullOrEmpty(request.Token))
             {
                 mysocket = Identify(request, myWebsite);
-                if (mysocket == null)
-                {
-                    logService.LogFunc("استومر دارای توکن است در حالی که در دیتابیس نیست یعنی ما ایجاد نکرده ایم یا مشکلی در دیتابیس بوجود امده است لذا کوکی کاربر باید حذف شو");
+                //if (mysocket == null)
+                //{
+                //    logService.LogFunc("استومر دارای توکن است در حالی که در دیتابیس نیست یعنی ما ایجاد نکرده ایم یا مشکلی در دیتابیس بوجود امده است لذا کوکی کاربر باید حذف شو");
 
-                    logService.Save();
-                    //کاستومر دارای توکن است در حالی که در دیتابیس نیست یعنی ما ایجاد نکرده ایم یا مشکلی در دیتابیس بوجود امده است لذا کوکی کاربر باید حذف شود
-                    throw new FindAndSetExcaption();
-                }
-                else
-                {
-                    request.Token = mysocket.Token;
-                }
+                //    logService.Save();
+                //    //کاستومر دارای توکن است در حالی که در دیتابیس نیست یعنی ما ایجاد نکرده ایم یا مشکلی در دیتابیس بوجود امده است لذا کوکی کاربر باید حذف شود
+                //    throw new FindAndSetExcaption();
+                //}
+                //else
+                //{
+                //    request.Token = mysocket.Token;
+                //}
             }
+
+
+            var CurrentRequest = MySpecificGlobal.ParseToken(request.Token);
 
             /// یعنی بار اولش است که مراجعه به سایت کرده است و باید شناسایی شود با لوگین ورود یا کاستومر
             if (mysocket == null)
@@ -164,6 +171,8 @@ namespace SignalRMVCChat.Service
                     Socket = socket,
                     CustomerWebsiteId = myWebsite.Id,
                     AdminWebsiteId = myWebsite.Id,
+                    CustomerId= CurrentRequest.customerId,
+                    MyAccountId= CurrentRequest.myAccountId
                 };
                 //mySocketService.Save(mysocket);
             }

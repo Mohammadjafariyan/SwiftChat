@@ -148,7 +148,7 @@ class B4AdminNavbar extends Component {
 
     render() {
 
-        const end = <Form.Check checked={this.state.onlyOfflineChecked} type="checkbox" label="فقط آفلاین ها"
+        const end = <Form.Check checked={this.state.onlyOfflineChecked} type="checkbox" label="شامل آفلاین ها"
                                 onChange={() => {
 
                                     this.OnlyOfflines();
@@ -274,7 +274,7 @@ class B4AdminNavbar extends Component {
 
                             </a>
                             {/* <!-- Dropdown - Messages-->*/}
-                            <div
+                            {/* <div
                                 className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="messagesDropdown">
                                 <h6 className="dropdown-header">
@@ -335,7 +335,7 @@ class B4AdminNavbar extends Component {
                                 </a>
                                 <a className="dropdown-item text-center small text-gray-500" href="#">Read
                                     More Messages</a>
-                            </div>
+                            </div> */}
                         </li>
                         <li className="nav-item dropdown no-arrow mx-1" aria-label=" یادآوری ها" data-microtip-position="left" role="tooltip">
                             <a className="nav-link dropdown-toggle" href="#" id="messagesDropdown"

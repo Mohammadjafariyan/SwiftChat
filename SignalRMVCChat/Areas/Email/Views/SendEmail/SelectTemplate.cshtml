@@ -1,0 +1,18 @@
+﻿@model SignalRMVCChat.Areas.Email.Controllers.SendEmailViewModel
+
+@{
+    ViewBag.Title = "Users";
+    Layout = null;
+
+}
+
+
+
+
+
+<div class="form-group">
+    <label>انتخاب قالب ایمیل</label>
+
+    @Html.DropDownList("templateId", new SelectList(Model.Templates,"Id","Title"))
+</div>
+

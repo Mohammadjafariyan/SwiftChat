@@ -132,14 +132,14 @@ class SenderLiveAssistService {
 
     getScroll() {
         if (window.pageYOffset != undefined) {
-            return {sx: pageXOffset, sy: pageYOffset};
+            return { sx: pageXOffset, sy: pageYOffset };
         } else {
             var sx, sy, d = document,
                 r = d.documentElement,
                 b = d.body;
             sx = r.scrollLeft || b.scrollLeft || 0;
             sy = r.scrollTop || b.scrollTop || 0;
-            return {sx, sy};
+            return { sx, sy };
         }
     }
 
@@ -791,7 +791,7 @@ class EventTrigger {
 
         debugger;
 
-        MyCaller.Send('EventFired', {name: name, id: this.bean.Id})
+        MyCaller.Send('EventFired', { name: name, id: this.bean.Id })
 
     }
 
@@ -815,7 +815,7 @@ function RegisterOnUrlChange(callback) {
         const pushState = history.pushState;
         history.pushState = function (state) {
             if (typeof history.onpushstate == "function") {
-                history.onpushstate({state: state});
+                history.onpushstate({ state: state });
             }
             callback();
             return pushState.apply(history, arguments);
@@ -841,7 +841,7 @@ function getSplitted(s) {
     let name = url;
     let splitted = url.split('/')
 
-    return {splitted, name};
+    return { splitted, name };
 }
 
 const _EventTriggerManager = new EventTriggerManager();
@@ -862,7 +862,7 @@ let Logger = function (msg) {
 
         // درخواست html ها
         xhttp.open("POST", baseUrlForapi + "/log/log", true);
-        xhttp.send(JSON.stringify({log: msg}));
+        xhttp.send(JSON.stringify({ log: msg }));
     } catch (e) {
         console.error(e);
         console.error('عدم امکان ارسال لاگ سیستم');
@@ -949,7 +949,7 @@ function socketConnect(responseText) {
 
         if (!shadow) {
 
-            shadow = gapPlugin.attachShadow({mode: 'open'});
+            shadow = gapPlugin.attachShadow({ mode: 'open' });
         }
 
 
@@ -993,7 +993,6 @@ function socketConnect(responseText) {
             }
             // CurrentUserInfo.plugin.Register()
             // اطلاعات کاربر انتخاب شده را برمیگرداند در صورت انتخاب 
-            MyCaller.Send('GetSelectedAdmin');
 
             //  getDoc().querySelector('#dot').click();
             if (CurrentUserInfo.IsRestart) {
@@ -1128,19 +1127,19 @@ function bindChatPanelScrollPaging() {
     getDoc().querySelector('#chatPanel').onscroll = function (e) {
 
 
-       setTimeout(function (){
-           // یعنی نزولی 
-           if (50 > this.scrollTop) {
-               // element is at the end of its scroll, load more content
+        setTimeout(function () {
+            // یعنی نزولی 
+            if (50 > this.scrollTop) {
+                // element is at the end of its scroll, load more content
 
-               if (!CurrentUserInfo.AllChatsRead){
-                   CurrentUserInfo.pageNumber++;
-                   MyCaller.Send("ReadChat", {targetId: CurrentUserInfo.targetId, pageNumber: CurrentUserInfo.pageNumber});
-               }
-           }
-       },5000)
+                if (!CurrentUserInfo.AllChatsRead) {
+                    CurrentUserInfo.pageNumber++;
+                    MyCaller.Send("ReadChat", { targetId: CurrentUserInfo.targetId, pageNumber: CurrentUserInfo.pageNumber });
+                }
+            }
+        }, 5000)
 
-     //   previeusScrollTopchatPanel = this.scrollTop;
+        //   previeusScrollTopchatPanel = this.scrollTop;
 
 
     }
@@ -1149,7 +1148,7 @@ function bindChatPanelScrollPaging() {
     getDoc().querySelector('#chatPanel').addEventListener("wheel", function () {
         if (!CurrentUserInfo.pageNumber || CurrentUserInfo.pageNumber === 1) {
             CurrentUserInfo.pageNumber++;
-            MyCaller.Send("ReadChat", {targetId: CurrentUserInfo.targetId, pageNumber: CurrentUserInfo.pageNumber});
+            MyCaller.Send("ReadChat", { targetId: CurrentUserInfo.targetId, pageNumber: CurrentUserInfo.pageNumber });
         }
     });
 
@@ -1397,13 +1396,13 @@ function showNewOnTheFlyMessage(Message) {
     if ($ && $('#gapOnTheFlyMessage')) {
         $('#gapOnTheFlyMessage').show('fast');
         setTimeout(function () {
-          //  getDoc().querySelector('#gapOnTheFlyMessage').style.display = null;
+            //  getDoc().querySelector('#gapOnTheFlyMessage').style.display = null;
 
             toggle(getDoc().querySelector('#gapOnTheFlyMessage'))
         }, 1000)
     } else {
         toggle(getDoc().querySelector('#gapOnTheFlyMessage'))
-//        getDoc().querySelector('#gapOnTheFlyMessage').style.display = null;
+        //        getDoc().querySelector('#gapOnTheFlyMessage').style.display = null;
     }
 
 }
@@ -1426,7 +1425,7 @@ class BasePlugin {
 
         OpenChatScreen(AccountId, CurrentUserInfo.targetName, res.Content.ProfileImageId);
 
-//اطلاعات شبکه های اجتماعی را بر میگرداند
+        //اطلاعات شبکه های اجتماعی را بر میگرداند
         if (!getDoc().querySelector('#gapSocialCirlces')) {
             MyCaller.Send('GetSocialChannelsInfo')
 
@@ -1612,7 +1611,7 @@ class BasePlugin {
 
             if (!isGapMe) {
                 MyCaller.Send("MultimediaDeliverd",
-                    {chatId: res.Content.Id})
+                    { chatId: res.Content.Id })
             }
 
 
@@ -1667,6 +1666,7 @@ class BasePlugin {
     Register() {
 
 
+        debugger;
         let URL = window.location.href;
 
         let Title = document.title;
@@ -1675,11 +1675,13 @@ class BasePlugin {
         // let content= document.querySelector('meta[name="description"]');
 
         let desc = '';
-        MyCaller.Send("Register", {Description: desc, Title: Title, URL: URL});
+        MyCaller.Send("Register", { Description: desc, Title: Title, URL: URL });
     }
 
     registerCallback(res) {
 
+        debugger;
+        MyCaller.Send('GetSelectedAdmin');
 
         // getDoc().querySelector('#dot').style.display = 'none';
 
@@ -1777,7 +1779,7 @@ class BasePlugin {
         }
 
         if (!CurrentUserInfo.IsCustomer) {
-            _html = this.makeRowItem({Name: 'پیام های آماده', Id: 'SavedPms'}) + _html;
+            _html = this.makeRowItem({ Name: 'پیام های آماده', Id: 'SavedPms' }) + _html;
 
         }
 
@@ -1903,10 +1905,10 @@ class BasePlugin {
 
         var arr = [];
         arr = res.Content.EntityList;
-        
-    if(!arr || arr.length==0){
-        CurrentUserInfo.AllChatsRead=true;
-    }
+
+        if (!arr || arr.length == 0) {
+            CurrentUserInfo.AllChatsRead = true;
+        }
 
 
         let chatPanel = getDoc().querySelector('#chatPanel');
@@ -2011,7 +2013,7 @@ class BasePlugin {
 
                 //screen record request from admin
                 if (arr[i].ChatContentType === 3 && !arr[i].ChatContentTypeJobDone) {
-                    html += screenRecordAccessRequestCallback({Content: arr[i]}, true);
+                    html += screenRecordAccessRequestCallback({ Content: arr[i] }, true);
 
                 } else {
                     html += CurrentUserInfo.commonDomManager.makeChatDom(arr[i].Message, gapMe, deliverdSign, arr[i].gapFileUniqId, arr[i].UniqId, arr[i].Time, arr[i]);
@@ -2055,7 +2057,7 @@ class BasePlugin {
                 if (!formParent || !formParent.querySelector('form')) {
 
                     if (!arr[i].FormPassed) {
-                        MyCaller.Send('CustomerGetFormSingle', {formId: arr[i].formId, chatId: arr[i].Id})
+                        MyCaller.Send('CustomerGetFormSingle', { formId: arr[i].formId, chatId: arr[i].Id })
 
                     } else {
                         formParent.innerHTML = `<p>${arr[i].FormPassed}</p>`
@@ -2177,24 +2179,24 @@ class BasePlugin {
         if (Message) {
 
 
-            var html = CurrentUserInfo.commonDomManager.makeChatDom(Message, isGapMe, false, gapFileUniqId, UniqId,null
-                ,null,true);
+            var html = CurrentUserInfo.commonDomManager.makeChatDom(Message, isGapMe, false, gapFileUniqId, UniqId, null
+                , null, true);
 
             getDoc().querySelector('#chatPanel').innerHTML = getDoc().querySelector('#chatPanel').innerHTML
-                + html ;
+                + html;
 
-            
+
 
 
             scrollToBottomChatPanel();
 
-            toggle(getDoc().querySelector(`.msg-${UniqId}`),'slide-up')
+            toggle(getDoc().querySelector(`.msg-${UniqId}`), 'slide-up')
 
 
-            setTimeout(function (){
+            setTimeout(function () {
                 scrollToBottomChatPanel();
 
-            },500)
+            }, 500)
 
             if (callback) {
                 callback();
@@ -2272,14 +2274,16 @@ let configWebSocket = function (onOpen) {
         console.log(evt);
         _dispatcher.dispatch(JSON.parse(received_msg));
     };
-    CurrentUserInfo.ws.onclose = function () {
+    CurrentUserInfo.ws.onclose = function (e) {
         // websocket is closed.
+
+        console.log(e);
         console.error("اتصال قطع شد");
 
 
-        socketConnect();
-        CurrentUserInfo.dotColorBackup = getDoc().querySelector('#dot').style.backgroundColor;
-        getDoc().querySelector('#dot').style.backgroundColor = 'grey';
+    //    socketConnect();
+    //    CurrentUserInfo.dotColorBackup = getDoc().querySelector('#dot').style.backgroundColor;
+    //    getDoc().querySelector('#dot').style.backgroundColor = 'grey';
     };
 }
 
@@ -2329,7 +2333,7 @@ function login(el) {
 
     el.innerText = "در حال ورود به سیتم";
 
-    MyCaller.Send("AdminLogin", {username: admin, password});
+    MyCaller.Send("AdminLogin", { username: admin, password });
 }
 
 class AdminPlugin extends BasePlugin {
@@ -2422,7 +2426,7 @@ class AdminPlugin extends BasePlugin {
         }
 
 
-        MyCaller.Send("AdminLogin", {username: admin, password});
+        MyCaller.Send("AdminLogin", { username: admin, password });
 
     }
 
@@ -2638,16 +2642,17 @@ function newChatMsg(isGapMe, contentMedia, isReturn, _gapFileUniqId, UniqId, tim
 
     div.innerHTML = contentMedia;
 
-    gapMsg.className = "gapMsg gapMultimedia";
+    gapMsg.className = "gapMsg gapMultimedia ";
+
+    gapMsg.append(createElementFromHTML(getSenderProfile()))
 
     gapMsg.appendChild(div);
     if (isGapMe)
-        div.className = "gapMe gapInnerMsg";
+        div.className = "gapMultimediaMsg gapMe  ";
     else
-        div.className = "gapHe gapInnerMsg";
+        div.className = "gapMultimediaMsg gapHe gapInnerMsg ";
 
 
-    div.append(createElementFromHTML(getSenderProfile()))
 
     if (time) {
 
@@ -2760,7 +2765,7 @@ width:100%;height:100%;"><img src="${el.src}" style="width:80% !important;"/>
     document.querySelector('body').append(img);
 
     if ($) {
-        $("html, body").animate({scrollTop: 0}, "slow");
+        $("html, body").animate({ scrollTop: 0 }, "slow");
 
     } else {
         window.scrollTo(0, 0);
@@ -3140,7 +3145,7 @@ function DeleteMsgOnClick(uniqId, gapFileUniqId, THIS) {
 
     }
 
-    MyCaller.Send("DeleteMessage", {uniqId, targetId: CurrentUserInfo.targetId});
+    MyCaller.Send("DeleteMessage", { uniqId, targetId: CurrentUserInfo.targetId });
     console.log(' درخواست حذف پیغام ارسال شد ');
 
 }
@@ -3230,30 +3235,45 @@ function GetMakeEditDeleteButtons(uniqId, gapFileUniqId) {
 
 function getSenderProfile(chat) {
 
-    
-    if (!chat){
-        chat={};
-        chat.AccountName=CurrentUserInfo.targetName;
-        chat.ProfilePhotoId=CurrentUserInfo.ProfileImageId;
+
+    if (!chat) {
+        chat = {};
+        chat.AccountName = 'شما';
+   //     chat.ProfilePhotoId = CurrentUserInfo.ProfileImageId;
 
     }
-    
-   
-    
-    
-    let fullname=chat.AccountName;
+
+    /*
+     * 
+     *
+         CustomerToAccount=1,
+         AccountToCustomer=2,
+         AccountToAccount=3,
+         SaveAsFastAnswering=4,
+     * */
+
+    //if (chat.SenderType==1) {
+    //    chat = {};
+    //    chat.AccountName = 'شما';
+
+    //    chat.ProfilePhotoId = nu;
+    //}
+
+
+
+    let fullname = chat.AccountName;
 
     let name = (chat.AccountName ? chat.AccountName : "ک").charAt(0);
 
 
     name = chat.ProfilePhotoId ? '' : name;
-    
+
     let ProfilePhotoId = chat.ProfilePhotoId;
     let bgImage = ProfilePhotoId ? `background-image: url(${baseUrlForapi}/Upload/Upload?id=${ProfilePhotoId})` : '';
-    let sum = `<span  aria-label='${fullname}' data-microtip-position='right' role="tooltip" style="position:relative;  float: left; font-size: 20px !important;${bgImage}" class="gap_online_admin">
-<span style="    right: 35%;
+    let sum = `<span  aria-label='${fullname}' data-microtip-position='left' role="tooltip" style="position:relative;  float: right; font-size: 20px !important;${bgImage}" class="gap_online_admin">
+<span style="    right: 28%;
     position: absolute;
-    top: 15%;
+    top: 15%;color:white;
 }">${name}</span></span>`;
 
     return sum;
@@ -3293,12 +3313,12 @@ class DomManager {
 
         let messages = GetChats();
         let uniqId = messages + 1;
-        var html = CurrentUserInfo.commonDomManager.makeChatDom(text, true, false, gapFileUniqId, uniqId, 'همین الان',null,true);
+        var html = CurrentUserInfo.commonDomManager.makeChatDom(text, true, false, gapFileUniqId, uniqId, 'همین الان', null, true);
 
         var chatPanel = getDoc().querySelector('#chatPanel');
-        chatPanel.innerHTML = chatPanel.innerHTML + html ;
+        chatPanel.innerHTML = chatPanel.innerHTML + html;
 
-        toggle(getDoc().querySelector(`.msg-${uniqId}`),'slide-right')
+        toggle(getDoc().querySelector(`.msg-${uniqId}`), 'slide-right')
 
         scrollToBottomChatPanel()
 
@@ -3312,13 +3332,18 @@ class DomManager {
         gapChatSubmit();
     }
 
-    makeChatDom(msg, gapMe, delivered, gapFileUniqId, uniqId, time, chat,isAnim) {
-        
-        
-        
+    makeChatDom(msg, gapMe, delivered, gapFileUniqId, uniqId, time, chat, isAnim) {
+
+
+
         var dom = ` <div uniqid='${uniqId}' class=\"gapMsg msg-${uniqId} ${isAnim ? 'adp-hide' : ''}\"  id='msg_${gapFileUniqId}'>\n`;
 
         if (gapMe) {
+
+            /*profile img*/
+
+            dom += getSenderProfile();
+            /*profile img end*/
             dom += "<div class=\"gapMe\">\n";
         } else {
 
@@ -3561,7 +3586,7 @@ class DomManager {
 
     bindCloseButton() {
         getDoc().querySelector('#gapCloseButton').onclick = function () {
-           // toggle(this.parentNode.parentNode);
+            // toggle(this.parentNode.parentNode);
             ADP.hide(this.parentNode.parentNode, 'flip-down');
 
             var x = getDoc().querySelector('#dot');
@@ -3638,18 +3663,19 @@ class DomManager {
             toggle(this)
 
             var x = getDoc().querySelector('#gapContent');
-           // toggle(x)
+            // toggle(x)
             ADP.show(x, 'slide-down');
 
-            
-            setTimeout(()=>{
 
-            },1000)
-          //  ADP.hide(x, 'slide-down');
+            setTimeout(() => {
 
-
+            }, 1000)
+            //  ADP.hide(x, 'slide-down');
 
 
+
+
+            debugger;
             // اطلاعات کاربر انتخاب شده را برمیگرداند در صورت انتخاب 
             MyCaller.Send('GetSelectedAdmin');
 
@@ -3673,7 +3699,7 @@ class DomManager {
 
             }
 
-                CurrentUserInfo.plugin.readChat(CurrentUserInfo.targetId);
+            CurrentUserInfo.plugin.readChat(CurrentUserInfo.targetId);
 
 
             /*     if (!CurrentUserInfo.IsCustomer) {
@@ -3755,8 +3781,8 @@ const CurrentUserInfo = {
     },
     AddCurrentCustomerToken(Message) {
 
-        CurrentUserInfo.customerToken = Message;
-        cookieManager.setItem('customerToken', Message);
+        //CurrentUserInfo.customerToken = Message;
+        //cookieManager.setItem('customerToken', Message);
     }
 }
 
@@ -3831,14 +3857,14 @@ function scrollToBottomChatPanel() {
 }
 
 
-function toggle(x,type) {
+function toggle(x, type) {
     /*if (x.style.display === 'none') {
         x.style.display = 'inherit';
     } else {
         x.style.display = 'none';
     }*/
 
-    ADP.toggle(x, type? type:'flip-down');
+    ADP.toggle(x, type ? type : 'flip-down');
 
 }
 
@@ -3906,15 +3932,15 @@ let MyCaller = {
             alert('در حال اتصال به سرور و ارسال درخواست');
             setTimeout(() => {
 
-                    if (CurrentUserInfo.ws.readyState === WebSocket.CLOSED ||
-                        CurrentUserInfo.ws.readyState === WebSocket.CLOSED) {
+                if (CurrentUserInfo.ws.readyState === WebSocket.CLOSED ||
+                    CurrentUserInfo.ws.readyState === WebSocket.CLOSED) {
 
-                        startUp();
-                    }
+                    startUp();
+                }
 
-                    alert('در حال اتصال');
-                    this.Send(name, data);
-                },
+                alert('در حال اتصال');
+                this.Send(name, data);
+            },
                 1000);
 
             return;
@@ -4020,7 +4046,7 @@ class dispatcher {
 
             /*====================== END ===========================*/
 
-            case 'getEventTriggersCallback' :
+            case 'getEventTriggersCallback':
                 _EventTriggerManager.getEventTriggersCallback(res);
                 break;
 
@@ -4065,7 +4091,7 @@ class dispatcher {
                 CurrentUserInfo.plugin.adminSelectCustomerCallback(res);
                 break;
 
-            case"getAllTagsForCurrentAdminCallback":
+            case "getAllTagsForCurrentAdminCallback":
                 getAllTagsForCurrentAdminCallback(res);
                 break;
 
@@ -4087,6 +4113,7 @@ class dispatcher {
             case "ClearCookie":
 
 
+                debugger;
                 cookieManager.removeItem('customerToken')
                 cookieManager.removeItem('adminToken')
                 _currentAdminInfo.adminToken = null;
@@ -4104,12 +4131,13 @@ class dispatcher {
                 cookieManager.removeItem('targetStatus')
                 cookieManager.removeItem('ProfileImageId')
 
-                CurrentUserInfo.IsRestart = true;
+               // CurrentUserInfo.IsRestart = true;
                 // getDoc().innerHTML = '';
 
-                CurrentUserInfo.ws.close();
+                //CurrentUserInfo.ws.close();
                 //startUp();
 
+                CurrentUserInfo.plugin.Register();
 
                 break;
 
@@ -4122,7 +4150,7 @@ class dispatcher {
                 CurrentUserInfo.plugin.newSendPMByMeInAnotherPlaceCallback(res);
                 break;
             case "registerCallback":
-                CurrentUserInfo.AddCurrentCustomerToken(res.Token);
+               // CurrentUserInfo.AddCurrentCustomerToken(res.Token);
                 CurrentUserInfo.plugin.registerCallback(res);
                 break;
             case "readChatCallback":
@@ -4401,7 +4429,7 @@ function getSearchScreenPanel() {
         "<label>جستجو</label>" +
         " <input style='height: 25px;' onkeyup='gapChatSearchInputOnChange(this,event)' placeholder=\"در اینجا تایپ نمایید\" id=\"gapChatSearchInput\"/>\n" +
         "</div>"
-    ;
+        ;
     return createElementFromHTML(html);
 }
 
@@ -4641,6 +4669,16 @@ function GetChats() {
 </div>`));
 
         Logger(text);
+
+
+        setTimeout(
+            function () {
+
+                let gapAlert = getDoc().querySelector('#gapAlert');
+                if (gapAlert) {
+                    gapAlert.remove();
+                }
+            }, 3000);
 
         // return proxied.apply(this, arguments);
     };
@@ -4956,7 +4994,7 @@ function changeScreen(id, cls) {
             "style=\"float: left; background-color: white;border: none;\" " +
             " onclick='ScreenBack(this)'>x</button>\n" +
             "</div>"
-        ;
+            ;
         getDoc().querySelector('#onTheFly').appendChild(createElementFromHTML(
             html
         ));
@@ -4973,7 +5011,7 @@ let CommentService = function (msg, callback) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({text: msg}),
+            body: JSON.stringify({ text: msg }),
             // -- or --
             // body : JSON.stringify({
             // user : document.getElementById('user').value,
@@ -5123,7 +5161,7 @@ function getTagsCallback(res) {
     }
 
     if ($) {
-        $(chatPanel).animate({scrollTop: chatPanel.scrollHeight}, "slow");
+        $(chatPanel).animate({ scrollTop: chatPanel.scrollHeight }, "slow");
 
     } else {
         chatPanel.scrollTo(0, chatPanel.scrollHeight);
@@ -5259,7 +5297,7 @@ function newTagAdd() {
     }
     showLoadingChats("#chatPanel");
 
-    MyCaller.Send("NewTagAdd", {tagTitle: gapTagTitle.value});
+    MyCaller.Send("NewTagAdd", { tagTitle: gapTagTitle.value });
 
 
     //newTagAddCallback x 
@@ -5299,7 +5337,7 @@ function newTagAddScreen(THIS) {
 
 function GetUserAddedToTags(target) {
 
-    MyCaller.Send('GetUserAddedToTags', {target: target});
+    MyCaller.Send('GetUserAddedToTags', { target: target });
 }
 
 //button
@@ -5417,7 +5455,7 @@ function getAllTagsForCurrentAdminCallback(res) {
 
 function deleteTagById(tagId) {
 
-    MyCaller.Send('DeleteTagById', {tagId: tagId});
+    MyCaller.Send('DeleteTagById', { tagId: tagId });
 }
 
 function closeTagsPanel(THIS) {
@@ -5493,7 +5531,7 @@ function getUsersByTagId(tagId, tagName) {
 
 function deleteTagFormUserTagsById(tagId, THIS) {
     THIS.parentNode.remove();
-    MyCaller.Send("DeleteTagFormUserTagsById", {tagId: tagId, target: CurrentUserInfo.targetId});
+    MyCaller.Send("DeleteTagFormUserTagsById", { tagId: tagId, target: CurrentUserInfo.targetId });
 }
 
 
@@ -5509,11 +5547,11 @@ function gapStickerOpen(THIS) {
     if (gapStickers) {
 
         toggle(getDoc().querySelector('.gapStickerHolder'))
-        setTimeout(function (){
+        setTimeout(function () {
             gapStickers.remove();
-        },500)
+        }, 500)
 
-       
+
 
         return;
     }
@@ -5549,8 +5587,8 @@ ${temp}
 
     chatPanel.append(createElementFromHTML(html));
 
-    
-    
+
+
     toggle(getDoc().querySelector('.gapStickerHolder'))
 }
 
@@ -5591,7 +5629,7 @@ function bindIsTyping() {
 
         if (strg || strg.trim() === '') {
             //   if (strg || strg.trim() === '' && !CustomerStartTypingSent) {
-            MyCaller.Send('CustomerStartTyping', {text: strg});
+            MyCaller.Send('CustomerStartTyping', { text: strg });
             CustomerStartTypingSent = true;
 
         } else {
@@ -5771,7 +5809,7 @@ let gapDeskApiCaller = function (url, data, callback) {
 function gapHelpDeskSearchChanged(THIS, api) {
     getDoc().querySelector('.gapHelpDeskLinks').innerHTML = '<p style="text-align: center">در حال خواندن اطلاعات</p>';
     let searchTerm = THIS.value;
-    gapDeskApiCaller(api, {searchTerm: searchTerm, websiteToken: websiteToken}, function (responseText) {
+    gapDeskApiCaller(api, { searchTerm: searchTerm, websiteToken: websiteToken }, function (responseText) {
 
         if (!responseText) {
 
@@ -5947,7 +5985,7 @@ function adminSendFormToCustomerCallback(res) {
     if (!formParent) {
 
         html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
-            Math.random(), 'همین الان', {formId: form.Id, Id: chatId});
+            Math.random(), 'همین الان', { formId: form.Id, Id: chatId });
 
 
         getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
@@ -6044,18 +6082,18 @@ function seriJson(form) {
 
                 } else {
                     let Id = elem.getAttribute("formelementid")
-                    arr.push({FieldName: elem.name, Value: elem.value, Id: Id ? Id : 0});
+                    arr.push({ FieldName: elem.name, Value: elem.value, Id: Id ? Id : 0 });
                 }
             } else {
                 let Id = elem.getAttribute("formelementid")
-                arr.push({FieldName: elem.name, Value: elem.value, Id: Id ? Id : 0});
+                arr.push({ FieldName: elem.name, Value: elem.value, Id: Id ? Id : 0 });
             }
 
         }
 
 
     });
-    return {requestArray, arr};
+    return { requestArray, arr };
 }
 
 
@@ -6300,7 +6338,7 @@ function VIDEO_CALL_INIT(THIS, callback, chatId) {
 
                     const fileReader = new FileReader();
                     fileReader.addEventListener("loadend", () => {
-//debugger
+                        //debugger
                         // videoElem.src=fileReader.result;
                         /*  var dataUrl = fileReader.result;
                           var base64 = dataUrl.split(',')[1];*/
@@ -6313,7 +6351,7 @@ function VIDEO_CALL_INIT(THIS, callback, chatId) {
                 }).then(function (buffer) {
 
 
-                    MyCaller.Send('ScreenRecordSave', {targetMyAccountId: CurrentUserInfo.targetId, buffer})
+                    MyCaller.Send('ScreenRecordSave', { targetMyAccountId: CurrentUserInfo.targetId, buffer })
                 })
                 chunks.push(e.data);
             }
@@ -6354,21 +6392,21 @@ function VOICE_CALL_INIT() {
     const canvas = getDoc().querySelector('.visualizer');
     const mainSection = getDoc().querySelector('.main-controls');
 
-// disable stop button while not recording
+    // disable stop button while not recording
 
     stop.disabled = true;
 
-// visualiser setup - create web audio api context and canvas
+    // visualiser setup - create web audio api context and canvas
 
     let audioCtx;
     const canvasCtx = canvas.getContext("2d");
 
-//main block for doing the audio recording
+    //main block for doing the audio recording
 
     if (navigator.mediaDevices.getUserMedia) {
         console.log('getUserMedia supported.');
 
-        const constraints = {audio: true};
+        const constraints = { audio: true };
         let chunks = [];
 
         let onSuccess = function (stream) {
@@ -6425,7 +6463,7 @@ function VOICE_CALL_INIT() {
                 soundClips.appendChild(clipContainer);
 
                 audio.controls = true;
-                const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
+                const blob = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
                 chunks = [];
                 const audioURL = window.URL.createObjectURL(blob);
                 audio.src = audioURL;
@@ -6544,7 +6582,7 @@ const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
         byteArrays.push(byteArray);
     }
 
-    const blob = new Blob(byteArrays, {type: contentType});
+    const blob = new Blob(byteArrays, { type: contentType });
     return blob;
 }
 
@@ -6569,7 +6607,7 @@ function screenRecordAccessRequestCallback(res, isReturn) {
     `;
 
     html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
-        res.Content.UniqId, 'همین الان', {Id: res.Content.Id});
+        res.Content.UniqId, 'همین الان', { Id: res.Content.Id });
 
     if (isReturn)
         return html;
@@ -6654,7 +6692,7 @@ function screenRecordAdminShareRequestCallback(res) {
     `;
 
     html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
-        res.Content.UniqId, 'همین الان', {Id: res.Content.Id});
+        res.Content.UniqId, 'همین الان', { Id: res.Content.Id });
 
     getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
 
@@ -6695,7 +6733,7 @@ function screenRecordAdminShareCallback(res) {
 
     videoData.push(blob);
 
-    let wholeVideoBlob = new Blob(videoData, {'type': 'video/webm'})
+    let wholeVideoBlob = new Blob(videoData, { 'type': 'video/webm' })
 
     let blobUrl = URL.createObjectURL(wholeVideoBlob);
 
@@ -6742,7 +6780,7 @@ function VC_AdminCallInitCallback(res) {
     `;
 
     html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
-        res.Content.UniqId, 'همین الان', {Id: res.Content.Id});
+        res.Content.UniqId, 'همین الان', { Id: res.Content.Id });
 
     getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
 
@@ -6794,7 +6832,7 @@ function vC_AdminSpeakCallback(res) {
 
     voiceData.push(blob);
 
-    let wholeVideoBlob = new Blob(voiceData, {'type': 'video/webm'})
+    let wholeVideoBlob = new Blob(voiceData, { 'type': 'video/webm' })
 
     let blobUrl = URL.createObjectURL(wholeVideoBlob);
 
@@ -6822,7 +6860,7 @@ function vc_CustomerCallInit() {
         return;
     }
 
-    MyCaller.Send('VC_CustomerCallInit', {myAccountId: CurrentUserInfo.targetId})
+    MyCaller.Send('VC_CustomerCallInit', { myAccountId: CurrentUserInfo.targetId })
 
 }
 
@@ -7016,7 +7054,7 @@ function adminSendRatingRequestCallback(res) {
 function gapComment(rate, el) {
 
 
-    MyCaller.Send("CustomerRate", {rate});
+    MyCaller.Send("CustomerRate", { rate });
     let html = `
    
     <h3>
@@ -7050,7 +7088,7 @@ function testDo() {
 }
 
 
-window.addEventListener('beforeunload',function (){
+window.addEventListener('beforeunload', function () {
 
     debugger;
     MyCaller.Send("CustomerTabClosed");

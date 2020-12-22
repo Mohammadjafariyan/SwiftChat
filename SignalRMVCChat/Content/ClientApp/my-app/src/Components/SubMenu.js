@@ -181,7 +181,7 @@ this.setState({TotalNewChatReceived:res.Content.TotalNewChatReceived,TotalWaitin
 
           <Col>
           <Form.Group controlId="formBasicCheckbox">
-          <Form.Check checked={this.state.onlyOfflineChecked} type="checkbox" label="فقط آفلاین ها"  onChange={()=>{
+          <Form.Check checked={this.state.onlyOfflineChecked} type="checkbox" label="شامل آفلاین ها"  onChange={()=>{
               
               this.OnlyOfflines();
           }}/>

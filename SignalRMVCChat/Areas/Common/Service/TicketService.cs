@@ -28,14 +28,18 @@ namespace SignalRMVCChat.Areas.Common.Service
             //select roots 
             var query= base.GetQuery().Where(q=>q.ParentId.HasValue==false);
 
-            var appUserId = CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.AppUserId;
+            var appUserId = CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.AppUserId;
 
-            bool isSuperAdmin= _appRoleService.IsInRole(appUserId, "superAdmin");
+            if (appUserId.HasValue==false)
+            {
+                throw new System.Exception("کاربر وارد نشده است");
+            }
+            bool isSuperAdmin= _appRoleService.IsInRole(appUserId.Value, "superAdmin");
 
             // اگر سوپر ادمین نباشد یعنی نمی تواند کل تیکت هارا ببیند فقط مال خودش را می بیند
             if (isSuperAdmin == false)
             {
-                if (_appRoleService.IsInRole(appUserId,"admin"))
+                if (_appRoleService.IsInRole(appUserId.Value,"admin"))
                 {
                     query=query.Where(r => r.AppAdminId == appUserId);
                 }

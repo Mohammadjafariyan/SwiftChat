@@ -55,6 +55,10 @@ namespace SignalRMVCChat.WebSocket
                         .Where(c => c.MySockets.Any(m => m.CustomerWebsiteId == currMySocketReq.MyWebsite.Id ||
                                                          m.AdminWebsiteId == currMySocketReq.MyWebsite.Id));
 
+                    if (MyGlobal.IsAttached)
+                    {
+                        var list222=customers.ToList();
+                    }
 
                     if (_request.Body?.FromBot!=null)
                     {
@@ -151,9 +155,9 @@ namespace SignalRMVCChat.WebSocket
 
 
 //فقط آفلاین ها
-                    if (_request.gapIsOnlyOnly.HasValue && _request.gapIsOnlyOnly == true)
+                    if (_request.gapIsOnlyOnly.HasValue==false || _request.gapIsOnlyOnly == false)
                     {
-                        query = query.Where(l => l.OnlineStatus == OnlineStatus.Offline);
+                        query = query.Where(l => l.OnlineStatus == OnlineStatus.Online);
                     }
 
                     /// برچسب انتخاب است

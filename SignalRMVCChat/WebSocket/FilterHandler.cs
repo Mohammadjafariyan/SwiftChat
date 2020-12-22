@@ -17,6 +17,11 @@ namespace SignalRMVCChat.WebSocket
 {
     public class FilterHandler : ISocketHandler
     {
+
+        private CustomerProviderService CustomerProviderService = Injector.Inject<CustomerProviderService>();
+
+        private MyAccountProviderService MyAccountProviderService = Injector.Inject<MyAccountProviderService>();
+
         /// <summary>
         /// در این مرحله ما فقط می دانیم که وب سایت چیست ؟ و وب سایت ولیدیت شده است
         /// </summary>
@@ -116,13 +121,30 @@ namespace SignalRMVCChat.WebSocket
                 /// این بخش مهم است زیرا ابجکت ها را نیز وصل می کند
                 if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)
                 {
+
+                    // ----------------------- online status -----------------------------
+                    var myaccount = currMySocketReq.MySocket.MyAccount;
+                    myaccount.OnlineStatus = OnlineStatus.Online;
+                    MyAccountProviderService.VanillaSave(myaccount);
+                    // ----------------------- END -----------------------------
+
+
                     // خبر دار کردن همه کابران ان سایت از انلاین شدن ادمین جدید
                     await new AnotherSideNewOnlineInformerHandler().InformNewAdminRegistered(
                         currMySocketReq.MySocket.MyAccount,
                         currMySocketReq);
+
                 }
                 else
                 {
+
+                    // ----------------------- online status -----------------------------
+                    var customer = currMySocketReq.MySocket.Customer;
+                    customer.OnlineStatus = OnlineStatus.Online;
+                    customerProviderService.Save(customer);
+                    // ----------------------- END -----------------------------
+
+
                     // خبر دار کردن همه ادمین های ان سایت از انلاین شدن کاستومر جدید
                     await new AnotherSideNewOnlineInformerHandler()
                         .InformNewCustomerRegistered(currMySocketReq.MySocket.Customer, currMySocketReq);

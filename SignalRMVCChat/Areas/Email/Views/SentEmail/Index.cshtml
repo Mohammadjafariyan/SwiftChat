@@ -38,12 +38,21 @@
             {
                 <tr>
                     <td>
-                        <a href="/Email/EmailTemplates/Detail?id=@rec.Id">@rec.Title</a>
+                        @if (rec.IsDeleted)
+                        {
+                            <span>@rec.Title  (حذف شده )</span>
+
+                        }
+                        else
+                        {
+                            <a href="/Email/EmailTemplates/Detail?id=@rec.Id">@rec.Title - نمایش قالب</a>
+
+                        }
 
                     </td>
                     <td>
                         
-                        <a href="/Email/SentEmail/Sents?templateId=@rec.Id">@rec.Title</a>
+                        <a class="SentEmailList " href="/Email/SentEmail/Sents?templateId=@rec.Id">@rec.Title - نمایش ارسال ها</a>
                     </td>
                    
                 </tr>

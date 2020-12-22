@@ -23,15 +23,15 @@ export default class ChatPage extends Component {
          
           <div className="row">
 
-<div className="col-3 noMargin">
+<div className="col-md-3 noMargin">
     {/*<Admins/>*/}
     
 <CustomerToolbar/>
 </div>
-<div className="col-6 noMargin">
+<div className="col-md-6 noMargin">
   <Chat />
 </div>
-<div className="col-3 noMargin">
+<div className="col-md-3 noMargin">
   <Customers />
 </div>
 

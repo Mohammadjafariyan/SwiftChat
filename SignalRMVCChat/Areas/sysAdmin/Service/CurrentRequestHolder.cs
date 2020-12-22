@@ -29,9 +29,13 @@ namespace SignalRMVCChat.SysAdmin.Service
                 {
                     return Injector.Inject<CurrentRequestHolder>();
                 }
-                
-                _CurrentRequest= HttpContext.Current.Items["currReq"] as CurrentRequestHolder;
-                HttpContext.Current.Items["currReq"] = _CurrentRequest;
+
+                if (HttpContext.Current !=null)
+                {
+                    _CurrentRequest = HttpContext.Current?.Items["currReq"] as CurrentRequestHolder;
+                    HttpContext.Current.Items["currReq"] = _CurrentRequest;
+
+                }
 
                 return _CurrentRequest;
             }

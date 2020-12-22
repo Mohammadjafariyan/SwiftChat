@@ -2,8 +2,8 @@
 //export const myhost = "http://gapchat.ashpazerooz.ir/";
 export const myhost = "http://localhost:60518/";
 
-export const baseUrl =
-  `${myhost}/Customer/Panel/Index?websiteToken=N09XVk1peG5Gc2FtQWhLSHk4MjIrclFubVNZa0VEWDBGdTZrR3NtNDhXbUhQY3EzUWR5bTJzc2d5UjYwelYxeHBGRWxiZ1dtZ0p0aHVrNGlXWmk0eWc9PQ==`;
+export const TimeToOpenChatBox = 1000 * 3;
+export const baseUrl = `${myhost}Customer/Panel/Index?websiteToken=N09XVk1peG5Gc2FtQWhLSHk4MjIrZ0VWVmNpK1pmQmlBWlFXdTloQm5wTFR2V1ZZUysxblZjUUJwOXk4SEZQREtlUEFuSWNTR2FTbUlsOXBiaW0xVkE9PQ==`;
 export const loginPage = `${myhost}/Security/Account/Login`;
 
 export function login(cy) {
@@ -15,39 +15,32 @@ export function login(cy) {
 }
 
 export function Adminlogin(cy) {
-  cy.visit(loginPage)
+  cy.visit(loginPage);
 
   cy.on("uncaught:exception", (err, runnable) => {
-  return false;
-});
+    return false;
+  });
 
-cy.get("#Username").type("admin@admin.com");
+  cy.get("#Username").type("admin@admin.com");
 
-cy.get("#Password").type("admin@admin.com");
+  cy.get("#Password").type("admin@admin.com");
 
-cy.get("#login").click();
+  cy.get("#login").click();
 
-cy.url().should("eq", `${myhost}Customer/Dashboard`); // => true
+  cy.url().should("eq", `${myhost}Customer/Dashboard`); // => true
 }
 
-
-
 export function _MyLogout(cy) {
+  cy.get("#profilelink").click();
 
-      
-cy.get('#profilelink')
-.click();
+  cy.get("#logout").click();
 
-cy.get('#logout')
-.click();
-
-
-cy.url().should('eq', `${myhost}`)
+  cy.url().should("eq", `${myhost}`);
 }
 
 export function SuperAdminlogin(cy) {
-    cy.visit(myhost)
-    cy.get("#sysAdminLogin").click();
+  cy.visit(myhost);
+  cy.get("#sysAdminLogin").click();
 
   cy.get("#Username").type("superAdmin");
 
@@ -58,8 +51,7 @@ export function SuperAdminlogin(cy) {
   cy.url().should("eq", `${myhost}Admin/AdminDashboard`); // => true
 }
 
-
-export const SampleHtml=`<!DOCTYPE html>
+export const SampleHtml = `<!DOCTYPE html>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:og="http://opengraph.org/schema/">
 
@@ -894,3 +886,69 @@ export const SampleHtml=`<!DOCTYPE html>
 </body>
 
 </html>`;
+
+export function customerSendTextMessage(cy, c) {
+  cy.visit(myhost);
+
+  cy.wait(TimeToOpenChatBox);
+
+  cy.get("#gapPlugin").shadow().find("#dot").click();
+
+  /*     cy.get('#gapPlugin').shadow().find('#dot').click();
+    cy.get('#gapPlugin').shadow().find('#dot').click(); */
+
+  c = c ? c : 10;
+  for (let i = 0; i < c; i++) {
+    cy.get("#gapPlugin")
+      .shadow()
+      .find("#gapChatInput")
+      .type("salam-" + i);
+
+    cy.get("#gapPlugin").shadow().find("#gapSendMsg").click();
+  }
+
+  upload(cy, "exmple.png");
+  upload(cy, "sample.mp3");
+  upload(cy, "helpdeskdemo3.gif");
+  // upload(cy,"samplevideo.avi")
+  upload(cy, "example.json");
+}
+
+export function loginOperator(cy) {
+  Adminlogin(cy);
+
+  let url;
+
+  cy.visit(`${myhost}customer/dashboard/CreatePluginForAdmins?websiteId=1`);
+
+  cy.wait(TimeToOpenChatBox);
+
+  cy.get("#gapPluginAdmin").shadow().find("#dot").click();
+
+  cy.get("#gapPluginAdmin")
+    .shadow()
+    .find("iframe")
+    .then((el) => {
+     
+      url = el[0].src;
+
+      cy.visit(el[0].src);
+
+      cy.get("#username").type("admin");
+      cy.get("#password").type("admin");
+      cy.get("#login").click();
+      return false;
+   
+    });
+
+  return url;
+}
+
+export function upload(cy, address) {
+  let yourFixturePath = address;
+  cy.get("#gapPlugin")
+    .shadow()
+    .find('input[type="file"]')
+    .attachFile(yourFixturePath);
+  cy.get("#gapPlugin").shadow().find("#gapSendMsg").click();
+}

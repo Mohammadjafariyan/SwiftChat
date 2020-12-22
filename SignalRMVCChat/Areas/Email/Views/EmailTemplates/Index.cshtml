@@ -21,7 +21,7 @@
 
 <div>
 
-    <h4>@ViewBag.Title</h4>
+    <h4 id="title">@ViewBag.Title</h4>
 
     <table class="table">
 
@@ -41,7 +41,17 @@
             {
                 <tr>
                     <td>
-                        <a href="/Email/EmailTemplates/Detail?id=@rec.Id">@rec.Title</a>
+
+                        @if (rec.IsDeleted)
+                        {
+                        <span>@rec.Title  (حذف شده )</span>
+
+                        }
+                        else
+                        {
+                            <a href="/Email/EmailTemplates/Detail?id=@rec.Id">@rec.Title</a>
+
+                        }
 
                     </td>
                     <td>
@@ -52,7 +62,7 @@
 
                         <form method="post" action="/Email/EmailTemplates/Delete?id=ec.Id">
                             @Html.Hidden("Id", rec.Id)
-                            <button type="submit" class="btn btn-danger">حذف</button>
+                            <button type="submit" class="btn btn-danger deleteTemplate">حذف</button>
                         </form>
                     </td>
                 </tr>

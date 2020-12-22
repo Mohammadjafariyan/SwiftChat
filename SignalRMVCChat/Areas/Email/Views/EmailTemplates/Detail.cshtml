@@ -31,7 +31,7 @@
 
 
 
-@using (Html.BeginForm("Save", "EmailTemplates", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myfo" , enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Save", "EmailTemplates", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "myfo", enctype = "multipart/form-data" }))
 {
     @Html.Hidden("Id", Model.Id)
     @Html.AntiForgeryToken()
@@ -57,18 +57,46 @@
     <div class="form-group">
         <div class="col-md-10">
 
+            <div class="alert alert-warning">
+                <p>برای استفاده از اطلاعات کاربران در قالب های ایمیل از تگ های زیر می توانید استفاده کنید</p>
+
+                <ul>
+                    <li><p>{name} : نام </p></li>
+                    <li><p>{lastname} : نام خانوادگی</p></li>
+                    <li><p>{username} : نام کاربری</p></li>
+                    <li><p>{email} : ایمیل</p></li>
+                    <li><p>{phone} : شماره تلفن</p></li>
+                    <li><p>{plan} : پلن انتخابی کاربر</p></li>
+                    <li><p>{planprice} : مبلغ پلن</p></li>
+                    <li><p>{lastplanprice} : مبلغ آخرین خرید</p></li>
+                    <li><p>{code} : کد فراموشی رمز عبور</p></li>
+                    <li><p>{password} : رمز عبور جدید</p></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-2">
+
+            <label>راهنما</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+
             <div id="editor" style="height:350px">
 
                 <textarea name="Html" id="textareaEdit" onchange="preview()" rows="10" class="form-control">@Html.Raw(Model.Html)</textarea>
             </div>
+
         </div>
         @Html.LabelFor(m => m.Html, new { @class = "col-md-2 control-label" })
 
     </div>
 
+
     <div class="form-group">
         <div class="col-md-1">
-            <button  id="submit" class="btn btn-info" type="submit">ذخیره</button>
+            <button id="submit" class="btn btn-info" type="submit">ذخیره</button>
 
         </div>
 
@@ -100,7 +128,7 @@
 
             // Change this to div.childNodes to support multiple top-level nodes
             return div.firstChild;
-        }                
+        }
 
 
         const root = document.getElementById('preview').attachShadow({ mode: 'closed' });
@@ -110,7 +138,7 @@
 
             root.innerHTML = html;
 
-          //  root.append(createElementFromHTML(html));
+            //  root.append(createElementFromHTML(html));
 
         }
         function Save() {

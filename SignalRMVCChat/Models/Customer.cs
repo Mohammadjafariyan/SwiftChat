@@ -26,6 +26,9 @@ namespace SignalRMVCChat.Models
             this.CreationDateTime = DateTime.Now;
 
             TrackInfos = new List<CustomerTrackInfo>();
+
+
+            OnlineStatus = OnlineStatus.Offline;
         }
 
 

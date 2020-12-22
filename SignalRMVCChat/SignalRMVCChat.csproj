@@ -2334,6 +2334,9 @@
     <Content Include="Content\Quill\Highlight.js" />
     <Content Include="Content\Quill\Quill.css" />
     <Content Include="Content\Quill\Quill.js" />
+    <Content Include="Content\Tablesjs\tableJsSelect.js" />
+    <Content Include="Content\Tablesjs\Tablesjs.css" />
+    <Content Include="Content\Tablesjs\TablesJs.js" />
     <Content Include="Content\ThemeFlikr\lifetrakr\css\maps\style.css.map" />
     <Content Include="Content\ThemeFlikr\lifetrakr\css\style.css" />
     <Content Include="Content\ThemeFlikr\lifetrakr\images\app-badge\app-store.png" />
@@ -2456,6 +2459,10 @@
     <Content Include="Areas\Email\Views\EmailTemplates\Index.cshtml" />
     <Content Include="Areas\Email\Views\SentEmail\Index.cshtml" />
     <Content Include="Areas\Email\Views\SentEmail\Sents.cshtml" />
+    <Content Include="Areas\Email\Views\SendEmail\Index.cshtml" />
+    <Content Include="Areas\Email\Views\SendEmail\Users.cshtml" />
+    <Content Include="Areas\Email\Views\SendEmail\SelectTemplate.cshtml" />
+    <Content Include="Areas\Email\Views\SendEmail\Success.cshtml" />
     <None Include="Areas\HubPartials\Views\web.config" />
     <Content Include="Areas\security\Views\ForgetPassword\Index.cshtml" />
     <Content Include="Areas\security\Views\ForgetPassword\CodeConfirmPage.cshtml" />
@@ -2553,7 +2560,6 @@
     <Folder Include="Areas\Admin\Views\EmailSetting\" />
     <Folder Include="Areas\Common\Models\" />
     <Folder Include="Areas\Email\Data\" />
-    <Folder Include="Areas\Email\Views\SendEmail\" />
     <Folder Include="Areas\Email\Views\Shared\" />
     <Folder Include="Areas\HubPartials\Models\" />
     <Folder Include="Areas\HubPartials\Views\HubHelper\" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SignalRMVCChat.Areas.Email.Model;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,5 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
         MyEntityResponse<T> GetById(int id,string notFoundMsg=null);
         MyEntityResponse<int> Save(T model);
         MyEntityResponse<bool> DeleteById(int id);
-
     }
 }

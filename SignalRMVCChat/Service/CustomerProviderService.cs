@@ -68,7 +68,8 @@ namespace SignalRMVCChat.Service
             var myEntityResponse = Save(new Customer
             {
                 Name = "کاربر آنلاین" + " " + (currMySocketReq?.MySocket?.MyConnectionInfo?.ClientIpAddress ?? DateTime.Now.ToString("HH:mm")),
-                Email = MyGlobal.IsAttached ? "pcpc19551@gmail.com" : null
+                Email = MyGlobal.IsAttached ? "pcpc19551@gmail.com" : null,
+                OnlineStatus=OnlineStatus.Online
             }) ;
 
             return myEntityResponse.Single;

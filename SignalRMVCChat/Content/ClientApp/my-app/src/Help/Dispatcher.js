@@ -49,62 +49,57 @@ class dispatcher {
       /*-------------------- stats--------------------*/
 
       case "getVisitedPagesForCurrentSiteCallback":
-        console.log('hi');
-          if (CurrentUserInfo.StatLayout) {
-            CurrentUserInfo.StatLayout.getVisitedPagesForCurrentSiteCallback(
-              res
-            );
-          }
-  
-           
-          
-          if (CurrentUserInfo.SpecialStatsLayout) {
-            CurrentUserInfo.SpecialStatsLayout.getVisitedPagesForCurrentSiteCallback(
-              res
-            );
-          }
-  
-  
-          if (CurrentUserInfo.SepratePerPage) {
-            CurrentUserInfo.SepratePerPage.getVisitedPagesForCurrentSiteCallback(
-              res
-            );
-          }
-  
-          if (CurrentUserInfo.PageVisitStat) {
-            CurrentUserInfo.PageVisitStat.getVisitedPagesForCurrentSiteCallback(
-              res
-            );
-          }
-  
-          if (CurrentUserInfo.PageOnlineCount) {
-            CurrentUserInfo.PageOnlineCount.getVisitedPagesForCurrentSiteCallback(
-              res
-            );
-          }
-  
-          if (CurrentUserInfo.StatPerState) {
-            CurrentUserInfo.StatPerState.getVisitedPagesForCurrentSiteCallback(
-              res
-            );
-          }
-  
-          if (CurrentUserInfo.StatPerCity) {
-            CurrentUserInfo.StatPerCity.getVisitedPagesForCurrentSiteCallback(
-              res
-            );
-          }
-  
-          if (CurrentUserInfo.StatInMap) {
-            CurrentUserInfo.StatInMap.getVisitedPagesForCurrentSiteCallback(res);
-          }
-  
-          if (CurrentUserInfo.StatForeignCountries) {
-            CurrentUserInfo.StatForeignCountries.getVisitedPagesForCurrentSiteCallback(
-              res
-            );
-          }
-          
+        console.log("hi");
+        if (CurrentUserInfo.StatLayout) {
+          CurrentUserInfo.StatLayout.getVisitedPagesForCurrentSiteCallback(res);
+        }
+
+        if (CurrentUserInfo.SpecialStatsLayout) {
+          CurrentUserInfo.SpecialStatsLayout.getVisitedPagesForCurrentSiteCallback(
+            res
+          );
+        }
+
+        if (CurrentUserInfo.SepratePerPage) {
+          CurrentUserInfo.SepratePerPage.getVisitedPagesForCurrentSiteCallback(
+            res
+          );
+        }
+
+        if (CurrentUserInfo.PageVisitStat) {
+          CurrentUserInfo.PageVisitStat.getVisitedPagesForCurrentSiteCallback(
+            res
+          );
+        }
+
+        if (CurrentUserInfo.PageOnlineCount) {
+          CurrentUserInfo.PageOnlineCount.getVisitedPagesForCurrentSiteCallback(
+            res
+          );
+        }
+
+        if (CurrentUserInfo.StatPerState) {
+          CurrentUserInfo.StatPerState.getVisitedPagesForCurrentSiteCallback(
+            res
+          );
+        }
+
+        if (CurrentUserInfo.StatPerCity) {
+          CurrentUserInfo.StatPerCity.getVisitedPagesForCurrentSiteCallback(
+            res
+          );
+        }
+
+        if (CurrentUserInfo.StatInMap) {
+          CurrentUserInfo.StatInMap.getVisitedPagesForCurrentSiteCallback(res);
+        }
+
+        if (CurrentUserInfo.StatForeignCountries) {
+          CurrentUserInfo.StatForeignCountries.getVisitedPagesForCurrentSiteCallback(
+            res
+          );
+        }
+
         if (CurrentUserInfo.PageVisitStat) {
           CurrentUserInfo.PageVisitStat.getVisitedPagesForCurrentSiteCallback(
             res
@@ -163,7 +158,10 @@ class dispatcher {
             res
           );
         }
-        if (CurrentUserInfo.SiteVisit && CurrentUserInfo.SiteVisit.getVisitedPagesForCurrentSiteCallback) {
+        if (
+          CurrentUserInfo.SiteVisit &&
+          CurrentUserInfo.SiteVisit.getVisitedPagesForCurrentSiteCallback
+        ) {
           CurrentUserInfo.SiteVisit.getVisitedPagesForCurrentSiteCallback(res);
         }
         break;
@@ -582,11 +580,7 @@ class dispatcher {
           CurrentUserInfo.HelpDeskSetting.helpDeskSaveDetailCallback(res);
         }
 
-        
-
         break;
-
-        
 
       /*=============MyWebsiteSetting===========*/
       case "getMyWebsiteSettingCallback":
@@ -595,11 +589,11 @@ class dispatcher {
         }
         break;
 
-        case "saveMyWebsiteSettingCallback":
-          if (CurrentUserInfo.SettingBody) {
-            CurrentUserInfo.SettingBody.saveMyWebsiteSettingCallback(res);
-          }
-          break;
+      case "saveMyWebsiteSettingCallback":
+        if (CurrentUserInfo.SettingBody) {
+          CurrentUserInfo.SettingBody.saveMyWebsiteSettingCallback(res);
+        }
+        break;
 
       /*=============end===========*/
 
@@ -610,7 +604,6 @@ class dispatcher {
                    */
       /*=============article===========*/
 
-      
       case "helpdeskFeedbackForArticlesCallback":
         if (CurrentUserInfo.Comments) {
           CurrentUserInfo.Comments.helpdeskFeedbackForArticlesCallback(res);
@@ -812,7 +805,6 @@ class dispatcher {
         if (CurrentUserInfo.CreatedForms) {
           CurrentUserInfo.CreatedForms.getCreatedFormsCallback(res);
         }
-
 
         if (CurrentUserInfo.FormSelect) {
           CurrentUserInfo.FormSelect.getCreatedFormsCallback(res);
@@ -1018,10 +1010,12 @@ class dispatcher {
       //end
 
       case "totalUserCountsChangedCallback":
-        CurrentUserInfo.SubMenu.totalUserCountsChangedCallback(res);
+        if (CurrentUserInfo.SubMenu)
+          CurrentUserInfo.SubMenu.totalUserCountsChangedCallback(res);
         CurrentUserInfo.B4AdminSubMenu.totalUserCountsChangedCallback(res);
 
-        CurrentUserInfo.Menu.totalUserCountsChangedCallback(res);
+        if (CurrentUserInfo.Menu)
+          CurrentUserInfo.Menu.totalUserCountsChangedCallback(res);
         CurrentUserInfo.B4AdminMainMenu.totalUserCountsChangedCallback(res);
 
         if (CurrentUserInfo.B4AdminNavbar)
@@ -1098,7 +1092,6 @@ class dispatcher {
       case "EditMessageCallback":
         CurrentUserInfo.ChatPage.EditMessageCallback(res);
         break;
-     
 
       case "getAllTagsForCurrentAdminCallback":
         if (CurrentUserInfo.TagList) {

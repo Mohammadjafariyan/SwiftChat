@@ -136,6 +136,8 @@ export default class B4AdminSubMenu extends Component {
                                 onClick={() => {
                                     this.setPage('Answered');
                                 }}
+
+                                id="answered"
                         >
 
                             <ShowPlusCount Count={this.state.TotalAnswered}></ShowPlusCount>
@@ -185,7 +187,7 @@ export default class B4AdminSubMenu extends Component {
                       </Button>
 
                         <Form.Group controlId="formBasicCheckbox" className={'onlyoffline'}>
-                            <Form.Check checked={this.state.onlyOfflineChecked} type="checkbox" label="فقط آفلاین ها"
+                            <Form.Check checked={this.state.onlyOfflineChecked} type="checkbox" label="شامل آفلاین ها"
                                         onChange={() => {
 
                                             this.OnlyOfflines();

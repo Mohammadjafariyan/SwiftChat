@@ -27,10 +27,14 @@
 
 <style>
 
-.chatPanel .gapMsg:last-child{
+    .gapMultimediaMsg{
+        background-color:unset !important;
+    }
 
-height: 100px;
-}
+
+    .chatPanel .gapMsg:last-child {
+        height: 100px;
+    }
 
 .msgPlace{
 }
@@ -390,7 +394,7 @@ padding: 10px;
     right: 20px;
 }
 
-.gapMe:after {
+@*.gapMe:after {
     content: '';
     position: absolute;
     right: 0;
@@ -403,7 +407,7 @@ padding: 10px;
     border-bottom: 0;
     margin-top: -8.5px;
     margin-right: -17px;
-}
+}*@
 
 
 .gapMe a, .gapHe a{
@@ -1324,7 +1328,7 @@ color:@pluginCustomized.TopHeaderRightColor !important;
                     </form>
 
                     <div style="display: flex;margin-top:1px">
-                        <button title="ارسال" onclick="getDoc().querySelector('#gapInpSub').click()" type="button" style="padding: 10px; border-radius: 0px;     border: 1px solid #ddd;">
+                        <button title="ارسال" id="gapSendMsg" onclick="getDoc().querySelector('#gapInpSub').click()" type="button" style="padding: 10px; border-radius: 0px;     border: 1px solid #ddd;">
                             <i style="font-size: 25px;" class="gapBottomIcon fa fa-paper-plane" aria-hidden="true"></i>
 
                         </button>

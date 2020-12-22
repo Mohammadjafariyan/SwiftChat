@@ -1,0 +1,38 @@
+﻿@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model dynamic
+
+<style>
+    input {
+        direction: ltr;
+    }
+</style>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Title = "ارسال ایمیل";
+
+}
+
+
+
+
+<div>
+
+    <h4>@ViewBag.Title</h4>
+
+
+    <div class="alert alert-success">
+        با موفقیت ارسال شد
+    </div>
+
+
+    <a id="showSents" href="/email/sentemail/Sents?templateId=@ViewBag.templateId">نمایش ارسال ها</a>
+
+
+
+
+
+
+</div>
+

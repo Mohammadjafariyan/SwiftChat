@@ -8,8 +8,13 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Areas.Email.Model
 {
-    public class EmailTemplate : BaseEntity
+    public class EmailTemplate : EntitySafeDelete
     {
+
+        public EmailTemplate()
+        {
+            EmailSents = new List<EmailSent>();
+        }
 
         [Required]
         [Display(Name = "عنوان")]

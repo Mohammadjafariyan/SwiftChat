@@ -6,7 +6,10 @@ import {DataHolder} from "../../Help/DataHolder";
 import {_getBootstrapRandomColor} from "../../Components/Utilities/Utility";
 
 class B4AdminBody extends Component {
-    state={}
+    state={
+        activeRoute:'freeLayout'
+
+    }
 
     constructor(props) {
         super(props);
@@ -17,7 +20,7 @@ class B4AdminBody extends Component {
         return (
             <div>
                 
-                {!this.state.activeRoute && this.showPrevLayout()}
+                {this.state.activeRoute=='old' && this.showPrevLayout()}
             
                 {this.state.activeRoute==='dashboard' && this.showIndex()}
                 
