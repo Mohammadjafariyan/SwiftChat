@@ -90,14 +90,14 @@ namespace SignalRMVCChat.WebSocket
 
                 #endregion
             }
-            catch (FindAndSetExcaption e)
-            {
-                LogService.Log(e, result);
-                await socket.Send(new MyWebSocketResponse
-                {
-                    Name = "ClearCookie",
-                }.Serilize());
-            }
+            //catch (FindAndSetExcaption e)
+            //{
+            //    LogService.Log(e, result);
+            //    await socket.Send(new MyWebSocketResponse
+            //    {
+            //        Name = "ClearCookie",
+            //    }.Serilize());
+            //}
             catch (Exception e)
             {
                 LogService.Log(e, result);

@@ -31,6 +31,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
         {
             #region GetData
 
+            var listss = getQuery.ToList(); ;
             getQuery = getQuery.Where(q => q.MyWebsiteId == currMySocketReq.MyWebsite.Id && q.IsEnabled);
 
             var adminsCount = currMySocketReq.MyWebsite.Admins.Count;
@@ -68,8 +69,10 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
 
                 if (eventTrigger.ExecuteOnlyIfFirstTimeVisit)
                 {
+                    bool isFirstTime =
+                        customer.FiredEventForCustomers?.Where(e=>e.Name==eventTrigger.Name)?.Count() == null || customer.FiredEventForCustomers?.Where(e => e.Name == eventTrigger.Name)?.Count() == 0;
                     //NOT FIRST TIME VISIT
-                    if (customer.TrackInfos.Count<=1)
+                    if (isFirstTime)
                     {
                         continue;
                     }
@@ -78,7 +81,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
                 if (eventTrigger.ExecuteOnlyIfNoOtherTriggerFired)
                 {
                     //NOT ANY EVENT FIRED
-                    if (customer.FiredEventForCustomers.Count==0)
+                    if (customer.FiredEventForCustomers?.Count != null && customer.FiredEventForCustomers?.Count != 0)
                     {
                         continue;
                     }

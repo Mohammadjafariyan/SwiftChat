@@ -75,16 +75,37 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
             }
 
 
+            // ================== log 
+
+            var customer = CustomerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value).Single;
+
+            var firedEvents = customer.FiredEventForCustomers;
+            if (firedEvents == null || firedEvents?.Count == 0)
+            {
+                firedEvents = new List<FiredEventForCustomer>();
+            }
+
+            firedEvents.Add(new FiredEventForCustomer
+            {
+                Name = eventTrigger.Name,
+            });
+
+            customer.FiredEventForCustomers = firedEvents;
+
+            CustomerProviderService.Save(customer);
+            // ------------------- end
+
+
+
             /*--------------------------- Compaign ----------------------------*/
             var compaignTriggerService = Injector.Inject<CompaignTriggerService>();
 
 
-            var customer= CustomerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value).Single;
 
             compaignTriggerService.ExecuteCompaginsOnEventTriggered
                 (customer,
                 currMySocketReq.MyWebsite.Id, eventTrigger,
-                _request,currMySocketReq);
+                _request, currMySocketReq);
             /*--------------------------- END ----------------------------*/
 
 

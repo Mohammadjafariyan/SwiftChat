@@ -279,7 +279,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
 
                     await CreateRolesIfNotExist();
-                    await AppRoleService.AddToRoleAsync(user.Id, "customer");
+      //              await AppRoleService.AddToRoleAsync(user.Id, "customer");
 
 
                     var result = SecurityService.SignInAsync(model.Email, model.Password);

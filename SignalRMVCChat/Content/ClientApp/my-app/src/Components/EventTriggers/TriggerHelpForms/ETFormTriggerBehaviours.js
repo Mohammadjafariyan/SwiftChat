@@ -145,7 +145,12 @@ class EtFormTriggerBehaviours extends Component {
     }
 
     showAddesCounties() {
+        debugger;
 
+
+        console.warn('---------------DataHolder.selectedEventTrigger.countries------------');
+        console.log(DataHolder.selectedEventTrigger.countries)
+        console.warn('---------------------------');
         return <Table striped bordered hover>
             <thead>
             <tr>

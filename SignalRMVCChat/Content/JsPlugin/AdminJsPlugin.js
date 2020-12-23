@@ -2479,6 +2479,11 @@ function dragElement(elmnt) {
     }
 }
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 /*SignalR*/
 let MyCaller = {
@@ -2516,7 +2521,7 @@ let MyCaller = {
         var req = {};
         req.Name = name;
         req.Body = data;
-        req.Token = CurrentUserInfo.IsCustomer ? CurrentUserInfo.GetCurrentCustomerToken() : _currentAdminInfo.adminToken;
+        req.Token = getCookie('customerToken'),// CurrentUserInfo.IsCustomer ? CurrentUserInfo.GetCurrentCustomerToken() : _currentAdminInfo.adminToken;
         req.WebsiteToken = websiteToken;
 
 

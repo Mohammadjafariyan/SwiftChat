@@ -9,6 +9,15 @@ import {CurrentUserInfo} from "../../../Help/Socket";
 import {SetEventTrigger} from "../EventTriggerForm";
 import {DataHolder} from "../../../Help/DataHolder";
 import {InputNumber} from "primereact/inputnumber";
+import { Dropdown } from 'primereact/dropdown';
+
+
+const applyTypes = [
+    {label: 'شامل', value: 'include'},
+    {label: 'برابر', value: 'equals'},
+];
+ 
+
 
 class EtFormTriggerEvents extends Component {
     state = {};
@@ -233,6 +242,7 @@ class EtFormTriggerEvents extends Component {
                                 <FormInModalWithTable name={'pages'} parent={this}
                                                       inputTitle={'آدرس اینترنتی صفحه (علامت * برای زیر صفحات ، علامت ** برای انتخابگر هرچیز و علامت ! برای انتخابگر منفی)'}
 
+header='تعریف صفحه'
                                                       inputTitlePlaceHolder={'برای مثال : acme.com/blog/*/category/**'}
                                                       linkTitle={"افزودن یک صفحه"}
 
@@ -243,6 +253,8 @@ class EtFormTriggerEvents extends Component {
                                                           console.log('DataHolder.selectedEventTrigger>>>',DataHolder.selectedEventTrigger)
                                                           this.setState({pages})
                                                       }}
+
+                                                    
                                 />
                             </MySwitcher>
 

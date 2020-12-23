@@ -23,6 +23,7 @@ using SignalRMVCChat.Models.MyWSetting;
 using SignalRMVCChat.Models.TelegramBot;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.Compaign;
+using SignalRMVCChat.Service.EventTrigger;
 using SignalRMVCChat.Service.TelegramBot;
 using SignalRMVCChat.SysAdmin.Service;
 using SignalRMVCChat.WebSocket;
@@ -594,7 +595,7 @@ namespace SignalRMVCChat.Models.GapChatContext
             base.OnModelCreating(modelBuilder);
         }
         #region EmailTemplates
-        
+
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
         public DbSet<EmailSent> EmailSents { get; set; }
         #endregion
@@ -1025,6 +1026,7 @@ namespace SignalRMVCChat.Models.GapChatContext
             TelegramBotSettingService.Init(gapChatContext);
 
 
+            EventTriggerService.Init(gapChatContext);
 
             #region yWebsiteSetting
             string myWebsiteSettingJson = @" {'IsLockToUrl':true,'InActivePages':[{'Text':'sdf','Title':'www.','ApplyType':'include','rn':0.24517144478153452},{'Text':'login','Title':'login','ApplyType':'include','rn':0.1380750563467894}],'ActivePages':[{'Text':'home','Title':'home','ApplyType':'include','rn':0.9419052469753286}],'WorkingHourSettingMenu':'workingHourSetting_sentForm','workingHourSetting_sentFormTopText':'<p>زمانی که آفلاین هستم ، فرم تماس با مشخصات زیر ، برای کاربر نمایش داده شود</p><p><br></p>','workingHourSetting_sentMessageText':'<p>sdfsdfsdfsdf</p>','workingHourSetting_sentFormSelect':{'OnlyMe':false,'Name':'فرم ایمیل','AfterMessage':null,'Elements':[],'MyAccountId':1,'MyAccount':null,'MyWebsiteId':1,'MyWebsite':null,'FormValues':null,'Message':null,'IsDeleted':false,'Id':1}}";

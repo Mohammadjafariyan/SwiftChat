@@ -56,7 +56,8 @@ namespace SignalRMVCChat.Service
                 {
                     try
                     {
-                        await customer.Socket.Send(resp.Serilize());
+                         customer.Socket.Send(resp.Serilize())
+                            .GetAwaiter().GetResult();
                     }
                     catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);

@@ -161,7 +161,7 @@ export const AddLocalizedMessage = (props) => {
 
 
     return <>
-        <a onClick={() => {
+        <a  id="addMsg" onClick={() => {
             setShowModal(true)
 
         }}>
@@ -236,7 +236,7 @@ export const FormInModalWithTable = (props) => {
 
 
     return <>
-        <a onClick={() => {
+        <a id="addNew" onClick={() => {
             setShowModal(true)
 
         }}>
@@ -244,7 +244,7 @@ export const FormInModalWithTable = (props) => {
         </a>
 
 
-        <Dialog header="افزودن یک پیغام بومی سازی شده" visible={showModal}
+        <Dialog header={props.header ? props.header : 'افزودن یک پیغام بومی سازی شده'} visible={showModal}
                 modal style={{width: '450px'}} footer={footer}
                 onHide={() => setShowModal(false)}>
 
@@ -267,6 +267,7 @@ export const FormInModalWithTable = (props) => {
 
             <Button
 
+id="addRecordOk"
                 style={{marginTop: '15px'}}
 
                 onClick={() => {

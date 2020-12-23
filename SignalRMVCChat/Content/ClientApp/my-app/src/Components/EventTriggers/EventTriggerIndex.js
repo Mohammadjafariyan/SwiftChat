@@ -19,15 +19,16 @@ class EventTriggerIndex extends Component {
 
     deleteEventTrigger(eventHandler){
         
-        let list=this.state.list.filter(l=>l!==eventHandler)
-        this.setState({list:list});
+        let list=this.state.list.filter(l=>l.Id!==eventHandler.Id)
+        this.setState({list:list,rn:Math.random()});
     }
 
     eventTriggerSaveCallback(res){
         CurrentUserInfo.EventTriggersPage.setState({loading: false})
         
-        DataHolder.selectedEventTrigger.Id=res.Id;
+        DataHolder.selectedEventTrigger=res.Content;
 
+        this.openEventTrigger(res.Content)
         _showMsg("با موفقیت ذخیره شد")
         
         this.componentDidMount();
@@ -52,12 +53,15 @@ class EventTriggerIndex extends Component {
         
         
         let evTrig={Name:'Event Trigger جدید',RunInDesktopDevices:true,RunInMobileDevices:true};
-        list.push(evTrig);
+  
+        MyCaller.Send('EventTriggerSave', evTrig);
+  
+        /*       list.push(evTrig);
         
         this.setState({list:list});
         
         
-        this.openEventTrigger(evTrig);
+        this.openEventTrigger(evTrig); */
     }
     
     componentDidMount() {
@@ -80,7 +84,7 @@ class EventTriggerIndex extends Component {
         return (
             <div>
 
-                <Button variant="info" onClick={()=>{
+                <Button id="AddNewEventTrigger" variant="info" onClick={()=>{
                     this.AddNewEventTrigger();
                 }}>
 

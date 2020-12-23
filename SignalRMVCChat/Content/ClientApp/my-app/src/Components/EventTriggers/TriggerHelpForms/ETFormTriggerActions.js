@@ -112,7 +112,7 @@ class EtFormTriggerActions extends Component {
                             </MySwitcher>
                             <hr/>
 
-                            <MySwitcher title={'پخش کردن یک آهنگ'} name={'IsPlayASound'} parent={this}>
+                            <MySwitcher title={'پخش کردن یک صدا'} name={'IsPlayASound'} parent={this}>
 
                             </MySwitcher>
                         </Card.Text>

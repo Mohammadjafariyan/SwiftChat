@@ -194,6 +194,11 @@ namespace SignalRMVCChat.Models.ET
     public class Country:NameValueObj
     {
 
+
+        public Language lang { get; set; }
+
+        public string textArea { get; set; }
+
     }
     
     public class PageParameter:NameValueObj
@@ -203,7 +208,7 @@ namespace SignalRMVCChat.Models.ET
     
     public class Page:NameValueObj
     {
-
+        public string ApplyType { get; set; }
     }
     
     public class UserEventName:NameValueObj

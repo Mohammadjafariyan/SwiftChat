@@ -138,10 +138,10 @@ namespace SignalRMVCChat.Service
             // هر کانکشن اتصال به دیتابیس 
             MySocket mysocket = null;
 
+          
 
 
-            
-            if (!string.IsNullOrEmpty(request.Token))
+                if (!string.IsNullOrEmpty(request.Token))
             {
                 mysocket = Identify(request, myWebsite);
                 //if (mysocket == null)
@@ -171,8 +171,8 @@ namespace SignalRMVCChat.Service
                     Socket = socket,
                     CustomerWebsiteId = myWebsite.Id,
                     AdminWebsiteId = myWebsite.Id,
-                    CustomerId= CurrentRequest.customerId,
-                    MyAccountId= CurrentRequest.myAccountId
+                    CustomerId= CurrentRequest?.customerId,
+                    MyAccountId= CurrentRequest?.myAccountId
                 };
                 //mySocketService.Save(mysocket);
             }

@@ -70,8 +70,8 @@ namespace SignalRMVCChat.WebSocket.Contacts
             var newQuery = query.Select(customer => new
             {
                 Customer = customer,
-                LastTrackInfo = customer.TrackInfos.OrderByDescending(o => o.Id).LastOrDefault(),
-                Tags = customer.CustomerTags.Select(t => t.Tag.Name).ToArray()
+                LastTrackInfo = customer.TrackInfos.OrderBy(o => o.Id).FirstOrDefault(),
+                Tags = customer.CustomerTags.Select(t => t.Tag.Name).ToList()
             }).ToList();
 
             

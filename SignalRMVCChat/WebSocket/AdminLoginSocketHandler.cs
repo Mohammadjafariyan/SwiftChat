@@ -54,7 +54,7 @@ namespace SignalRMVCChat.WebSocket
                     Type = MyWebSocketResponseType.Success ,
                     Content = myAccount,
                     Name="adminLoginCallback",
-                 //   Token= base.GenerateTokenForAdmin(myAccount.Id,currMySocketReq)
+                    Token= base.GenerateTokenForAdmin(myAccount.Id,currMySocketReq)
                 };
 
 

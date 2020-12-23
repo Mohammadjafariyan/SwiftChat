@@ -27,7 +27,8 @@ namespace SignalRMVCChat.Areas.security.Controllers
             {
                 UserName = model.Email, Email = model.Email,
                 Name = model.Name,
-                LastName = model.LastName
+                LastName = model.LastName,
+                Password=model.Password,
             };
         }
     }

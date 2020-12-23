@@ -789,7 +789,7 @@ class EventTrigger {
 
         this.Action();
 
-        debugger;
+        
 
         MyCaller.Send('EventFired', { name: name, id: this.bean.Id })
 
@@ -1473,7 +1473,7 @@ class BasePlugin {
                     isDelivered: isDelivered
                 })
             }
-        }, isGapMe, res.Content.gapFileUniqId, res.Content.Chat.Id, res.Content.Chat.Time)
+        }, isGapMe, res.Content.gapFileUniqId, res.Content.Chat.Id, res.Content.Chat.Time, res.Content.Chat)
 
 
     }
@@ -1601,7 +1601,7 @@ class BasePlugin {
 
         let targetId = (CurrentUserInfo.currentUsersIsAdmins || CurrentUserInfo.IsCustomer) ? res.Content.MyAccountId : res.Content.CustomerId;
 
-        CurrentUserInfo.plugin.handleNewMessageCome(targetId, null, 5, res.Content.gapFileUniqId, res.Content.UniqId);
+        CurrentUserInfo.plugin.handleNewMessageCome(targetId, null, 5, res.Content.gapFileUniqId, res.Content.UniqId,res.Content.Time, res.Content);
         var fileContent = res.Content.MultimediaContent;
         addNewMultimediaMessage(fileContent, null, function () {
 
@@ -1666,7 +1666,7 @@ class BasePlugin {
     Register() {
 
 
-        debugger;
+        
         let URL = window.location.href;
 
         let Title = document.title;
@@ -1680,7 +1680,7 @@ class BasePlugin {
 
     registerCallback(res) {
 
-        debugger;
+        
         MyCaller.Send('GetSelectedAdmin');
 
         // getDoc().querySelector('#dot').style.display = 'none';
@@ -2148,7 +2148,7 @@ class BasePlugin {
 
     }
 
-    handleNewMessageCome(AccountId, Message, TotalReceivedMesssages, callback, isGapMe, gapFileUniqId, UniqId) {
+    handleNewMessageCome(AccountId, Message, TotalReceivedMesssages, callback, isGapMe, gapFileUniqId, UniqId,time,chat) {
 
         let gapRowTmp = getDoc().querySelector(".gapRow[accountId='" + AccountId + "']");
 
@@ -2179,8 +2179,9 @@ class BasePlugin {
         if (Message) {
 
 
+            debugger;
             var html = CurrentUserInfo.commonDomManager.makeChatDom(Message, isGapMe, false, gapFileUniqId, UniqId, null
-                , null, true);
+                , chat, true);
 
             getDoc().querySelector('#chatPanel').innerHTML = getDoc().querySelector('#chatPanel').innerHTML
                 + html;
@@ -2360,7 +2361,7 @@ class AdminPlugin extends BasePlugin {
                     isDelivered: isDelivered
                 })
             }
-        }, isGapMe, res.Content.gapFileUniqId, res.Content.Chat.UniqId, res.Content.Chat.Time);
+        }, isGapMe, res.Content.gapFileUniqId, res.Content.Chat.UniqId, res.Content.Time, res.Content.Chat);
 
 
     }
@@ -3675,7 +3676,7 @@ class DomManager {
 
 
 
-            debugger;
+            
             // اطلاعات کاربر انتخاب شده را برمیگرداند در صورت انتخاب 
             MyCaller.Send('GetSelectedAdmin');
 
@@ -4113,7 +4114,7 @@ class dispatcher {
             case "ClearCookie":
 
 
-                debugger;
+                
                 cookieManager.removeItem('customerToken')
                 cookieManager.removeItem('adminToken')
                 _currentAdminInfo.adminToken = null;
@@ -6037,7 +6038,7 @@ function saveFormDataCallback(res) {
 }
 
 function gapFormSubmit(THIS, e, chatId) {
-    //debugger;
+    //
     e.preventDefault();
 
 
@@ -6120,7 +6121,7 @@ function startCapture() {
 
     return navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
         .then(res => {
-            //debugger;
+            //
             videoElem.srcObject = res;
 
 
@@ -6129,7 +6130,7 @@ function startCapture() {
 
             mediaRecorder.ondataavailable = function (e) {
                 //chunks.push(e.data);
-                //debugger;
+                //
                 console.log(e)
             }
 
@@ -6266,12 +6267,12 @@ function VIDEO_CALL_INIT(THIS, callback, chatId) {
             let gapOnlineVideo = document.body.querySelector('#gapOnlineVideo');
 
             captureStream = stream;
-            debugger;
+            
 
             gapOnlineVideo.srcObject = stream;
 
             callback(THIS, 'اجازه دسترسی داده شد');
-            //debugger;
+            //
             mediaRecorder = new MediaRecorder(stream);
             mediaRecorder.start(3000);
 
@@ -6699,7 +6700,7 @@ function screenRecordAdminShareRequestCallback(res) {
 }
 
 function fullScreen(id) {
-    debugger;
+    
     getDoc().querySelector('#gapModal').style.display = null;
     getDoc().querySelector('#gapHelpDeskBlackBg').style.display = null;
 
@@ -7090,7 +7091,7 @@ function testDo() {
 
 window.addEventListener('beforeunload', function () {
 
-    debugger;
+    
     MyCaller.Send("CustomerTabClosed");
 });
 

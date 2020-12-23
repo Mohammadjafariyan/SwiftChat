@@ -21,21 +21,22 @@ class BlockUser extends Component {
             <>
 
 
-                {!this.props.Customer.IsBlocked && <Button variant={'danger'} onClick={() => {
+                {!this.props.Customer.IsBlocked && <Button
+                aria-label="بلاک کردن" data-microtip-position="left" role="tooltip"
+                 variant={'danger'} onClick={() => {
 
 
                     this.changeCustomerBlockStatus(true, "در حال بلاک کاربر");
 
                 }}>
 
-                    بلاک کردن
 
-                    <Badge variant={'danger'}>
                         <i className="fa fa-ban" aria-hidden="true"></i>
-                    </Badge>
                 </Button>}
 
-                {this.props.Customer.IsBlocked && <Button variant={'danger'} onClick={() => {
+
+<hr/>
+                {this.props.Customer.IsBlocked && <Button  aria-label="  خروج از بلاک" data-microtip-position="left" role="tooltip" variant={'danger'} onClick={() => {
 
 
                     this.changeCustomerBlockStatus(false, "در حال خروج از بلاک ");
@@ -43,11 +44,9 @@ class BlockUser extends Component {
                 }}>
 
 
-                    خروج از بلاک
+                  
 
-                    <Badge variant={'danger'}>
                         <i className="fa fa-check-square" aria-hidden="true"></i>
-                    </Badge>
                 </Button>}
 
 

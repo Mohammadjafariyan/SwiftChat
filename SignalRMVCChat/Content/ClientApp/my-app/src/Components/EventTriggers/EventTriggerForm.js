@@ -76,6 +76,7 @@ const SaveSelectedEventTrigger = () => {
 
             <Button
 
+id="saveEventTrigger"
                 variant={'success'}
 
                 onClick={() => {

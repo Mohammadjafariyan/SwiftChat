@@ -83,6 +83,17 @@ namespace SignalRMVCChat.WebSocket
                     if (currMySocketReq.MySocket.MyAccountId != resp.Content.Id)
                         throw new Exception("کد های ادمین برابر نیست2");
                     currMySocketReq.MySocket.Token = resp.Token;
+
+                    //currMySocketReq.CurrentRequest = new ParsedCustomerTokenViewModel
+                    //{
+                    //    baseUrl = currMySocketReq.MyWebsite.BaseUrl,
+                    //    myAccountId = currMySocketReq.MySocket.MyAccount.Id,
+                    //    websiteId = currMySocketReq.MyWebsite.Id,
+                    //    IsAdminOrCustomer = MySocketUserType.Admin,
+                    //    dt = DateTime.Now,
+                    //};
+
+                    
                 }
                 else
                 {

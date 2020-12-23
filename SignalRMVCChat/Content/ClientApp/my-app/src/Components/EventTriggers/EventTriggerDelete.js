@@ -13,6 +13,7 @@ class EventTriggerDelete extends Component {
                 
                 <Button
                     
+                    id="deleteEventTrigger"
                     variant={'danger'}
                 
                     onClick={()=>{

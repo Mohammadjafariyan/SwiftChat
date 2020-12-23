@@ -88,7 +88,7 @@ export default class B4AdminMainMenu extends Component {
                         <i className={'fa fa-map-marker'} aria-hidden="true"></i>
                         <span>نمایش در نقشه</span></a>
                 </li>
-                <li className={'nav-item ' + (DataHolder.currentPage === 'EventTrigger' ? ' active ' : '')}>
+                <li id="EventTrigger" className={'nav-item ' + (DataHolder.currentPage === 'EventTrigger' ? ' active ' : '')}>
                     <a className="nav-link" onClick={() => {
                         this.setPage('EventTrigger');
 
