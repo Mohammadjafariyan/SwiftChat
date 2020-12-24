@@ -925,6 +925,11 @@ class dispatcher {
       case "getClientsListForAdminCallback":
         // CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);
 
+
+        if(CurrentUserInfo.MyMapCustomerTypes){
+          CurrentUserInfo.MyMapCustomerTypes.getClientsListForAdminCallback(res);
+        }
+
         if (!DataHolder.currentPage) {
           if (CurrentUserInfo.CustomersPage) {
             CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);

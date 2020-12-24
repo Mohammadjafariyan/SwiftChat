@@ -1,6 +1,7 @@
 ﻿import React, {Component} from 'react';
 import MyMap from "./MyMap";
 import {CurrentUserInfo} from "../../Help/Socket";
+import { MyCaller } from './../../Help/Socket';
 
 class MyMapHolder extends Component {
 
@@ -12,6 +13,7 @@ class MyMapHolder extends Component {
     }
 
     getClientsListForAdminCallback(res) {
+        CurrentUserInfo.MapPage.setState({loading:false});
 
         this.setState({loading: false});
 
@@ -24,6 +26,16 @@ class MyMapHolder extends Component {
         arr = res.Content.EntityList;
 
         this.setState({users:arr});
+    }
+
+
+    componentDidMount(){
+
+    CurrentUserInfo.selectedTagId = null;
+    CurrentUserInfo.gapIsOnlyOnly = null;
+    CurrentUserInfo.currentUsersIsAdmins = null;
+
+    MyCaller.Send("GetClientsListForAdmin");
     }
     render() {
         return (

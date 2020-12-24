@@ -115,7 +115,7 @@ const MyMapBody=()=>{
     return                 <div id="mapid">       
    
         <div id={'loading'}>
-            <Spinner animation="border" role="status">
+            <Spinner animation="border" role="status" variant='success'>
                 <span className="sr-only">در حال خواندن اطلاعات...</span>
             </Spinner>
             <p>در حال خواندن نقشه</p>

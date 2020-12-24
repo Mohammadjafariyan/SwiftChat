@@ -774,6 +774,7 @@ namespace SignalRMVCChat.Models.GapChatContext
             }
 
 
+
             var plan = new Plan
             {
                 ChatCounts = -1,
@@ -1041,6 +1042,9 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             gapChatContext.SaveChanges();
             #endregion
+
+
+            CustomerProviderService.FakeCustomersProvider(gapChatContext);
 
         }
     }
