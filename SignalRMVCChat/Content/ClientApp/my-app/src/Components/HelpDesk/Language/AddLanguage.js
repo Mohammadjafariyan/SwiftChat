@@ -26,6 +26,9 @@ class AddLanguage extends Component {
     AddLanguage(selectedLanguage){
 
       this.selectedLanguage=selectedLanguage;
+
+
+    
     }
     
     constructor(props) {
@@ -55,6 +58,7 @@ class AddLanguage extends Component {
 
                                                             }}
                                                                 onConfirm={()=>{
+                                                                    this.setState({showConfirm:false})
 
 
                                                                     MyCaller.Send("CreateHelpDesk",{
@@ -63,7 +67,8 @@ class AddLanguage extends Component {
                                                                         nativeName:this.selectedLanguage.nativeName,
                                                                         flag:this.selectedLanguage.flag,
                                                                         alpha2Code:this.selectedLanguage.alpha2Code})
-                    this.setState({showConfirm:false})
+
+
                  
                 }}/>}
                 

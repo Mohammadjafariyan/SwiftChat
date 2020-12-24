@@ -12,7 +12,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
             //اگر ادمین بود بازگرد
             if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Admin)
             {
-                return new MyWebSocketResponse();
+            return  Task.FromResult<MyWebSocketResponse>(null).GetAwaiter().GetResult();
             }
 
             switch (_request.Name)
@@ -25,7 +25,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                 case "SetCurrentUserToTags":
                     break;
                 default:
-                    return new MyWebSocketResponse();
+            return  Task.FromResult<MyWebSocketResponse>(null).GetAwaiter().GetResult();
                     break;
             }
 

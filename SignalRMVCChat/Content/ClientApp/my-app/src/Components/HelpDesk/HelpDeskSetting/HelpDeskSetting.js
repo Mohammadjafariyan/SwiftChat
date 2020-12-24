@@ -72,7 +72,7 @@ class HelpDeskSetting extends Component {
                 <Row  className={'p-fluid p-grid p-formgrid'}>
                     <Col>
 
-                        <Input value={this.state.HelpDesk.HeaderText}
+                        <Input id="helpDeskSiteName" value={this.state.HelpDesk.HeaderText}
                                type={'text'} name={'عنوان مرکز پشتیبانی یا هدر'}
 
                                onChange={(e)=>{

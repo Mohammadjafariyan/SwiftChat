@@ -65,7 +65,7 @@ class CategorySave extends Component {
             MyCaller.Send("CategoryGetById",{id:DataHolder.selectedCategory.Id})
         }else{
             if (DataHolder.selectedCategory){
-                DataHolder.selectedCategory.BgColor="#ddd"
+                DataHolder.selectedCategory.BgColor="191fca"
             }
         }
 
@@ -103,7 +103,9 @@ class CategorySave extends Component {
                     <Row>
 
                         <Col>
-                            <Input value={DataHolder.selectedCategory.Title}
+                            <Input
+                            id="categoryTitle"
+                             value={DataHolder.selectedCategory.Title}
                                    type={'text'} name={'عنوان دسته بندی'}
 
                                    onChange={(e)=>{
@@ -115,7 +117,9 @@ class CategorySave extends Component {
                         </Col>
                         <Col>
 
-                            <Button disabled={this.state.loading} label="ذخیره دسته بندی" icon={'pi pi-plus'} className="p-button-primary" onClick={() => {
+                            <Button  
+                            id="Category_Save"
+                            disabled={this.state.loading} label="ذخیره دسته بندی" icon={'pi pi-plus'} className="p-button-primary" onClick={() => {
                                 
                                 if(!_getHelpDesk().helpDeskId){
                                     
@@ -147,7 +151,7 @@ class CategorySave extends Component {
                             <label>
                                 توضیحات
                             </label>
-                            <InputTextarea rows={5} cols={30} value={DataHolder.selectedCategory.Description} 
+                            <InputTextarea id="categoryDesc" rows={5} cols={30} value={DataHolder.selectedCategory.Description} 
                                            
                                            
                                            onChange={(e) => {

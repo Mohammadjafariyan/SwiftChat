@@ -520,6 +520,7 @@ class dispatcher {
         if (CurrentUserInfo.DefinedLanguages) {
           CurrentUserInfo.DefinedLanguages.selectHelpDeskCallback(res);
         }
+        
         break;
 
       case "removeHelpDeskCallback":

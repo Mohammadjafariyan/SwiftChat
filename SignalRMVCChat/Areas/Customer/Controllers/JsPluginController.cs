@@ -26,6 +26,7 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
             var websiteService = Injector.Inject<MyWebsiteService>();
             var website = websiteService.ParseWebsiteToken(token);
 
+            ViewBag.website = website;
             ViewBag.token = token;
             var pluginCustomizedService = Injector.Inject<PluginCustomizedService>();
 

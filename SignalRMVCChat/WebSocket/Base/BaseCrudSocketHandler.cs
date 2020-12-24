@@ -4,7 +4,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 namespace SignalRMVCChat.WebSocket.Base
 {
     public abstract class BaseCrudSocketHandler<T,ServiceType>:BaseMySocket where T:class,IEntity,new()
-        where ServiceType:GenericService<T>
+        where ServiceType: BaseService<T>
     {
 
         protected ServiceType _service = Injector.Inject<ServiceType>();

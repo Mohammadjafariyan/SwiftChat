@@ -214,7 +214,9 @@ class SaveArticle extends Component {
                     <hr/>
                     <Row>
                         <Col>
-                            <Input value={DataHolder.HelpDeskRowDataSelected.Title}
+                            <Input 
+                            id="articleTitle"
+                            value={DataHolder.HelpDeskRowDataSelected.Title}
                                    type={'text'} name={'عنوان مقاله'}
 
                                    onChange={(e) => {
@@ -257,7 +259,7 @@ class SaveArticle extends Component {
                     
                     <br/>
                     <Row>
-                        <Button variant={'primary'} onClick={() => {
+                        <Button id="saveArticleOk" variant={'primary'} onClick={() => {
 
                             this.save();
                         }}>

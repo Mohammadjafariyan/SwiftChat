@@ -2521,7 +2521,7 @@ let MyCaller = {
         var req = {};
         req.Name = name;
         req.Body = data;
-        req.Token = getCookie('customerToken'),// CurrentUserInfo.IsCustomer ? CurrentUserInfo.GetCurrentCustomerToken() : _currentAdminInfo.adminToken;
+        req.Token = CurrentUserInfo.IsCustomer ? CurrentUserInfo.GetCurrentCustomerToken() : _currentAdminInfo.adminToken;
         req.WebsiteToken = websiteToken;
 
 

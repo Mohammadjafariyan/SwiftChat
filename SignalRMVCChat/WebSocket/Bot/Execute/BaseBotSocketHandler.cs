@@ -170,7 +170,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
         protected virtual MyWebSocketResponse Response()
         {
-            return new MyWebSocketResponse();
+            return  Task.FromResult<MyWebSocketResponse>(null).GetAwaiter().GetResult();
         }
 
 

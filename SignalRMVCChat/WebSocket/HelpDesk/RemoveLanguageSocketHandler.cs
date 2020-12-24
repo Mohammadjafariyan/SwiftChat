@@ -27,44 +27,45 @@ namespace SignalRMVCChat.WebSocket.HelpDesk
                 {
                     throw new Exception("db is null ::::::");
                 }
-                
-                var helpDesk=  db.HelpDesks.Include(c=>c.Categories)
-                    .Include("Categories.Articles")
-                    .Include("Categories.Articles.ArticleContent")
-                    .Include("Categories.Articles.ArticleVisits")
-                    .Include(c=>c.Language).FirstOrDefault(f=>f.Id==id);
 
-                if (helpDesk==null)
-                {
-                    Throw("مرکز پشتیبانی با این زبان یافت نشد");
-                }
+                //var helpDesk=  db.HelpDesks.Include(c=>c.Categories)
+                //    .Include("Categories.Articles")
+                //    .Include("Categories.Articles.ArticleContent")
+                //    .Include("Categories.Articles.ArticleVisits")
+                //    .Include(c=>c.Language).FirstOrDefault(f=>f.Id==id);
 
-
-                foreach (var helpDeskCategory in helpDesk.Categories.ToList())
-                {
-                    foreach (var article in helpDeskCategory.Articles.ToList())
-                    {
-                        db.Entry(article.ArticleContent).State = EntityState.Deleted;
-
-                        foreach (var articleVisit in article.ArticleVisits.ToList())
-                        {
-                            db.Entry(articleVisit).State = EntityState.Deleted;
-                        }
-                        
-                        db.Entry(article).State = EntityState.Deleted;
-
-                    }
-                    
-                    db.Entry(helpDeskCategory).State = EntityState.Deleted;
-
-                }
-                db.Entry(helpDesk.Language).State = EntityState.Deleted;
-                db.Entry(helpDesk).State = EntityState.Deleted;
+                //if (helpDesk==null)
+                //{
+                //    Throw("مرکز پشتیبانی با این زبان یافت نشد");
+                //}
 
 
+                //foreach (var helpDeskCategory in helpDesk.Categories.ToList())
+                //{
+                //    foreach (var article in helpDeskCategory.Articles.ToList())
+                //    {
+                //        db.Entry(article.ArticleContent).State = EntityState.Deleted;
 
-                
-                db.SaveChanges();
+                //        foreach (var articleVisit in article.ArticleVisits.ToList())
+                //        {
+                //            db.Entry(articleVisit).State = EntityState.Deleted;
+                //        }
+
+                //        db.Entry(article).State = EntityState.Deleted;
+
+                //    }
+
+                //    db.Entry(helpDeskCategory).State = EntityState.Deleted;
+
+                //}
+                //db.Entry(helpDesk.Language).State = EntityState.Deleted;
+                //db.Entry(helpDesk).State = EntityState.Deleted;
+
+
+
+
+                //db.SaveChanges();
+                _service.DeleteById(id);
                 
             var helpDeskSelect=    db.HelpDesks.FirstOrDefault(c => c.MyWebsiteId == _currMySocketReq.MyWebsite.Id);
 

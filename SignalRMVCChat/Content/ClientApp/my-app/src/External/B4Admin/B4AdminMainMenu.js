@@ -103,7 +103,7 @@ export default class B4AdminMainMenu extends Component {
               
 
 
-                <li className={'nav-item ' + (DataHolder.currentPage === 'HelpDeskPage' ? ' active ' : '')}>
+                <li id="HelpDeskPage" className={'nav-item ' + (DataHolder.currentPage === 'HelpDeskPage' ? ' active ' : '')}>
                     <a className="nav-link" onClick={() => {
                         this.setPage('HelpDeskPage');
                         DataHolder.subPage = null;

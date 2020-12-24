@@ -73,7 +73,7 @@ namespace SignalRMVCChat.Controllers
 
                 var selectedArticles = articles.Select(a => new
                     {
-                        Id = a.Id, title = a.Title, link = baseUrl + "/HelpDeskApi/Detail?articleName=" + a.Title,
+                        Id = a.Id, title = a.Title, link = baseUrl + "/HelpDesk/Article?title=" + a.Title+ "&websiteBaseUrl="+ website.BaseUrl,
                         status = a.ArticleStatus,
                         visitsCount = a.ArticleVisits.Count(),
                         lastChange=a.LastUpdatedDateTime    

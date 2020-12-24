@@ -49,7 +49,7 @@ export function BootstrapModal(props) {
 
     React.useEffect(() => {
         setShow(true);
-    }, [props.showConfirm]);
+    }, [props.display]);
     
     return (
         <>

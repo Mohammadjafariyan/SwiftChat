@@ -11,7 +11,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 namespace SignalRMVCChat.WebSocket.Base
 {
     public abstract class ListSocketHandler<T,Service>:BaseCrudSocketHandler<T,Service> where T:class,IEntity,new()
-        where Service:GenericService<T>
+        where Service: BaseService<T>
     {
         protected GapChatContext db = ContextFactory.GetContext(null) as GapChatContext;
 

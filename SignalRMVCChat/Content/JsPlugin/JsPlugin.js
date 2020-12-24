@@ -2645,7 +2645,10 @@ function newChatMsg(isGapMe, contentMedia, isReturn, _gapFileUniqId, UniqId, tim
 
     gapMsg.className = "gapMsg gapMultimedia ";
 
-    gapMsg.append(createElementFromHTML(getSenderProfile()))
+    if (isGapMe)
+    gapMsg.append(createElementFromHTML(getSenderProfile(null,true)))
+    else
+        gapMsg.append(createElementFromHTML(getSenderProfile(null, false)))
 
     gapMsg.appendChild(div);
     if (isGapMe)
@@ -3234,7 +3237,7 @@ function GetMakeEditDeleteButtons(uniqId, gapFileUniqId) {
     return dom;
 }
 
-function getSenderProfile(chat) {
+function getSenderProfile(chat,isCustomer) {
 
 
     if (!chat) {
@@ -3271,12 +3274,22 @@ function getSenderProfile(chat) {
 
     let ProfilePhotoId = chat.ProfilePhotoId;
     let bgImage = ProfilePhotoId ? `background-image: url(${baseUrlForapi}/Upload/Upload?id=${ProfilePhotoId})` : '';
-    let sum = `<span  aria-label='${fullname}' data-microtip-position='left' role="tooltip" style="position:relative;  float: right; font-size: 20px !important;${bgImage}" class="gap_online_admin">
-<span style="    right: 28%;
-    position: absolute;
-    top: 15%;color:white;
-}">${name}</span></span>`;
 
+
+    let sum;
+
+    if (isCustomer) {
+        sum = `<span  aria-label='${fullname}' data-microtip-position='left' role="tooltip"
+style="float:right; position:relative;   font-size: 20px !important;${bgImage}" class="gap_online_admin ">
+<span class="gapProfileIcon">${name}</span></span>`;
+
+    } else {
+        sum = `<span  aria-label='${fullname}' data-microtip-position='right' role="tooltip"
+style="float:left;  position:relative;   font-size: 20px !important;${bgImage}" class="gap_online_admin ">
+<span class="gapProfileIcon">${name}</span></span>`;
+
+    }
+   
     return sum;
 }
 
@@ -3343,11 +3356,18 @@ class DomManager {
 
             /*profile img*/
 
-            dom += getSenderProfile();
+            dom += getSenderProfile(chat,true);
             /*profile img end*/
             dom += "<div class=\"gapMe\">\n";
         } else {
 
+            /*profile img*/
+            dom += `
+
+${getSenderProfile(chat, false)}
+`
+           // dom += getSenderProfile(chat);
+        /*profile img end*/
 
             if (chat && chat.formId) {
                 dom += "<div class=\"gapHe\" style='width: 80%'>\n";
@@ -3357,19 +3377,28 @@ class DomManager {
 
             }
 
-            /*profile img*/
-
-            dom += getSenderProfile(chat);
-            /*profile img end*/
+            
         }
 
 
         let formId = chat && chat.formId ? chat.formId : '';
         let chatId = chat && chat.Id ? chat.Id : '';
+        if (time) {
+
+            if (!gapMe) {
+                dom += `<small style="font-size: 10px;direction: rtl;float: right" class="gapInnerMsg">${time}</small>`;
+
+            }
+        }
         dom += `<span class="gapInnerMsg" id="gap_formId_${chatId}_${formId}">${msg}</span>`;
 
         if (time) {
-            dom += `<small style="font-size: 10px;direction: rtl;float: left" class="gapInnerMsg">${time}</small>`;
+
+            if (gapMe) {
+                dom += `<small style="font-size: 10px;direction: rtl;float: left" class="gapInnerMsg">${time}</small>`;
+
+            } 
+
         }
 
 
@@ -3917,6 +3946,13 @@ function dragElementback(elmnt) {
 }
 
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+
 /*SignalR*/
 let MyCaller = {
 
@@ -3956,7 +3992,7 @@ let MyCaller = {
         var req = {};
         req.Name = name;
         req.Body = data;
-        req.Token = CurrentUserInfo.IsCustomer ? CurrentUserInfo.GetCurrentCustomerToken() : _currentAdminInfo.adminToken;
+        req.Token = getCookie('customerToken'),//CurrentUserInfo.IsCustomer ? CurrentUserInfo.GetCurrentCustomerToken() : _currentAdminInfo.adminToken;
         req.WebsiteToken = websiteToken;
 
 

@@ -29,26 +29,27 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
 
         public override MyEntityResponse<int> Save(T model)
         {
-            var query = base.GetQuery();
 
 
-           var single= query.SingleOrDefault();
+           var single= Table.SingleOrDefault();
             if (single == null)
             {
-                db.Set<T>().Add(model);
+                Table.Add(model);
+                single = model;
             }
             else
             {
                 model.Id = single.Id;
 
-                db.Set<T>().Attach(single);
                 db.Entry(single).CurrentValues.SetValues(model);
 
+                db.Entry(single).State = EntityState.Modified;
             }
 
 
 
             db.SaveChanges();
+            db.Entry(single).State = EntityState.Detached;
             db.Entry(model).State = EntityState.Detached;
 
             return new MyEntityResponse<int>

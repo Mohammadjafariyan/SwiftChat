@@ -11,7 +11,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Models.HelpDesk
 {
-    public class Category : BaseEntity
+    public class Category : EntitySafeDelete
     {
         public Category()
         {
@@ -51,7 +51,7 @@ namespace SignalRMVCChat.Models.HelpDesk
         public string Content { get; set; }
     }
 
-    public class Article : BaseEntity
+    public class Article : EntitySafeDelete
     {
         public Article()
         {
@@ -110,7 +110,7 @@ namespace SignalRMVCChat.Models.HelpDesk
 
 
 
-    public class Language : BaseEntity
+    public class Language : EntitySafeDelete
     {
 
         public string Name { get; set; }
@@ -121,7 +121,7 @@ namespace SignalRMVCChat.Models.HelpDesk
         public string flag { get; set; }
     }
 
-    public class HelpDesk : BaseEntity
+    public class HelpDesk : EntitySafeDelete
     {
 
 
@@ -150,7 +150,7 @@ namespace SignalRMVCChat.Models.HelpDesk
         public string BgColor { get; set; }
     }
 
-    public class ArticleVisit : BaseEntity
+    public class ArticleVisit : EntitySafeDelete
     {
         public ArticleVisit()
         {
@@ -175,7 +175,7 @@ namespace SignalRMVCChat.Models.HelpDesk
         Publish = 2, Hidden = 1, Draft = 0
     }
 
-    public class CategoryImage : BaseEntity
+    public class CategoryImage : EntitySafeDelete
     {
         [ForeignKey("Category")]
         public override int Id { get; set; }
@@ -187,7 +187,7 @@ namespace SignalRMVCChat.Models.HelpDesk
         public string ImageExtention { get; set; }
 
     }
-    public class ArticleContent : BaseEntity
+    public class ArticleContent : EntitySafeDelete
     {
         [ForeignKey("Article")]
         public override int Id { get; set; }

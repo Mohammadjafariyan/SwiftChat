@@ -111,14 +111,35 @@ class SendFromHelpDesk extends Component {
         })
     }
 
-    onSearch() {
+    onSearch(val) {
         // _showMsg("خواندن مقالات از مرکز پشتیبانی")
 
         this.setState({loading: true})
 
-        let filter = this.state.globalFilter ? this.state.globalFilter : '';
+        let filter = val? val : '';
 
-        fetch(this.state.helpDeskApi + "?searchTerm=" + filter)
+        let websiteToken = document.getElementById('websiteToken').value;
+
+        let isAdmin=false;
+        // از اینجا میفهمیم که در ادمین استفاده می شود
+        if (this.props.actionButtons) {
+
+            isAdmin= true;
+
+        }
+
+        fetch(this.state.helpDeskApi,{
+            method: "POST",
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                websiteToken: websiteToken,
+                isAdmin:  true,
+                searchTerm:filter
+            })
+        })
             .then(re => re.json())
             .then(re => {
                 this.setState({products: re.array})
@@ -207,7 +228,7 @@ class SendFromHelpDesk extends Component {
                     <InputText type="search"
                                onInput={(e) => {
                                    this.setState({globalFilter: e.target.value});
-                                   this.onSearch();
+                                   this.onSearch(e.target.value);
                                }
 
 

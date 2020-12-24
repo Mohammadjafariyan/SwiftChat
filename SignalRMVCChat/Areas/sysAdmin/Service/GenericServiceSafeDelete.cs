@@ -48,8 +48,55 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
             
             return db.Set<T>().AsNoTracking().AsQueryable().Where(e => e.IsDeleted == false);
         }
-        
-        
+
+
+        //public override MyEntityResponse<int> Save(T model)
+        //{
+        //    var entities = Table;
+
+        //    T newEntity;
+
+        //    if (MyGlobal.IsAttached)
+        //    {
+        //        var list = entities.ToList();
+        //    }
+
+        //    if (model.Id == 0)
+        //    {
+        //        entities.Add(model);
+        //        newEntity = model;
+        //    }
+        //    else
+        //    {
+        //        var entity = entities.FirstOrDefault(e => e.Id == model.Id);
+        //        if (entity == null)
+        //        {
+        //            throw new Exception("رکورد یافت نشد");
+        //        }
+
+        //        var clone=MyGlobal.Clone<T>(entity);
+        //        entity.IsDeleted = true;
+
+        //        clone.Id = 0;
+
+        //        db.Entry(entity).State = EntityState.Modified;
+        //        entities.Add(clone);
+
+        //        newEntity = clone;
+        //    }
+
+
+        //    db.SaveChanges();
+        //    db.Entry(newEntity).State = EntityState.Detached;
+        //    db.Entry(model).State = EntityState.Detached;
+
+        //    return new MyEntityResponse<int>
+        //    {
+        //        Single = newEntity.Id
+        //    };
+        //}
+
+
         public  IQueryable<T> GetAllDeleteIncludedQuery()
         {
            // db.DisableFilter("IsDeleted");

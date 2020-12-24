@@ -39,7 +39,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
 
             if (admin == null)
             {
-                return new MyWebSocketResponse();
+            return  Task.FromResult<MyWebSocketResponse>(null).GetAwaiter().GetResult();
             }
 
 
@@ -49,7 +49,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
 
             if (eventTrigger.localizedMessages.Any() == false)
             {
-                return new MyWebSocketResponse();
+            return  Task.FromResult<MyWebSocketResponse>(null).GetAwaiter().GetResult();
             }
 
             var chatUniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.MySocket.CustomerId).Count();
@@ -109,7 +109,8 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
             /*--------------------------- END ----------------------------*/
 
 
-            return new MyWebSocketResponse();
+            return await Task.FromResult<MyWebSocketResponse>(null);
+
         }
 
         protected override Models.ET.EventTrigger SetParams(Models.ET.EventTrigger record, Models.ET.EventTrigger existRecord)

@@ -39,6 +39,7 @@ class DefinedLanguages extends Component {
         }
         this.setState({selectedCountry:selected})
 
+        MyCaller.Send("Language_GetCurrentHelpDesk_SelectedLanguage")
 
         /*   DataHolder.selectedCountryCode=res.Content;
            _getHelpDesk().helpDeskId=res.Content.Id;*/

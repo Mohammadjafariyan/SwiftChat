@@ -3,7 +3,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Service.HelpDesk.Language
 {
-    public class LanguageService:GenericService<Models.HelpDesk.Language>
+    public class LanguageService: GenericServiceSafeDelete<Models.HelpDesk.Language>
     {
         public LanguageService() : base(null)
         {

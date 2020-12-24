@@ -19,6 +19,8 @@
     var settingService = Injector.Inject<SettingService>();
     var setting = settingService.GetSingle();
 
+    MyWebsite website = ViewBag.website as MyWebsite;
+
 }
 
 
@@ -27,8 +29,22 @@
 
 <style>
 
-    .gapMultimediaMsg{
-        background-color:unset !important;
+    .adminProfileIcon{
+
+    }
+
+    .customerProfileIcon {
+    }
+
+    .gapProfileIcon {
+        right: 28%;
+        position: absolute;
+        top: 15%;
+        color: white;
+    }
+
+    .gapMultimediaMsg {
+        background-color: unset !important;
     }
 
 
@@ -369,10 +385,9 @@ padding: 10px;
     position: relative;
       background: @pluginCustomized.GapHeBgColor !important;;
   border-radius: .4em;
-    left: 20px;
 }
 
-.gapHe:after {
+@*.gapHe:after {
     content: '';
        border-right-color: @pluginCustomized.GapHeBgColor !important;;
  position: absolute;
@@ -385,13 +400,13 @@ padding: 10px;
     border-bottom: 0;
     margin-top: -10px;
     margin-left: -20px;
-}
+}*@
 
 
 .gapMe {
     position: relative;
     border-radius: .4em;
-    right: 20px;
+    right: 5px;
 }
 
 @*.gapMe:after {
@@ -440,6 +455,7 @@ color:  @pluginCustomized.GapMeColor ;
    padding: 7px;
    border-radius: 5%;
    word-break: break-word;
+   display:flex;
   }
 
   .MsgCount{
@@ -902,6 +918,9 @@ color:@pluginCustomized.TopHeaderRightColor !important;
 
 
 
+    <input type="hidden" style="display:none" id="customerWebsiteUrl" 
+           value="@website.BaseUrl"/>
+
     <div>
 
         <div class="pulsating-circle" style="display: none"></div>
@@ -943,7 +962,7 @@ color:@pluginCustomized.TopHeaderRightColor !important;
     <div class="gapHelpDeskModal" id="gapHelpDeskModal" style="display: none;">
         <div class="gapHelpDeskModalSearchForm">
 
-            <input id="gapHelpDeskSearch" placeholder="جستجو در مرکز پشتیبانی ما" dir="rtl" onkeydown="gapHelpDeskSearchChanged(this,'@pluginCustomized.HelpDeskApi')">
+            <input id="gapHelpDeskSearch" placeholder="جستجو در مرکز پشتیبانی ما" dir="rtl" onkeyup="gapHelpDeskSearchChanged(this,'@pluginCustomized.HelpDeskApi')">
             <i class="fa fa-search" aria-hidden="true"></i>
         </div>
         <ul class="gapHelpDeskLinks">

@@ -95,7 +95,7 @@ class LanguageHolder extends Component {
    /*     HelpDeskData.getHelpDesk().language.Name=res.Content.name;
         DataHolder.selectedCountryCode.selectedHelpDeskId=res.Content.id;*/
 
-
+        MyCaller.Send("Language_GetCurrentHelpDesk_SelectedLanguage")
 
     }
     render() {

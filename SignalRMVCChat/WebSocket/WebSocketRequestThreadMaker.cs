@@ -49,7 +49,7 @@ namespace SignalRMVCChat.WebSocket
                     var body = response.Serilize();
 
 
-                    await socket.Send(body);
+                     socket.Send(body).GetAwaiter().GetResult();
                 }
 
                 request.Name = request.Name ?? "";
@@ -101,6 +101,12 @@ namespace SignalRMVCChat.WebSocket
             catch (Exception e)
             {
                 LogService.Log(e, result);
+
+
+                if (MyGlobal.IsAttached)
+                {
+               //     DoChat(result, socket).GetAwaiter().GetResult();
+                }
 
                 // Get stack trace for the exception with source file information
                 var st = new StackTrace(e, true);

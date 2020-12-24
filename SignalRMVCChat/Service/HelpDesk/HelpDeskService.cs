@@ -12,7 +12,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Service.HelpDesk
 {
-    public class HelpDeskService : GenericService<Models.HelpDesk.HelpDesk>
+    public class HelpDeskService : GenericServiceSafeDelete<Models.HelpDesk.HelpDesk>
     {
         private CategoryImageService CategoryImageService = Injector.Inject<CategoryImageService>();
         public HelpDeskService() : base(null)

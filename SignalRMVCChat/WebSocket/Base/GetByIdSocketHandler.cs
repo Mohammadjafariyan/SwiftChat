@@ -5,7 +5,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 namespace SignalRMVCChat.WebSocket.Base
 {
     public abstract class GetByIdSocketHandler<T,Service>:BaseCrudSocketHandler<T,Service> where T:class,IEntity,new()
-        where Service:GenericService<T>
+        where Service: BaseService<T>
     {
         protected GetByIdSocketHandler(string callback) : base(callback)
         {

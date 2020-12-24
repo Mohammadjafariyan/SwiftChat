@@ -41,6 +41,9 @@ if (!CurrentUserInfo.DefinedLanguages){
         
         CurrentUserInfo.DefinedLanguages.componentDidMount();
 
+
+        MyCaller.Send("Language_GetCurrentHelpDesk_SelectedLanguage")
+
       
 
     }

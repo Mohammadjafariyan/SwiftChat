@@ -82,7 +82,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
             _logService.LogFunc("adminSendFormToCustomerCallback customerId" + customerId);
             //=============================================================================
 
-            return new MyWebSocketResponse();
+            return  Task.FromResult<MyWebSocketResponse>(null).GetAwaiter().GetResult();
         }
     }
 }

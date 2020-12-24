@@ -31,7 +31,8 @@ namespace SignalRMVCChat.WebSocket.Call.ScreenRecord
 
 
 
-            return new MyWebSocketResponse();
+            return await Task.FromResult<MyWebSocketResponse>(null);
+            
         }
     }
 }
