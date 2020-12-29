@@ -59,7 +59,12 @@ namespace SignalRMVCChat.WebSocket
              
                 if (_request.Body==null)
                 {
+                    if(required)
                     Throw("ورودی های اشتباه");
+                    else
+                    {
+                        return default(T);
+                    }
                 }
 
                 var formIdstr= MyGlobal.GetPropValue(_request.Body, name);

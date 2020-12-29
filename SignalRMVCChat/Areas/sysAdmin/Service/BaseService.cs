@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Engine.SysAdmin.Service;
 using Moq;
 using SignalRMVCChat.Areas.sysAdmin.Service;
@@ -9,7 +10,7 @@ using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace TelegramBotsWebApplication.Areas.Admin.Service
 {
-    public abstract class BaseService<T> : IService<T> where T : class, IEntity,new()
+    public abstract class BaseService<T> : IService<T> where T : class, IEntity, new()
     {
         protected GenericImp<T> Impl;
 
@@ -18,12 +19,12 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
             SetImpl(contextName);
 
         }
-        
+
         public void Delete(List<T> deletedChats)
         {
             Impl.Delete(deletedChats);
         }
-        
+
         public void Delete(IQueryable<T> deletedChats)
         {
             Impl.Delete(deletedChats);
@@ -40,28 +41,28 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
             if (MyGlobal.IsUnitTestEnvirement)
             {
 
-                Impl = ServiceImplementaionFactory.GetMock(new T(),this);
+                Impl = ServiceImplementaionFactory.GetMock(new T(), this);
             }
             else
             {
                 Impl = ServiceImplementaionFactory.GetActual<T>(contextName);
             }
         }
-        
-        
+
+
 
         public virtual List<T> GetMocklist()
         {
-                return  new List<T>();
+            return new List<T>();
         }
 
 
         public virtual MyDataTableResponse<T> GetAll()
         {
-            
+
             return new MyDataTableResponse<T>
             {
-                EntityList =  GetQuery().ToList(),
+                EntityList = GetQuery().ToList(),
             };
         }
 
@@ -121,7 +122,7 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
         public virtual IQueryable<T> GetQuery()
         {
-            
+
             return Impl.GetQuery();
         }
 
@@ -137,8 +138,13 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
         }
 
+        public async virtual Task<MyEntityResponse<int>> SaveAsync(T model)
+        {
+            return await Impl.SaveAsync(model);
+        }
+
         public virtual MyEntityResponse<bool> DeleteById(int id)
-        {       
+        {
             return Impl.DeleteById(id);
 
         }

@@ -129,9 +129,17 @@ class ContactsIndex extends Component {
           {row.LastTrackInfo && (
             <>
               <Badge pill variant="light">
-                <img
+             {/*    <img
                   src={`https://www.countryflags.io/${row.LastTrackInfo.country_code}/flat/64.png`}
-                />
+                /> */}
+
+
+
+                <img
+            style={{ width: "30px", height: "30px" }}
+            src={`/Content/flags/flag of ${row.LastTrackInfo.country_name}.gif`}/>
+
+                
               </Badge>
               <span>{row.LastTrackInfo.country_name}</span>
             </>

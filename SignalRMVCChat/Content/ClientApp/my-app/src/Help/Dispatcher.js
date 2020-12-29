@@ -520,7 +520,7 @@ class dispatcher {
         if (CurrentUserInfo.DefinedLanguages) {
           CurrentUserInfo.DefinedLanguages.selectHelpDeskCallback(res);
         }
-        
+
         break;
 
       case "removeHelpDeskCallback":
@@ -844,6 +844,10 @@ class dispatcher {
 
         break;
       case "customerStopTypingCallback":
+        if (CurrentUserInfo.CustomersPage) {
+          CurrentUserInfo.CustomersPage.customerStopTypingCallback(res);
+        }
+        
         if (CurrentUserInfo.OnlineCustomerListHolder) {
           CurrentUserInfo.OnlineCustomerListHolder.customerStopTypingCallback(
             res
@@ -854,8 +858,10 @@ class dispatcher {
           CurrentUserInfo.MyHeader.customerStopTypingCallback(res);
         }
 
-        if (CurrentUserInfo.CustomersPage) {
-          CurrentUserInfo.CustomersPage.customerStopTypingCallback(res);
+   
+
+        if (CurrentUserInfo.ChatPage) {
+          CurrentUserInfo.ChatPage.customerStopTypingCallback(res);
         }
 
         break;
@@ -922,12 +928,25 @@ class dispatcher {
         CurrentUserInfo.LoginPage.adminLoginCallback(res);
         break;
 
+      case "getDefinedFormInputsCallback":
+        if (CurrentUserInfo.BotEventCondition) {
+          CurrentUserInfo.BotEventCondition.getDefinedFormInputsCallback(res);
+        }
+        if (CurrentUserInfo.BotEventNodeSetting) {
+          CurrentUserInfo.BotEventNodeSetting.getDefinedFormInputsCallback(res);
+        }
+        break;
+
       case "getClientsListForAdminCallback":
         // CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);
 
-
-        if(CurrentUserInfo.MyMapCustomerTypes){
-          CurrentUserInfo.MyMapCustomerTypes.getClientsListForAdminCallback(res);
+        if (CurrentUserInfo.CustomersPaging) {
+          CurrentUserInfo.CustomersPaging.getClientsListForAdminCallback(res);
+        }
+        if (CurrentUserInfo.MyMapCustomerTypes) {
+          CurrentUserInfo.MyMapCustomerTypes.getClientsListForAdminCallback(
+            res
+          );
         }
 
         if (!DataHolder.currentPage) {
@@ -942,9 +961,9 @@ class dispatcher {
           }
 
           if (DataHolder.currentPage === "Map") {
-            if (CurrentUserInfo.CustomersPage) {
+           /*  if (CurrentUserInfo.CustomersPage) {
               CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);
-            }
+            } */
 
             if (CurrentUserInfo.MyMapHolder) {
               CurrentUserInfo.MyMapHolder.getClientsListForAdminCallback(res);
@@ -967,7 +986,8 @@ class dispatcher {
         break;
 
       case "customerSendToAdminCallback":
-        if (CurrentUserInfo.ChatPage && !DataHolder.currentPage)
+       // if (CurrentUserInfo.ChatPage && !DataHolder.currentPage)
+        if (CurrentUserInfo.ChatPage )
           CurrentUserInfo.ChatPage.customerSendToAdminCallback(res);
 
         if (CurrentUserInfo.CustomersPage)

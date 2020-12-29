@@ -15,6 +15,9 @@ import MarkAsResovled from "./MarkAsResovled";
 import ScreenRecordShower from "./ScreenRecordShower";
 import DOMPurify from "dompurify";
 import WhileWriting from "./WhileWriting";
+import { Editor } from "primereact/editor";
+import { colors } from "./Utilities/GlobalLoading";
+import { Spinner } from "react-bootstrap";
 
 export default class Chat extends Component {
   constructor(arg) {
@@ -63,6 +66,13 @@ export default class Chat extends Component {
       return;
     }
 
+    if (
+      !DataHolder.selectedCustomer ||
+      DataHolder.selectedCustomer.Id != res.Content.targetCustomerId
+    ) {
+      return;
+    }
+
     let chat;
     var i = this.state.chats.findIndex((c) => c.IsTyping);
 
@@ -71,11 +81,36 @@ export default class Chat extends Component {
 
       this.setState({ rndom: Math.random() });
     } else {
-      chat = { Message: res.Content.text };
+      chat = { Message: res.Content.text, UniqId: Math.random() };
       chat.IsReceive = true;
       chat.IsTyping = true;
 
       this.addChat(chat, true);
+    }
+  }
+
+  customerStopTypingCallback(res) {
+    if (!res || !res.Content) {
+      return;
+    }
+
+    if (
+      !DataHolder.selectedCustomer ||
+      DataHolder.selectedCustomer.Id != res.Content.targetCustomerId
+    ) {
+      return;
+    }
+
+    let chat;
+    var i = this.state.chats.findIndex((c) => c.IsTyping);
+
+    if (i >= 0) {
+      this.state.chats[i].Message = res.Content.text;
+      this.state.chats[i].IsTyping = false;
+
+      let chats = this.state.chats.filter((c) => c != this.state.chats[i]);
+      this.setState({ rndom: Math.random(), chats: chats });
+    } else {
     }
   }
 
@@ -146,6 +181,8 @@ export default class Chat extends Component {
   }
 
   readChatCallback(res) {
+    this.setState({ loading: false });
+
     var arr = [];
     arr = res.Content.EntityList;
 
@@ -311,6 +348,8 @@ export default class Chat extends Component {
   }
 
   render() {
+    let color = colors[Math.floor(Math.random() * colors.length)];
+
     return (
       <div>
         <MarkAsResovled />
@@ -337,6 +376,13 @@ export default class Chat extends Component {
               {this.state.chats && this.state.chats.length === 0 && (
                 <p>هیچ چتی یافت نشد</p>
               )}
+
+              {this.state.loading && (
+                <Spinner animation="border" role="status" variant={color}>
+                  <span className="sr-only">در حال خواندن اطلاعات...</span>
+                </Spinner>
+              )}
+
               <ChatPannel chats={this.state.chats} parent={this} />
             </div>
 
@@ -382,7 +428,7 @@ export default class Chat extends Component {
         CurrentUserInfo.pageNumber = 1;
       }
 
-      this.setState({ scroll: true });
+      this.setState({ scroll: true, loading: true });
       CurrentUserInfo.pageNumber++;
       MyCaller.Send("ReadChat", {
         targetId: DataHolder.selectedCustomer.Id,
@@ -474,9 +520,10 @@ export default class Chat extends Component {
     }
 
     if (!chat.IsReceive && !chat.AccountName) {
-      chat.AccountName = CurrentUserInfo.B4AdminLayout.state.currentUser.Name;
+
+      chat.AccountName = _currentUser().Name;
       chat.ProfilePhotoId =
-        CurrentUserInfo.B4AdminLayout.state.currentUser.ProfileImageId;
+      _currentUser().ProfileImageId;
     }
 
     chats.push(chat);
@@ -607,7 +654,7 @@ export default class Chat extends Component {
         Message: this.state.text,
         ChatType: 5,
         selectedAdmins: CurrentUserInfo.SelectAdmin.state.selectedAdmins,
-        senderAdmin: CurrentUserInfo.B4AdminLayout.state.currentUser,
+        senderAdmin: _currentUser(),
       });
     } else {
       this.addChat({ Message: this.state.text });
@@ -716,13 +763,17 @@ export function ChatPannel(props) {
   }
 
   return props.chats.map((el, i, arr) => {
+    if (!el.rn) {
+      el.rn = Math.random();
+    }
+
     let showChatType = () => {
       return (
         <div
           className={
             "card post gapMsg  offset-md-4 " + getColorBasedOnChatType(el)
           }
-          key={el.UniqId}
+          key={el.rn}
         >
           {props.onDelete && (
             <div className="card-header card-header-left">
@@ -748,16 +799,19 @@ export function ChatPannel(props) {
                 textAlign: "right",
               }}
             >
-              یک پیغام خصوصی از <b>{el.senderAdmin.Name}</b> به ادمین های زیر :
+              یک پیغام خصوصی از{" "}
+              <b>{el.senderAdmin ? el.senderAdmin.Name : ""}</b> به ادمین های
+              زیر :
             </span>
             <div style={{ display: "flex" }}>
-              {el.selectedAdmins.map((admin, j, admins) => {
-                return (
-                  <>
-                    <b style={{ textAlign: "right" }}>{admin.Name}:</b>
-                  </>
-                );
-              })}
+              {el.selectedAdmins &&
+                el.selectedAdmins.map((admin, j, admins) => {
+                  return (
+                    <>
+                      <b style={{ textAlign: "right" }}>{admin.Name}:</b>
+                    </>
+                  );
+                })}
             </div>
             <br />
             {el.formId && (
@@ -783,13 +837,16 @@ export function ChatPannel(props) {
       );
     };
     /* if (el.ChatType){
-            if (el.MyAccountId!=CurrentUserInfo.B4AdminLayout.state.currentUser.Id){
                 el.IsReceive=true;
             }
         }*/
-
+    if (el.ChatType == 2) {
+      //automatic send
+      return <ShowAutomaticSendChatType el={el} onDelete={props.onDelete} />;
+    }
     if (!el.IsReceive) {
-      if (el.ChatType) {
+      if (el.ChatType == 5) {
+        // private note
         return showChatType();
       } else {
         return (
@@ -1091,10 +1148,15 @@ export class AutomaticSendPage extends Chat {
               </small>
             </div>
             <div className="form-group">
-              <ChatForm
+              <Editor
+                style={{ height: "320px" }}
+                value={this.state.text}
+                onTextChange={(e) => this.setState({ text: e.htmlValue })}
+              />
+
+              {/*    <ChatForm
                 onPaste={(e) => {
                   this.setState({ text: e.target.value });
-                  /*                                    this.onPaste(e)*/
                 }}
                 upload={(e) => {
                   this.uploadFile(e);
@@ -1105,15 +1167,8 @@ export class AutomaticSendPage extends Chat {
                 onChange={(val) => {
                   this.setState({ text: val });
 
-                  /*let multiMedia = showMultimedia(e.target.value);
-
-                                if (!multiMedia) {
-                                    this.setState({text: e.target.value});
-                                } else {
-                                    this.setState({text: ""});
-                                }*/
                 }}
-              />
+              /> */}
               {/* <form onSubmit={this.submit}>
                             <input
                                 value={this.state.text}
@@ -1144,6 +1199,7 @@ export class AutomaticSendPage extends Chat {
                             />
                         </form>*/}
             </div>
+
             <button
               onClick={() => {
                 this.saveAutomaticSendChats();
@@ -1153,6 +1209,27 @@ export class AutomaticSendPage extends Chat {
               className="btn btn-primary"
             >
               ثبت
+            </button>
+            <button
+              onClick={() => {
+                if (!this.state.text) {
+                  _showError("متن خالی است");
+                  return;
+                }
+                if (this.state.delay < 0) {
+                  _showError("زمان نمی تواند منفی باشد");
+                  return;
+                }
+
+                this.addChat({ Message: this.state.text, ChatType: 2 }, true);
+
+                this.setState({ text: "", delay: 1 });
+              }}
+              type="submit"
+              disabled={this.state.sending}
+              className="btn btn-primary"
+            >
+              افزودن
             </button>
           </div>
         </div>
@@ -1243,7 +1320,7 @@ export const SenderIcon = (props) => {
   let name = props.el.AccountName;
   let ProfilePhotoId = props.el.ProfilePhotoId;
 
-  let direction = "right";
+  let direction = "left";
   if (!props.el.IsReceive) {
     direction = "left";
   } else {
@@ -1262,7 +1339,7 @@ export const SenderIcon = (props) => {
 
   let charAt;
   if (name) {
-    charAt = name.charAt(0);
+    charAt = FindAnyCharAt(name);
   }
 
   return (
@@ -1325,4 +1402,93 @@ const DeleteEditButtons = (props) => {
       )}
     </>
   );
+};
+
+const ShowAutomaticSendChatType = (props) => {
+  let el = props.el;
+  return (
+    <>
+      <div className="card post card post" key={el.UniqId}>
+        <div
+          className="card-body"
+          style={{ wordBreak: "break-all", direction: "ltr" }}
+          key={el.UniqId}
+        >
+          {props.onDelete && (
+            <div className="card-header card-header-left">
+              <button
+                onClick={(e) => {
+                  props.onDelete(el);
+                }}
+              >
+                x
+              </button>
+            </div>
+          )}
+
+          {el.formId && (
+            <FormShowerInChat
+              chatId={el.Id}
+              formName={el.formName}
+              chatUniqId={el.UniqId}
+              formId={el.formId}
+              elements={el.elements}
+            ></FormShowerInChat>
+          )}
+
+          <div
+            key={el.Message}
+            dangerouslySetInnerHTML={{ __html: el.Message }}
+          ></div>
+
+          {el.Delay && <p dir="rtl"> بعد از {el.Delay}دقیقه </p>}
+          {el.delay && <p dir="rtl"> بعد از {el.delay}دقیقه </p>}
+        </div>
+      </div>
+    </>
+  );
+};
+
+const FindAnyCharAt = (str) => {
+  if (!str) {
+    return "ک";
+  }
+
+  str = reverse(str);
+  str = trim(str);
+
+  let c = str.length;
+  while (c > 0) {
+    let char = str.charAt(c--);
+
+    if (char && char != "") {
+      return char;
+      break;
+    }
+  }
+
+  return "ک";
+};
+
+function reverse(s) {
+  return s.split("").reverse().join("");
+}
+
+function trim(str) {
+  str = str.replace(/\s/g, "");
+  return str;
+}
+
+
+const _currentUser = () => {
+  if (
+    CurrentUserInfo.B4AdminLayout &&
+    CurrentUserInfo.B4AdminLayout.state &&
+    CurrentUserInfo.B4AdminLayout.state.currentUser 
+  ) {
+    return  CurrentUserInfo.B4AdminLayout.state.currentUser;
+  }
+  MyCaller.Send('GetMyProfile')
+
+  return {};
 };

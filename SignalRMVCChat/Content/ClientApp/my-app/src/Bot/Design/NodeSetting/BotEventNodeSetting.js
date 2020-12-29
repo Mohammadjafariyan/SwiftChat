@@ -165,13 +165,13 @@ class BotEventNodeSetting extends Component {
 
 
     getDefinedFormInputsCallback(res) {
-        if (!res || !res.Content || !res.Content.EntityList) {
+        if (!res || !res.Content ) {
 
-            CurrentUserInfo.LayoutPage.showError('لیست فرم ها نال است');
+            CurrentUserInfo.LayoutPage.showError('لیست ورودی فرم ها نال است');
             return;
         }
 
-        this.setState({formInputList: res.Content.EntityList})
+        this.setState({formInputList: res.Content})
     }
 
     componentDidMount() {

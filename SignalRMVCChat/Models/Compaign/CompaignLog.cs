@@ -26,7 +26,7 @@ namespace SignalRMVCChat.Models.Compaign
         /// در کوئری بدرد میخورد وقتی که بخواهیم بدانیم آخرین رکورد چیست
         /// </summary>
         public bool IsLastRecord { get; set; }
-        public DateTime ExecutionDateTime { get; set; }
+        public DateTime ExecutionDateTime { get; set; } = DateTime.Now;
         [NotMapped]
         public string ExecutionDateTimeStr
         {

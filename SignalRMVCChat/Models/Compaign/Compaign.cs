@@ -17,7 +17,7 @@ namespace SignalRMVCChat.Models.Compaign
             CompaignTemplates = new List<CompaignTemplate>();
         }
         public bool IsConfigured { get; set; } //todo:
-        public DateTime LastChangeDateTime { get; set; }
+        public DateTime LastChangeDateTime { get; set; } = DateTime.Now;
 
         [NotMapped]
         public string LastChangeDateTimeStr

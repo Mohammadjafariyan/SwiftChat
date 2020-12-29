@@ -45,13 +45,13 @@ namespace SignalRMVCChat.Models
 
         public string Data { get; set; }
 
-        public DateTime? CreationDateTime { get; set; }
+        public DateTime? CreationDateTime { get; set; } = DateTime.Now;
 
 
         public string Exception { get; set; }
         public string File { get; set; }
 
         public string LineNumber { get; set; }
-        public DateTime? SessionDateTime { get; set; }
+        public DateTime? SessionDateTime { get; set; } = DateTime.Now;
     }
 }

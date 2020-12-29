@@ -9,6 +9,11 @@ namespace SignalRMVCChat.Service
 {
     public class CustomerTrackInfo : Entity
     {
+
+        public CustomerTrackInfo()
+        {
+            this.DateTime = System.DateTime.Now;
+        }
         public int CustomerId { get; set; }
         public string Url { get; set; }
         public string PageTitle { get; set; }
@@ -18,7 +23,7 @@ namespace SignalRMVCChat.Service
         public Customer Customer { get; set; }
         public string Time { get; set; }
         public TimeSpan TimeDt { get; set; }
-        public DateTime? DateTime { get; set; }
+        public DateTime? DateTime { get; set; } = System.DateTime.Now;
 
 
         public string Browser { get; set; }
@@ -84,7 +89,7 @@ namespace SignalRMVCChat.Service
 
         [JsonIgnore] public string UserStateJSON { get; set; }
         public int? PrevTrackInfoId { get; set; }
-        public DateTime? PrevTrackInfoDateTime { get; set; }
+        public DateTime? PrevTrackInfoDateTime { get; set; } = System.DateTime.Now;
         public string TimeSpent { get; set; }
         public double? TimeSpentNum { get; set; }
 
@@ -125,6 +130,16 @@ namespace SignalRMVCChat.Service
                     default:
                         return "مشخص نیست";
                 }
+            }
+        }
+
+
+        [NotMapped]
+        public string Address
+        {
+            get
+            {
+           return     Customer.GetAddress(this);
             }
         }
     }

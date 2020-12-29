@@ -11,6 +11,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
 import {_showError} from "../../Pages/LayoutPage";
+import GlobalLoading, { _SetLoading } from './../Utilities/GlobalLoading';
 
 
 
@@ -166,7 +167,7 @@ id="saveEventTrigger"
 
                     /*------------------------------ذخیره :------------------------------*/
 
-
+                    _SetLoading(true);
                     MyCaller.Send('EventTriggerSave', eventTrigger);
 
 

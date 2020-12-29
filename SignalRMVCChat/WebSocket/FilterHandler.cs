@@ -12,6 +12,7 @@ using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.Init;
 using SignalRMVCChat.Service.MyWSetting;
 using TelegramBotsWebApplication;
+using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.WebSocket
 {
@@ -54,7 +55,7 @@ namespace SignalRMVCChat.WebSocket
                 {
                     throw new NotImplementedException("شما توسط پشتیبانی بلاک شده اید");
                 }
-                catch (Exception e)
+                catch (NotFoundExeption e)
                 {
                     SignalRMVCChat.Service.LogService.Log(e);
 
@@ -93,7 +94,7 @@ namespace SignalRMVCChat.WebSocket
                     //    dt = DateTime.Now,
                     //};
 
-                    
+
                 }
                 else
                 {
@@ -271,8 +272,8 @@ namespace SignalRMVCChat.WebSocket
                                     ? language.Split(',')[1].Split('-')
                                     : new[] { language, language };
 
-                                language = parts[0];
-                                countryLanguage = parts[1];
+                                language = parts.ElementAtOrDefault(0);
+                                countryLanguage = parts.ElementAtOrDefault(1);
                             }
                             catch (Exception e)
                             {
@@ -324,6 +325,12 @@ namespace SignalRMVCChat.WebSocket
                         };
                         customerTrackerService.Save(track);
 
+                        if (currMySocketReq.MySocket.Customer.Name?.Contains(" کاربر آنلاین جدید ") == true)
+                        {
+                            currMySocketReq.MySocket.Customer.Name = track.Address;
+
+                           await  customerProviderService.SaveAsync(currMySocketReq.MySocket.Customer);
+                        }
                         // چون این اطلاعات در رم است می توانیم آن را به این ابجکت بدهیم و نیازی نیست هر بار از دیتابیس بخوانیم
                         currMySocketReq.MySocket.Customer.LastTrackInfo = track;
                     }

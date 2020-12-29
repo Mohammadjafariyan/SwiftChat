@@ -7,6 +7,7 @@ import {
     SuperAdminlogin,
     TimeToOpenChatBox,
     loginOperator,
+    checkIfEleExists,
   } from "./global";
   
   import "cypress-file-upload";
@@ -15,7 +16,7 @@ import {
   let url;
   
   context("EventTrigger ها", () => {
-    beforeEach(() => {
+    beforeEach( () => {
       cy.window().then((win) => {
         win.onbeforeunload = null;
       });
@@ -23,17 +24,24 @@ import {
       cy.on("uncaught:exception", (err, runnable) => {
         return false;
       });
-  
-      url= loginOperator(cy);
+    
+      url=  loginOperator(cy);
     });
 
     it("در رویداد خاص شما", () => {
 
-        cy.wait(3000);
+     
+      
+
+
+
         cy.get("#EventTrigger").click();
-        cy.wait(1000);
+        cy.wait(5000);
       cy.get("#AddNewEventTrigger").click();
-      cy.wait(1000);
+      cy.wait(15000);
+
+  checkIfEleExists("#deleteEventTrigger");
+
       cy.get("#deleteEventTrigger").click();
 
     
@@ -106,11 +114,11 @@ import {
     });
     it("با پارامتر های خاص", () => {
 
-        cy.wait(3000);
+        cy.wait(5000);
         cy.get("#EventTrigger").click();
-        cy.wait(1000);
+        cy.wait(5000);
       cy.get("#AddNewEventTrigger").click();
-      cy.wait(1000);
+      cy.wait(5000);
       cy.get("#deleteEventTrigger").click();
 
     
@@ -186,11 +194,11 @@ import {
 
     it("تعریف کلیک روی لینک", () => {
 
-        cy.wait(3000);
+        cy.wait(5000);
         cy.get("#EventTrigger").click();
-        cy.wait(1000);
+        cy.wait(5000);
       cy.get("#AddNewEventTrigger").click();
-      cy.wait(1000);
+      cy.wait(5000);
       cy.get("#deleteEventTrigger").click();
 
     
@@ -271,11 +279,11 @@ import {
   
 
 
-        cy.wait(3000);
+        cy.wait(5000);
         cy.get("#EventTrigger").click();
-        cy.wait(1000);
+        cy.wait(5000);
       cy.get("#AddNewEventTrigger").click();
-      cy.wait(1000);
+      cy.wait(5000);
       cy.get("#deleteEventTrigger").click();
 
     
@@ -360,9 +368,9 @@ import {
     it("فعالسازی event trigger", () => {
 
         
-        cy.wait(3000);
+        cy.wait(5000);
         cy.get("#EventTrigger").click();
-        cy.wait(1000);
+        cy.wait(5000);
 
 
         cy.get(".p-inputswitch").eq(0).click();

@@ -6,6 +6,7 @@ import "./../styles/myStyle.css";
 import { Badge, Spinner } from "react-bootstrap";
 import WhileWriting from "./WhileWriting";
 import { TabPanel, TabView } from "primereact/tabview";
+import { colors } from './Utilities/GlobalLoading';
 
 export default class Customers extends Component {
   constructor(arg) {
@@ -26,7 +27,10 @@ export default class Customers extends Component {
       return;
     }
 
-    let j = this.state.arr.findIndex(
+
+    let arr=[...this.state.arr];
+
+    let j = arr.findIndex(
       (f) => f.Id === res.Content.targetCustomerId
     );
 
@@ -34,9 +38,11 @@ export default class Customers extends Component {
       return;
     }
 
-    this.state.arr[j].IsTyping = IsTyping;
+    console.log('customerTypingCallback==>arr[j]',arr[j])
+    console.log('customerTypingCallback==>arr[j]',arr)
+    arr[j].IsTyping = IsTyping;
 
-    this.setState({ tmp: Math.random() });
+    this.setState({ tmp: Math.random(),arr:arr });
   }
 
   customerStartTypingCallback(res) {
@@ -135,6 +141,10 @@ export default class Customers extends Component {
     MyCaller.Send("GetClientsListForAdmin", {
       userType: CurrentUserInfo.UserType,
     });
+    this.setState({ loading: true });
+
+
+    this.setState({activeIndex:1});
   }
 
   getCustomersChattedWithMe() {
@@ -163,6 +173,10 @@ export default class Customers extends Component {
       targetId: DataHolder.selectedCustomer.Id,
       pageNumber: 1,
     });
+
+    if(CurrentUserInfo.ChatPage)
+    CurrentUserInfo.ChatPage.setState({ loading:true});
+
   }
 
   getClientsListForAdminCallback(res) {
@@ -233,6 +247,8 @@ export default class Customers extends Component {
   }
 
   render() {
+    let color=colors[Math.floor(Math.random() * colors.length)];
+
     return (
       <div>
         <div className="card ">
@@ -268,7 +284,7 @@ export default class Customers extends Component {
               <h6>چت باکس مشترک</h6>
 
               <small>
-                چت های خصوصی در این باکس این کاربران برای شما ارسال شده است
+شامل چت های خصوصی است که برای شما ارسال شده 
               </small>
 
               {this.state.loading && (
@@ -291,11 +307,10 @@ export default class Customers extends Component {
             >
               <h6>کاربران هدایت شده</h6>
 
-              {this.state.loading && (
-                <Spinner animation="border" role="status">
-                  <span className="sr-only">در حال خواندن اطلاعات...</span>
-                </Spinner>
-              )}
+              {this.state.loading &&
+                <Spinner animation="border" role="status" variant={color}>
+                    <span className="sr-only">در حال خواندن اطلاعات...</span>
+                </Spinner>}
 
               {this.state.arr && this.state.arr.length && (
                 <ShowOnlineUsers arr={this.state.arr} parent={this} />

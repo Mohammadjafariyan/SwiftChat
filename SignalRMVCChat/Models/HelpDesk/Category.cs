@@ -32,7 +32,7 @@ namespace SignalRMVCChat.Models.HelpDesk
         public string Description { get; set; }
 
 
-        public DateTime LastUpdatedDateTime { get; set; }
+        public DateTime LastUpdatedDateTime { get; set; } = DateTime.Now;
         public string LastUpdatedDescription { get; set; }
 
 
@@ -157,7 +157,7 @@ namespace SignalRMVCChat.Models.HelpDesk
             DateTime = DateTime.Now;
         }
 
-        public DateTime DateTime { get; set; }
+        public DateTime DateTime { get; set; } = DateTime.Now;
         public int ArticleId { get; set; }
         public Article Article { get; set; }
 

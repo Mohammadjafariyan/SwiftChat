@@ -65,7 +65,14 @@ class OtherTools extends Component {
 
 
                                 DataHolder.Back=null;
-                                CurrentUserInfo.Menu.setPage('Map')
+
+                                if (CurrentUserInfo.Menu)
+                                  CurrentUserInfo.Menu.setPage("Map");
+
+                                if (CurrentUserInfo.B4AdminMainMenu)
+                                  CurrentUserInfo.B4AdminMainMenu.setPage(
+                                    "Map"
+                                  );
 
                                 //CurrentUserInfo.Modals['LiveAssistModal'].show();
 
@@ -92,7 +99,17 @@ class OtherTools extends Component {
 
                                     
                                     DataHolder.Back=null;
-                                    CurrentUserInfo.Menu.setPage('LiveAssistPage')
+
+                                    if (CurrentUserInfo.Menu)
+                                      CurrentUserInfo.Menu.setPage(
+                                        "LiveAssistPage"
+                                      );
+
+                                    if (CurrentUserInfo.B4AdminMainMenu)
+                                      CurrentUserInfo.B4AdminMainMenu.setPage(
+                                        "LiveAssistPage"
+                                      );
+
 
                                     //CurrentUserInfo.Modals['LiveAssistModal'].show();
 

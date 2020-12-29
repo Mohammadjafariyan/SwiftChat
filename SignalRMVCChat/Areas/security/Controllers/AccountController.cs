@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.security.Service;
 using SignalRMVCChat.DependencyInjection;
@@ -23,8 +24,9 @@ namespace SignalRMVCChat.Areas.security.Controllers
         }
         protected override dynamic CreateUser(RegisterViewModel model)
         {
-            return new AppUser()
+            return new AppUser
             {
+                SignUpDateTime=DateTime.Now,
                 UserName = model.Email, Email = model.Email,
                 Name = model.Name,
                 LastName = model.LastName,

@@ -2,7 +2,7 @@
 
 namespace SignalRMVCChat.Service.Bot
 {
-    public class BotService:GenericService<Models.Bot.Bot>
+    public class BotService:GenericServiceSafeDelete<Models.Bot.Bot>
     {
         public BotService() : base(null)
         {

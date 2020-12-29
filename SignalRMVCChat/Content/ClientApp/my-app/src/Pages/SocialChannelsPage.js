@@ -4,7 +4,7 @@
 import {Input} from "../Components/FormInputs";
 
 import { MyCaller, CurrentUserInfo } from './../Help/Socket';
-import {Row} from "react-bootstrap";
+import {Row,Alert} from "react-bootstrap";
 
 class SocialChannelsPage extends Component {
 
@@ -98,6 +98,32 @@ class SocialChannelsPage extends Component {
                     </div>
                     <hr/>
                     <div className={'form-group'}>
+
+                    <Alert variant={'warning'}>
+                                        <div className="cap-plugin-content-box-inner">
+                                            <p className="cap-font-sans-regular"><span
+                                                className="cap-font-sans-semibold">این بخش به شما این امکان را می دهد که <b>بجای استفاده از مرکز پشتیبانی وب سایت ، مقالات و اطلاعات سایت شخصی خود را با استفاده از وب سرویس  به مرکز پشتیبانی وصل کنید</b>
+                                                </span>
+                                            </p>
+                                            <p className="cap-font-sans-regular">با اتصال وب سرویس ، امکان جستجو و نمایش مقالات و پرسش و پاسخ های سایت شما در قسمت مرکز پشتیبانی و مقالات پلاگین بوجود می آید</p>
+
+                                            <p className="cap-font-sans-bold help-title">نحوه کار بشرح زیر است:</p>
+
+                                            <ol className="cap-font-sans-semibold help-list" style={{textAlign:'right'}}>
+                                                <li>یک وب سرویس با ورودی و خروجی های Json زیر ایجاد کنید</li>
+                                                <li>آدرس وب سرویس خود را اینجا وارد کنید</li>
+                                                <li>هر موقع بازدیدکننده مرکز پشتیبانی را بازکرد مقالات شما از وب سرویس فراخوانی خواهد شد</li>
+                                                <li>ضمنا اپراتور های پشتیبانی نیز میتوانند از مقالات برای ارسال به کاربر استفاده کنند</li>
+                                            </ol>
+
+                                            <div className="help-screen-wrap">
+                                                <div className="help-screen"></div>
+                                            </div>
+                                        </div>
+
+                                        <hr/>
+                                        در این بخش تنظیمات وب سرویس مقالات مرکز پشتیبانی انجام میشود
+                                    </Alert>
                         <Input value={this.state.helpDeskApi} type={'text'} 
                                name={'آدرس Api فراخوانی HelpDesk'}
                                placeholder={'/HelpDeskApi/Search'}

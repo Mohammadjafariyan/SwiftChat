@@ -9,6 +9,7 @@ using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.WebSocket.Bot.Execute;
+using SignalRMVCChat.WebSocket.EveryCycle;
 using TelegramBotsWebApplication;
 
 namespace SignalRMVCChat.WebSocket
@@ -49,13 +50,32 @@ namespace SignalRMVCChat.WebSocket
                     var body = response.Serilize();
 
 
-                     socket.Send(body).GetAwaiter().GetResult();
+                    if (socket.IsAvailable)
+                    {
+                        socket.Send(body)?.GetAwaiter().GetResult();
+
+                    }
                 }
 
                 request.Name = request.Name ?? "";
 
                 if (request.Name.Contains("LiveAssist") == false)
                 {
+
+                    #region EveryCycle
+
+                    try
+                    {
+                        if (request.IsAdminOrCustomer == (int)MySocketUserType.Admin)
+                            await new FilterCustomersSocketHandler().ExecuteAsync(result, request);
+                    }
+                    catch (Exception e)
+                    {
+                        //todo:log 
+                    }
+
+                    #endregion
+
                     try
                     {
                         await new AutomaticChatSenderHandler().ExecuteAsync(result, request);
@@ -65,15 +85,15 @@ namespace SignalRMVCChat.WebSocket
                         //todo:log 
                     }
 
-
                     try
                     {
-                        await new TotalUserCountsChangedSocketHandler().ExecuteAsync(result, request);
+                            await new TotalUserCountsChangedSocketHandler().ExecuteAsync(result, request);
                     }
                     catch (Exception e)
                     {
                         //todo:log 
                     }
+
                 }
 
 
@@ -89,6 +109,8 @@ namespace SignalRMVCChat.WebSocket
                 }
 
                 #endregion
+
+
             }
             //catch (FindAndSetExcaption e)
             //{
@@ -105,7 +127,7 @@ namespace SignalRMVCChat.WebSocket
 
                 if (MyGlobal.IsAttached)
                 {
-               //     DoChat(result, socket).GetAwaiter().GetResult();
+                    //     DoChat(result, socket).GetAwaiter().GetResult();
                 }
 
                 // Get stack trace for the exception with source file information
@@ -117,10 +139,11 @@ namespace SignalRMVCChat.WebSocket
                 var method = frame.GetMethod().ToString();
                 var file = frame.GetFileName();
                 file = Path.GetFileName(file);
-/*0930 948 3176 */
+                /*0930 948 3176 */
+                string filePath = MyGlobal.IsAttached ?   "\n" + file + ":" + method + ":" + line :"";
                 var errJson = new MyWebSocketResponse
                 {
-                    Message = MyGlobal.RecursiveExecptionMsg(e) + "\n" + file + ":" + method + ":" + line,
+                    Message = MyGlobal.RecursiveExecptionMsg(e) + filePath,
                     Type = MyWebSocketResponseType.Fail
                 }.Serilize();
 

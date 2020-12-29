@@ -16,11 +16,11 @@ namespace SignalRMVCChat.Models
 
         public int? delay{ get; set; }
 
-        public DateTime CreateDateTime { get; set; }
+        public DateTime CreateDateTime { get; set; } = DateTime.Now;
 
         public string Message { get; set; }
-        public DateTime? SendDataTime { get; set; }
-        public DateTime? DeliverDateTime { get; set; }
+        public DateTime? SendDataTime { get; set; } 
+        public DateTime? DeliverDateTime { get; set; } 
         public ChatSenderType SenderType { get; set; }
         public long? gapFileUniqId { get; set; }
         

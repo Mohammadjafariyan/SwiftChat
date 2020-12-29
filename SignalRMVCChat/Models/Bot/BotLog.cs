@@ -33,7 +33,7 @@ namespace SignalRMVCChat.Models.Bot
         public int LogBotId { get; set; }
 
         public string IsMatchStatusLog { get; set; }
-        public DateTime LogDateTime { get; set; }
+        public DateTime LogDateTime { get; set; } = DateTime.Now;
 
         public string LogDateTimeSTR
         {

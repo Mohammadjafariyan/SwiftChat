@@ -49,6 +49,7 @@ namespace SignalRMVCChat.WebSocket
                     var customers = db.Customers
                         /*.Include(c => c.TrackInfos)*/
                         .Include(c => c.MySockets)
+                        .Include(c => c.TrackInfos)
                         .Include(c => c.Chats)
                         .Include(c => c.CustomerTags)
                         .Include(c => c.CustomerTags.Select(t => t.Tag))
@@ -57,10 +58,10 @@ namespace SignalRMVCChat.WebSocket
 
                     if (MyGlobal.IsAttached)
                     {
-                        var list222=customers.ToList();
+                        var list222 = customers.ToList();
                     }
 
-                    if (_request.Body?.FromBot!=null)
+                    if (_request.Body?.FromBot != null)
                     {
                         customers = customers.Where(c => c.TelegramUserId.HasValue == false);
 
@@ -99,7 +100,7 @@ namespace SignalRMVCChat.WebSocket
                         case "AssingedToMe":
 
 
-                            query = RoutingService.GetAssingedToMe(_request, currMySocketReq, customers,db);
+                            query = RoutingService.GetAssingedToMe(_request, currMySocketReq, customers, db);
                             break;
 
                         case "SharedChatBox":
@@ -125,6 +126,11 @@ namespace SignalRMVCChat.WebSocket
                                 null,
                                 customers);
                             break;
+
+                        case "AllCustomerListPage":
+                            query = customers;
+                            break;
+
                         case "NotChattedLeft":
 
                             //	کاربران ترک کرده ، یا از دست رفته  
@@ -154,8 +160,8 @@ namespace SignalRMVCChat.WebSocket
                     }
 
 
-//فقط آفلاین ها
-                    if (_request.gapIsOnlyOnly.HasValue==false || _request.gapIsOnlyOnly == false)
+                    //فقط آفلاین ها
+                    if (userType!="CustomersChattedWithMe" && _request.gapIsOnlyOnly.HasValue == false || _request.gapIsOnlyOnly == false)
                     {
                         query = query.Where(l => l.OnlineStatus == OnlineStatus.Online);
                     }
@@ -167,21 +173,39 @@ namespace SignalRMVCChat.WebSocket
                     }
 
 
-                    query = query.OrderBy(o => o.OnlineStatus).OrderByDescending(o => o.CreationDateTime);
+                    query = query.OrderBy(o => o.OnlineStatus).OrderByDescending(o => o.TrackInfos.OrderByDescending(t=>t.DateTime).Select(t=>t.DateTime).FirstOrDefault());
 
 
                     //PAGING
 
-                    _request.Page = _request.Page ?? 0;
-                    if (_request.Page == 0)
+                    int total = query.Count();
+                    int page = _request.Page ?? 1;
+                    int totalPages = total/10 + (total % 10 >0 ? 1 : 0);
+
+                    int? _Page = GetParam<int?>("Page", false);
+                    _Page = _Page ?? 0;
+                    _request.Page = _Page;
+
+                    _request.Page--;
+                    if (_request.Page<0)
+                    {
+                        _request.Page = 0;
+                    }
+                    if (_request.Page.HasValue==false || _request.Page==0)
                     {
                         query = query.Take(10);
+                        _Page = 1;
                     }
                     else
                     {
-                        query = query.Skip(_request.Page.Value).Take(10);
+                        query = query.Skip(_request.Page.Value*2).Take(10);
                     }
                     //PAGING END
+
+                    if (MyGlobal.IsAttached)
+                    {
+                        var list2 = query.ToList();
+                    }
 
                     var list = CustomerListSelector(query);
 
@@ -220,13 +244,17 @@ namespace SignalRMVCChat.WebSocket
                         IsResolved = c.IsResolved,
                         TelegramUserId = c.TelegramUserId,
                         TelegramChatId = c.TelegramChatId,
-                        LastMessage=c.Chats.OrderByDescending(o=>o.Id).FirstOrDefault() 
+                        LastMessage = c.Chats.OrderByDescending(o => o.Id).FirstOrDefault()
                     }).ToList();
 
 
                     return new MyDataTableResponse<MyAccount>
                     {
-                        EntityList = myAccounts
+                        EntityList = myAccounts,
+                        Total = total,
+                        TotalPages = totalPages,
+                        Page = _Page.Value,
+                        userType= userType
                     };
                 }
             }
@@ -263,7 +291,8 @@ namespace SignalRMVCChat.WebSocket
                     MySockets = c.MySockets,
                     CreationDateTime = c.CreationDateTime,
                     CustomerTagsForClientTemp = c.CustomerTags.Select(t => t.Tag),
-                    LastTrackInfo = c.LastTrackInfo,
+                    LastTrackInfo = c.TrackInfos.OrderByDescending(o => o.Id)
+                    .FirstOrDefault(),
                     OnlineStatus = c.OnlineStatus,
                     IsBlocked = c.IsBlocked,
                     IsResolved = c.IsResolved,
@@ -279,8 +308,8 @@ namespace SignalRMVCChat.WebSocket
 
                     Time = MyGlobal.ToIranianDateWidthTime(c.CreationDateTime),
                     UsersSeparationParams = c.UsersSeparationParams,
-                    TelegramUserId=c.TelegramUserId,
-                    TelegramChatId=c.TelegramChatId,
+                    TelegramUserId = c.TelegramUserId,
+                    TelegramChatId = c.TelegramChatId,
                 }).ToList();
         }
 
@@ -342,7 +371,8 @@ namespace SignalRMVCChat.WebSocket
                     break;
                 case "AssingedToMe":
                     break;
-
+                case "AllCustomerListPage":
+                    break;
                 case "ChattedAndReturnedCustomerListPage":
 
                     break;

@@ -72,7 +72,11 @@ class CustomerProfile extends Component {
         return <Button variant={'light'} onClick={() => {
 
 
+if(CurrentUserInfo.Menu)
             CurrentUserInfo.Menu.setPage(DataHolder.Back)
+
+            if (CurrentUserInfo.B4AdminMainMenu)
+                    CurrentUserInfo.B4AdminMainMenu.setPage(DataHolder.Back);
         }}>
             <i className={'fa fa-arrow-left'}/>
 
@@ -91,7 +95,11 @@ export const BackButton = () => {
         <Button variant={'light'} onClick={() => {
 
 
+if(CurrentUserInfo.Menu)
             CurrentUserInfo.Menu.setPage(DataHolder.Back)
+
+            if (CurrentUserInfo.B4AdminMainMenu)
+                    CurrentUserInfo.B4AdminMainMenu.setPage(DataHolder.Back);
         }}>
             <i className={'fa fa-arrow-left'}/>
 

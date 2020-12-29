@@ -13,7 +13,8 @@ namespace SignalRMVCChat.Models
         public MyAccountPayment MyAccountPayment { get; set; }
         public int MyAccountPaymentId { get; set; }
         public DateTime? StartDate { get; set; }
-        public DateTime? ExpireDateTime { get; set; }
-  
+        public DateTime? ExpireDateTime { get; set; } 
+
+
     }
 }

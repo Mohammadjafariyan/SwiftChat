@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Web;
 using MD.PersianDateTime;
 using Newtonsoft.Json;
@@ -43,8 +44,8 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
         {
             get
             {
-                // return false;
-                return Debugger.IsAttached;
+                 return false;
+               // return Debugger.IsAttached;
             }
         }
 
@@ -64,7 +65,7 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
             var json = Newtonsoft.Json.JsonConvert.SerializeObject(src);
             if (JObject.Parse(json)?[propName] == null)
             {
-                throw new Exception("src.GetType().GetProperty(propName) is null");
+                throw new NotBreakException("src.GetType().GetProperty(propName) is null");
             }
 
             return JObject.Parse(json)[propName];
@@ -631,6 +632,26 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
             {
                 return null;
             }
+        }
+    }
+
+    [Serializable]
+    internal class NotBreakException : Exception
+    {
+        public NotBreakException()
+        {
+        }
+
+        public NotBreakException(string message) : base(message)
+        {
+        }
+
+        public NotBreakException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected NotBreakException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
         }
     }
 

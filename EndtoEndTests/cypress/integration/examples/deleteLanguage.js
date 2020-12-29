@@ -14,6 +14,7 @@ context('Actions', () => {
 
     login(cy);
 
+    cy.wait(3000)
 
     cy.get('#HelpDeskArticles').click();
 

@@ -1251,6 +1251,10 @@ function OpenChatScreen(AccountId, AccountName, ProfilePhotoId) {
 
     }
 
+    if (!AccountName || AccountName=="null") {
+        AccountName = "پشتیبانی";
+    }
+
     let html = `
      <span accountid="AccountId" class="gap_online_admin" aria-label="${AccountName}" data-microtip-position="left" role="tooltip"
          style="height: 44px;
@@ -1974,7 +1978,7 @@ class BasePlugin {
    text-align: center; 
    border-bottom: 1px solid #ddd; 
    line-height: 0.1em;
-   margin: 10px 0 20px;" ><span class="gapHline" style=" background:#fff; 
+   margin: 10px 0 20px;" ><span class="gapHline" style=" background:#fff; color:black;
     padding:0 10px">${arr[i].Date} </span></h6>`
 
                 prevChatDate = arr[i].Date;
@@ -1988,7 +1992,7 @@ class BasePlugin {
    text-align: center; 
    border-bottom: 1px solid #ddd; 
    line-height: 0.1em;
-   margin: 10px 0 20px;" ><span  class="gapHline" style=" background:#fff; 
+   margin: 10px 0 20px;" ><span  class="gapHline" style=" background:#fff; color:black;
     padding:0 10px">${arr[i].Date} </span></h6>`
                     prevChatDate = arr[i].Date;
                 }
@@ -2971,11 +2975,11 @@ function DeleteMessageCallback(res) {
         return;
     }
 
-    if (CurrentUserInfo.targetId && CurrentUserInfo.targetId != res.Content.targetId) {
+    //if (CurrentUserInfo.targetId && CurrentUserInfo.targetId != res.Content.targetId) {
 
-        console.error('کاربر تارگت درست نیست');
-        return;
-    }
+    //    console.error('کاربر تارگت درست نیست');
+    //    return;
+    //}
     let uniqId = res.Content.uniqId;
     let targetId = res.Content.targetId;
 
@@ -3724,7 +3728,7 @@ ${getSenderProfile(chat, false)}
                 }
 
 
-                OpenChatScreen(CurrentUserInfo.targetId, CurrentUserInfo.targetName, CurrentUserInfo.ProfileImageId);
+             //   OpenChatScreen(CurrentUserInfo.targetId, CurrentUserInfo.targetName, CurrentUserInfo.ProfileImageId);
 
 
             }
@@ -5659,15 +5663,20 @@ let CustomerStartTypingSent = false;
 
 function bindIsTyping() {
     var searchTimeout;
-    getDoc().querySelector('#gapChatInput').onchange = function () {
+    getDoc().querySelector('#gapChatInput').onkeyup = function () {
         if (searchTimeout !== undefined) clearTimeout(searchTimeout);
 
         let strg = getDoc().querySelector('#gapChatInput').value;
 
-        if (strg || strg.trim() === '') {
-            //   if (strg || strg.trim() === '' && !CustomerStartTypingSent) {
+        if (strg) {
+
+         
             MyCaller.Send('CustomerStartTyping', { text: strg });
+
             CustomerStartTypingSent = true;
+
+            //   if (strg || strg.trim() === '' && !CustomerStartTypingSent) {
+          
 
         } else {
 
@@ -5699,7 +5708,7 @@ function gapChatSubmit() {
 
     element.style.height = "92%";
 
-
+    if (getDoc().querySelector('#gpwaterMark'))
     getDoc().querySelector('#gpwaterMark').style.display = null;
 
 
@@ -7004,7 +7013,7 @@ function customerGetUsersSeparationConfigCallback(res) {
 
     } else {
 
-        if (!usersSeparation.params || usersSeparation.params.length) {
+        if (!usersSeparation.params || !usersSeparation.params.length) {
             return;
         }
 
@@ -7018,7 +7027,7 @@ function customerGetUsersSeparationConfigCallback(res) {
                 let param = document.querySelector(usersSeparation.params[i].paramName);
 
                 if (param) {
-                    let value = param.value;
+                    let value = param.value ? param.value : param.innerText;
 
                     if (!value) {
                         value = param.value.innerText;
@@ -7036,8 +7045,13 @@ function customerGetUsersSeparationConfigCallback(res) {
             }
 
         }
+        CustomerSaveUsersSeparationValues(usersSeparation);
+
 
     }
+
+
+
 
 
 }

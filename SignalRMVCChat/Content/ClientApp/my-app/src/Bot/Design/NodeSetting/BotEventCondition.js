@@ -74,7 +74,7 @@ class BotEventCondition extends Component {
 
     constructor(props) {
         super(props);
-        CurrentUserInfo.BotEventNodeSetting = this;
+        CurrentUserInfo.BotEventCondition = this;
 
         this.onCountryChange = this.onCountryChange.bind(this);
 

@@ -33,7 +33,18 @@ class B4AdminBody extends Component {
     route(name){
         
         if (!name){
-            CurrentUserInfo.Menu.setPage(null);
+
+            
+            if (CurrentUserInfo.Menu)
+            CurrentUserInfo.Menu.setPage(
+                null
+            );
+
+          if (CurrentUserInfo.B4AdminMainMenu)
+            CurrentUserInfo.B4AdminMainMenu.setPage(
+                null
+            );
+
         }
 
         CurrentUserInfo.B4AdminMenu.setState({activeRoute:name})

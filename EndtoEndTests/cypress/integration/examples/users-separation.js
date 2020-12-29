@@ -33,7 +33,7 @@ context('Actions', () => {
         /*add param1*/
 
         cy.get('#addNewParam').click();
-        cy.get('.param-type-rest').eq(0).click();
+       // cy.get('.param-type-rest').eq(0).click();
 
         cy.get('.param-name').eq(0).type('Phone');
         cy.get('.param-text').eq(0).type('شماره تلفن');
@@ -42,7 +42,7 @@ context('Actions', () => {
 
         /*add param2*/
         cy.get('#addNewParam').click();
-        cy.get('.param-type-css').eq(1).click();
+      //  cy.get('.param-type-css').eq(1).click();
 
         cy.get('.param-name').eq(1).type('Email');
         cy.get('.param-text').eq(1).type('ایمیل کاربر');

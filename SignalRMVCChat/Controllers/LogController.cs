@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 using SignalRMVCChat.Service;
@@ -13,7 +14,7 @@ namespace SignalRMVCChat.Controllers
         {
             try
             {
-                throw new Exception(log);
+                throw new DontBreakException(log);
             }
             catch (Exception e)
             {
@@ -21,6 +22,26 @@ namespace SignalRMVCChat.Controllers
             }
 
             return Json(true);
+        }
+    }
+
+    [Serializable]
+    internal class DontBreakException : Exception
+    {
+        public DontBreakException()
+        {
+        }
+
+        public DontBreakException(string message) : base(message)
+        {
+        }
+
+        public DontBreakException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected DontBreakException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
         }
     }
 }

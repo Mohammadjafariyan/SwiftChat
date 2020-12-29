@@ -47,7 +47,7 @@ namespace SignalRMVCChat.Service
             CurrentSessionLogs.Add(log);
         }
 
-        public DateTime SessionDateTime { get; set; }
+        public DateTime SessionDateTime { get; set; } = DateTime.Now;
 
         public static void Log(Exception e, string data=null)
         {

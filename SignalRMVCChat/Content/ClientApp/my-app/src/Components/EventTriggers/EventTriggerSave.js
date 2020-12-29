@@ -2,11 +2,15 @@
 import {DataHolder} from "../../Help/DataHolder";
 import Card from "react-bootstrap/Card";
 import EventTriggerForm from "./EventTriggerForm";
+import { Alert } from 'react-bootstrap';
+import GlobalLoading from '../Utilities/GlobalLoading';
 
 class EventTriggerSave extends Component {
     render() {
         return (
             <div>
+
+
                 {!DataHolder.selectedEventTrigger  && this.showMessage()}
                 {DataHolder.selectedEventTrigger && <EventTriggerForm/>}
                 
@@ -24,22 +28,34 @@ return<></>
         return   <Card
             bg={'warning'}
         >
-            <Card.Header>What is a Trigger and how can it be useful?</Card.Header>
+            <Card.Header>راه انداز چیست و چگونه می تواند مفید باشد؟</Card.Header>
             <Card.Body>
                 {/*<Card.Title> Card Title </Card.Title>*/}
                 <Card.Text>
-                    <div className="cap-plugin-content-box-inner">
-                        <p className="cap-font-sans-regular">Triggers can be used to <strong
-                            className="cap-font-sans-semibold">schedule an automated action to all visitors that match
-                            rules</strong> for a given event. Eg. you may create a Trigger to message people that are
-                            viewing your Pricing page for 1 min.</p>
 
-                        <p className="cap-font-sans-regular">You can use them to <strong
-                            className="cap-font-sans-semibold">avoid churn on your website</strong> and message leaving
-                            customers.</p>
+                <Alert variant={'warning'}>
+
+                    <div className="cap-plugin-content-box-inner">
+                        <p className="cap-font-sans-regular">راه انداز ها پیغام های اتوماتیک هوشمند هستند
+                        </p><p> <strong
+                            className="cap-font-sans-semibold">یک عملیات را برنامه ریزی کرده و برای تمامی بازدیدکنندگانی که در این قاعده قرار میگیرند پیغامی ارسال کنید</strong> 
+                          
+                          <br/>
+                          <br/>
+                            برای مثال برای بازدیدکنندگانی که صفحه قیمت بسته ها
+را بیشتر از 1 دقیقه مشاهده کنند پیغامی ارسال کنید.</p>
+
+
+                        <p className="cap-font-sans-regular"> شما میتوانید از این امکان <strong
+                            className="cap-font-sans-semibold">برای جلوگیری از ریزش مشتریان و استفاده کنید</strong>
+                          </p>
+                          <p >
+                             و به کاربرانی که در حال خروج از سایت شما هستند پیغامی بفرستید</p>
 
                      
                     </div>
+
+                    </Alert>
                 </Card.Text>
             </Card.Body>
         </Card>;

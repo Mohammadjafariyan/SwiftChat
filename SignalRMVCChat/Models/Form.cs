@@ -80,8 +80,8 @@ namespace SignalRMVCChat.Models
         public Form Form { get; set; }
 
         public int FormId { get; set; }
-        public DateTime CreationDateTime { get; set; }
-        
+        public DateTime CreationDateTime { get; set; } = DateTime.Now;
+
         /// <summary>
         /// در کدام چت ارسال شده است ؟
         /// </summary>

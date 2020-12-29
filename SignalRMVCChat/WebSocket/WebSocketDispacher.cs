@@ -479,9 +479,13 @@ namespace SignalRMVCChat.WebSocket
                     return new ScreenRecordSaveSocketHandler();
                     break;
 
-                #endregion
+                    #endregion
 
-                #region Form Creator
+                    #region Form Creator
+                    
+                case "GetDefinedFormInputs":
+                    return new GetDefinedFormInputsSocketHandler();
+                    break;
 
                 // نمایش فرم به کاربر در مواقع رفرش صفحه و ..
                 case "CustomerGetFormSingle":

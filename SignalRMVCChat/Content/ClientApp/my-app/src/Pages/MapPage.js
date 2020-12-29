@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import {CurrentUserInfo} from "../Help/Socket";
 import MyMapHolder from "../Components/Map/MyMapHolder";
 import MyMapCustomerTypes from './../Components/Map/MyMapCustomerTypes';
+import CustomersPaging from './../Components/Map/CustomersPaging';
 
 class MapPage extends Component {
    
@@ -34,12 +35,15 @@ class MapPage extends Component {
 
                         <Col md={9}>
 
+
                         {this.state.loading &&
                     <Spinner animation="border" role="status" variant='warning'>
                         <span className="sr-only">لطفا منتظر بمانید ....</span>
                     </Spinner>}
                     
-                        {!this.state.loading &&        <MyMapHolder/>}
+                    
+                        <CustomersPaging/>
+                              <MyMapHolder/>
 
                         </Col>
                         

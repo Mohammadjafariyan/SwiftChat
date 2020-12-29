@@ -82,7 +82,7 @@ namespace SignalRMVCChat.Models
 
         public int? SenderMySocketId { get; set; }
         public int? ReceiverMyAccountId { get; set; }
-        public DateTime? ReachDateTime { get; set; }
+        public DateTime? ReachDateTime { get; set; } 
         public string ChangedMessage { get; set; }
         public string ChangedMultimediaContent { get; set; }
         public ChatChangeType? ChangeType { get; set; }

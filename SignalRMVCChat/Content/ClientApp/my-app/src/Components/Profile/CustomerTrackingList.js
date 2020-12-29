@@ -35,7 +35,8 @@ class CustomerTrackingList extends Component {
             return;
         }
 
-        if (!this.props.Customer || this.props.Customer.Id != res.Content.customerId) {
+        if (!this.props.Customer || this.props.Customer.Id != res.Content.customerId 
+            || !res.Content.List || !res.Content.List.length) {
             return;
         }
         /*

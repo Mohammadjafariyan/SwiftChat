@@ -252,7 +252,7 @@ namespace SignalRMVCChat.Models
         public Customer Customer { get; set; }
 
 
-        public DateTime DateTime { get; set; }
+        public DateTime DateTime { get; set; } = DateTime.Now;
 
         public string Time
         {

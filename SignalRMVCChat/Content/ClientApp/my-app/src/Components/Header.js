@@ -83,9 +83,12 @@ export default class MyHeader extends Component {
             return;
         }
 
-        DataHolder.selectedCustomer.IsTyping = IsTyping;
+        if(DataHolder.selectedCustomer.Id==res.Content.targetCustomerId)
+        {
+            DataHolder.selectedCustomer.IsTyping = IsTyping;
 
         this.setState({tmp: Math.random()});
+        }
 
     }
 

@@ -90,11 +90,17 @@ background-color: @pluginCustomized.TopHeaderRightColor;
 
 
 
-a.gap_online_admin {
-color: white;
-position: relative;
+    a.gap_online_admin {
+        color: white;
+        position: relative;
+    }
 
-}
+
+    a.gap_online_admin:hover {
+        color: white;
+        position: relative;
+        font-weight:bolder;
+    }
 
 .gapSocialCirlces{
 
@@ -576,11 +582,15 @@ color:  @pluginCustomized.GapMeColor ;
 .gapMsg:hover .gapB{
 display: block;
 }
-.gapMsg  .gapB{
-display: none;
-border:1px solid white;
-margin:2px
-}
+        .gapMsg .gapB {
+            display: none;
+            border: 1px solid white;
+            margin: 2px
+        }
+
+        .gapB i {
+            color:black
+        }
 
 .gapMe .gapB{
  background-color:@pluginCustomized.GapMeBgColor ;
@@ -1341,7 +1351,7 @@ color:@pluginCustomized.TopHeaderRightColor !important;
                         <input hidden="hidden" id="gapFileUniqId" name="gapFileContent" />
                         <input hidden="hidden" id="gapFileExtention" name="gapFileExtention" />
 
-                        <textarea onkeyup="textAreaAdjust(this)" style="resize: none; overflow:hidden" placeholder="پیغام خود را بنویسید" id="gapChatInput"></textarea>
+                        <textarea onkeyup="textAreaAdjust(this)" style="resize: none; overflow:hidden;color:black !important" placeholder="پیغام خود را بنویسید" id="gapChatInput"></textarea>
 
                         <input id="gapInpSub" type="submit" hidden="hidden" />
                     </form>

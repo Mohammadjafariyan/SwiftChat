@@ -20,10 +20,10 @@ namespace SignalRMVCChat.Service.Routing
         {
             #region VALIDATION
 
-            if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
-            {
-                throw new Exception("این عملیات مخصوص ادمین است در سرویس اختصاص یافته");
-            }
+            //if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
+            //{
+            //    throw new Exception("این عملیات مخصوص ادمین است در سرویس اختصاص یافته");
+            //}
 
             #endregion
 
@@ -36,7 +36,7 @@ namespace SignalRMVCChat.Service.Routing
                 .ToList();
 
             routingsList = routingsList
-                .Where(r => r.admins.Select(a => a.Id).Contains(currMySocketReq.MySocket.MyAccountId.Value)).ToList();
+                .Where(r => r.admins?.Select(a => a.Id)?.Contains(currMySocketReq.MySocket.MyAccountId.Value)==true).ToList();
 
             #endregion
 

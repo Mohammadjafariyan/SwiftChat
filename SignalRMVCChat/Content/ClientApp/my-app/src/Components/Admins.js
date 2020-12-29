@@ -79,6 +79,9 @@ export default class Admins extends Component {
     readChat(){
         MyCaller.Send("ReadChat", { targetId: DataHolder.selectedAdmin.Id, pageNumber: 1 });
 
+        if(CurrentUserInfo.ChatPage)
+        CurrentUserInfo.ChatPage.setState({ loading:true});
+    
     }
 
 }

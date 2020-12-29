@@ -21,7 +21,7 @@ namespace SignalRMVCChat.Areas.security.Models
         public string UserName { get; set; }
         public string Token { get; set; }
         public List<Ticket> Tickets { get; set; }
-        public DateTime SignUpDateTime { get; set; }
+        public DateTime SignUpDateTime { get; set; } = DateTime.Now;
         public AppRole AppRole { get; set; }
         public int? AppRoleId { get; set; }
     }

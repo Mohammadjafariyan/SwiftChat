@@ -8,6 +8,7 @@ using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.Service.Routing;
 using TelegramBotsWebApplication;
 using TelegramBotsWebApplication.Areas.Admin.Models;
 
@@ -51,7 +52,8 @@ namespace SignalRMVCChat.WebSocket
                     .Include(c => c.MySockets)
                     .Include(c => c.Chats)
                     .Where(c => c.MySockets.Any(m => m.CustomerWebsiteId == currMySocketReq.MyWebsite.Id ||
-                                                     m.AdminWebsiteId == currMySocketReq.MyWebsite.Id));
+                                                     m.AdminWebsiteId == currMySocketReq.MyWebsite.Id)
+                    && c.OnlineStatus==OnlineStatus.Online);
 
                 var _request = MyWebSocketRequest.Deserialize(request);
 
@@ -104,6 +106,11 @@ namespace SignalRMVCChat.WebSocket
                             c.MyAccountId == MyAccountId && c.DeliverDateTime.HasValue == false && c.SenderType==ChatSenderType.CustomerToAccount))
                         .Where(w=>w!=null).ToList().Sum();
 
+
+                    if (MyGlobal.IsAttached)
+                    {
+                        var list=customers.ToList();
+                    }
                 }
                 
                 
@@ -138,7 +145,10 @@ namespace SignalRMVCChat.WebSocket
                         new DateFromToDateViewModel(), null,
                         customers)
                     .Count(w => w.Chats.All(c => c.MyAccountId.HasValue == false));
-                
+
+
+                var assignToMeCustomersQuery = RoutingService.GetAssingedToMe(_request, currMySocketReq, customers, db);
+
 
 
                 return new TotalUserCountsViewModel
@@ -147,7 +157,8 @@ namespace SignalRMVCChat.WebSocket
                     NotChattedCount = NotChattedCount,
                     TotalWaitingForAnswerCount = TotalWaitingForAnswerCount,
                     TotalAnswered=answered,
-                    CustomerList=customerList
+                    CustomerList=customerList,
+                    AssignedToMeCount= assignToMeCustomersQuery.Count()
                 };
             }
         }
@@ -160,5 +171,6 @@ namespace SignalRMVCChat.WebSocket
         public int TotalWaitingForAnswerCount { get; set; }
         public int TotalAnswered { get; set; }
         public dynamic CustomerList { get; set; }
+        public int AssignedToMeCount { get; internal set; }
     }
 }

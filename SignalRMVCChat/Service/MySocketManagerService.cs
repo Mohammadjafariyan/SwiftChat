@@ -56,7 +56,7 @@ namespace SignalRMVCChat.Service
                 {
                     try
                     {
-                         customer.Socket.Send(resp.Serilize())
+                         customer.Socket.Send(resp.Serilize())?
                             .GetAwaiter().GetResult();
                     }
                     catch (Exception e)

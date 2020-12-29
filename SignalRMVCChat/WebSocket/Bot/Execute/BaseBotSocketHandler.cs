@@ -272,7 +272,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
                     if (_request.Name == "SaveFormData")
                     {
-                        isMatch = CheckFormInput(bot.botEvent?.selectedFormInput);
+                        isMatch = CheckFormInput(bot.botEvent?.selectedFormInput?.Name);
                     }
                     else
                     {

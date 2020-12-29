@@ -18,7 +18,7 @@ namespace SignalRMVCChat.Service
             CreationDateTime = DateTime.Now;
         }
 
-        public DateTime CreationDateTime { get; set; }
+        public DateTime CreationDateTime { get; set; } = DateTime.Now;
 
         [JsonIgnore]
         [NotMapped] private IWebSocketConnection _connection;

@@ -15,12 +15,16 @@ namespace TelegramBotsWebApplication.Areas.Admin.Models
     }
     public class MyDataTableResponse<T>:MyResponse
     {
+        public string userType { get; set; }
+
         public List<T> EntityList { get; set; }
         public int Total { get; set; }
         public int? LastSkip { get; set; }
         public int LastTake { get; set; }
         public dynamic DependEntity { get; set; }
         public int First { get; set; }
+        public int TotalPages { get; internal set; }
+        public int Page { get; internal set; }
     }
 
     public class MyEntityResponse<T>:MyResponse

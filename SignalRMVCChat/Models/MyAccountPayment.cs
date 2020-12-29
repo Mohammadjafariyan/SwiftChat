@@ -14,9 +14,9 @@ namespace SignalRMVCChat.Models
         public Plan Plan { get; set; }
         public int PlanId { get; set; }
         public MyAccountPaymentStatus MyAccountPaymentStatus { get; set; }
-        public DateTime RequestDateTime { get; set; }
+        public DateTime RequestDateTime { get; set; } = DateTime.Now;
         public bool IsPerYear { get; set; }
-        public DateTime? PaymentDate { get; set; }
+        public DateTime? PaymentDate { get; set; } 
         public string PaymentCardNo { get; set; }
         public string PaymentTrackId { get; set; }
         public int PaymentStatus { get; set; }

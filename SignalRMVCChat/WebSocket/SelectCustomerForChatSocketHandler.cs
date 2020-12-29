@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using SignalRMVCChat.DependencyInjection;
+using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 
 namespace SignalRMVCChat.WebSocket
@@ -64,18 +65,37 @@ namespace SignalRMVCChat.WebSocket
                 if (chats.Any(c => c.MyAccountId.HasValue) && chats.Any(c => c.MyAccountId.HasValue == false) &&
                     chats.Count > 0)
                 {
-                    var notAdminChats= chats.Where(c => c.MyAccountId.HasValue == false).ToList();
+                    var notAdminChats = chats.Where(c => c.MyAccountId.HasValue == false).ToList();
                     foreach (var item in notAdminChats)
                     {
                         item.MyAccountId = currMySocketReq.MyWebsite.MyAccountId;
                     }
                     chatProviderService.Save(notAdminChats);
 
-                //    var l = chats.ToList();
-                //    LogService.LogFunc("یعنی دارای چت هایی است که هم اکانت دارد و هم اکانت ندارد");
-                //    LogService.Save();
-                //    throw new Exception("یعنی دارای چت هایی است که هم  دارد و هم اکانت ندارد");
+                    //    var l = chats.ToList();
+                    //    LogService.LogFunc("یعنی دارای چت هایی است که هم اکانت دارد و هم اکانت ندارد");
+                    //    LogService.Save();
+                    //    throw new Exception("یعنی دارای چت هایی است که هم  دارد و هم اکانت ندارد");
                 }
+            }
+
+
+            if (chats?.Count() == 0)
+            {
+                chatProviderService.Save(
+                    new Chat
+                    {
+                        CustomerId=customerId,
+                        MyAccountId=currMySocketReq.MySocket.MyAccountId,
+                        ChatType=ChatType.Hidden,
+                        Message="هدایت به پشتیبانی",
+                        UniqId=1,
+                        SenderMySocketId=currMySocketReq.MySocket.Id,
+                        SenderType=ChatSenderType.AccountToCustomer,
+                        DeliverDateTime=DateTime.Now,
+                        ReachDateTime=DateTime.Now,
+                        SendDataTime=DateTime.Now
+                    });
             }
 
             LogService.LogFunc("در سمت کلاینت ، چت باز می شود و اینجا چت های جدید را برایششان فراخوانی میکنیم");
@@ -94,7 +114,8 @@ namespace SignalRMVCChat.WebSocket
                     pageNumber = 1,
                     targetId = customerId,
                 },
-                Token = _request.Token, IsAdminOrCustomer = _request.IsAdminOrCustomer,
+                Token = _request.Token,
+                IsAdminOrCustomer = _request.IsAdminOrCustomer,
                 WebsiteToken = _request.WebsiteToken,
             };
 
@@ -104,7 +125,7 @@ namespace SignalRMVCChat.WebSocket
           CurrentUserInfo.ProfileImageId = res.Content.ProfileImageId;*/
 
             string dontReadChats = (_request.Body.dontReadChats ?? "") + "";
-            if (string.IsNullOrEmpty(dontReadChats) ==true)
+            if (string.IsNullOrEmpty(dontReadChats) == true)
             {
                 // خواندن چت ها سمت ادمین
                 await new ReadChatSocketHandler().ExecuteAsync(res.Serialize(), currMySocketReq);
@@ -125,7 +146,7 @@ namespace SignalRMVCChat.WebSocket
 
                     Content = new
                     {
-                        AccountId=myAccount.Single.Id,
+                        AccountId = myAccount.Single.Id,
                         pageNumber = 1,
                         targetId = customerId,
                         AccountName = myAccount.Single.Name,

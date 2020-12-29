@@ -120,28 +120,29 @@ namespace TelegramBotsWebApplication.ActionFilters
                 string requestURL = filterContext.RequestContext.HttpContext.Request.Url.PathAndQuery;
              
                 
-                if (!CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.IsAdmin==true)
+                if (CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.IsAdmin==true)
                 {
 
                     filterContext.Result = new RedirectToRouteResult(
-                    new RouteValueDictionary
-                    {
-                        {"area", "Security"},
-                        {"action", "Login"},
-                        {"controller", "Account"},
-                        {"requestUrl", requestURL}
-                    });
-                }
-                else
+                new RouteValueDictionary
                 {
-                    filterContext.Result = new RedirectToRouteResult(
-                 new RouteValueDictionary
-                 {
                         {"area", ""},
                         {"action", "AdminLogin"},
                         {"controller", "Account"},
                         {"requestUrl", requestURL}
-                 });
+                });
+                }
+                else
+                {
+                  
+                    filterContext.Result = new RedirectToRouteResult(
+                   new RouteValueDictionary
+                   {
+                        {"area", "Security"},
+                        {"action", "Login"},
+                        {"controller", "Account"},
+                        {"requestUrl", requestURL}
+                   });
                 }
               
                 ; // new HttpStatusCodeResult(HttpStatusCode.Unauthorized);

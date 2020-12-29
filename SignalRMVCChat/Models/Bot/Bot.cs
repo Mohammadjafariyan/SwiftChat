@@ -66,7 +66,7 @@ public class BotEvent
     public BotNodeType selectedEventType { get; set; }
     public List<string> patterns { get; set; }
     public string selectedForm { get; set; }
-    public string selectedFormInput { get; set; }
+    public FormElement selectedFormInput { get; set; }
     public List<Link> links { get; set; }
     public List<string> tags { get; set; }
     public List<string> pageTitlePatterns { get; set; }

@@ -152,7 +152,7 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
             if (MyGlobal.IsAttached)
             {
-                var list=entities.ToList();
+                var list = entities.ToList();
             }
 
             if (model.Id == 0)
@@ -175,6 +175,46 @@ namespace TelegramBotsWebApplication.Areas.Admin.Service
 
 
             db.SaveChanges();
+            db.Entry(model).State = EntityState.Detached;
+
+            return new MyEntityResponse<int>
+            {
+                Single = newEntity.Id
+            };
+        }
+
+
+        public async virtual Task<MyEntityResponse<int>> SaveAsync(T model)
+        {
+            var entities = Table;
+
+            T newEntity;
+
+            if (MyGlobal.IsAttached)
+            {
+                var list = entities.ToList();
+            }
+
+            if (model.Id == 0)
+            {
+                entities.Add(model);
+                newEntity = model;
+            }
+            else
+            {
+                var entity = await entities.FirstOrDefaultAsync(e => e.Id == model.Id);
+                if (entity == null)
+                {
+                    throw new Exception("رکورد یافت نشد");
+                }
+
+
+                db.Entry(entity).CurrentValues.SetValues(model);
+                newEntity = entity;
+            }
+
+
+           await db.SaveChangesAsync();
             db.Entry(model).State = EntityState.Detached;
 
             return new MyEntityResponse<int>

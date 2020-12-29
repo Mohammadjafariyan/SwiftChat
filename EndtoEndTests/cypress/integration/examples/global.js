@@ -2,11 +2,15 @@
 //export const myhost = "http://gapchat.ashpazerooz.ir/";
 export const myhost = "http://localhost:60518/";
 
-export const TimeToOpenChatBox = 1000 * 3;
-export const baseUrl = `${myhost}Customer/Panel/Index?websiteToken=N09XVk1peG5Gc2FtQWhLSHk4MjIrZ0VWVmNpK1pmQmlBWlFXdTloQm5wTFR2V1ZZUysxblZjUUJwOXk4SEZQREtlUEFuSWNTR2FTbUlsOXBiaW0xVkE9PQ==`;
+export const TimeToOpenChatBox = 1000 * 7;
+export const baseUrl = `${myhost}Customer/Panel/Index?websiteToken=N09XVk1peG5Gc2FtQWhLSHk4MjIrcXJrQzhPZC9LcG9XYzBLSHJjZ1M5Y1U5Zm1xZlJDcTVLL2RUaS9GK2dtWlE3dGpqcmxhOHczM3ZGaWZxaEtva0E9PQ==`;
 export const loginPage = `${myhost}/Security/Account/Login`;
 
 export function login(cy) {
+  cy.on("uncaught:exception", (err, runnable) => {
+    return false;
+  });
+
   cy.get("#username").type("admin");
 
   cy.get("#password").type("admin");
@@ -914,6 +918,8 @@ export function customerSendTextMessage(cy, c) {
   upload(cy, "example.json");
 }
 
+import "cypress-wait-until";
+
 export function loginOperator(cy) {
   Adminlogin(cy);
 
@@ -921,7 +927,12 @@ export function loginOperator(cy) {
 
   cy.visit(`${myhost}customer/dashboard/CreatePluginForAdmins?websiteId=1`);
 
-  cy.wait(TimeToOpenChatBox);
+  //cy.wait(TimeToOpenChatBox);
+
+  cy.intercept('/jsplugin/*').as('gapInit')
+  cy.wait('@gapInit')
+
+
 
   cy.get("#gapPluginAdmin").shadow().find("#dot").click();
 
@@ -929,7 +940,6 @@ export function loginOperator(cy) {
     .shadow()
     .find("iframe")
     .then((el) => {
-     
       url = el[0].src;
 
       cy.visit(el[0].src);
@@ -937,8 +947,8 @@ export function loginOperator(cy) {
       cy.get("#username").type("admin");
       cy.get("#password").type("admin");
       cy.get("#login").click();
+
       return false;
-   
     });
 
   return url;
@@ -952,3 +962,39 @@ export function upload(cy, address) {
     .attachFile(yourFixturePath);
   cy.get("#gapPlugin").shadow().find("#gapSendMsg").click();
 }
+
+
+
+export function checkIfEleExists() {
+  return new Promise(function cb(resolve, reject) {
+    cy.get("body").find(ele).its("length").then(res=>{
+     
+      if (res > 0) {
+        resolve();
+      } else {
+          cb(resolve, reject);
+      }
+
+    })
+  });
+
+}
+  
+
+  /* return new Promise((resolve,reject)=>{
+    /// here if  ele exists or not
+
+    cy.get("body")
+    .find(ele)
+    .its("length")
+    .then((res) => {
+        if (res > 0) {
+          resolve();
+        } else {
+          checkIfEleExists(ele);
+        }
+    });
+
+    
+}) */
+

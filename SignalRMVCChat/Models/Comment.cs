@@ -15,7 +15,7 @@ namespace SignalRMVCChat.Models
         }
 
         public string Text { get; set; }
-        public DateTime CreationDateTime { get; set; }
+        public DateTime CreationDateTime { get; set; } = DateTime.Now;
 
         [NotMapped]
         public string CreationDateTimeStr

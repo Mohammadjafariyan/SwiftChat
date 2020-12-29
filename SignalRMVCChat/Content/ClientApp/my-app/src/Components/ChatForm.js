@@ -239,7 +239,7 @@ export default class ChatForm extends Component {
         <br />
         
         
-        {DataHolder.selectedCustomer && 
+        {this.props.upload && DataHolder.selectedCustomer && 
         !DataHolder.selectedCustomer.TelegramUserId && 
         <div style={{ display: "flex" }}>
           <Button

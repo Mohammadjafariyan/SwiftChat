@@ -52,7 +52,9 @@ export default class B4AdminSubMenu extends Component {
         this.setState({
             TotalNewChatReceived: res.Content.TotalNewChatReceived,
             TotalWaitingForAnswerCount: res.Content.TotalWaitingForAnswerCount,
-            NotChattedCount: res.Content.NotChattedCount
+            NotChattedCount: res.Content.NotChattedCount,
+            TotalAnswered: res.Content.TotalAnswered,
+            AssignedToMeCount: res.Content.AssignedToMeCount,
         })
 
 
@@ -176,7 +178,7 @@ export default class B4AdminSubMenu extends Component {
                                   this.setPage("AssingedToMe");
                               }}
                       >
-                          <ShowPlusCount Count={this.state.AssingedToMeTotalNewMessages}></ShowPlusCount>
+                          <ShowPlusCount Count={this.state.AssignedToMeCount}></ShowPlusCount>
 
                           <Badge variant={'warning'}>
                               جدید

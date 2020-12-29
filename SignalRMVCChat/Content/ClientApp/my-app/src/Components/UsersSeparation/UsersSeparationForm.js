@@ -126,13 +126,14 @@ class UsersSeparationForm extends Component {
 
                         <div className="p-field-radiobutton">
                             <label> css selector استفاده از روش </label>
-                            <RadioButton value="  css selector  استفاده از روش   " name="css-selector-type"
+                            <RadioButton value="  css selector  استفاده از روش   " name="type" id={'css-api-type'}
                                          onChange={(e) => this.setState({type: 'css-selector-type'})}
-                                         checked={this.state.type === 'type'}/>
+                                         checked={this.state.type === 'css-selector-type'}/>
 
 
                         </div>
 
+<hr/>
                         {this.state.type === 'rest-api-type' &&
                         <>
                             <MyInputG id={'rest-api'} title={'آدرس وب سرویس خواندن اطلاعات کاربر'} name={'RestApiUrl'}
@@ -259,7 +260,7 @@ class UsersSeparationForm extends Component {
                 return;
             }
 
-            if (!this.state.type === 'rest-api-type' || !this.state.RestApiUrl) {
+            if (this.state.type === 'rest-api-type' && !this.state.RestApiUrl) {
                 _showError("ادرس وب سرویس وارد نشده است")
                 return;
             }
@@ -318,7 +319,7 @@ const UserSeparationParameter = (props) => {
 
     return <>
 
-
+{/* 
         <div className="p-field-radiobutton" style={{display: 'flex'}}>
 
             <label>پارامتر وب سرویس</label>
@@ -342,29 +343,18 @@ const UserSeparationParameter = (props) => {
                          checked={paramType === 'param-type-css'}/>
 
 
-        </div>
-        {paramType === 'param-type-css' &&
-        <MyInputG id={'param-name'} className={'param-name'} title={'نام پارامتر در  css selector'} name={'paramName'}
-                  parent={fakeParent}
-                  placeholder={'ایی که خوانده خواهد شد(Unique) نام یکتای  '} onChange={(val) => {
-
-            setParamName(val);
+        </div> */}
+    
 
 
-            props.onChange(val, paramText, paramType);
-        }}
-        />}
-
-
-        {paramType === 'param-type-rest' &&
-        <MyInputG id={'param-name'} className={'param-name'} title={'نام پارامتر در وب سرویس'} name={'paramName'}
+        <MyInputG id={'param-name'} className={'param-name'} title={'نام پارامتر '} name={'paramName'}
                   parent={fakeParent}
                   placeholder={'ایی که خوانده خواهد شد(Unique) نام یکتای  '} onChange={(val) => {
 
             setParamName(val);
             props.onChange(val, paramText, paramType);
         }}
-        />}
+        />
 
 
         <MyInputG id={'param-text'}  className={'param-text'} title={'نام فارسی پارامتر'} name={'paramText'} parent={fakeParent}

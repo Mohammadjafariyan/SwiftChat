@@ -278,7 +278,7 @@ public class ParsedCustomerTokenViewModel
 {
     public int? customerId { get; set; }
     public int? myAccountId { get; set; }
-    public DateTime dt { get; set; }
+    public DateTime dt { get; set; } = DateTime.Now;
     public string baseUrl { get; set; }
     public int websiteId { get; set; }
     public MySocketUserType IsAdminOrCustomer { get; set; }

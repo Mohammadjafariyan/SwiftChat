@@ -2,6 +2,7 @@
 import '../styles/whileWriting.css'
 
 import {MyCaller, CurrentUserInfo} from "./../Help/Socket";
+import { Badge } from 'react-bootstrap';
 
 
 class WhileWriting extends Component {
@@ -28,7 +29,7 @@ class WhileWriting extends Component {
 
                 </div> }*/}
 
-                {this.props.IsTyping && <div className="typing-loader"></div> }
+                {this.props.IsTyping && <Badge variant="light"><div className="typing-loader"></div> <small>در حال تایپ</small></Badge> }
                
 
             </>

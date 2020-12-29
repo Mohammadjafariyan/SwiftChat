@@ -32,7 +32,7 @@ namespace SignalRMVCChat.Models
         }
 
 
-        public DateTime CreationDateTime { get; set; }
+        public DateTime CreationDateTime { get; set; } = DateTime.Now;
 
         [JsonIgnore] public List<MySocket> MySockets { get; set; }
         public List<Chat> Chats { get; set; }

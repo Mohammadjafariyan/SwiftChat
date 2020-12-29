@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { ListBox } from "primereact/listbox";
 import {Form} from 'react-bootstrap';
 import {CurrentUserInfo, MyCaller} from '../../Help/Socket';
+import {DataHolder} from '../../Help/DataHolder';
 
 const citySelectItems = [
   { label: "اختصاص داده شده به من", value: "AssingedToMe" },
   { label: "در انتظار پاسخ", value: "WaitingForAnswer" },
-  { label: " پاسخ داده شده", value: "Answered" },
+  { label: " پاسخ داده شده", value: "answered" },
   { label: "بدون گفتگو", value: "NotChatted" },
   { label: "تمامی مراجعه کنندگان سایت", value: "AllCustomerListPage" },
   {
@@ -16,12 +17,7 @@ const citySelectItems = [
   {
     label: "بعد از دریافت پشتیبانی مجددا به سایت بازگشته اند",
     value: "ChattedAndReturnedCustomerListPage",
-  },
-  {
-    label: "بعد از دریافت پشتیبانی هرگز به سایت برگنشته اند",
-    value: "ChattedNever",
-  },
-  { label: "بر اساس صفحه ها", value: "SepratePerPage" },
+  }
 ];
 
 export default class MyMapCustomerTypes extends Component {
@@ -34,24 +30,34 @@ export default class MyMapCustomerTypes extends Component {
       
       CurrentUserInfo.MyMapCustomerTypes=this;
   }
+
+  componentDidMount(){
+    this.setState({onlyOfflineChecked:CurrentUserInfo.gapIsOnlyOnly})
+  }
   getClientsListForAdminCallback(res) {
     CurrentUserInfo.MapPage.setState({loading:false});
 
+    console.log('MyMapCustomerTypes==>CgetClientsListForAdminCallback=>',res )
+
+
+    
 }
   
   OnlyOfflines(e) {
-    CurrentUserInfo.gapIsOnlyOnly = !this.state.onlyOfflineChecked;
-    this.setState({ onlyOfflineChecked: !this.state.onlyOfflineChecked });
+    CurrentUserInfo.gapIsOnlyOnly = this.state.onlyOfflineChecked!=null ? !this.state.onlyOfflineChecked : true;
+    this.setState({ onlyOfflineChecked: CurrentUserInfo.gapIsOnlyOnly });
 
       this.GetClientsListForAdmin();
   }
 
   GetClientsListForAdmin() {
 
+    console.log('GetClientsListForAdmin==>CurrentUserInfo.gapIsOnlyOnly=>',CurrentUserInfo.gapIsOnlyOnly )
     CurrentUserInfo.MapPage.setState({loading:true});
 
     MyCaller.Send("GetClientsListForAdmin", {
         userType: CurrentUserInfo.UserType,
+        gapIsOnlyOnly : CurrentUserInfo.gapIsOnlyOnly
     });
 }
 
@@ -73,7 +79,7 @@ export default class MyMapCustomerTypes extends Component {
           options={citySelectItems}
           onChange={(e) => {
             this.setState({ selectedUserType: e.value });
-
+            CurrentUserInfo.UserType=e.value;
       this.GetClientsListForAdmin();
           }}
         />

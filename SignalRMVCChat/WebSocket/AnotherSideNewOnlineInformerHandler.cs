@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
@@ -56,7 +57,7 @@ namespace SignalRMVCChat.WebSocket
         public async Task InformNewCustomerRegistered(Customer customer, MyWebSocketRequest currMySocketReq)
         {
 
-            customer.Name = " کاربر آنلاین جدید " + DateTime.Now.TimeOfDay;
+            customer.Name = " کاربر آنلاین جدید " + MyGlobal.ToIranianDateWidthTime(DateTime.Now);
 
             
             var chatProviderService = Injector.Inject<ChatProviderService>();

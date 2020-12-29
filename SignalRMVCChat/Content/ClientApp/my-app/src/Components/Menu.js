@@ -45,7 +45,13 @@ export default class Menu extends Component {
             return;
         }*/
 
-        this.setState({TotalNewChatReceived:res.Content.TotalNewChatReceived,TotalWaitingForAnswerCount:res.Content.TotalWaitingForAnswerCount,NotChattedCount:res.Content.NotChattedCount})
+        this.setState({
+            TotalNewChatReceived: res.Content.TotalNewChatReceived,
+            TotalWaitingForAnswerCount: res.Content.TotalWaitingForAnswerCount,
+            NotChattedCount: res.Content.NotChattedCount,
+            TotalAnswered: res.Content.TotalAnswered,
+            AssignedToMeCount: res.Content.AssignedToMeCount,
+        })
 
 
 

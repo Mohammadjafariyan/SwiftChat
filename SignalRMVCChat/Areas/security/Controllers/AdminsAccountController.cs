@@ -92,8 +92,10 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
         protected override dynamic CreateUser(RegisterViewModel model)
         {
-            return new AppAdmin()
+            return new AppAdmin
             {
+                SignUpDateTime = DateTime.Now,
+
                 UserName = model.Email, Email = model.Email,
                 Name = model.Name,
                 LastName = model.LastName

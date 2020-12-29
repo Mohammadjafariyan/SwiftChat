@@ -116,11 +116,11 @@ class StatLayout extends Component {
           <SiteViewsMostOnlineTime  data={this.state.data}  />
         </Col>
 
-        <Row>
+       {/*  <Row>
           <Col>
             <SiteVisit  data={this.state.data}   />
           </Col>
-        </Row>
+        </Row> */}
     </TabPanel>
     
 

@@ -6,7 +6,7 @@ using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace SignalRMVCChat.WebSocket
 {
-    public abstract class BaseGetClientsListForAdminSocketHandler : ISocketHandler
+    public abstract class BaseGetClientsListForAdminSocketHandler : BaseMySocket
     {
         protected BaseGetClientsListForAdminSocketHandler(MySocketUserType type)
         {
@@ -33,8 +33,10 @@ namespace SignalRMVCChat.WebSocket
             }
              
         }
-        public  async Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
+        public override async Task<MyWebSocketResponse> ExecuteAsync(string request, MyWebSocketRequest currMySocketReq)
         {
+
+            await InitAsync(request, currMySocketReq);
 
             MyDataTableResponse<MyAccount> allOnlineCustomers =
                 GetAllOnlineByType( currMySocketReq,request);

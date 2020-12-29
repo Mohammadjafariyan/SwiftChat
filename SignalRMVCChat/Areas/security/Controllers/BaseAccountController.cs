@@ -17,13 +17,13 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 namespace SignalRMVCChat.Areas.security.Controllers
 {
     [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    public abstract class BaseAccountController<TUserService,T> : Controller where TUserService:GenericService<T>,IAppUserService<T> where  T:Entity,new()
+    public abstract class BaseAccountController<TUserService, T> : Controller where TUserService : GenericService<T>, IAppUserService<T> where T : Entity, new()
     {
         public TUserService UserService;
         public SecurityService SecurityService;
-        public AppRoleService AppRoleService; 
+        public AppRoleService AppRoleService;
 
-     
+
 
 
         /*
@@ -64,6 +64,13 @@ namespace SignalRMVCChat.Areas.security.Controllers
         [AllowAnonymous]
         public ActionResult Login(string requestUrl)
         {
+            if (string.IsNullOrEmpty(requestUrl) == false)
+            {
+                if (requestUrl?.ToLower()?.Contains("logoff") == true)
+                {
+                    requestUrl = null;
+                }
+            }
             ViewBag.ReturnUrl = requestUrl;
             return View();
         }
@@ -72,13 +79,21 @@ namespace SignalRMVCChat.Areas.security.Controllers
         [AllowAnonymous]
         public ActionResult AdminLogin(string requestUrl)
         {
+            if (string.IsNullOrEmpty(requestUrl) == false)
+            {
+                if (requestUrl?.ToLower()?.Contains("logoff") == true)
+                {
+                    requestUrl = null;
+                }
+            }
+
             ViewBag.ReturnUrl = requestUrl;
             return View();
         }
 
         protected override void OnException(ExceptionContext filterContext)
         {
-            MySpecificGlobal.OnControllerException(filterContext,ViewData);
+            MySpecificGlobal.OnControllerException(filterContext, ViewData);
         }
 
 
@@ -87,11 +102,11 @@ namespace SignalRMVCChat.Areas.security.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public virtual async Task<ActionResult> Login(LoginViewModel model, string requestUrl=null)
+        public virtual async Task<ActionResult> Login(LoginViewModel model, string requestUrl = null)
         {
             try
             {
-                if (requestUrl?.Contains("LogOff")==true)
+                if (requestUrl?.Contains("LogOff") == true)
                 {
                     requestUrl = null;
                 }
@@ -117,7 +132,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
                 //    throw new Exception("ادمین اصلی مجاز به ورود به این بخش نیست");
                 // //   return RedirectToAction("Index", "AdminDashboard", new {area = "Admin"});
                 //}
-                
+
                 Response.Cookies.Add(new HttpCookie("gaptoken", result.Token));
 
 
@@ -127,10 +142,11 @@ namespace SignalRMVCChat.Areas.security.Controllers
                 }
 
 
-                return RedirectToAction("Index", "Dashboard", new {area = "Customer"});
+                return RedirectToAction("Index", "Dashboard", new { area = "Customer" });
             }
             catch (Exception e)
-            {SignalRMVCChat.Service.LogService.Log(e);
+            {
+                SignalRMVCChat.Service.LogService.Log(e);
                 ModelState.AddModelError("", MyGlobal.RecursiveExecptionMsg(e));
                 return LoginError(model);
             }
@@ -138,7 +154,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
         public virtual ActionResult LoginError(dynamic model)
         {
-            return View("",model);
+            return View("", model);
         }
 
         //
@@ -190,6 +206,14 @@ namespace SignalRMVCChat.Areas.security.Controllers
         [AllowAnonymous]
         public ActionResult Register(string requestUrl)
         {
+            if (string.IsNullOrEmpty(requestUrl) == false)
+            {
+                if (requestUrl?.ToLower()?.Contains("logoff") == true)
+                {
+                    requestUrl = null;
+                }
+            }
+
             ViewBag.ReturnUrl = requestUrl;
             return View();
         }
@@ -239,7 +263,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new AppUser {UserName = model.Email, Email = model.Email};
+                var user = new AppUser { UserName = model.Email, Email = model.Email };
                 var result = await UserService.CreateAsync(user, model.Password);
 
                 await CreateRolesIfNotExist();
@@ -255,10 +279,19 @@ namespace SignalRMVCChat.Areas.security.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model,string requestUrl=null)
+        public async Task<ActionResult> Register(RegisterViewModel model, string requestUrl = null)
         {
             try
             {
+
+                if (string.IsNullOrEmpty(requestUrl) == false)
+                {
+                    if (requestUrl?.ToLower()?.Contains("logoff") == true)
+                    {
+                        requestUrl = null;
+                    }
+                }
+
                 if (ModelState.IsValid)
                 {
                     var user = CreateUser(model);
@@ -279,12 +312,14 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
 
                     await CreateRolesIfNotExist();
-      //              await AppRoleService.AddToRoleAsync(user.Id, "customer");
+                    //              await AppRoleService.AddToRoleAsync(user.Id, "customer");
 
 
                     var result = SecurityService.SignInAsync(model.Email, model.Password);
 
-                    Response.Cookies.Add(new HttpCookie("token", result.Token));
+                    var cookie = new HttpCookie("token", result.Token);
+                    Response.Cookies.Add(cookie);
+                    Request.Cookies.Add(cookie);
 
                     //Session["token"] = user.Token;
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -293,20 +328,21 @@ namespace SignalRMVCChat.Areas.security.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserService.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    
+
                     if (string.IsNullOrEmpty(requestUrl) == false)
                     {
                         return Redirect(requestUrl);
                     }
 
-                    
-                    return RedirectToAction("Index", "Dashboard", new {area = "Customer"});
+
+                    return RedirectToAction("Index", "Dashboard", new { area = "Customer" });
 
                     // If we got this far, something failed, redisplay form
                 }
             }
             catch (Exception e)
-            {SignalRMVCChat.Service.LogService.Log(e);
+            {
+                SignalRMVCChat.Service.LogService.Log(e);
                 ModelState.AddModelError("", MyGlobal.RecursiveExecptionMsg(e));
                 return View(model);
             }
@@ -542,7 +578,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
         [MyAuthorizeFilter]
         public ActionResult LogOff()
         {
-//            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            //            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
 
             // Session["token"] = null;
@@ -557,7 +593,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
                 SecurityService.Logout();
             }
 
-            return RedirectToAction("Index", "Home", new {area = ""});
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         /*
@@ -579,6 +615,14 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
+            if (string.IsNullOrEmpty(returnUrl) == false)
+            {
+                if (returnUrl?.ToLower()?.Contains("logoff") == true)
+                {
+                    returnUrl = null;
+                }
+            }
+
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);

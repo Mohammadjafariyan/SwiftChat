@@ -6,7 +6,7 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Models.Bot
 {
-    public abstract class BaseBot : BaseEntity
+    public abstract class BaseBot : EntitySafeDelete
     {
         public string Name { get; set; }
         public bool IsPublish { get; set; }

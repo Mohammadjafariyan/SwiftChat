@@ -72,6 +72,10 @@ namespace TelegramBotsWebApplication.Service
         }
         public static string Decrypt(string cipherText)
         {
+            if (string.IsNullOrWhiteSpace(cipherText))
+            {
+                throw new SkipException(cipherText);
+            }
             string EncryptionKey = "w/2&843ï6C╣♣";
             cipherText = cipherText.Replace(" ", "+");
             byte[] cipherBytes = Convert.FromBase64String(cipherText);

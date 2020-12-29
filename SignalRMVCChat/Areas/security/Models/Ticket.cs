@@ -28,8 +28,8 @@ namespace SignalRMVCChat.Areas.security.Models
           public string Title { get; set; }
           public string Body { get; set; }
          
-          public DateTime ChangeDateTime { get; set; }
-          public TicketStatus Status { get; set; }
+          public DateTime ChangeDateTime { get; set; } = DateTime.Now;
+        public TicketStatus Status { get; set; }
 
 
           public List<Ticket> Children { get; set; }
