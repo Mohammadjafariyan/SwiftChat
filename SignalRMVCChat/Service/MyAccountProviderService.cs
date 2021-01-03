@@ -78,6 +78,18 @@ namespace SignalRMVCChat.Service
 
             CheckUsernameUniqness(model);
 
+            if (model.Id != 0)
+            {
+                var record=GetById(model.Id, "ادمین ثبت نام نشده است مجددا وارد شوید یا ثبت نام کنید").Single;
+
+                model.AccessWebsites = record.AccessWebsites;
+                model.AccessWebsitesJson = record.AccessWebsitesJson;
+                model.ReceivedPrivateChatsJson = record.ReceivedPrivateChatsJson;
+                model.RemindMeFiresJson = record.RemindMeFiresJson;
+                model.IsNotificationMute = record.IsNotificationMute;
+                
+            }
+
             return base.Save(model);
         }
 
@@ -285,64 +297,73 @@ namespace SignalRMVCChat.Service
 
         public static Plan GetCurrentPlan(MyWebSocketRequest currReq = null)
         {
-            var accountProviderService = Injector.Inject<MyAccountProviderService>();
 
-            MyAccount account;
+            try
+            {
+                var accountProviderService = Injector.Inject<MyAccountProviderService>();
 
-            // یعنی از handler ها 
-            //فراخانی شده است
-            if (currReq == null)
-            {
-                account = accountProviderService.GetAccountIdByUsername(CurrentRequestSingleton.CurrentRequest
-                    .AppLoginViewModel
-                    .Username);
-            }
-            else
-            {
+                MyAccount account;
+
+                // یعنی از handler ها 
+                //فراخانی شده است
                 if (currReq == null)
                 {
-                    throw new Exception("currReq is null");
-                }
-
-                if (currReq.IsAdminOrCustomer == (int) MySocketUserType.Customer)
-                {
-                    throw new Exception("GetCurrentPlan used in wrong place");
-                }
-
-                if (currReq == null)
-                {
-                    throw new Exception("currReq is null    ");
-                }
-
-                if (currReq.MySocket.MyAccountId.HasValue == false)
-                {
-                    throw new Exception("currReq.MySocket.MyAccountId is null");
-                }
-
-                var parent = accountProviderService.GetById(currReq.MySocket.MyAccountId.Value);
-                if (parent.Single.ParentId.HasValue)
-                {
-                    account = accountProviderService.GetById(parent.Single.ParentId.Value).Single;
+                    account = accountProviderService.GetAccountIdByUsername(CurrentRequestSingleton.CurrentRequest
+                        .AppLoginViewModel
+                        .Username);
                 }
                 else
                 {
-                    account = parent.Single;
+                    if (currReq == null)
+                    {
+                        throw new Exception("currReq is null");
+                    }
+
+                    if (currReq.IsAdminOrCustomer == (int)MySocketUserType.Customer)
+                    {
+                        throw new Exception("GetCurrentPlan used in wrong place");
+                    }
+
+                    if (currReq == null)
+                    {
+                        throw new Exception("currReq is null    ");
+                    }
+
+                    if (currReq.MySocket.MyAccountId.HasValue == false)
+                    {
+                        throw new Exception("currReq.MySocket.MyAccountId is null");
+                    }
+
+                    var parent = accountProviderService.GetById(currReq.MySocket.MyAccountId.Value);
+                    if (parent.Single.ParentId.HasValue)
+                    {
+                        account = accountProviderService.GetById(parent.Single.ParentId.Value).Single;
+                    }
+                    else
+                    {
+                        account = parent.Single;
+                    }
                 }
+
+
+                var myAccountPlansService = Injector.Inject<MyAccountPlansService>();
+
+                var notExpiredPlan = myAccountPlansService.GetQuery()
+                    .Include(p => p.Plan)
+                    .Where(q => q.MyAccountId == account.Id
+
+                                // OrderBy Instead of OrderByDescending because we want nearest plan not last
+                                && q.ExpireDateTime > DateTime.Now).OrderBy(o => o.ExpireDateTime)
+                    .Select(n => n.Plan).FirstOrDefault();
+
+
+                return notExpiredPlan;
             }
-
-
-            var myAccountPlansService = Injector.Inject<MyAccountPlansService>();
-
-            var notExpiredPlan = myAccountPlansService.GetQuery()
-                .Include(p => p.Plan)
-                .Where(q => q.MyAccountId == account.Id
-
-                            // OrderBy Instead of OrderByDescending because we want nearest plan not last
-                            && q.ExpireDateTime > DateTime.Now).OrderBy(o => o.ExpireDateTime)
-                .Select(n => n.Plan).FirstOrDefault();
-
-
-            return notExpiredPlan;
+            catch(Exception e)
+            {
+                return null;
+            }
+            
         }
     }
 

@@ -25,7 +25,7 @@ class OtherTools extends Component {
                     className={"card "}>
                     <div className="card-header">
                         تماس و مکان یابی و ابزار
-                    </div>
+                    </div>            
 
                     <small style={{color: 'green'}}> کاربر جهت تماس تصویری و صوتی در دسترس است</small>
                     <div className="card-body" style={{display: 'flex', textAlign: 'center'}}>
@@ -37,8 +37,8 @@ class OtherTools extends Component {
                                     _showError('لطفا ابتدا یک بازدیدکننده را انتخاب کنید');
                                     return ;
                                 }
-                                this.props.CustomerForCall=this.props.Customer;
-                                
+                                DataHolder.selectedCustomerForCall=this.props.Customer;
+                                   
                                 if (CurrentUserInfo.VoiceCall){
                                     CurrentUserInfo.VoiceCall.show();
                                 }else{

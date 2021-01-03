@@ -10,6 +10,7 @@ const SettingMenu = (props) => {
             { name: "صفحات فعال", id: "ActivePages",variant:'success' },
             { name: "صفحات غیر فعال", id: "InActivePages",variant:'danger' },
             { name: "تنظیمات امینیتی", id: "BoolSettings",variant:'warning' },
+            { name: "تنظیمات هشدار", id: "AlarmSetting",variant:'warning' },
 
             
             ].map(

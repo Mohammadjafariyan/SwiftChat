@@ -41,6 +41,7 @@ import BotPage from "./BotPage";
 import BotDataPage from "./BotDataPage";
 import AssingedToMeCustomerLists from "../Routing/use/AssingedToMeCustomerLists";
 import TelegramBotPage from "./TelegramBotPage";
+import RandomBgGenerator from './../Components/bg/RandomBgGenerator';
 
 export default class LayoutPage extends Component {
   toastRunning = 0;
@@ -372,8 +373,19 @@ export default class LayoutPage extends Component {
         );
       }
     } else {
-      return (
-        <div>
+    let imgUrl = RandomBgGenerator();
+    
+    return (
+        <div style={{
+           backgroundImage: `url('${imgUrl}')`,
+            position: "absolute",
+            left: "0px",
+            right: "0px",
+            bottom: "0px",
+            top: "0px",
+        }}>
+
+        <div className='fillbg'></div>
           <Toast position="bottom-left" ref={(el) => (this.toast = el)} />
           <MessageAlerts />
 

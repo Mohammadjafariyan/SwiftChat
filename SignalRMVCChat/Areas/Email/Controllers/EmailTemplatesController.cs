@@ -26,7 +26,6 @@ namespace SignalRMVCChat.Areas.Email.Controllers
         {
             if (id == 0)
             {
-
                 return View(new EmailTemplate());
             }
             MyEntityResponse<EmailTemplate> response = Service.GetById(id);

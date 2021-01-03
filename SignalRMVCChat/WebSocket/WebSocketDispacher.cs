@@ -33,6 +33,7 @@ using SignalRMVCChat.WebSocket.Compaign.Stat;
 using SignalRMVCChat.WebSocket.HelpDesk.Stat;
 using SignalRMVCChat.WebSocket.MyWSetting;
 using SignalRMVCChat.WebSocket.MyWebsiteSetting;
+using SignalRMVCChat.WebSocket.Alarm;
 
 namespace SignalRMVCChat.WebSocket
 {
@@ -80,6 +81,16 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+                #region Alarm
+                case "AlarmSetIsMute":
+                    return new AlarmSetIsMuteSocketHandler();
+                    break;
+                case "AlarmGetSounds":
+                    return new AlarmGetSoundsSocketHandler();
+                    break;
+
+                    
+                #endregion
 
                 #region MyWebsiteSetting
 
@@ -479,10 +490,10 @@ namespace SignalRMVCChat.WebSocket
                     return new ScreenRecordSaveSocketHandler();
                     break;
 
-                    #endregion
+                #endregion
 
-                    #region Form Creator
-                    
+                #region Form Creator
+
                 case "GetDefinedFormInputs":
                     return new GetDefinedFormInputsSocketHandler();
                     break;

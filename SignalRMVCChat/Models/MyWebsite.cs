@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
+using SignalRMVCChat.Models.Alarms;
 using SignalRMVCChat.Models.Compaign;
 using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Models.HelpDesk;
@@ -156,8 +157,9 @@ namespace SignalRMVCChat.Service
         public List<Tag> Tags { get; set; }
         public List<Models.Routing.Routing> Routings { get; set; }
         public List<Models.Compaign.Compaign> Compaigns { get; set; }
-        public List<CompaignTemplate> CompaignTemplates { get; internal set; }
-        public List<TelegramBotSetting> TelegramBots { get; internal set; }
-        public List<MyWebsiteSetting> MyWebsiteSettings { get; internal set; }
+        public List<CompaignTemplate> CompaignTemplates { get;  set; }
+        public List<TelegramBotSetting> TelegramBots { get;  set; }
+        public List<MyWebsiteSetting> MyWebsiteSettings { get;  set; }
+        public List<Alarm> Alarms { get;  set; }
     }
 }

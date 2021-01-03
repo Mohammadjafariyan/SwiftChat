@@ -9,6 +9,7 @@ import { CurrentUserInfo } from "../../Help/Socket";
 import { _showMsg } from "../../Pages/LayoutPage";
 import { MyCaller } from "./../../Help/Socket";
 import { Spinner } from "react-bootstrap";
+import AlarmSetting from './bodyComps/AlarmSetting/AlarmSetting';
 
 export default class SettingBody extends Component {
   state = {};
@@ -45,6 +46,10 @@ export default class SettingBody extends Component {
 
             this.setState({ loading: true });
             MyCaller.Send("SaveMyWebsiteSetting", DataHolder.Setting);
+
+            if(CurrentUserInfo.Alarm){
+              CurrentUserInfo.Alarm.audioUrl=null;
+            }
           }}
         />
         <hr />
@@ -59,6 +64,12 @@ export default class SettingBody extends Component {
         {this.props.activeMenu.id == "InActivePages" && <InActivePages />}
 
         {this.props.activeMenu.id == "BoolSettings" && <BoolSettings />}
+       
+       
+        {this.props.activeMenu.id == "AlarmSetting" && <AlarmSetting />}
+
+
+        
       </div>
     );
   }

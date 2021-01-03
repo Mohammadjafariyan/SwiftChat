@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -147,7 +148,7 @@ namespace SignalRMVCChat.WebSocket
                     .Count(w => w.Chats.All(c => c.MyAccountId.HasValue == false));
 
 
-                var assignToMeCustomersQuery = RoutingService.GetAssingedToMe(_request, currMySocketReq, customers, db);
+                var assignToMeCustomersQuery = currMySocketReq.MySocket.MyAccountId.HasValue ?  RoutingService.GetAssingedToMe(_request, currMySocketReq, customers, db) : new List<Customer>().AsQueryable();
 
 
 

@@ -11,6 +11,8 @@ import B4AdminNavbar from "./B4AdminNavbar";
 import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
 import B4AdminSubMenu from "./B4AdminSubMenu";
 import OntTheFlyChatPanel from "../../Components/OnTheFlyChatPanel/OntTheFlyChatPanel";
+import Alarm from './../../Components/Alarm/Alarm';
+import RandomBgGenerator from './../../Components/bg/RandomBgGenerator';
 
 const B4AdminLayoutScripts=()=>{
     useScript('/Content/B4Admin/jquery/jquery.min.js')
@@ -49,6 +51,8 @@ class B4AdminLayout extends Component {
     }
 
     render() {
+    let imgUrl = RandomBgGenerator();
+
         return (
             <div>
                 <div id="wrapper">
@@ -63,7 +67,13 @@ class B4AdminLayout extends Component {
                     <div id="content-wrapper" className="d-flex flex-column">
 
                          {/* <!-- Main Content-->*/}
-                        <div id="content">
+                        <div id="content" style={{
+           backgroundImage: `url('${imgUrl}')`,
+            left: "0px",
+            right: "0px",
+            bottom: "0px",
+            top: "0px",
+        }}>
 
                              {/* <!-- Topbar-->*/}
                            
@@ -103,6 +113,9 @@ class B4AdminLayout extends Component {
                 </div>
                 
                 <OntTheFlyChatPanel/>
+
+
+                <Alarm/>
             </div>
         );
     }

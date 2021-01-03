@@ -789,7 +789,7 @@ class EventTrigger {
 
         this.Action();
 
-        
+
 
         MyCaller.Send('EventFired', { name: name, id: this.bean.Id })
 
@@ -1251,7 +1251,7 @@ function OpenChatScreen(AccountId, AccountName, ProfilePhotoId) {
 
     }
 
-    if (!AccountName || AccountName=="null") {
+    if (!AccountName || AccountName == "null") {
         AccountName = "پشتیبانی";
     }
 
@@ -1442,6 +1442,8 @@ class BasePlugin {
     adminSendToCustomerCallback(res, isGapMe) {
 
 
+        playSound();
+
         let AccountId = res.Content.AccountId;
         let Message = res.Content.Message;
         let TotalReceivedMesssages = res.Content.TotalReceivedMesssages;
@@ -1605,7 +1607,7 @@ class BasePlugin {
 
         let targetId = (CurrentUserInfo.currentUsersIsAdmins || CurrentUserInfo.IsCustomer) ? res.Content.MyAccountId : res.Content.CustomerId;
 
-        CurrentUserInfo.plugin.handleNewMessageCome(targetId, null, 5, res.Content.gapFileUniqId, res.Content.UniqId,res.Content.Time, res.Content);
+        CurrentUserInfo.plugin.handleNewMessageCome(targetId, null, 5, res.Content.gapFileUniqId, res.Content.UniqId, res.Content.Time, res.Content);
         var fileContent = res.Content.MultimediaContent;
         addNewMultimediaMessage(fileContent, null, function () {
 
@@ -1670,7 +1672,7 @@ class BasePlugin {
     Register() {
 
 
-        
+
         let URL = window.location.href;
 
         let Title = document.title;
@@ -1684,7 +1686,7 @@ class BasePlugin {
 
     registerCallback(res) {
 
-        
+
         MyCaller.Send('GetSelectedAdmin');
 
         // getDoc().querySelector('#dot').style.display = 'none';
@@ -2152,7 +2154,7 @@ class BasePlugin {
 
     }
 
-    handleNewMessageCome(AccountId, Message, TotalReceivedMesssages, callback, isGapMe, gapFileUniqId, UniqId,time,chat) {
+    handleNewMessageCome(AccountId, Message, TotalReceivedMesssages, callback, isGapMe, gapFileUniqId, UniqId, time, chat) {
 
         let gapRowTmp = getDoc().querySelector(".gapRow[accountId='" + AccountId + "']");
 
@@ -2286,9 +2288,9 @@ let configWebSocket = function (onOpen) {
         console.error("اتصال قطع شد");
 
 
-    //    socketConnect();
-    //    CurrentUserInfo.dotColorBackup = getDoc().querySelector('#dot').style.backgroundColor;
-    //    getDoc().querySelector('#dot').style.backgroundColor = 'grey';
+        //    socketConnect();
+        //    CurrentUserInfo.dotColorBackup = getDoc().querySelector('#dot').style.backgroundColor;
+        //    getDoc().querySelector('#dot').style.backgroundColor = 'grey';
     };
 }
 
@@ -2650,7 +2652,7 @@ function newChatMsg(isGapMe, contentMedia, isReturn, _gapFileUniqId, UniqId, tim
     gapMsg.className = "gapMsg gapMultimedia ";
 
     if (isGapMe)
-    gapMsg.append(createElementFromHTML(getSenderProfile(null,true)))
+        gapMsg.append(createElementFromHTML(getSenderProfile(null, true)))
     else
         gapMsg.append(createElementFromHTML(getSenderProfile(null, false)))
 
@@ -3241,13 +3243,13 @@ function GetMakeEditDeleteButtons(uniqId, gapFileUniqId) {
     return dom;
 }
 
-function getSenderProfile(chat,isCustomer) {
+function getSenderProfile(chat, isCustomer) {
 
 
     if (!chat) {
         chat = {};
         chat.AccountName = 'شما';
-   //     chat.ProfilePhotoId = CurrentUserInfo.ProfileImageId;
+        //     chat.ProfilePhotoId = CurrentUserInfo.ProfileImageId;
 
     }
 
@@ -3293,7 +3295,7 @@ style="float:left;  position:relative;   font-size: 20px !important;${bgImage}" 
 <span class="gapProfileIcon">${name}</span></span>`;
 
     }
-   
+
     return sum;
 }
 
@@ -3360,7 +3362,7 @@ class DomManager {
 
             /*profile img*/
 
-            dom += getSenderProfile(chat,true);
+            dom += getSenderProfile(chat, true);
             /*profile img end*/
             dom += "<div class=\"gapMe\">\n";
         } else {
@@ -3370,8 +3372,8 @@ class DomManager {
 
 ${getSenderProfile(chat, false)}
 `
-           // dom += getSenderProfile(chat);
-        /*profile img end*/
+            // dom += getSenderProfile(chat);
+            /*profile img end*/
 
             if (chat && chat.formId) {
                 dom += "<div class=\"gapHe\" style='width: 80%'>\n";
@@ -3381,7 +3383,7 @@ ${getSenderProfile(chat, false)}
 
             }
 
-            
+
         }
 
 
@@ -3401,7 +3403,7 @@ ${getSenderProfile(chat, false)}
             if (gapMe) {
                 dom += `<small style="font-size: 10px;direction: rtl;float: left" class="gapInnerMsg">${time}</small>`;
 
-            } 
+            }
 
         }
 
@@ -3709,7 +3711,7 @@ ${getSenderProfile(chat, false)}
 
 
 
-            
+
             // اطلاعات کاربر انتخاب شده را برمیگرداند در صورت انتخاب 
             MyCaller.Send('GetSelectedAdmin');
 
@@ -3728,7 +3730,7 @@ ${getSenderProfile(chat, false)}
                 }
 
 
-             //   OpenChatScreen(CurrentUserInfo.targetId, CurrentUserInfo.targetName, CurrentUserInfo.ProfileImageId);
+                //   OpenChatScreen(CurrentUserInfo.targetId, CurrentUserInfo.targetName, CurrentUserInfo.ProfileImageId);
 
 
             }
@@ -3997,7 +3999,7 @@ let MyCaller = {
         req.Name = name;
         req.Body = data;
         req.Token = getCookie('customerToken'),//CurrentUserInfo.IsCustomer ? CurrentUserInfo.GetCurrentCustomerToken() : _currentAdminInfo.adminToken;
-        req.WebsiteToken = websiteToken;
+            req.WebsiteToken = websiteToken;
 
 
         req.SelectedTagId = CurrentUserInfo.selectedTagId;
@@ -4154,7 +4156,7 @@ class dispatcher {
             case "ClearCookie":
 
 
-                
+
                 cookieManager.removeItem('customerToken')
                 cookieManager.removeItem('adminToken')
                 _currentAdminInfo.adminToken = null;
@@ -4172,7 +4174,7 @@ class dispatcher {
                 cookieManager.removeItem('targetStatus')
                 cookieManager.removeItem('ProfileImageId')
 
-               // CurrentUserInfo.IsRestart = true;
+                // CurrentUserInfo.IsRestart = true;
                 // getDoc().innerHTML = '';
 
                 //CurrentUserInfo.ws.close();
@@ -4191,7 +4193,7 @@ class dispatcher {
                 CurrentUserInfo.plugin.newSendPMByMeInAnotherPlaceCallback(res);
                 break;
             case "registerCallback":
-               // CurrentUserInfo.AddCurrentCustomerToken(res.Token);
+                // CurrentUserInfo.AddCurrentCustomerToken(res.Token);
                 CurrentUserInfo.plugin.registerCallback(res);
                 break;
             case "readChatCallback":
@@ -5670,13 +5672,13 @@ function bindIsTyping() {
 
         if (strg) {
 
-         
+
             MyCaller.Send('CustomerStartTyping', { text: strg });
 
             CustomerStartTypingSent = true;
 
             //   if (strg || strg.trim() === '' && !CustomerStartTypingSent) {
-          
+
 
         } else {
 
@@ -5709,7 +5711,7 @@ function gapChatSubmit() {
     element.style.height = "92%";
 
     if (getDoc().querySelector('#gpwaterMark'))
-    getDoc().querySelector('#gpwaterMark').style.display = null;
+        getDoc().querySelector('#gpwaterMark').style.display = null;
 
 
 }
@@ -6312,7 +6314,7 @@ function VIDEO_CALL_INIT(THIS, callback, chatId) {
             let gapOnlineVideo = document.body.querySelector('#gapOnlineVideo');
 
             captureStream = stream;
-            
+
 
             gapOnlineVideo.srcObject = stream;
 
@@ -6745,7 +6747,7 @@ function screenRecordAdminShareRequestCallback(res) {
 }
 
 function fullScreen(id) {
-    
+
     getDoc().querySelector('#gapModal').style.display = null;
     getDoc().querySelector('#gapHelpDeskBlackBg').style.display = null;
 
@@ -7141,10 +7143,25 @@ function testDo() {
 
 window.addEventListener('beforeunload', function () {
 
-    
+
     MyCaller.Send("CustomerTabClosed");
 });
 
 
 
 
+function playSound() {
+
+    try {
+
+        let gapAlarmSound = getDoc().querySelector('#gapAlarmSound');
+        if (gapAlarmSound) {
+
+            gapAlarmSound.play();
+        }
+    } catch (e) {
+
+        //ignore
+    }
+
+}

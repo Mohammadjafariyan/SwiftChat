@@ -151,7 +151,10 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
 
         public override ActionResult Save(MyAccount model)
         {
-            PlanService.CheckSupporterCount();
+            if (model.Id == 0)
+            {
+                PlanService.CheckSupporterCount();
+            }
 
             return base.Save(model);
         }

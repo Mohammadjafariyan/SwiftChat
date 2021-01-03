@@ -928,8 +928,8 @@ color:@pluginCustomized.TopHeaderRightColor !important;
 
 
 
-    <input type="hidden" style="display:none" id="customerWebsiteUrl" 
-           value="@website.BaseUrl"/>
+    <input type="hidden" style="display:none" id="customerWebsiteUrl"
+           value="@website.BaseUrl" />
 
     <div>
 
@@ -1458,5 +1458,17 @@ color:@pluginCustomized.TopHeaderRightColor !important;
 
 
     </div>
+
+
+    @if (website.MyWebsiteSettings?.Select(s => s.IsNotificationMuteForViewers).FirstOrDefault() != true)
+    {
+        <audio controls style="display:none" id="gapAlarmSound">
+            <source src="@baseUrl/Alam/ViewerAlarm?websiteToken=@website.WebsiteToken"
+                    type="audio/mp3">
+            مرورگر شما از صدا پشتیبانی نمی کند
+        </audio>
+    }
+
+
 </body>
 </html>

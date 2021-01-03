@@ -4,6 +4,7 @@ import B4AdminMainMenu from "./B4AdminMainMenu";
 import '../../styles/myStyle.css'
 import {CurrentUserInfo} from "../../Help/Socket";
 import {DataHolder} from "../../Help/DataHolder";
+import { colors } from './../../Components/Utilities/GlobalLoading';
 
 class B4AdminMenu extends Component {
 
@@ -15,9 +16,12 @@ class B4AdminMenu extends Component {
     }
 
     render() {
+
+    let color= colors[Math.floor(Math.random() * colors.length)];
+
         return (
             <>
-                <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+                <ul className={"navbar-nav  sidebar sidebar-dark accordion"  + ` bg-gradient-${color} `} id="accordionSidebar">
 
                     {/*      {/* <!-- Sidebar - Brand-->*/}
                     <a className="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">

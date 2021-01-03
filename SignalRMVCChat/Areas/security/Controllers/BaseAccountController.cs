@@ -11,6 +11,8 @@ using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.ManualMigrate;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
+using SignalRMVCChat.Service.Compaign.Email;
+using SignalRMVCChat.SysAdmin.Service;
 using TelegramBotsWebApplication.ActionFilters;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
@@ -327,6 +329,26 @@ namespace SignalRMVCChat.Areas.security.Controllers
                     // string code = await UserService.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserService.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+
+                    //------- send welcome email
+
+                    var emailService = Injector.Inject<EmailService>();
+
+
+                    var emailParameters = new EmailParametersViewModel
+                    {
+                        full = model.Name + " " + model.LastName,
+                        name = model.Name,
+                        lastname = model.LastName,
+                        email = model.Email,
+                        password = model.Password,
+                    };
+
+                    emailService.SendByTemplateType(model.Email, result.Id, Email.Model.EmailTemplateType.Welcome, emailParameters);
+
+                    //------- end
+
 
 
                     if (string.IsNullOrEmpty(requestUrl) == false)

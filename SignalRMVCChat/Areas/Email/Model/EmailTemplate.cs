@@ -43,5 +43,8 @@ namespace SignalRMVCChat.Areas.Email.Model
         [Display(Name = "قالب معمولی")]
         Normal,
 
+        [Display(Name = "خوش آمد گویی بعد از ثبت نام")]
+        Welcome,
+
     }
 }

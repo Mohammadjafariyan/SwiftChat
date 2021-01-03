@@ -71,10 +71,10 @@ class CompaignEditor extends CompaignChildCompBase {
           variant={"warning"}
           id={"helpBtn"}
           type="button"
-          label="راهنما"
+          label="مانند ورود ایمیل کاربر"
           onClick={(e) => this.op.toggle(e)}
         >
-          راهنما
+          راهنما: استفاده از اطلاعات کاربر در ایمیل
         </Button>
         <OverlayPanel
           appendTo={this.op.current}
@@ -240,19 +240,17 @@ export const Help = (props) => {
   const msg2 = `
     {{ name.first}}`;
 
-  const msg3 = `{{variable_name}}`;
-  const msg4 = `{{variable_name | "مقدار متن جایگزین"}}`;
+  const msg3 = `{variable_name}`;
+  const msg4 = `{variable_name | "مقدار متن جایگزین"}`;
   const msg = `
-     <span style="border-radius: 45%" class="btn btn-info">1</span>   نام و نام خانوادگی: {{ name.full }} or {{ name.full | "Fallback Full Name" }}
-     <span style="border-radius: 45%" class="btn btn-info">2</span>   نام: {{ name.first }} or {{ name.first | "Fallback First Name" }}
-     <span style="border-radius: 45%" class="btn btn-info">3</span>   نام خانوادگی: {{ name.last }} or {{ name.last | "Fallback Last Name" }}
-     <span style="border-radius: 45%" class="btn btn-info">4</span>   ایمیل: {{ email }} or {{ email | "Fallback Email" }}
-     <span style="border-radius: 45%" class="btn btn-info">5</span>   کشور: {{ country }} or {{ country | "Fallback Country" }}
-     <span style="border-radius: 45%" class="btn btn-info">6</span>   شهر: {{ city }} or {{ city | "Fallback City" }}
-     <span style="border-radius: 45%" class="btn btn-info">7</span>    وبسایت: {{ website }} or {{ website | "Fallback Website" }}
-     <span style="border-radius: 45%" class="btn btn-info">8</span>    نام شرکت: {{ company.name }} or {{ company.name | "Fallback Company Name" }}
-     <span style="border-radius: 45%" class="btn btn-info">9</span>   نام فیلد یک فرم: {{ form.field }} or {{ form.field | "Fallback Company Name" }}
-     <span style="border-radius: 45%" class="btn btn-info">10</span>   مقدار داده سفارشی: {{ data.your_key }} or {{ data.your_key | "Fallback Value" }}`;
+     <span style="border-radius: 45%" class="btn btn-info">1</span>   نام و نام خانوادگی: { full } or { full | "Fallback Full Name" }
+      <span style="border-radius: 45%" class="btn btn-info">3</span>   نام خانوادگی: {lastname} or { lastname | "Fallback Last Name" }
+     <span style="border-radius: 45%" class="btn btn-info">4</span>   ایمیل: { email } or { email | "Fallback Email" }
+     <span style="border-radius: 45%" class="btn btn-info">5</span>    وبسایت: {website } or {website | "Fallback Website" }
+     <span style="border-radius: 45%" class="btn btn-info">6</span>    نام شرکت: {companyname } or {companyname | "Fallback Company Name" }
+     `;
+     /* <span style="border-radius: 45%" class="btn btn-info">9</span>   نام فیلد یک فرم: {field } or {field | "Fallback Company Name" }
+     <span style="border-radius: 45%" class="btn btn-info">10</span>   مقدار داده سفارشی: {your_key } or {your_key | "Fallback Value" } */
   return (
     <>
       <Card>

@@ -10,6 +10,9 @@ using SignalRMVCChat.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SignalRMVCChat.Areas.Email.Model;
 using SignalRMVCChat.Areas.security.Models;
+using SignalRMVCChat.Areas.Email.Service;
+using SignalRMVCChat.Areas.security.Service;
+using System.Data.Entity;
 
 namespace SignalRMVCChat.Service.Compaign.Email
 {
@@ -23,6 +26,7 @@ namespace SignalRMVCChat.Service.Compaign.Email
         }
 
         public SettingService SettingService { get; }
+        internal dynamic lastTrackInfos { get;  set; }
 
         internal string SendEmailByCompagin(Models.Compaign.Compaign item,
             Customer customer, int websiteId, Models.Compaign.CompaignLog compaignLog)
@@ -32,7 +36,7 @@ namespace SignalRMVCChat.Service.Compaign.Email
                 return "کاربر ایمیل ندارد";
             }
 
-            var websiteEmail = GetQuery().Where(c => c.MyWebsiteId == websiteId).FirstOrDefault();
+            var websiteEmail = GetQuery().Include(c => c.MyWebsite).Where(c => c.MyWebsiteId == websiteId).FirstOrDefault();
 
             var systemSetting = SettingService.GetSingle();
 
@@ -63,6 +67,19 @@ namespace SignalRMVCChat.Service.Compaign.Email
 
                 html = EmailHtmlManipulator.Manipulate(html, item.Id, compaignLog);
 
+
+
+                html = EmailHtmlManipulator.Manipulate(html, new EmailParametersViewModel
+                {
+                    full = customer.Name,
+                    name = customer.Name,
+                    lastname = "",
+                    companyname = customer.CompanyName,
+                    email = customer.Email,
+                    phone = customer.Phone,
+                    website = websiteEmail?.MyWebsite?.BaseUrl
+                });
+
                 MailMessage message = new MailMessage();
                 SmtpClient smtp = new SmtpClient();
                 message.From = new MailAddress(FromMailAddress);
@@ -91,6 +108,8 @@ namespace SignalRMVCChat.Service.Compaign.Email
             }
         }
 
+      
+
         internal List<EmailSent> SendEmailByTemplate(EmailTemplate template, List<AppUser> appUsers)
         {
             var setting = this.SettingService.GetSingle();
@@ -106,7 +125,7 @@ namespace SignalRMVCChat.Service.Compaign.Email
                 {
                     AppUserId = user.Id,
                     EmailTemplateId = template.Id,
-                    Status= EmailSentStatus.NotDetermined
+                    Status = EmailSentStatus.NotDetermined
                 };
                 try
                 {
@@ -148,30 +167,146 @@ namespace SignalRMVCChat.Service.Compaign.Email
             return emailSents;
         }
 
-        internal void SendForgetPasswordEmail(string email, string forgetPasswordCode)
+        internal void SendForgetPasswordEmail(string email, string forgetPasswordCode, int userId)
         {
-            var setting = this.SettingService.GetSingle();
-            var html = setting.EmailTemplate_ForgetPassword;
+            var appUserService = DependencyInjection.Injector.Inject<AppUserService>();
+
+            var user = appUserService.GetById(userId).Single;
+            var emailParameters = new EmailParametersViewModel
+            {
+
+                full = user.Name + " " + user.LastName,
+                name = user.Name,
+                lastname = user.LastName,
+                email = email,
+                password = user.Password,
+                code = user.ForgetPasswordCode,
+            };
 
 
-            MailMessage message = new MailMessage();
-            SmtpClient smtp = new SmtpClient();
-            message.From = new MailAddress(setting.FromMailAddress);
-            message.To.Add(new MailAddress(email));
-            message.Subject = "فراموشی رمز عبور ";
-            message.IsBodyHtml = true; //to make message body as html  
-            message.Body = html;
-            smtp.Port = 587;
-            smtp.Host = setting.Host; //for gmail host  
-            smtp.EnableSsl = true;
-            smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new NetworkCredential(setting.FromMailAddress
-                , setting.FromMailAddressPassword);
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.Send(message);
+            SendByTemplateType(email, userId, EmailTemplateType.ForgetPassword, emailParameters);
 
         }
+
+        public void SendEmail(string email, string html, string title)
+        {
+            try
+            {
+
+                var setting = this.SettingService.GetSingle();
+
+
+                setting = new Setting();
+                MailMessage message = new MailMessage();
+                SmtpClient smtp = new SmtpClient();
+                message.From = new MailAddress(setting.FromMailAddress);
+                message.To.Add(new MailAddress(email));
+                message.Subject = title;
+                message.IsBodyHtml = true; //to make message body as html  
+                message.Body = html;
+                smtp.Port = 587;
+                smtp.Host = setting.Host; //for gmail host  
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential(setting.FromMailAddress
+                    , setting.FromMailAddressPassword);
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Send(message);
+            }
+            catch (Exception e)
+            {
+                //ignore
+            }
+        }
+
+        public void SendByTemplateType(string email, int id, EmailTemplateType type, EmailParametersViewModel emailParameters)
+        {
+            var setting = this.SettingService.GetSingle();
+
+            var emailTemplateService = DependencyInjection.Injector.Inject<EmailTemplateService>();
+
+            var list=emailTemplateService.BaseGetQuery().ToList();
+            var template = emailTemplateService.BaseGetQuery()
+                .FirstOrDefault(q => q.EmailTemplateType == type);
+
+            if (template == null || string.IsNullOrEmpty(template?.Html))
+            {
+                return;
+            }
+
+            string html = template?.Html;
+
+            html = EmailHtmlManipulator.Manipulate(template.Html, emailParameters);
+
+            SendEmail(email, html, template.Title);
+        }
+
     }
+
+
+    public class EmailParametersViewModel
+    {
+        public string full { get; set; }
+        public string name { get; set; }
+        public string lastname { get; set; }
+        public string email { get; set; }
+     //   public string country { get; set; }
+      //  public string city { get; set; }
+        public string website { get; set; }
+        public string companyname { get; set; }
+     //   public string field { get; set; }
+     //   public string your_key { get; set; }
+        public string phone { get; set; }
+    //    public string plan { get; set; }
+    //    public string planprice { get; set; }
+    //    public string lastplanprice { get; set; }
+        public string code { get; set; }
+        public string password { get; set; }
+
+    }
+
+    /*
+     * 
+     * 
+     * 
+     * 
+     * --------------------------------------------------------
+     * {{variable_name | "مقدار متن جایگزین"}}یا{{variable_name}}
+
+        نام و نام خانوادگی: {full} or { full | "Fallback Full Name" }
+        نام: {{ name }} or {{ name | "Fallback First Name" }}
+        نام خانوادگی: {{ name.last }} or {{ name.last | "Fallback Last Name" }}
+        ایمیل: {{ email }} or {{ email | "Fallback Email" }}
+        کشور: {{ country }} or {{ country | "Fallback Country" }}
+        شهر: {{ city }} or {{ city | "Fallback City" }}
+         وبسایت: {{ website }} or {{ website | "Fallback Website" }}
+         نام شرکت: {{ companyname }} or {{ company.name | "Fallback Company Name" }}
+        نام فیلد یک فرم: {{ field }} or {{ form.field | "Fallback Company Name" }}
+        مقدار داده سفارشی: {{ data.your_key }} or {{ data.your_key | "Fallback Value" }}
+
+
+    برای استفاده از اطلاعات کاربران در قالب های ایمیل از تگ های زیر می توانید استفاده کنید
+
+{name} : نام
+
+{lastname} : نام خانوادگی
+
+{username} : نام کاربری
+
+{email} : ایمیل
+
+{phone} : شماره تلفن
+
+{plan} : پلن انتخابی کاربر
+
+{planprice} : مبلغ پلن
+
+{lastplanprice} : مبلغ آخرین خرید
+
+{code} : کد فراموشی رمز عبور
+
+{password} : رمز عبور جدید
+     * */
 
     [TestClass()]
     public class EmailServiceTests

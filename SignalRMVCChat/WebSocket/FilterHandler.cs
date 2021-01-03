@@ -135,7 +135,7 @@ namespace SignalRMVCChat.WebSocket
                 {
 
                     // ----------------------- online status -----------------------------
-                    var myaccount = currMySocketReq.MySocket.MyAccount;
+                    var myaccount = MyAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value).Single;
                     myaccount.OnlineStatus = OnlineStatus.Online;
                     MyAccountProviderService.VanillaSave(myaccount);
                     // ----------------------- END -----------------------------

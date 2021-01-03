@@ -304,6 +304,9 @@ export default class Chat extends Component {
           target: res.Content.CustomerId,
         });
       }
+
+
+      
     }
   }
 

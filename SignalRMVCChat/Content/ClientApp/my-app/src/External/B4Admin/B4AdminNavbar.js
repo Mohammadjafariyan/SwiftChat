@@ -10,6 +10,8 @@ import { DataHolder } from "../../Help/DataHolder";
 
 import "../../styles/myStyle.css";
 import CurrentPlanInMenu from "../../Plan/CurrentPlanInMenu";
+import AlarmOnOff from './../../Components/Alarm/AlarmOnOff';
+import Logoff from './../../Components/signout/Logoff';
 
 class B4AdminNavbar extends Component {
   state = {
@@ -144,7 +146,7 @@ class B4AdminNavbar extends Component {
           {/* <!-- Sidebar Toggle (Topbar)-->*/}
           <button
             id="sidebarToggleTop"
-            className="btn btn-link d-md-none rounded-circle mr-3"
+            className="btn btn-link  rounded-circle mr-3"
           >
             <i className="fa fa-bars"></i>
           </button>
@@ -154,7 +156,10 @@ class B4AdminNavbar extends Component {
 
           {/* <B4AdminSubMenu/>*/}
 
-          <a
+
+<AlarmOnOff/>
+         
+         {/*  <a
             className="nav-link "
             role="button"
             onClick={() => {
@@ -168,7 +173,7 @@ class B4AdminNavbar extends Component {
             {this.state.toggled && (
               <i className="fa fa-toggle-off" aria-hidden="true"></i>
             )}
-          </a>
+          </a> */}
 
           {/* <!-- Topbar Navbar-->*/}
           <ul className="navbar-nav ml-auto">
@@ -469,6 +474,9 @@ class B4AdminNavbar extends Component {
             </li>
 
             <CurrentPlanInMenu />
+
+
+            <Logoff/>
           </ul>
         </nav>
       </>

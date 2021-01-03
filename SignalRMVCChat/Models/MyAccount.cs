@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using SignalRMVCChat.Models.ET;
 using SignalRMVCChat.Models.UsersSeparation;
 using SignalRMVCChat.Models.TelegramBot;
+using SignalRMVCChat.Models.Alarms;
 
 namespace SignalRMVCChat.Models
 {
@@ -233,6 +234,9 @@ namespace SignalRMVCChat.Models
        
         [NotMapped]
         public LeaderBoardStatus LeaderBoardStatus { get;  set; }
+        public bool IsNotificationMute { get;
+            set; }
+        public List<Alarm> Alarms { get;  set; }
     }
 
     public enum LeaderBoardStatus

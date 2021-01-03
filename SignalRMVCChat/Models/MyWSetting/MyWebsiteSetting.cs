@@ -12,6 +12,7 @@ namespace SignalRMVCChat.Models.MyWSetting
     public class MyWebsiteSetting:BaseEntity
     {
         public bool IsLockToUrl { get; set; }
+        public bool IsNotificationMuteForViewers { get; set; }
 
 
         [JsonIgnore]
@@ -80,6 +81,12 @@ namespace SignalRMVCChat.Models.MyWSetting
 
         public int MyWebsiteId { get; set; }
         public MyWebsite MyWebsite { get; set; }
+
+        [NotMapped]
+        public string AdminSound { get;  set; }
+   
+        [NotMapped]
+        public string ViewerSound { get;  set; }
 
         internal bool CheckActivePages()
         {

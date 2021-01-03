@@ -13,6 +13,21 @@ class dispatcher {
     }
     console.log("dispatcher===>", res.Name);
     switch (res.Name) {
+      /*-------------------- alarm--------------------*/
+      case "alarmGetSoundsCallback":
+        if (CurrentUserInfo.AlarmSetting) {
+          CurrentUserInfo.AlarmSetting.alarmGetSoundsCallback(res);
+        }
+        break;
+
+
+      case "alarmSetIsMuteSocketHandler":
+        if (CurrentUserInfo.AlarmOnOff) {
+          CurrentUserInfo.AlarmOnOff.alarmSetIsMuteSocketHandler(res);
+        }
+        break;
+      /*-------------------- END--------------------*/
+
       /*-------------------- stats--------------------*/
       case "getTelegramBotSettingCallback":
         if (CurrentUserInfo.TelegramBotSave) {
@@ -847,7 +862,7 @@ class dispatcher {
         if (CurrentUserInfo.CustomersPage) {
           CurrentUserInfo.CustomersPage.customerStopTypingCallback(res);
         }
-        
+
         if (CurrentUserInfo.OnlineCustomerListHolder) {
           CurrentUserInfo.OnlineCustomerListHolder.customerStopTypingCallback(
             res
@@ -857,8 +872,6 @@ class dispatcher {
         if (CurrentUserInfo.MyHeader) {
           CurrentUserInfo.MyHeader.customerStopTypingCallback(res);
         }
-
-   
 
         if (CurrentUserInfo.ChatPage) {
           CurrentUserInfo.ChatPage.customerStopTypingCallback(res);
@@ -961,7 +974,7 @@ class dispatcher {
           }
 
           if (DataHolder.currentPage === "Map") {
-           /*  if (CurrentUserInfo.CustomersPage) {
+            /*  if (CurrentUserInfo.CustomersPage) {
               CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);
             } */
 
@@ -986,8 +999,9 @@ class dispatcher {
         break;
 
       case "customerSendToAdminCallback":
-       // if (CurrentUserInfo.ChatPage && !DataHolder.currentPage)
-        if (CurrentUserInfo.ChatPage )
+        // if (CurrentUserInfo.ChatPage && !DataHolder.currentPage)
+
+        if (CurrentUserInfo.ChatPage)
           CurrentUserInfo.ChatPage.customerSendToAdminCallback(res);
 
         if (CurrentUserInfo.CustomersPage)
@@ -998,6 +1012,9 @@ class dispatcher {
             res
           );
 
+        if (CurrentUserInfo.Alarm) {
+          CurrentUserInfo.Alarm.togglePlay();
+        }
         break;
       case "msgDeliveredCallback":
         CurrentUserInfo.ChatPage.msgDeliveredCallback(res);
@@ -1156,6 +1173,10 @@ class dispatcher {
           CurrentUserInfo.CurrentPlanInMenu.getMyProfileCallback(res);
         }
 
+        if (CurrentUserInfo.AlarmOnOff) {
+          CurrentUserInfo.AlarmOnOff.getMyProfileCallback(res);
+        }
+
         break;
       case "saveMyProfileCallback":
         if (CurrentUserInfo.ProfilePage) {
@@ -1193,6 +1214,9 @@ class dispatcher {
         if (res && res.Message) {
           console.error(res.Message);
 
+          if (CurrentUserInfo.LoginPage) {
+            CurrentUserInfo.LoginPage.setState({ loading: false });
+          }
           CurrentUserInfo.LayoutPage.showError(res.Message);
 
           if (res.Message.indexOf("کانکشکن متفاوت") >= 0) {

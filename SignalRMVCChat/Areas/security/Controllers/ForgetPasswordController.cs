@@ -65,7 +65,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
                     db.SaveChanges();
 
                     // ----------------------- send email -------------------
-                    EmailService.SendForgetPasswordEmail(user.Email, user.ForgetPasswordCode);
+                    EmailService.SendForgetPasswordEmail(user.Email, user.ForgetPasswordCode,user.Id);
 
 
                     TempData["lastSent"] = SignalRMVCChat.Models.MyAccount.CalculateOnlineTime(DateTime.Now);

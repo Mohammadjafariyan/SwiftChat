@@ -14,6 +14,7 @@ using SignalRMVCChat.Areas.Email.Model;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Migrations;
+using SignalRMVCChat.Models.Alarms;
 using SignalRMVCChat.Models.Bot;
 using SignalRMVCChat.Models.Compaign;
 using SignalRMVCChat.Models.Compaign.Email;
@@ -592,12 +593,33 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #endregion
 
+            #region Alarm
+
+            modelBuilder.Entity<MyWebsite>()
+     .HasMany(r => r.Alarms)
+     .WithRequired(o => o.MyWebsite)
+     .HasForeignKey(o => o.MyWebsiteId).WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<MyAccount>()
+  .HasMany(r => r.Alarms)
+  .WithOptional(o => o.MyAccount)
+  .HasForeignKey(o => o.MyAccountId).WillCascadeOnDelete(false);
+
+            
+            #endregion
+
             base.OnModelCreating(modelBuilder);
         }
         #region EmailTemplates
 
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
         public DbSet<EmailSent> EmailSents { get; set; }
+        #endregion
+
+        #region Alarm
+        public DbSet<Alarm> Alarms { get; set; }
+
         #endregion
 
 
