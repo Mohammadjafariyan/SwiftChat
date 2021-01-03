@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRMVCChat", "SignalRMVCChat\SignalRMVCChat.csproj", "{01DD8E30-4F26-48BF-9884-9BAA9068ADA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRMVCChatTests", "SignalRMVCChatTests\SignalRMVCChatTests.csproj", "{88F62157-11BA-406D-9A72-AEE5FA537BE2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot", "Telegram.Bot-master\Telegram.Bot-master\src\Telegram.Bot\Telegram.Bot.csproj", "{171AAEF2-6F44-4D74-9A08-5A5C6B8EA1CE}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{01DD8E30-4F26-48BF-9884-9BAA9068ADA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01DD8E30-4F26-48BF-9884-9BAA9068ADA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01DD8E30-4F26-48BF-9884-9BAA9068ADA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88F62157-11BA-406D-9A72-AEE5FA537BE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88F62157-11BA-406D-9A72-AEE5FA537BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88F62157-11BA-406D-9A72-AEE5FA537BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88F62157-11BA-406D-9A72-AEE5FA537BE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{171AAEF2-6F44-4D74-9A08-5A5C6B8EA1CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{171AAEF2-6F44-4D74-9A08-5A5C6B8EA1CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{171AAEF2-6F44-4D74-9A08-5A5C6B8EA1CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
