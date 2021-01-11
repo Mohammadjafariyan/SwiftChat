@@ -2,7 +2,8 @@
 import {_showConstantMsg, _showError, _showMsg} from "../Pages/LayoutPage";
 import Spinner from "react-bootstrap/Spinner";
 import {DataHolder} from "../Help/DataHolder";
-import {CurrentUserInfo, MyCaller} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class ShowMyScreen extends Component {
     state={msg:'\n' +

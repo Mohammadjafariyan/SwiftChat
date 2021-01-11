@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo,MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {_showError, _showMsg} from "../../Pages/LayoutPage";
 import AutomaticCompaign from "./Automatic/AutomaticCompaign";
 import ManualCompaign from "./Manual/ManualCompaign";
@@ -10,6 +10,7 @@ import {RadioButton} from "primereact/radiobutton";
 import Button from "react-bootstrap/cjs/Button";
 import {MyModal} from "../../Components/Modal";
 import CompaignLogReceiverTable from "./Logs/CompaignLogReceiverTable";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 
 class CompaignSave extends Component {

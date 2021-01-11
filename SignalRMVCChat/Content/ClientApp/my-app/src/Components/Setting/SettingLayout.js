@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Row, Col } from "react-bootstrap";
 import SettingMenu from "./SettingMenu";
-import { CurrentUserInfo, MyCaller } from "../../Help/Socket";
+import { MyCaller } from "../../Help/Socket";
 import SettingBody from "./SettingBody";
 import SettingWelcome from "./SettingWelcome";
 import { DataHolder } from "../../Help/DataHolder";
 import SettingchangedAlert from './bodyComps/SettingChangedAlert';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 export default class SettingLayout extends Component {
   state = {};

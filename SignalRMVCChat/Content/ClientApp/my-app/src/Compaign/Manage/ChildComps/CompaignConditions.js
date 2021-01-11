@@ -8,7 +8,7 @@ import Card from "react-bootstrap/cjs/Card";
 import {TabPanel, TabView} from "primereact/tabview";
 import CompaignFilter from "./CompaginHelps/CompaignFilter";
 import {Dropdown} from "primereact/dropdown";
-import {MyCaller, CurrentUserInfo} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {_showError} from "../../../Pages/LayoutPage";
 import {SelectButton} from "primereact/selectbutton";
 import {weekdays} from "../../../Bot/Design/NodeSetting/BotEventCondition";
@@ -17,6 +17,7 @@ import {Calendar} from "primereact/calendar";
 import {RadioButton} from "primereact/radiobutton";
 import {_GetSelectedCompaign} from "../CompaignSave";
 import Button from "react-bootstrap/cjs/Button";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CompaignConditions extends CompaignChildCompBase {
     state = {

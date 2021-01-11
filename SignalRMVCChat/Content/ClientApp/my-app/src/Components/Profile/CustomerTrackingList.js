@@ -1,8 +1,9 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {_showError} from "../../Pages/LayoutPage";
 import {Column} from "primereact/column";
 import {DataTable} from "primereact/datatable";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class CustomerTrackingList extends Component {
     state={};

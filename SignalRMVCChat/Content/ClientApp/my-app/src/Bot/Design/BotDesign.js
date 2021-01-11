@@ -4,7 +4,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Button} from "primereact/button";
 import {_showError, _showMsg} from "../../Pages/LayoutPage";
-import {CurrentUserInfo,MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class BotDesign extends Component {
 

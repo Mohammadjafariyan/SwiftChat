@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import BotList from "./BotList";
 import BotHelpMessage from "./BotHelpMessage";
-import {CurrentUserInfo} from "../Help/Socket";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class BotIndex extends Component {
     constructor(props) {

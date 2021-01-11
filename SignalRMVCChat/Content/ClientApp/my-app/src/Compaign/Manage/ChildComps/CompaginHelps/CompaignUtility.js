@@ -20,11 +20,12 @@ import { InputSwitch } from "primereact/inputswitch";
 import SelectStates from "../../../../Routing/ChildComps/SelectStates";
 import SelectCities from "../../../../Routing/ChildComps/SelectCities";
 import SelectSegments from "../../../../Routing/ChildComps/SelectSegments";
-import { CurrentUserInfo, MyCaller } from "../../../../Help/Socket";
+import { MyCaller } from "../../../../Help/Socket";
 import { Ripple } from "primereact/ripple";
 
 
 import './helpStyle.css'
+import {CurrentUserInfo} from "../../../../CurrentUserInfo";
 
 const criteriaStrList = `آدرس ایمیل-
  نام کامل  -

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.WebSocket
 {

@@ -1,6 +1,7 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo,MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import MyMultiSelect from "./MyMultiSelect";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class SelectSegments extends MyMultiSelect {
     state = {

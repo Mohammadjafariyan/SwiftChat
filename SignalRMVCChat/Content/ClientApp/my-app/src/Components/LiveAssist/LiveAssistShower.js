@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 import { DataHolder } from "../../Help/DataHolder";
-import { CurrentUserInfo,MyCaller } from "../../Help/Socket";
+import { MyCaller } from "../../Help/Socket";
 import ChattedAndReturnedCustomerListPage from "../../Pages/ChattedAndReturnedCustomerListPage";
 import { _showError } from "../../Pages/LayoutPage";
 import {Spinner} from "react-bootstrap";
@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 
 
 import scale from 'scale-number-range'
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class LiveAssistShower extends Component {
   state={};

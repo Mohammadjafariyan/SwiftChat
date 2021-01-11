@@ -3,7 +3,7 @@ import ChatPage from '../../Pages/ChatPage';
 import LoginPage from '../../Pages/LoginPage';
 import {cookieManager} from '../../Help/CookieManager';
 import {MyGlobal} from '../../Help/MyGlobal';
-import {MyCaller, CurrentUserInfo} from '../../Help/Socket';
+import {MyCaller} from '../../Help/Socket';
 import {DataHolder} from '../../Help/DataHolder';
 
 
@@ -47,6 +47,7 @@ import CompaignPage from "../../Pages/CompaignPage";
 import TelegramBotPage from './../../Pages/TelegramBotPage';
 import SettingPage from './../../Pages/SettingPage';
 import ArchivePage from './../../Pages/ArchivePage';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 
 export default class B4AdminLayoutPage extends Component {

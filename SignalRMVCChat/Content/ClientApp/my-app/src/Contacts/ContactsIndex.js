@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { CurrentUserInfo, MyCaller } from "../Help/Socket";
+import { MyCaller } from "../Help/Socket";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { TagsShow } from "../Components/CustomerTags";
@@ -11,6 +11,7 @@ import { CustomerProfileSideBar } from "../Components/Profile/CustomerProfileSid
 import { Card, Container } from "react-bootstrap";
 import { Checkbox } from "primereact/checkbox";
 import Badge from "react-bootstrap/Badge";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class ContactsIndex extends Component {
   state = {

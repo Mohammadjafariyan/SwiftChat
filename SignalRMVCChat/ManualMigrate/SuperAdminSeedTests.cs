@@ -2,8 +2,8 @@
 using System.Web.Security;
 using NUnit.Framework;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.DependencyInjection;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.ManualMigrate
 {

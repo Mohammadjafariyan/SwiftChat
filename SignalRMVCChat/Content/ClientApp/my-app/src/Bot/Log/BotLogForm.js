@@ -1,8 +1,9 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo,MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {Dropdown} from "primereact/dropdown";
 import {_showError} from "../../Pages/LayoutPage";
 import {Button} from "primereact/button";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class BotLogForm extends Component {
     constructor(props) {

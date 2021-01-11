@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo} from "../../Help/Socket";
 import {IranStates} from "../../Components/Utilities/Utility";
 import {MultiSelect} from "primereact/multiselect";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class MyMultiSelect extends Component {
     state = {

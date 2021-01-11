@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo, MyCaller} from "../../../../Help/Socket";
+import {MyCaller} from "../../../../Help/Socket";
 import {_GetSelectedCompaign} from "../../CompaignSave";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
@@ -26,6 +26,7 @@ import Col from "react-bootstrap/Col";
 import SelectAdmins from "../../../../Routing/ChildComps/SelectAdmins";
 import {MyCard, MyFieldset} from "../../../../Routing/Manage/RoutingSave";
 import Button from "react-bootstrap/cjs/Button";
+import {CurrentUserInfo} from "../../../../CurrentUserInfo";
 
 class CompaignFilter extends Component {
     criteriaList = GetCriteriaList();

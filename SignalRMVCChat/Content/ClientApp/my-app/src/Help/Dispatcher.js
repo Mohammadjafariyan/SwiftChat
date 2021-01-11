@@ -1,9 +1,9 @@
-import { CurrentUserInfo } from "./Socket";
 import { cookieManager } from "./CookieManager";
 import LoginPage from "./../Pages/LoginPage";
 import { DataHolder } from "./DataHolder";
 import { FormShowerInChatHolder } from "../Components/FormShowerInChat";
 import React from "react";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class dispatcher {
   dispatch(res) {
@@ -13,13 +13,38 @@ class dispatcher {
     }
     console.log("dispatcher===>", res.Name);
     switch (res.Name) {
+      /*-------------------- Voice Call--------------------*/
+
+      case "vC_CustomerIsAcceptOrRejectCallback":
+        if (CurrentUserInfo.VoiceCall) {
+          CurrentUserInfo.VoiceCall.vC_CustomerIsAcceptOrRejectCallback(res);
+        }
+        break;
+      case "vC_CustomerSpeakCallback":
+        if (CurrentUserInfo.VoiceCall) {
+          CurrentUserInfo.VoiceCall.vC_CustomerSpeakCallback(res);
+        }
+        break;
+
+      case "vC_CustomerCallInitCallback":
+        
+        if (CurrentUserInfo.VoiceCall) {
+          debugger;
+          CurrentUserInfo.VoiceCall.componentDidMount();
+          CurrentUserInfo.VoiceCall.vC_CustomerCallInitCallback(res);
+        }
+        break;
+
+        
+        
+      /*-------------------- END--------------------*/
+
       /*-------------------- alarm--------------------*/
       case "alarmGetSoundsCallback":
         if (CurrentUserInfo.AlarmSetting) {
           CurrentUserInfo.AlarmSetting.alarmGetSoundsCallback(res);
         }
         break;
-
 
       case "alarmSetIsMuteSocketHandler":
         if (CurrentUserInfo.AlarmOnOff) {
@@ -952,16 +977,6 @@ class dispatcher {
 
       case "getClientsListForAdminCallback":
         // CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);
-
-        if (CurrentUserInfo.CustomersPaging) {
-          CurrentUserInfo.CustomersPaging.getClientsListForAdminCallback(res);
-        }
-        if (CurrentUserInfo.MyMapCustomerTypes) {
-          CurrentUserInfo.MyMapCustomerTypes.getClientsListForAdminCallback(
-            res
-          );
-        }
-
         if (!DataHolder.currentPage) {
           if (CurrentUserInfo.CustomersPage) {
             CurrentUserInfo.CustomersPage.getClientsListForAdminCallback(res);
@@ -969,7 +984,7 @@ class dispatcher {
         } else {
           if (CurrentUserInfo.OnlineCustomerListHolder) {
             CurrentUserInfo.OnlineCustomerListHolder.getClientsListForAdminCallback(
-              res
+                res
             );
           }
 
@@ -983,6 +998,18 @@ class dispatcher {
             }
           }
         }
+          
+          
+        if (CurrentUserInfo.CustomersPaging) {
+          CurrentUserInfo.CustomersPaging.getClientsListForAdminCallback(res);
+        }
+        if (CurrentUserInfo.MyMapCustomerTypes) {
+          CurrentUserInfo.MyMapCustomerTypes.getClientsListForAdminCallback(
+            res
+          );
+        }
+
+       
 
         /*else{
          

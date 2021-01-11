@@ -39,6 +39,12 @@ namespace SignalRMVCChat.Controllers
         {
             return Alarm(websiteToken, false);
         }
+        
+        
+        public ActionResult CallAlarm(string websiteToken)
+        {
+            return Alarm(websiteToken, false);
+        }
 
 
 

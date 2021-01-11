@@ -1,5 +1,6 @@
-﻿import {MyCaller, CurrentUserInfo} from "./../Help/Socket";
+﻿import {MyCaller} from "./../Help/Socket";
 import React, {useState} from "react";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 
 export function Input(props,validate) {

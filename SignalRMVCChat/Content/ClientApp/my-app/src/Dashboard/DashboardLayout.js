@@ -1,7 +1,7 @@
 ﻿import React, { Component } from "react";
 import { cookieManager } from "../Help/CookieManager";
 import { DataHolder } from "../Help/DataHolder";
-import { CurrentUserInfo } from "../Help/Socket";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class DashboardLayout extends Component {
   state = {};

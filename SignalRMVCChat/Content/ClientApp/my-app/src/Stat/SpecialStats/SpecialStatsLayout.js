@@ -3,11 +3,11 @@ import LeaderBoard from "./leaderBoard/LeaderBoard";
 import Rating from "./Rating/Rating";
 import HelpDeskArticleRead from "./HelpDeskArticleRead/HelpDeskArticleRead";
 import CompaignSent from "./CompaignSent/CompaignSent";
-import { CurrentUserInfo } from "../../Help/Socket";
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 import Comments from './Comments/Comments';
 import CommentsPage from './Comments/CommentsPage';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 export default class SpecialStatsLayout extends Component {
   state = {};

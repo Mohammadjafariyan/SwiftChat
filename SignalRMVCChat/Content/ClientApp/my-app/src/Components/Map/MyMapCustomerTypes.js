@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { ListBox } from "primereact/listbox";
 import {Form} from 'react-bootstrap';
-import {CurrentUserInfo, MyCaller} from '../../Help/Socket';
+import {MyCaller} from '../../Help/Socket';
 import {DataHolder} from '../../Help/DataHolder';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 const citySelectItems = [
   { label: "اختصاص داده شده به من", value: "AssingedToMe" },

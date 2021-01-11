@@ -8,11 +8,12 @@ import LayoutPage from "../../Pages/LayoutPage";
 import B4AdminBody from "./B4AdminBody";
 import B4AdminMenu from "./B4AdminMenu";
 import B4AdminNavbar from "./B4AdminNavbar";
-import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import B4AdminSubMenu from "./B4AdminSubMenu";
 import OntTheFlyChatPanel from "../../Components/OnTheFlyChatPanel/OntTheFlyChatPanel";
 import Alarm from './../../Components/Alarm/Alarm';
 import RandomBgGenerator from './../../Components/bg/RandomBgGenerator';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 const B4AdminLayoutScripts=()=>{
     useScript('/Content/B4Admin/jquery/jquery.min.js')

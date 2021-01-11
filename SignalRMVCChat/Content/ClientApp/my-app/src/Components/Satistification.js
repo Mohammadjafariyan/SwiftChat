@@ -1,9 +1,10 @@
 ﻿import React, {Component} from 'react';
-import {MyCaller,CurrentUserInfo} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
 import {_showError, _showMsg} from "../Pages/LayoutPage";
 import {DataHolder} from "../Help/DataHolder";
 import {Inplace, InplaceContent, InplaceDisplay} from "primereact/inplace";
 import Button from "react-bootstrap/Button";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class Satistification extends Component {
     state={ratingCount:[]}

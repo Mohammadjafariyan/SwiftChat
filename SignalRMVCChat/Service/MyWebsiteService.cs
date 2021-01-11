@@ -12,8 +12,8 @@ using System.Net;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 using SignalRMVCChat.Areas.security.Models;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Models.GapChatContext;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.Service
 {

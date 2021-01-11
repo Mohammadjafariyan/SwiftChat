@@ -31,11 +31,13 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
             var id = GetParam<int>("id", true, "کمد پارامتر ارسال نشده است");
 
 
-            var admin = MyAccountProviderService.GetQuery().ToList().Where(m =>
+            /*var admin = MyAccountProviderService.GetQuery().ToList().Where(m =>
                     m.AccessWebsites.Contains(currMySocketReq.MyWebsite.Id)
                     || m.MyWebsites.Select(w => w.Id)
                         .Contains(currMySocketReq.MyWebsite.Id))
-                .FirstOrDefault();
+                .FirstOrDefault();*/
+
+            var admin = MyAccountProviderService.GetSystemMyAccount(currMySocketReq.MyWebsite.Id);
 
             if (admin == null)
             {

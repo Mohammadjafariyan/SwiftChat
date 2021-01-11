@@ -10,10 +10,10 @@ using Engine.SysAdmin.Service;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Cors;
 using SignalRMVCChat.Areas.security.Models;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.ManualMigrate;
 using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.WebSocket;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat
 {

@@ -4,10 +4,11 @@ import CompaignEditor from "../ChildComps/CompaignEditor";
 import CompaignAnaylics from "../ChildComps/CompaignAnaylics";
 import CompaignRecipients from "../ChildComps/CompaignRecipients";
 import CompaignTemplates from "../ChildComps/CompaignTemplates";
-import {CurrentUserInfo, Socket} from "../../../Help/Socket";
+import {Socket} from "../../../Help/Socket";
 import {Card} from "primereact/card";
 import CompaignTable from "../ChildComps/CompaignTable";
 import {_GoCompaignTable} from "../ChildComps/CompaginHelps/CompaignUtility";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class BaseCompaign extends Component {
     state = {};

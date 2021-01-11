@@ -2,9 +2,9 @@
 import B4AdminMainMenu from "./B4AdminMainMenu";
 
 import '../../styles/myStyle.css'
-import {CurrentUserInfo} from "../../Help/Socket";
 import {DataHolder} from "../../Help/DataHolder";
 import { colors } from './../../Components/Utilities/GlobalLoading';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class B4AdminMenu extends Component {
 
@@ -24,7 +24,7 @@ class B4AdminMenu extends Component {
                 <ul className={"navbar-nav  sidebar sidebar-dark accordion"  + ` bg-gradient-${color} `} id="accordionSidebar">
 
                     {/*      {/* <!-- Sidebar - Brand-->*/}
-                    <a className="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                    <a className="sidebar-brand d-flex align-items-center justify-content-center" >
                         <div className="sidebar-brand-icon rotate-n-15">
                             <i className="fas fa-laugh-wink"></i>
                         </div>

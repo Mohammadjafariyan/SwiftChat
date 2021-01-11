@@ -2,11 +2,12 @@
 import Badge from "react-bootstrap/Badge";
 import {DataHolder} from "../Help/DataHolder";
 import Row from "react-bootstrap/Row";
-import {CurrentUserInfo, MyCaller} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
 
 import '../styles/myStyle.css'
 import {_showError} from "../Pages/LayoutPage";
 import VoiceCall from "./VoiceCall";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class OtherTools extends Component {
     state = {}
@@ -48,18 +49,18 @@ class OtherTools extends Component {
                                 this.setState({tmp:Math.random()});
                             }}>
                                 <Badge variant={'light'}>
-                                    <a href='#'> <i className={'fa fa-phone bigIcon'}></i></a>
+                                    <a > <i className={'fa fa-phone bigIcon'}></i></a>
                                 </Badge>
                             </h1>
                             
-                            <VoiceCall/>
+                            {/*<VoiceCall/>*/}
 
-                            <h1 aria-label="تماس ویدئویی" data-microtip-position="top" role="tooltip">
+                      {/*      <h1 aria-label="تماس ویدئویی" data-microtip-position="top" role="tooltip">
 
                                 <Badge variant={'light'}>
-                                    <a href='#'> <i className={'fa fa-video-camera bigIcon'}></i></a>
+                                    <a > <i className={'fa fa-video-camera bigIcon'}></i></a>
                                 </Badge>
-                            </h1>
+                            </h1>*/}
 
                             <h1 aria-label="نمایش در نقشه" data-microtip-position="top" role="tooltip"  onClick={() => {
 
@@ -78,7 +79,7 @@ class OtherTools extends Component {
 
                             }}>
                                 <Badge variant={'light'}>
-                                    <a href='#'> <i className={'fa fa-map-marker bigIcon'}></i></a>
+                                    <a > <i className={'fa fa-map-marker bigIcon'}></i></a>
                                 </Badge>
                             </h1>
 
@@ -90,7 +91,7 @@ class OtherTools extends Component {
 
                                 }}>
                                 <Badge variant={'light'}>
-                                    <a href='#'> <i className={'fa fa-television bigIcon'}></i></a>
+                                    <a > <i className={'fa fa-television bigIcon'}></i></a>
                                 </Badge>
                             </h1>
 
@@ -115,7 +116,7 @@ class OtherTools extends Component {
 
                                 }}>
                                 <Badge variant={'light'}>
-                                    <a href='#'> <i className={'fa fa-window-restore bigIcon'}></i></a>
+                                    <a > <i className={'fa fa-window-restore bigIcon'}></i></a>
                                 </Badge>
                             </h1>
 
@@ -129,7 +130,7 @@ class OtherTools extends Component {
                                         this.openHelpDeskModal();
                                     }}>
                                     <Badge variant={'light'}>
-                                        <a href='#'>
+                                        <a >
                                             <i className="fa fa-file-text bigIcon" aria-hidden="true"></i>
                                         </a>
 

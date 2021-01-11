@@ -2,7 +2,6 @@
 import CompaignChildCompBase from "./CompaignChildCompBase";
 import { Editor } from "primereact/editor";
 import { _GetSelectedCompaign, _SaveSelectedCompaign } from "../CompaignSave";
-import { CurrentUserInfo } from "../../../Help/Socket";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 import Row from "react-bootstrap/cjs/Row";
@@ -20,6 +19,7 @@ import CodeEditor from "./CompaginHelps/CodeEditor";
 import { SelectButton } from "primereact/selectbutton";
 import ShadowDomEditor from "./CompaginHelps/ShadowDomEditor";
 import Maximize from "./CompaginHelps/Maximize";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CompaignEditor extends CompaignChildCompBase {
   justifyOptions = [

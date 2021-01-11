@@ -5,11 +5,11 @@ import ActivePages from "./bodyComps/activeAndInactivePages/ActivePages";
 import InActivePages from "./bodyComps/activeAndInactivePages/InActivePages";
 import BoolSettings from "./bodyComps/BoolSetting/BoolSetting";
 import { DataHolder } from "./../../Help/DataHolder";
-import { CurrentUserInfo } from "../../Help/Socket";
 import { _showMsg } from "../../Pages/LayoutPage";
 import { MyCaller } from "./../../Help/Socket";
 import { Spinner } from "react-bootstrap";
 import AlarmSetting from './bodyComps/AlarmSetting/AlarmSetting';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 export default class SettingBody extends Component {
   state = {};

@@ -8,13 +8,14 @@ import SelectStates from "../ChildComps/SelectStates";
 import SelectCities from "../ChildComps/SelectCities";
 import Button from "react-bootstrap/cjs/Button";
 import {_showMsg} from "../../Pages/LayoutPage";
-import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import Card from "react-bootstrap/Card";
 import IsAuthenticated from "../ChildComps/IsAuthenticated";
 import {Fieldset} from "primereact/fieldset";
 import Badge from "react-bootstrap/Badge";
 import RoutingInfo from "../ChildComps/RoutingInfo";
 import IsResolved from "../ChildComps/IsResolved";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class RoutingSave extends Component {
     state = {};

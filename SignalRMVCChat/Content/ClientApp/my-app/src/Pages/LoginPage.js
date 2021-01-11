@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { useState } from "react";
-import { MyCaller, CurrentUserInfo } from "./../Help/Socket";
+import { MyCaller} from "./../Help/Socket";
 import { cookieManager } from "./../Help/CookieManager";
 import { MyGlobal } from "../Help/MyGlobal";
 import GlobalLoading from "../Components/Utilities/GlobalLoading";
 import { Card } from "react-bootstrap";
 import RandomBgGenerator from "./../Components/bg/RandomBgGenerator";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class LoginPage extends Component {
   constructor(arg) {
@@ -16,6 +17,7 @@ export default class LoginPage extends Component {
   }
 
   adminLoginCallback(res) {
+    debugger;
     this.setState({ loading: false });
     if (res.Type === 0) {
       var token = res.Token;

@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import BotOrgChart from "../Design/BotOrgChart";
-import {CurrentUserInfo} from "../../Help/Socket";
 import {Button} from "primereact/button";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class BotLogDetail extends Component {
     state = {};

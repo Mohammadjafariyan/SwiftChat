@@ -30,7 +30,8 @@ namespace SignalRMVCChat.WebSocket
              #region یکی از چت هارا بردار و از روی آن تشخیص بده که ادمین انتخاب شده چه کسی است
              _logService.LogFunc("یکی از چت هارا بردار و از روی آن تشخیص بده که ادمین انتخاب شده چه کسی است");
              var chatProviderService = Injector.Inject<ChatProviderService>();
-             var chat = chatProviderService.GetQuery().Include(c=>c.MyAccount).FirstOrDefault(c => c.CustomerId==currMySocketReq.MySocket.CustomerId);
+             var chat = chatProviderService.GetQuery().Include(c=>c.MyAccount)
+                 .FirstOrDefault(c => c.CustomerId==currMySocketReq.MySocket.CustomerId && c.MyAccount.MyAccountType!=MyAccountType.SystemMyAccount);
 
              if (chat?.MyAccount==null)
              {

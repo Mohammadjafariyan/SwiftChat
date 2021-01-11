@@ -1,9 +1,9 @@
 ﻿import React, {Component} from 'react';
 import Card from "react-bootstrap/Card";
 import {MySwitcher} from "../../Utilities/Utility";
-import {CurrentUserInfo} from "../../../Help/Socket";
 import {SetEventTrigger} from "../EventTriggerForm";
 import {DataHolder} from "../../../Help/DataHolder";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 
 

@@ -1,10 +1,11 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {_showError, _showMsg} from "../../Pages/LayoutPage";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import Badge from "react-bootstrap/cjs/Badge";
 import Button from "react-bootstrap/cjs/Button";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class BotLogTable extends Component {
 

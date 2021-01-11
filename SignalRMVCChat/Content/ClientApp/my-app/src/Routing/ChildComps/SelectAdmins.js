@@ -1,7 +1,8 @@
 ﻿import React, {Component} from 'react';
-import {MyCaller,CurrentUserInfo} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {MultiSelect} from "primereact/multiselect";
 import MyMultiSelect from "./MyMultiSelect";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class SelectAdmins extends MyMultiSelect {
     state = {

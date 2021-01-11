@@ -1,6 +1,6 @@
 ﻿import React, {Component} from 'react';
 import {DataHolder} from "../../../Help/DataHolder";
-import {CurrentUserInfo,MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {CountryService} from "./CountryService";
 import {_showMsg} from "../../../Pages/LayoutPage";
 import {Dropdown} from "primereact/dropdown";
@@ -8,6 +8,7 @@ import {Dropdown} from "primereact/dropdown";
 
 import '../../../styles/myStyle.css'
 import {_getHelpDesk, _setHelpDesk} from "../../../Pages/HelpDeskPage";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class Language extends Component {
     state={};

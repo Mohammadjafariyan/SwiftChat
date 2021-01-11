@@ -1,8 +1,9 @@
 ﻿import React, {Component, useState} from 'react';
 import { InputGroup, Form, Card, Container } from "react-bootstrap";
-import { MyCaller, CurrentUserInfo } from "./../Help/Socket";
+import { MyCaller} from "./../Help/Socket";
 
 import '../styles/myStyle.css';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 function addNewTag(tagName) {
     if (!tagName ) {

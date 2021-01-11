@@ -9,9 +9,10 @@ import {DataHolder} from "../../Help/DataHolder";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {_showError} from "../../Pages/LayoutPage";
 import GlobalLoading, { _SetLoading } from './../Utilities/GlobalLoading';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 
 

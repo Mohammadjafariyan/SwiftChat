@@ -3,8 +3,9 @@
 
 import {Input} from "../Components/FormInputs";
 
-import { MyCaller, CurrentUserInfo } from './../Help/Socket';
+import { MyCaller} from './../Help/Socket';
 import {Row,Alert} from "react-bootstrap";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class SocialChannelsPage extends Component {
 

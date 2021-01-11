@@ -4,8 +4,8 @@ import TagSingleCustomer from "../../Components/TagSingleCustomer";
 import WhileWriting from "../../Components/WhileWriting";
 import {Chart} from 'primereact/chart';
 import {changeUserTypes} from "../../Help/ChangeUserTypes";
-import {CurrentUserInfo} from "../../Help/Socket";
 import {_GetRandomColor} from "../../Components/Utilities/ColorsList";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class PageVisitStat extends Component {
     state = {

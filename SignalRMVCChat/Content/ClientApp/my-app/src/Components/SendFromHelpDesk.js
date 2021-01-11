@@ -1,6 +1,6 @@
 ﻿import React, {Component} from 'react';
 import {Dialog} from "primereact/dialog";
-import {CurrentUserInfo, MyCaller} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
 import {Column} from "primereact/column";
 import {DataTable} from "primereact/datatable";
 import {Button} from "primereact/button";
@@ -9,6 +9,7 @@ import {_showError, _showMsg} from "../Pages/LayoutPage";
 import {Spinner} from "react-bootstrap";
 import Badge from "react-bootstrap/Badge";
 import '../styles/myStyle.css'
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class SendFromHelpDesk extends Component {
     state = {

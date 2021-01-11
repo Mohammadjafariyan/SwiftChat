@@ -1,7 +1,8 @@
 ﻿import React, {Component} from 'react';
 import '../styles/myStyle.css'
-import { MyCaller, CurrentUserInfo } from "./../Help/Socket";
+import { MyCaller} from "./../Help/Socket";
 import Badge from "react-bootstrap/Badge";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class TagSingleCustomer extends Component {
 

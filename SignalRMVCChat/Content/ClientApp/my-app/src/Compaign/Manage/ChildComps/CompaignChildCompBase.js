@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo} from "../../../Help/Socket";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CompaignChildCompBase extends Component {
 

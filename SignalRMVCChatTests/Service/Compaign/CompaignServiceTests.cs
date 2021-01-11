@@ -12,25 +12,25 @@ namespace SignalRMVCChat.Service.Compaign.Tests
     [TestClass()]
     public class CompaignServiceTests
     {
-        [TestMethod()]
-        public void CompaignServiceTest()
-        {
-            var service = new CompaignService();
-                                       IQueryable<SignalRMVCChat.Models.Compaign.Compaign> list = service.GetConfiguredCompagins(1);
+        //[TestMethod()]
+        //public void CompaignServiceTest()
+        //{
+        //    var service = new CompaignService();
+        //                               IQueryable<SignalRMVCChat.Models.Compaign.Compaign> list = service.GetConfiguredCompagins(1);
 
 
-            Assert.IsTrue(list.Count() > 0);
-            Assert.IsTrue(list.Any(l => l.IsConfigured && l.IsAutomatic));
+        //    Assert.IsTrue(list.Count() > 0);
+        //    Assert.IsTrue(list.Any(l => l.IsConfigured && l.IsAutomatic));
 
 
 
-            var conditions= service.AutomaticCondition(list.ToList(),1);
+        //    var conditions= service.AutomaticCondition(list.ToList(),1);
 
 
-            service.ExecuteCompagins(list);
+        //    service.ExecuteCompagins(list);
 
 
-        }
+        //}
 
 
         //[TestMethod()]

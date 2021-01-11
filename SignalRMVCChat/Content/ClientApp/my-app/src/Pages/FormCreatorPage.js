@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { MyCaller, CurrentUserInfo } from "./../Help/Socket";
+import { MyCaller} from "./../Help/Socket";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {
@@ -19,6 +19,7 @@ import {
 } from "react-bootstrap";
 import { MyModal } from "../Components/Modal";
 import { _showError } from "./LayoutPage";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class FormCreatorPage extends Component {
   constructor(prop) {

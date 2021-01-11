@@ -4,11 +4,11 @@ using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.Test.SelectPlanInFront
 {

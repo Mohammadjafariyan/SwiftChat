@@ -12,12 +12,12 @@ using Moq;
 using NUnit.Framework;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.SysAdmin.Service;
 using TelegramBotsWebApplication;
 using TelegramBotsWebApplication.ActionFilters;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.Areas.security.Controllers
 {

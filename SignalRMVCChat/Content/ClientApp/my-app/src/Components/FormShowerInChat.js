@@ -1,7 +1,8 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo, MyCaller} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
 import {Card} from "react-bootstrap";
 import {FormRenderer} from "../Pages/FormCreatorPage";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class FormShowerInChat extends Component {
 

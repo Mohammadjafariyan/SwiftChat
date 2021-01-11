@@ -16,10 +16,11 @@ import SiteViewsInLast5Year from "./SiteViewsInLast5Year/SiteViewsInLast5Year";
 import SiteViewsInMonths from "./SiteViewsInMonths/SiteViewsInMonths";
 import SiteViewsInHoursOfToday from "./SiteViewsInHoursOfToday/SiteViewsInHoursOfToday";
 import SiteViewsInWeek from "./SiteViewsInWeek/SiteViewsInWeek";
-import { MyCaller , CurrentUserInfo} from "../Help/Socket";
+import { MyCaller } from "../Help/Socket";
 import { TabView } from "primereact/tabview";
 import { TabPanel } from "primereact/tabview";
 import SpecialStatsLayout from "./SpecialStats/SpecialStatsLayout";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class StatLayout extends Component {
     state={};

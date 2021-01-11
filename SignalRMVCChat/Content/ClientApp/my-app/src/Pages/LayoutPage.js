@@ -3,7 +3,7 @@ import ChatPage from "./ChatPage";
 import LoginPage from "./LoginPage";
 import { cookieManager } from "./../Help/CookieManager";
 import { MyGlobal } from "./../Help/MyGlobal";
-import { MyCaller, CurrentUserInfo } from "./../Help/Socket";
+import { MyCaller} from "./../Help/Socket";
 import { DataHolder } from "./../Help/DataHolder";
 import Menu from "../Components/Menu";
 
@@ -42,6 +42,7 @@ import BotDataPage from "./BotDataPage";
 import AssingedToMeCustomerLists from "../Routing/use/AssingedToMeCustomerLists";
 import TelegramBotPage from "./TelegramBotPage";
 import RandomBgGenerator from './../Components/bg/RandomBgGenerator';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class LayoutPage extends Component {
   toastRunning = 0;

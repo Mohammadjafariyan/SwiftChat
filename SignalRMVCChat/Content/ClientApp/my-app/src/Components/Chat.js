@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { CurrentUserInfo } from "../Help/Socket";
 import { DataHolder } from "./../Help/DataHolder";
 
 import "../styles/myStyle.css";
@@ -18,6 +17,7 @@ import WhileWriting from "./WhileWriting";
 import { Editor } from "primereact/editor";
 import { colors } from "./Utilities/GlobalLoading";
 import { Spinner } from "react-bootstrap";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class Chat extends Component {
   constructor(arg) {

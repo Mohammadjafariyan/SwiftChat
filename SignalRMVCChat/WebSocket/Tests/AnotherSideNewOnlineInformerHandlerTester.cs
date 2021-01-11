@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.WebSocket;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace TestProject1
 {

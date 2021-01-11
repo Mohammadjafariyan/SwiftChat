@@ -6,9 +6,9 @@ import "../../styles/myStyle.css";
 import Button from "react-bootstrap/Button";
 import {ShowPlusCount} from "../../Components/Menu";
 import {DataHolder} from "../../Help/DataHolder";
-import {CurrentUserInfo} from "../../Help/Socket";
 import {_getBootstrapRandomColor} from "../../Components/Utilities/Utility";
 import B4AdminLayoutPage from "./B4AdminLayoutPage";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 export default class B4AdminSubMenu extends Component {
     constructor(arg) {

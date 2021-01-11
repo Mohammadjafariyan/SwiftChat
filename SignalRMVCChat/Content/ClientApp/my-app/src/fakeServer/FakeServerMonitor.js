@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {_dispatcher} from './../Help/Dispatcher';
-import {CurrentUserInfo} from '../Help/Socket';
 import {MyGlobal} from "../Help/MyGlobal";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class FakeServerMonitor extends Component {
 

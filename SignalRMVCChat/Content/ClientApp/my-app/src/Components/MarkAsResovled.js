@@ -1,8 +1,8 @@
 ﻿import React, {Component} from 'react';
 import {DataHolder} from "../Help/DataHolder";
 import Badge from "react-bootstrap/Badge";
-import {CurrentUserInfo} from "../Help/Socket";
 import {UserInformationService} from "./Service/UserInformationService";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class MarkAsResovled extends Component {
     

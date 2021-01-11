@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import {MyCaller, CurrentUserInfo} from './../Help/Socket';
+import {MyCaller} from './../Help/Socket';
 import {DataHolder} from './../Help/DataHolder';
 import WhileWriting from "./WhileWriting";
 import {Card} from "react-bootstrap";
 import MarkAsResovled from "./MarkAsResovled";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 
 export class ForwardChat extends Component {

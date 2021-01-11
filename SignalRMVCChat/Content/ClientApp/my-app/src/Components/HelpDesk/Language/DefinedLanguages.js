@@ -1,10 +1,11 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo,MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {Dropdown} from "primereact/dropdown";
 import {DataHolder} from "../../../Help/DataHolder";
 import Badge from "react-bootstrap/Badge";
 import {_getHelpDesk, _setHelpDesk} from "../../../Pages/HelpDeskPage";
 import {_showError} from "../../../Pages/LayoutPage";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class DefinedLanguages extends Component {
     

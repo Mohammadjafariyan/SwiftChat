@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using TelegramBotsWebApplication.DependencyInjection;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 
 namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
 {

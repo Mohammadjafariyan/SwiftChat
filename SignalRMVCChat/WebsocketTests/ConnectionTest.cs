@@ -11,7 +11,6 @@ using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.SysAdmin.Service;
 using SignalRMVCChat.WebSocket;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.WebsocketTests
 {

@@ -7,7 +7,6 @@ using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.Bot;
 using SignalRMVCChat.Service.Init;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.WebSocket.Bot.Execute
 {

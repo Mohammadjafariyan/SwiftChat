@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Card, Container } from "react-bootstrap";
 
 import "../styles/myStyle.css";
-import { CurrentUserInfo, MyCaller } from "../Help/Socket";
+import { MyCaller } from "../Help/Socket";
 import { DataHolder } from "./../Help/DataHolder";
 import { Badge } from "react-bootstrap";
 import CustomerTags from "./CustomerTags";
@@ -11,6 +11,7 @@ import TagList from "./TagList";
 import WhileWriting from "./WhileWriting";
 import { CustomerProfileSideBar } from "./Profile/CustomerProfileSideBar";
 import GlobalLoading from "./Utilities/GlobalLoading";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 export default class OnlineCustomerList extends Component {
   state = {};
 

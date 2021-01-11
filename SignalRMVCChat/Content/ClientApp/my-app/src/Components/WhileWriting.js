@@ -1,8 +1,9 @@
 ﻿import React, {Component} from 'react';
 import '../styles/whileWriting.css'
 
-import {MyCaller, CurrentUserInfo} from "./../Help/Socket";
+import {MyCaller} from "./../Help/Socket";
 import { Badge } from 'react-bootstrap';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 
 class WhileWriting extends Component {

@@ -5,7 +5,7 @@ import {Button} from "primereact/button";
 import {Chips} from "primereact/chips";
 
 import '../../../styles/myStyle.css'
-import {CurrentUserInfo, MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {Dropdown} from "primereact/dropdown";
 import {FormInModalWithTable, IranCities, IranStates, MyHook, MySwitcher} from "../../../Components/Utilities/Utility";
 import {DataHolder} from "../../../Help/DataHolder";
@@ -16,6 +16,7 @@ import {Calendar} from "primereact/calendar";
 import {_showMsg} from "../../../Pages/LayoutPage";
 import {Editor} from "primereact/editor";
 import {GetDateTime} from "./BotEventNodeSetting";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 const cities = [
     {name: 'در روز هفته خاصی به سایت مراجعه کند', code: 'Week'},

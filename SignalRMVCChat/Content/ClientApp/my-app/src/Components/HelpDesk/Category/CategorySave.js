@@ -7,7 +7,7 @@ import CategoryLayout from "./CategoryLayout";
 import Col from "react-bootstrap/cjs/Col";
 import {Button} from "primereact/button";
 import {Spinner} from "react-bootstrap";
-import {CurrentUserInfo,MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {ColorPicker} from "primereact/colorpicker";
 
 import '../../../styles/myStyle.css';
@@ -17,6 +17,7 @@ import {_showError, _showMsg} from "../../../Pages/LayoutPage";
 import {_getHelpDesk} from "../../../Pages/HelpDeskPage";
 import {FileUpload} from "primereact/fileupload";
 import Card from "react-bootstrap/Card";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 class CategorySave extends Component {
     state={};
     showHeader(){

@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import StatBase from "../StatBase";
-import {CurrentUserInfo} from "../../Help/Socket";
 import {_GetRandomColor} from "../../Components/Utilities/ColorsList";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class MostExitUrlInSite extends StatBase {
 

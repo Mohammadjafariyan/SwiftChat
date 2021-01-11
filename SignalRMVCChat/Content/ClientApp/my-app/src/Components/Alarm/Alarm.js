@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CurrentUserInfo } from "../../Help/Socket";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 export default class Alarm extends Component {
   audioUrl = GetBaseUrlWithWebsiteToken("Alam/AdminAlarm");

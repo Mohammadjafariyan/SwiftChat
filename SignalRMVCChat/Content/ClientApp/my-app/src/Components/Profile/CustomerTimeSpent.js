@@ -1,8 +1,9 @@
 ﻿import React, {Component} from 'react';
-import {MyCaller, CurrentUserInfo} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {DataHolder} from "../../Help/DataHolder";
 import {_showError} from "../../Pages/LayoutPage";
 import ListGroup from "react-bootstrap/ListGroup";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class CustomerTimeSpent extends Component {
     state = {};

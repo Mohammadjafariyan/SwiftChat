@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SignalRMVCChat.Areas.security.Models;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.SysAdmin.Service;
-using TelegramBotsWebApplication.DependencyInjection;
 using TelegramBotsWebApplication.Service;
 
 namespace SignalRMVCChat.Areas.security.Service

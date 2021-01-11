@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.UsersSeparation;
 using SignalRMVCChat.WebSocket.Base;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.WebSocket.UsersSeparation
 {

@@ -5,11 +5,12 @@ import Col from "react-bootstrap/cjs/Col";
 import {ColorPicker} from "primereact/colorpicker";
 import {DataHolder} from "../../../Help/DataHolder";
 import Container from "react-bootstrap/Container";
-import {CurrentUserInfo, MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {Input} from "../../FormInputs";
 import {Button} from "primereact/button";
 import {_showError, _showMsg} from "../../../Pages/LayoutPage";
 import Card from "react-bootstrap/Card";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class HelpDeskSetting extends Component {
     state={};

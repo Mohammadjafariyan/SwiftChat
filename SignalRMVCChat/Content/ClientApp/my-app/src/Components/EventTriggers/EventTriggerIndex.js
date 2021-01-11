@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { CurrentUserInfo, MyCaller } from "../../Help/Socket";
+import { MyCaller } from "../../Help/Socket";
 import { _showError, _showMsg } from "../../Pages/LayoutPage";
 import ListGroup from "react-bootstrap/ListGroup";
 import { InputSwitch } from "primereact/inputswitch";
@@ -9,6 +9,7 @@ import { DataHolder } from "../../Help/DataHolder";
 import { SetEventTrigger } from "./EventTriggerForm";
 import GlobalLoading from "../Utilities/GlobalLoading";
 import { _SetLoading } from './../Utilities/GlobalLoading';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class EventTriggerIndex extends Component {
   state = {};

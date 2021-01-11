@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import {Steps} from "primereact/steps";
 import CompaignStep from "../Base/CompaignStep";
-import {CurrentUserInfo} from "../../../Help/Socket";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class ManualCompaignStep extends CompaignStep {
     componentDidMount() {

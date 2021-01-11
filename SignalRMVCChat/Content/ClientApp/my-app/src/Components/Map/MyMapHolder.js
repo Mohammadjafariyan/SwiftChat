@@ -1,8 +1,8 @@
 ﻿import React, { Component } from "react";
 import MyMap from "./MyMap";
-import { CurrentUserInfo } from "../../Help/Socket";
 import { MyCaller } from "./../../Help/Socket";
 import { DataHolder } from "./../../Help/DataHolder";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class MyMapHolder extends Component {
   state = {};

@@ -1,9 +1,11 @@
 ﻿import React, {Component} from 'react';
 import LayoutPage from "../../Pages/LayoutPage";
 import B4AdminLayoutPage from "./B4AdminLayoutPage";
-import {Socket,CurrentUserInfo} from "../../Help/Socket";
+import {Socket} from "../../Help/Socket";
 import {DataHolder} from "../../Help/DataHolder";
 import {_getBootstrapRandomColor} from "../../Components/Utilities/Utility";
+import VoiceCall from "../../Components/VoiceCall";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class B4AdminBody extends Component {
     state={
@@ -25,7 +27,10 @@ class B4AdminBody extends Component {
                 {this.state.activeRoute==='dashboard' && this.showIndex()}
                 
                 {this.state.activeRoute==='freeLayout' && this.showB4AdminLayoutPage() }
-                
+
+
+                <VoiceCall/>
+
             </div>
         );
     }
@@ -433,6 +438,7 @@ class B4AdminBody extends Component {
                 <div className={`card border-left-${color} shadow h-100 py-2`}>
                     <div className="card-body">
                         <B4AdminLayoutPage/>
+
                     </div>
                 </div>
             </div>

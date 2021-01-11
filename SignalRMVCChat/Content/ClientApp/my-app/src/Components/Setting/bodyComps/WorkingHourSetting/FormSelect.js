@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Dropdown } from "primereact/dropdown";
-import { MyCaller, CurrentUserInfo } from "../../../../Help/Socket";
+import { MyCaller} from "../../../../Help/Socket";
 import { Spinner } from "react-bootstrap";
+import {CurrentUserInfo} from "../../../../CurrentUserInfo";
 
 export default class FormSelect extends Component {
   state = {};

@@ -5,11 +5,11 @@ import {Dialog} from "primereact/dialog";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {_showError} from "../../../Pages/LayoutPage";
-import {CurrentUserInfo} from "../../../Help/Socket";
 import {SetEventTrigger} from "../EventTriggerForm";
 import {DataHolder} from "../../../Help/DataHolder";
 import {InputNumber} from "primereact/inputnumber";
 import { Dropdown } from 'primereact/dropdown';
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 
 const applyTypes = [

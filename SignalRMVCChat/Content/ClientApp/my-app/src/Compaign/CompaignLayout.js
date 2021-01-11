@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 import BaseCrudLayout from "../CRUD/BaseCrudLayout";
-import { CurrentUserInfo, MyCaller } from "../Help/Socket";
+import { MyCaller } from "../Help/Socket";
 import { Alert, Card } from "react-bootstrap";
 import CompaignSave, { _GetSelectedCompaign } from "./Manage/CompaignSave";
 import CompaignFilter from "./Filter/CompaignFilter";
@@ -16,6 +16,7 @@ import { ConfirmModal } from "../Components/HelpDesk/Language/ConfirmModal";
 import { _showMsg } from "../Pages/LayoutPage";
 import EmailSetting from './EmailSetting/EmailSetting';
 import CompaignLogReceiverTable from './Manage/Logs/CompaignLogReceiverTable';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class CompaignLayout extends BaseCrudLayout {
   state = {

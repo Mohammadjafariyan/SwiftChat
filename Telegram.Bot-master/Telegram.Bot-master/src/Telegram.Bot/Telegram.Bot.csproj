@@ -42,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+    <PackageReference Include="fastJSON" Version="2.4.0.1" />
     <Reference Include="System.Net.Http" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net45" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>

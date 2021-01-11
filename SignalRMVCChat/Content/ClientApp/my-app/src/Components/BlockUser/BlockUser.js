@@ -2,7 +2,8 @@
 import {Badge, Button} from "react-bootstrap";
 import {DataHolder} from "../../Help/DataHolder";
 import {_showMsg} from "../../Pages/LayoutPage";
-import {CurrentUserInfo,MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class BlockUser extends Component {
 

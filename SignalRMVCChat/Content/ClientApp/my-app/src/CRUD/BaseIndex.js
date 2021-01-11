@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {MyCaller, CurrentUserInfo} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/cjs/Col";
 import ListGroup from "react-bootstrap/ListGroup";
@@ -12,6 +12,7 @@ import {InputSwitch} from "primereact/inputswitch";
 
 
 import './CRUDStyle.css';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 class BaseIndex extends Component {
     state={};
 

@@ -1,8 +1,7 @@
-
-import { _dispatcher } from './Dispatcher';
-import { cookieManager } from './CookieManager';
-import { MyGlobal } from './MyGlobal';
-import { DataHolder } from '../Help/DataHolder';
+import {_dispatcher} from './Dispatcher';
+import {cookieManager} from './CookieManager';
+import {MyGlobal} from './MyGlobal';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export const MyCaller = {
 
@@ -105,10 +104,6 @@ return;
 }
 
 
-export const CurrentUserInfo={
-    ws:WebSocket
-};
-
 export const Socket = function (onOpen) {
 
     let baseUrl=document.getElementById('baseUrl').value;
@@ -127,6 +122,12 @@ export const Socket = function (onOpen) {
     };
 
     CurrentUserInfo.ws.onmessage = function (evt) {
+
+        if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+            console.log(evt);
+        } else {
+            // production code
+        }
         var received_msg = evt.data;
 
         _dispatcher.dispatch(JSON.parse(received_msg));

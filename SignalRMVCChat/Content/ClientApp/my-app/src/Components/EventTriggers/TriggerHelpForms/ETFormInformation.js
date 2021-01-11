@@ -5,10 +5,11 @@ import '../../../styles/myStyle.css'
 import {InputText} from "primereact/inputtext";
 import {MyInput} from "../../Utilities/Utility";
 
-import {CurrentUserInfo, MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {_showError} from "../../../Pages/LayoutPage";
 import {SetEventTrigger} from "../EventTriggerForm";
 import {DataHolder} from "../../../Help/DataHolder";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class EtFormInformation extends Component {
     state={};

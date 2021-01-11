@@ -1,6 +1,6 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo} from "../Help/Socket";
 import {DataHolder} from "../Help/DataHolder";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class CurrentPlanInMenu extends Component {
     state = {};

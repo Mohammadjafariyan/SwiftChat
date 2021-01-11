@@ -1,4 +1,4 @@
-﻿import {MyCaller, CurrentUserInfo} from './../Help/Socket';
+﻿import {MyCaller} from './../Help/Socket';
 import React, {Component} from 'react';
 import ScreenRecordShower from "./ScreenRecordShower";
 import PrimengModal from "./SendFromHelpDeskModal";
@@ -10,6 +10,7 @@ import Table from "react-bootstrap/Table";
 import ShowMyScreen from "./ShowMyScreen";
 
 import "../styles/myStyle.css"
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class ScreenRecordShowerSendRequest extends Component {
     state = {};

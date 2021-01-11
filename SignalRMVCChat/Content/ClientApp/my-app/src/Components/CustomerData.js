@@ -4,7 +4,8 @@ import Table from "react-bootstrap/Table";
 import {InputGroup, FormControl} from "react-bootstrap";
 import {_showError, _showMsg} from "../Pages/LayoutPage";
 
-import {MyCaller, CurrentUserInfo} from './../Help/Socket';
+import {MyCaller} from './../Help/Socket';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 
 class CustomerData extends Component {

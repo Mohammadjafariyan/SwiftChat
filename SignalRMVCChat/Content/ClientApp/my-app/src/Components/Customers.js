@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { MyCaller, CurrentUserInfo } from "./../Help/Socket";
+import { MyCaller} from "./../Help/Socket";
 import { DataHolder } from "./../Help/DataHolder";
 
 import "./../styles/myStyle.css";
@@ -7,6 +7,7 @@ import { Badge, Spinner } from "react-bootstrap";
 import WhileWriting from "./WhileWriting";
 import { TabPanel, TabView } from "primereact/tabview";
 import { colors } from './Utilities/GlobalLoading';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class Customers extends Component {
   constructor(arg) {

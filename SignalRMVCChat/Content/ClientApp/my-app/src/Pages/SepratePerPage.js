@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import  { Card, Row, Col ,Container} from "react-bootstrap";
 import { DataHolder } from "./../Help/DataHolder";
-import { CurrentUserInfo } from "../Help/Socket";
 import {changeUserTypes} from "../Help/ChangeUserTypes";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class SepratePerPage extends Component {
   constructor(args) {

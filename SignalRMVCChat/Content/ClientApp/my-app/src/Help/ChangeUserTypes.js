@@ -1,5 +1,6 @@
-import { CurrentUserInfo, MyCaller } from "./Socket";
+import { MyCaller } from "./Socket";
 import {DataHolder} from "./DataHolder";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export function changeUserTypes(type) {
 

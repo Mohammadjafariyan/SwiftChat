@@ -5,9 +5,10 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EventTriggerSave from "../Components/EventTriggers/EventTriggerSave";
 
-import { MyCaller,CurrentUserInfo } from './../Help/Socket';
+import { MyCaller} from './../Help/Socket';
 import Spinner from "react-bootstrap/cjs/Spinner";
 import {DataHolder} from "../Help/DataHolder";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class EventTriggersPage extends Component {
     state={};

@@ -1,10 +1,11 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo, Socket} from "../../Help/Socket";
+import {Socket} from "../../Help/Socket";
 import {DataHolder} from "../../Help/DataHolder";
 import {Dialog} from "primereact/dialog";
 import VoiceCallRunner from "../VoiceCallRunner";
 import Chat, {gotoBottom} from "../Chat";
 import Card from "react-bootstrap/Card";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class OntTheFlyChatPanel extends Component {
     state = {
@@ -41,7 +42,7 @@ class OntTheFlyChatPanel extends Component {
 
     }
     componentDidMount() {
-        CurrentUserInfo.VoiceCall = this;
+        CurrentUserInfo.OntTheFlyChatPanel = this;
 
         if (!DataHolder.selectedCustomer)
             return <></>;

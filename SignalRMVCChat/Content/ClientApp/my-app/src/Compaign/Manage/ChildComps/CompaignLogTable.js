@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo, MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import Badge from "react-bootstrap/cjs/Badge";
 import Button from "react-bootstrap/cjs/Button";
 import {Container, Spinner} from "react-bootstrap";
@@ -12,6 +12,7 @@ import {_TakeLazyTable} from "./CompaginHelps/CompaignUtility";
 import {MyModal} from "../../../Components/Modal";
 import CompaignLogReceiverTable from "../Logs/CompaignLogReceiverTable";
 import {DataHolder} from "../../../Help/DataHolder";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CompaignLogTable extends Component {
     state = {

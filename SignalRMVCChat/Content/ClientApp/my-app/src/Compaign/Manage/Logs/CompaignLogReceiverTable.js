@@ -1,5 +1,4 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo} from "../../../Help/Socket";
 import {_SelectCustomerForChat, _TakeLazyTable, MyLazyTable} from "../ChildComps/CompaginHelps/CompaignUtility";
 import {Spinner} from "react-bootstrap";
 import {MyCard, MyFieldset} from "../../../Routing/Manage/RoutingSave";
@@ -12,6 +11,7 @@ import Button from "react-bootstrap/cjs/Button";
 import {CustomerProfileSideBar} from "../../../Components/Profile/CustomerProfileSideBar";
 import BlockUser from "../../../Components/BlockUser/BlockUser";
 import ButtonGroup from "react-bootstrap/cjs/ButtonGroup";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CompaignLogReceiverTable extends MyLazyTable {
 

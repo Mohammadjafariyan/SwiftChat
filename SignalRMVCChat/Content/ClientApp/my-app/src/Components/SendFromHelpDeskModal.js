@@ -2,8 +2,9 @@
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
 import SendFromHelpDesk from "./SendFromHelpDesk";
-import {CurrentUserInfo, MyCaller} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
 import {DataTable} from "primereact/datatable";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 
 class PrimengModal extends Component {

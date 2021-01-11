@@ -5,7 +5,7 @@ import {Button} from "primereact/button";
 import {Chips} from "primereact/chips";
 
 import '../../../styles/myStyle.css'
-import {CurrentUserInfo, MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {Dropdown} from "primereact/dropdown";
 import {FormInModalWithTable, MyHook, MySwitcher} from "../../../Components/Utilities/Utility";
 import {DataHolder} from "../../../Help/DataHolder";
@@ -15,6 +15,7 @@ import {SelectButton} from "primereact/selectbutton";
 import {Calendar} from "primereact/calendar";
 import {_showMsg} from "../../../Pages/LayoutPage";
 import {Editor} from "primereact/editor";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 const cities = [
     {name: 'ارسال پیغام به کاربر', code: 'SendMessage'},

@@ -1,17 +1,12 @@
-﻿using System.Reflection;
-using System.Web.Http;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
-//using Autofac.Integration.WebApi;
-using DownloadManagerSite;
 using Engine.SysAdmin.Service;
-using SignalRMVCChat;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Models.GapChatContext;
-using SignalRMVCChat.SysAdmin.Service;
+using SignalRMVCChat.SysAdmin.Service; //using Autofac.Integration.WebApi;
 
-namespace TelegramBotsWebApplication.DependencyInjection
+namespace SignalRMVCChat.Areas.sysAdmin.DependencyInjection
 {
     public class MyDependencyResolver
     {

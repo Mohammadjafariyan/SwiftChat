@@ -6,13 +6,13 @@ using Fleck;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.SysAdmin.Service;
 using TelegramBotsWebApplication;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.WebSocket.Tests
 {

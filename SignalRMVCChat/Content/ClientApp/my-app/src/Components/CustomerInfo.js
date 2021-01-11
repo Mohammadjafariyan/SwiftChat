@@ -1,5 +1,4 @@
 ﻿import React, { Component } from "react";
-import { CurrentUserInfo } from "../Help/Socket";
 import Badge from "react-bootstrap/Badge";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -12,6 +11,7 @@ import { UserInformationService } from "./Service/UserInformationService";
 import { _showError } from "../Pages/LayoutPage";
 import BlockUser from "./BlockUser/BlockUser";
 import CustomerTimeSpent from "./Profile/CustomerTimeSpent";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class CustomerInfo extends Component {
   state = {};

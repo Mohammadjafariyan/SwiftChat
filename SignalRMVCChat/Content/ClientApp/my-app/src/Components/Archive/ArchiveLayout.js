@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { CurrentUserInfo } from "../../Help/Socket";
 import { cookieManager } from "./../../Help/CookieManager";
 import { Button } from 'react-bootstrap';
 
 import './Archive.css'
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 export default class ArchiveLayout extends Component {
   state = {};
 

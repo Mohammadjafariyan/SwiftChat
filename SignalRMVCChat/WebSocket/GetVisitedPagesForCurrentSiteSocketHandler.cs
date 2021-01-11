@@ -7,13 +7,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Engine.SysAdmin.Service;
 using NUnit.Framework;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Models.GapChatContext;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.Init;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.WebSocket
 {

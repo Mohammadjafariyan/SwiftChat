@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
 using SignalRMVCChat.Areas.security.Controllers;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using TelegramBotsWebApplication;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.Areas.security.Models
 {

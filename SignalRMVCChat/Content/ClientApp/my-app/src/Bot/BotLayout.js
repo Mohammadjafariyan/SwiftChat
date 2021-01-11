@@ -7,8 +7,8 @@ import '../styles/myStyle.css'
 import BotHelpMessage from "./BotHelpMessage";
 import BotList from "./BotList";
 import BotIndex from "./BotIndex";
-import {CurrentUserInfo} from "../Help/Socket";
 import BotDesign from "./Design/BotDesign";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class BotLayout extends Component {
     state = {};

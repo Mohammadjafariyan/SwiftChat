@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using TelegramBotsWebApplication.DependencyInjection;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 
 namespace SignalRMVCChat.WebSocket.Alarm
 {

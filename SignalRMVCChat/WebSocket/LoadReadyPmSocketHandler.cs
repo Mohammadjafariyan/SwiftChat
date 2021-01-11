@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication;
-using TelegramBotsWebApplication.DependencyInjection;
 using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace SignalRMVCChat.WebSocket

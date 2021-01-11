@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Spinner} from 'react-bootstrap';
 import {DataHolder} from '../../Help/DataHolder';
 import {_GetRandomColor} from './ColorsList';
-import {CurrentUserInfo} from '../../Help/Socket';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 export let colors=[
     'primary',

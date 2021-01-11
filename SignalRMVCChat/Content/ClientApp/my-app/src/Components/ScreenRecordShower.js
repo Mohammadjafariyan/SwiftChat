@@ -1,7 +1,8 @@
 ﻿import React, {Component} from 'react';
 import {_showError} from "../Pages/LayoutPage";
-import {MyCaller, CurrentUserInfo} from './../Help/Socket';
+import {MyCaller} from './../Help/Socket';
 import ReactDOM from 'react-dom'
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class ScreenRecordShower extends Component {
     state = {

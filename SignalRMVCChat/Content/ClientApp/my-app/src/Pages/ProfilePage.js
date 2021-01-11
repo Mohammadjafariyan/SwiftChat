@@ -1,6 +1,7 @@
 ﻿import React, {Component, useState} from 'react';
 import {Row, Col, Container, Form, Button} from 'react-bootstrap';
-import {MyCaller, CurrentUserInfo} from './../Help/Socket';
+import {MyCaller} from './../Help/Socket';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 const LoadImageAndSet = function (e2, callback) {
     let elementById = e2;

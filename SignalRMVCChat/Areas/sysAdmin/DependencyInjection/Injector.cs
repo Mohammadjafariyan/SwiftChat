@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
 using Autofac;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using TelegramBotsWebApplication;
 using TelegramBotsWebApplication.Areas.Admin.Service;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.DependencyInjection
 {

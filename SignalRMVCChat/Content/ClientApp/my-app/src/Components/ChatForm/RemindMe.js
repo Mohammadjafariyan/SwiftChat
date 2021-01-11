@@ -5,7 +5,7 @@ import {Calendar} from "primereact/calendar";
 import SelectAdmin from "./SelectAdmin";
 import Button from "react-bootstrap/cjs/Button";
 import {DataTable} from "primereact/datatable";
-import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {_showMsg} from "../../Pages/LayoutPage";
 import {Column} from "primereact/column";
 import {TabPanel, TabView} from "primereact/tabview";
@@ -13,6 +13,7 @@ import {TabPanel, TabView} from "primereact/tabview";
 import '../../styles/myStyle.css'
 import {DataHolder} from "../../Help/DataHolder";
 import Badge from "react-bootstrap/cjs/Badge";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class RemindMe extends Component {
 

@@ -1,7 +1,8 @@
 ﻿import React, {Component} from 'react';
 import {DataHolder} from "../../Help/DataHolder";
 import Button from "react-bootstrap/Button";
-import {CurrentUserInfo,MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class EventTriggerDelete extends Component {
     render() {

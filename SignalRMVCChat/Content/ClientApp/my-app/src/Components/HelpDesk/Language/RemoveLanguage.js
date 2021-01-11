@@ -4,8 +4,9 @@ import {Dialog} from "primereact/dialog";
 import {ConfirmModal} from "./ConfirmModal";
 import {DataHolder} from "../../../Help/DataHolder";
 import {_showError, _showMsg} from "../../../Pages/LayoutPage";
-import {CurrentUserInfo,MyCaller } from "../../../Help/Socket";
+import {MyCaller } from "../../../Help/Socket";
 import {_getHelpDesk, _setHelpDesk} from "../../../Pages/HelpDeskPage";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class RemoveLanguage extends Component {
 

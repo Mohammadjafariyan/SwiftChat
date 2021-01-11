@@ -34,6 +34,7 @@ using SignalRMVCChat.WebSocket.HelpDesk.Stat;
 using SignalRMVCChat.WebSocket.MyWSetting;
 using SignalRMVCChat.WebSocket.MyWebsiteSetting;
 using SignalRMVCChat.WebSocket.Alarm;
+using SignalRMVCChat.WebSocket.Audio;
 
 namespace SignalRMVCChat.WebSocket
 {
@@ -81,7 +82,38 @@ namespace SignalRMVCChat.WebSocket
 
             switch (request.Name)
             {
+                #region Voice Call
+
+                case "VC_AdminCallInit":
+                    return new VC_AdminCallInitSocketHandler();
+                    break;
+                case "VC_CustomerSpeak":
+                    return new VC_CustomerSpeakSocketHandler();
+                    break;
+                case "VC_AbstractSpeak":
+                    return new VC_AbstractSpeakSocketHandler();
+                    break;
+                case "VC_AdminSpeak":
+                    return new VC_AdminSpeakSocketHandler();
+                    break;
+                case "VC_AdminInAnotherCalling":
+                    return new VC_AdminInAnotherCallingSocketHandler();
+                    break;
+                case "VC_CustomerCallInit":
+                    return new VC_CustomerCallInitSocketHandler();
+                    break;
+                case "VC_AdminIsAcceptOrReject":
+                    return new VC_AdminIsAcceptOrRejectSocketHandler();
+                    break;
+
+                case "VC_CustomerIsAcceptOrReject":
+                    return new VC_CustomerIsAcceptOrRejectSocketHandler();
+                    break;
+
+                #endregion
+
                 #region Alarm
+
                 case "AlarmSetIsMute":
                     return new AlarmSetIsMuteSocketHandler();
                     break;
@@ -89,7 +121,6 @@ namespace SignalRMVCChat.WebSocket
                     return new AlarmGetSoundsSocketHandler();
                     break;
 
-                    
                 #endregion
 
                 #region MyWebsiteSetting
@@ -100,9 +131,11 @@ namespace SignalRMVCChat.WebSocket
                 case "SaveMyWebsiteSetting":
                     return new SaveMyWebsiteSettingSocketHandler();
                     break;
+
                 #endregion
 
                 #region Telegrambot
+
                 case "GetTelegramBotSetting":
                     return new GetTelegramBotSettingSocketHandler();
                     break;
@@ -114,6 +147,7 @@ namespace SignalRMVCChat.WebSocket
 
 
                 #region Compaign
+
                 case "CompaignActivityStat":
                     return new CompaignActivityStatSocketHandler();
                     break;
@@ -127,11 +161,13 @@ namespace SignalRMVCChat.WebSocket
                     break;
 
                 #endregion
+
                 #region Compaign
 
                 case "CompaignManualExecute":
                     return new CompaignManualExecuteSocketHandler();
                     break;
+
                 #region CompaignLog
 
                 case "CompaignLogList":
@@ -388,11 +424,12 @@ namespace SignalRMVCChat.WebSocket
 
                 #region HelpDesk
 
-
                 #region HelpDesk Stats
+
                 case "HelpdeskFeedbackForArticles":
                     return new HelpdeskFeedbackForArticlesSocketHandler();
                     break;
+
                 #endregion
 
 

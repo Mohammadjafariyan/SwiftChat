@@ -5,11 +5,11 @@ import Card from "react-bootstrap/cjs/Card";
 import { InputSwitch } from "primereact/inputswitch";
 import CompaignFilter from "../Filter/CompaignFilter";
 import { MyModal } from "../../Components/Modal";
-import { CurrentUserInfo } from "../../Help/Socket";
 import Badge from "react-bootstrap/Badge";
 import { DataHolder } from "./../../Help/DataHolder";
 import { MyCaller } from './../../Help/Socket';
 import { _showMsg } from "../../Pages/LayoutPage";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class CompaignIndex extends BaseIndex {
   getCallback(res) {

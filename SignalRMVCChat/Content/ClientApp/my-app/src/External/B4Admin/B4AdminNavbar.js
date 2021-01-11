@@ -2,7 +2,7 @@
 import { Menubar } from "primereact/menubar";
 import { InputText } from "primereact/inputtext";
 import { Form } from "react-bootstrap";
-import { CurrentUserInfo, Socket } from "../../Help/Socket";
+import { Socket } from "../../Help/Socket";
 import SubMenu from "../../Components/SubMenu";
 import B4AdminSubMenu from "./B4AdminSubMenu";
 import { ShowPlusCount } from "../../Components/Menu";
@@ -12,6 +12,7 @@ import "../../styles/myStyle.css";
 import CurrentPlanInMenu from "../../Plan/CurrentPlanInMenu";
 import AlarmOnOff from './../../Components/Alarm/AlarmOnOff';
 import Logoff from './../../Components/signout/Logoff';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class B4AdminNavbar extends Component {
   state = {

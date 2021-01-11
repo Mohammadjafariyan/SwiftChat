@@ -1,6 +1,7 @@
 ﻿import React, {Component} from 'react';
 import {_getHelpDesk} from "../../Pages/HelpDeskPage";
-import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class GoToHelpCenter extends Component {
     state={};

@@ -1,12 +1,13 @@
 import { ButtonGroup,Dropdown, Row, Col, Badge, Form } from "react-bootstrap";
 
 import React, { Component } from "react";
-import { MyCaller, CurrentUserInfo } from "./../Help/Socket";
+import { MyCaller} from "./../Help/Socket";
 import { DataHolder } from "./../Help/DataHolder";
 
 import "../styles/myStyle.css";
 import {ShowPlusCount} from "./Menu";
 import Button from "react-bootstrap/Button";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class SubMenu extends Component {
   constructor(arg) {

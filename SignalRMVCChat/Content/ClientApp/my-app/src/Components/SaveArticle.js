@@ -7,10 +7,11 @@ import Row from "react-bootstrap/Row";
 import {Button} from "react-bootstrap";
 import {_showError, _showMsg} from "../Pages/LayoutPage";
 import Spinner from "react-bootstrap/Spinner";
-import {CurrentUserInfo, MyCaller} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
 import Col from "react-bootstrap/Col";
 import {_getHelpDesk} from "../Pages/HelpDeskPage";
 import {Dropdown} from "primereact/dropdown";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class SaveArticle extends Component {
 

@@ -4,10 +4,11 @@ import '../styles/myStyle.css'
 import {ScrollPanel} from "primereact/scrollpanel";
 import ListGroup from "react-bootstrap/cjs/ListGroup";
 import {InputSwitch} from "primereact/inputswitch";
-import {CurrentUserInfo,MyCaller} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
 import {Button} from "primereact/button";
 import Col from "react-bootstrap/Col";
 import {TypeNames} from "./Design/BotOrgChart";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 
 class BotList extends Component {

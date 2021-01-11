@@ -5,7 +5,8 @@ import "../../styles/leaflet.css";
 import { Spinner } from "react-bootstrap";
 import { TabPanel } from "primereact/tabview";
 import { DataHolder } from "../../Help/DataHolder";
-import { CurrentUserInfo, MyCaller } from "../../Help/Socket";
+import { MyCaller } from "../../Help/Socket";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class MyMap extends Component {
   state = {};

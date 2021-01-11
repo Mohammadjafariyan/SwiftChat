@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.IO;
+using fastJSON;
+using Newtonsoft.Json;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 
@@ -27,12 +30,31 @@ namespace SignalRMVCChat.WebSocket
 
         public string Serilize()
         {
-            string json= Newtonsoft.Json.JsonConvert.SerializeObject(this,
+            /*string json= Newtonsoft.Json.JsonConvert.SerializeObject(this,
                 new JsonSerializerSettings
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
+            return json;*/
+
+            var start = System.DateTime.Now;
+         
+            
+            string json = fastJSON.JSON.ToJSON(this,new JSONParameters
+            {
+                UseValuesOfEnums =true,
+                EnableAnonymousTypes= true,
+            });
+
+            var end = System.DateTime.Now;
+            
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(string.Format("----response serilization:{0}",end.Subtract(start).TotalSeconds));
+            Console.ForegroundColor = ConsoleColor.Black;
+
             return json;
+            
+
         }
 
         public static MyWebSocketResponse Parse(string s)

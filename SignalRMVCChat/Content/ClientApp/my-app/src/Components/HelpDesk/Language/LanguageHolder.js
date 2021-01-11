@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import PrimengModal from "../../SendFromHelpDeskModal";
 import Language from "./Language";
-import {CurrentUserInfo,MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {Button} from "react-bootstrap";
 import {DataHolder} from "../../../Help/DataHolder";
 import {_showError, _showMsg} from "../../../Pages/LayoutPage";
@@ -13,6 +13,7 @@ import Col from "react-bootstrap/Col";
 import ChangeLanguage from "./ChangeLanguage";
 import {_getHelpDesk, _setHelpDesk} from "../../../Pages/HelpDeskPage";
 import GoToHelpCenter from "../GoToHelpCenter";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class LanguageHolder extends Component {
     state={};

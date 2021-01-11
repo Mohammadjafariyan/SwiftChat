@@ -6,10 +6,10 @@ import MyMap from "../Components/Map/MyMap";
 import {Container, Spinner} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {CurrentUserInfo} from "../Help/Socket";
 import MyMapHolder from "../Components/Map/MyMapHolder";
 import MyMapCustomerTypes from './../Components/Map/MyMapCustomerTypes';
 import CustomersPaging from './../Components/Map/CustomersPaging';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class MapPage extends Component {
    

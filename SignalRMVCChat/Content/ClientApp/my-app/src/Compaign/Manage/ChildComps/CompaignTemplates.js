@@ -1,6 +1,6 @@
 ﻿import React, {Component} from 'react';
 import CompaignChildCompBase from "./CompaignChildCompBase";
-import {CurrentUserInfo, MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {MyCard, MyFieldset} from "../../../Routing/Manage/RoutingSave";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -9,6 +9,7 @@ import Card from "react-bootstrap/cjs/Card";
 import {_GetSelectedCompaign} from "../CompaignSave";
 import {Button} from "primereact/button";
 import {_showError} from "../../../Pages/LayoutPage";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CompaignTemplates extends CompaignChildCompBase {
     state = {};

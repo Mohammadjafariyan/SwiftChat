@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import MyMultiSelect from "./MyMultiSelect";
-import {CurrentUserInfo} from "../../Help/Socket";
 import {IranCities, IranStates} from "../../Components/Utilities/Utility";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class SelectStates extends MyMultiSelect {
     state = {

@@ -3,7 +3,7 @@ import {MyInputG} from "../Utilities/Utility";
 import Card from "react-bootstrap/Card";
 import {RadioButton} from "primereact/radiobutton";
 import {Button, Spinner} from "react-bootstrap";
-import {MyCaller, CurrentUserInfo} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {_showError, _showMsg} from "../../Pages/LayoutPage";
 import {DataHolder} from "../../Help/DataHolder";
 import Container from "react-bootstrap/Container";
@@ -12,6 +12,7 @@ import Row from "react-bootstrap/Row";
 
 import '../../styles/myStyle.css'
 import Table from "react-bootstrap/Table";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class UsersSeparationForm extends Component {
     state = {enabled: true};

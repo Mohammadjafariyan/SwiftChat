@@ -5,10 +5,11 @@ import {InputText} from "primereact/inputtext";
 import {Badge} from "react-bootstrap";
 import Button from "react-bootstrap/cjs/Button";
 import {_showMsg} from "../../Pages/LayoutPage";
-import {MyCaller, CurrentUserInfo} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import Row from "react-bootstrap/cjs/Row";
 import Col from "react-bootstrap/Col";
 import {Editor} from "primereact/editor";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class ReadyPms extends Component {
     state = {

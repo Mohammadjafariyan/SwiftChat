@@ -1,8 +1,8 @@
 ﻿import React, {Component} from 'react';
 import {_GetRandomColor} from "../../Components/Utilities/ColorsList";
-import {CurrentUserInfo} from "../../Help/Socket";
 import PageVisitStat, {GetSummary} from "../PageVisitStat/PageVisitStat";
 import {changeUserTypes} from "../../Help/ChangeUserTypes";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class PageOnlineCount extends PageVisitStat {
 

@@ -1,9 +1,10 @@
 ﻿import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import { CurrentUserInfo,MyCaller } from "../../Help/Socket";
+import { MyCaller } from "../../Help/Socket";
 import { DataHolder } from "../../Help/DataHolder";
 import {_showError} from "../../Pages/LayoutPage";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class LiveAssistInitialize extends Component {
   state={};

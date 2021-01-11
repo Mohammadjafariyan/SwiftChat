@@ -1,9 +1,9 @@
 ﻿import React, {Component} from 'react';
 import BotLogForm from "./BotLogForm";
 import BotLogTable from "./BotLogTable";
-import {CurrentUserInfo} from "../../Help/Socket";
 import BotLogDetail from "./BotLogDetail";
 import {_showError} from "../../Pages/LayoutPage";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class BotLogLayout extends Component {
     state = {};

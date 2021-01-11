@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using OpenQA.Selenium.DevTools.Network;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.WebSocket;
 using SignalRMVCChat.WebSocket.FormCreator;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.WebsocketTests.FormCreatorTests
 {

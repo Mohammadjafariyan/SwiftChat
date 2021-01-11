@@ -2,9 +2,9 @@
 import {Chart} from "primereact/chart";
 import {Card} from "react-bootstrap";
 import PageVisitStat, {GetSummary} from "../PageVisitStat/PageVisitStat";
-import {CurrentUserInfo} from "../../Help/Socket";
 import {_GetRandomColor} from "../../Components/Utilities/ColorsList";
 import StatUtility from "../StatUtility";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class StatPerState extends PageVisitStat {
     state = {

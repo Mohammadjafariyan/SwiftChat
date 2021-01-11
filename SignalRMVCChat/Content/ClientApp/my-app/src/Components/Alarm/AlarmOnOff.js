@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { CurrentUserInfo } from "../../Help/Socket";
 import { MyCaller } from "./../../Help/Socket";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 export default class AlarmOnOff extends Component {
   state = {};

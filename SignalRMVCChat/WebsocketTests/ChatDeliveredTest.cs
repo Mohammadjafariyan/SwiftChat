@@ -7,12 +7,12 @@ using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.WebSocket;
 using TelegramBotsWebApplication;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.WebsocketTests
 {

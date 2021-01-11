@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {CurrentUserInfo, MyCaller} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
 import {ListGroup} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
@@ -19,6 +19,7 @@ import ScreenRecordShowerSendRequest from "./ScreenRecordShowerSendRequest";
 import LiveAssistLayout from "./LiveAssist/LiveAssistLayout";
 import UsersSeparationData from "./UsersSeparation/UsersSeparationData";
 import CustomerTimeSpent from "./Profile/CustomerTimeSpent";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class CustomerToolbar extends Component {
 

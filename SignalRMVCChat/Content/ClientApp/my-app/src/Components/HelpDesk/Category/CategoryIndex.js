@@ -4,10 +4,11 @@ import {Column} from "primereact/column";
 import {Spinner} from "react-bootstrap";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import {CurrentUserInfo,MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import {_showError} from "../../../Pages/LayoutPage";
 import {DataHolder} from "../../../Help/DataHolder";
 import {_getHelpDesk} from "../../../Pages/HelpDeskPage";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CategoryIndex extends Component {
 state={};

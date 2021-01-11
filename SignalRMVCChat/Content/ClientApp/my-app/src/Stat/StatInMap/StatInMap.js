@@ -4,8 +4,8 @@ import {_GetRandomColor} from "../../Components/Utilities/ColorsList";
 import MyMap from "../../Components/Map/MyMap";
 import {Card, Spinner} from "react-bootstrap";
 import {Chart} from "primereact/chart";
-import {CurrentUserInfo} from "../../Help/Socket";
 import {changeUserTypes} from "../../Help/ChangeUserTypes";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class StatInMap extends PageVisitStat {
 

@@ -4,9 +4,9 @@ import {AddLocalizedMessage, MySwitcher} from "../../Utilities/Utility";
 import Table from "react-bootstrap/Table";
 import Badge from "react-bootstrap/Badge";
 import {_showError} from "../../../Pages/LayoutPage";
-import {CurrentUserInfo} from "../../../Help/Socket";
 import {SetEventTrigger} from "../EventTriggerForm";
 import {DataHolder} from "../../../Help/DataHolder";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class EtFormTriggerBehaviours extends Component {
     state={};

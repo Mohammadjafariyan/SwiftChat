@@ -1,6 +1,7 @@
 ﻿import React, {Component} from 'react';
 import {AutoComplete} from "primereact/autocomplete";
-import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class SelectAdmin extends Component {
     state = {

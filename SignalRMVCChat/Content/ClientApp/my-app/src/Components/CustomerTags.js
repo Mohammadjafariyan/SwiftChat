@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import {MyCaller, CurrentUserInfo} from "./../Help/Socket";
+import {MyCaller} from "./../Help/Socket";
 import {Badge} from "react-bootstrap";
 import {DataHolder} from "../Help/DataHolder";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class CustomerTags extends Component {
 

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { CurrentUserInfo } from "../../../../Help/Socket";
 import { InputSwitch } from "primereact/inputswitch";
 import { DataHolder } from "./../../../../Help/DataHolder";
 import { MyCaller } from "./../../../../Help/Socket";
@@ -9,6 +8,7 @@ import { GetBaseUrlWithWebsiteToken } from "../../../Alarm/Alarm";
 import { GetBaseUrl } from "./../../../Alarm/Alarm";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import {CurrentUserInfo} from "../../../../CurrentUserInfo";
 
 export default class AlarmSetting extends Component {
   state = {};

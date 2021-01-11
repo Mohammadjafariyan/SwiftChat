@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import {Chart} from "primereact/chart";
 import {Card} from "react-bootstrap";
-import {CurrentUserInfo} from "../../Help/Socket";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class SiteVisit extends Component {
     state={

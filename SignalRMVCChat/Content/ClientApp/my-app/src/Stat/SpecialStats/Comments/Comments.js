@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { _SelectCustomerForChat } from "../../../Compaign/Manage/ChildComps/CompaginHelps/CompaignUtility";
-import { CurrentUserInfo, MyCaller } from "../../../Help/Socket";
+import { MyCaller } from "../../../Help/Socket";
 import { CustomerProfileSideBar } from "./../../../Components/Profile/CustomerProfileSideBar";
 import { MyLazyTable } from "./../../../Compaign/Manage/ChildComps/CompaginHelps/CompaignUtility";
 import BlockUser from './../../../Components/BlockUser/BlockUser';
@@ -12,6 +12,7 @@ import { Card } from 'react-bootstrap';
 import { MyCard, MyFieldset } from './../../../Routing/Manage/RoutingSave';
 import { DataTable } from 'primereact/datatable';
 import { Spinner } from 'react-bootstrap';
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 export default class Comments extends MyLazyTable {
   state = {

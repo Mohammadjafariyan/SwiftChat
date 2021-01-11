@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react'
-import { MyCaller, CurrentUserInfo } from './../Help/Socket';
+import { MyCaller} from './../Help/Socket';
 import { DataHolder } from './../Help/DataHolder';
 
 import '../styles/myStyle.css';
@@ -10,6 +10,7 @@ import {Container, Row, Col, Badge} from 'react-bootstrap';
 import {MyGlobal} from "../Help/MyGlobal";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 export default class Menu extends Component {
     constructor(arg) {
         super(arg);

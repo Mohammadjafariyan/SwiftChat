@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import OnlineCustomerList from "./../Components/OnlineCustomerList";
-import { CurrentUserInfo } from "../Help/Socket";
 import { MyCaller } from "./../Help/Socket";
 import { DataHolder } from "../Help/DataHolder";
 import { Badge } from "react-bootstrap";
 import CustomersPaging from "./../Components/Map/CustomersPaging";
 import { _SetLoading } from "../Components/Utilities/GlobalLoading";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class OnlineCustomerListHolder extends Component {
   constructor(args) {

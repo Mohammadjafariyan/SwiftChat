@@ -1,12 +1,13 @@
 ﻿import React, {Component} from 'react';
 import Card from "react-bootstrap/Card";
 import {AddLocalizedMessage, MyInput, MySwitcher} from "../../Utilities/Utility";
-import {CurrentUserInfo, MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import Table from "react-bootstrap/Table";
 import Badge from "react-bootstrap/Badge";
 import {_showError} from "../../../Pages/LayoutPage";
 import {SetEventTrigger} from "../EventTriggerForm";
 import {DataHolder} from "../../../Help/DataHolder";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 
 class EtFormTriggerActions extends Component {

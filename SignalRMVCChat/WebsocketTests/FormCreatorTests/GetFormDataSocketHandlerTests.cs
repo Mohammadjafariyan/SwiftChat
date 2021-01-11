@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.WebSocket;
 using SignalRMVCChat.WebSocket.FormCreator;
-using TelegramBotsWebApplication.DependencyInjection;
 
 namespace SignalRMVCChat.WebsocketTests.FormCreatorTests
 {

@@ -2,8 +2,9 @@
 import {DataHolder} from "../Help/DataHolder";
 import Badge from "react-bootstrap/Badge";
 import Table from "react-bootstrap/Table";
-import {MyCaller, CurrentUserInfo} from './../Help/Socket';
+import {MyCaller} from './../Help/Socket';
 import {_showError} from "../Pages/LayoutPage";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class LastPagesVisited extends Component {
     state = {}

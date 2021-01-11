@@ -3,7 +3,7 @@ import Button from "react-bootstrap/cjs/Button";
 import {ScrollPanel} from "primereact/scrollpanel";
 
 import '../../styles/myStyle.css'
-import {CurrentUserInfo} from "../../Help/Socket";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class IconChooser extends Component {
     state={

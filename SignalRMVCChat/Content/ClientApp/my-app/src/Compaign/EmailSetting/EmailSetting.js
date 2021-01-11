@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import FormBuilder from "@langleyfoxall/react-dynamic-form-builder";
 import { _EmailSettingForm } from "./EmailSettingForm";
-import { MyCaller, CurrentUserInfo } from "../../Help/Socket";
+import { MyCaller} from "../../Help/Socket";
 import { _showError, _showMsg } from "../../Pages/LayoutPage";
 import { Spinner } from "react-bootstrap";
 import { MyCard } from "../../Routing/Manage/RoutingSave";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 export default class EmailSetting extends Component {
   state = {};

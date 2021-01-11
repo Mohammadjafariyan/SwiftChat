@@ -2,10 +2,17 @@
 import {_showError} from "../Pages/LayoutPage";
 import {voiceData} from "./VoiceCall";
 import {b64toBlob} from "./ScreenRecordShower";
+import {Button, Spinner} from 'react-bootstrap';
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class VoiceCallRunner extends Component {
 
-    VC_CustomerSpeark(res){
+    constructor(props) {
+        super(props);
+        CurrentUserInfo.VoiceCallRunner=this;
+    }
+    
+    VC_CustomerSpeak(res){
 
         if (!res || !res.Content){
             _showError('vC_AdminCallInitCallback res is null')
@@ -38,12 +45,23 @@ class VoiceCallRunner extends Component {
         return (
             <div>
                 
-                <audio     
+
+                تماس برقرار است 
+                <Spinner animation="grow" variant="success" />
+
+              {/*   <audio     
                     
                     ref={node => this.voiceElem = node}
                 >
                     
-                </audio>
+                </audio> */}
+                
+                
+                <Button variant={'danger'} onClick={()=>{
+                    this.props.onClose();
+                }}>
+                    بستن تماس
+                </Button>
             </div>
         );
     }

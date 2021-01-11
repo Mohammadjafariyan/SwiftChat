@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Row } from "react-bootstrap";
 import { Col ,Button} from "react-bootstrap";
-import { CurrentUserInfo } from "../../Help/Socket";
 import { MyCaller } from './../../Help/Socket';
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 export default class CustomersPaging extends Component {
   state = {};

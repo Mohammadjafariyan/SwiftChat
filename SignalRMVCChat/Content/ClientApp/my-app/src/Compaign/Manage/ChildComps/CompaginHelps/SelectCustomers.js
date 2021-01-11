@@ -1,10 +1,11 @@
 ﻿import React, {Component} from 'react';
 import {ListBox} from "primereact/listbox";
 import {_GetSelectedCompaign} from "../../CompaignSave";
-import {MyCaller,CurrentUserInfo} from "../../../../Help/Socket";
+import {MyCaller} from "../../../../Help/Socket";
 import {InputText} from "primereact/inputtext";
 import {Spinner} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
+import {CurrentUserInfo} from "../../../../CurrentUserInfo";
 
 class SelectCustomers extends Component {
 state={

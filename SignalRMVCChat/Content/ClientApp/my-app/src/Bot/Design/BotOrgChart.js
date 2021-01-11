@@ -16,7 +16,7 @@ import {ContextMenu} from "primereact/contextmenu";
 
 import {Tooltip} from 'primereact/tooltip';
 import {_showError} from "../../Pages/LayoutPage";
-import {CurrentUserInfo, MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {InputText} from "primereact/inputtext";
 import {Checkbox} from "primereact/checkbox";
 import Row from "react-bootstrap/cjs/Row";
@@ -27,6 +27,7 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import Badge from "react-bootstrap/cjs/Badge";
 import {Card} from "primereact/card";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 const eventBgColor = "#e9286f";
 const conditionBgColor = "#a534b6";

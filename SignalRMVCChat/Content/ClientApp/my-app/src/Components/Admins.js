@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {ShowOnlineUsers} from './Customers'
-import {CurrentUserInfo} from '../Help/Socket';
 import {MyCaller} from './../Help/Socket';
 import {DataHolder} from "../Help/DataHolder";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class Admins extends Component {
     constructor(arg) {

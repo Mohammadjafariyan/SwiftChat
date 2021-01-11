@@ -5,10 +5,10 @@ import { TabPanel, TabView } from "primereact/tabview";
 import SelectCustomers from "./CompaginHelps/SelectCustomers";
 import SelectSegments from "../../../Routing/ChildComps/SelectSegments";
 import { _GetSelectedCompaign, _SaveSelectedCompaign } from "../CompaignSave";
-import { CurrentUserInfo } from "../../../Help/Socket";
 import CompaignFilter from "./CompaginHelps/CompaignFilter";
 import { Card } from 'primereact/card';
 import  Button  from 'react-bootstrap/cjs/Button';
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CompaignRecipients extends CompaignChildCompBase {
   state = {

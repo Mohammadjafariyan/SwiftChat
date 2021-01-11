@@ -1,9 +1,10 @@
 ﻿import React, {Component} from 'react';
 import LiveAssistInitialize from "./LiveAssistInitialize";
-import {CurrentUserInfo,MyCaller} from "../../Help/Socket";
+import {MyCaller} from "../../Help/Socket";
 import {Spinner} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import LiveAssistShower from "./LiveAssistShower";
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 class LiveAssistLayout extends Component {
     state={};

@@ -1,6 +1,6 @@
 ﻿import React, {Component} from 'react';
 import {Steps} from "primereact/steps";
-import {CurrentUserInfo} from "../../../Help/Socket";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CompaignStep extends Component {
     constructor(props) {

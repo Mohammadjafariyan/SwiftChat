@@ -1,7 +1,7 @@
 ﻿import React, {Component, useState} from 'react';
 import SendFromHelpDesk from "../Components/SendFromHelpDesk";
 import {Button} from "primereact/button";
-import {CurrentUserInfo,MyCaller} from "../Help/Socket";
+import {MyCaller} from "../Help/Socket";
 import {_showError, _showMsg} from "./LayoutPage";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -17,6 +17,7 @@ import {TabPanel, TabView} from "primereact/tabview";
 import LanguageHolder from "../Components/HelpDesk/Language/LanguageHolder";
 import SaveArticle from "../Components/SaveArticle";
 import HelpDeskSetting from "../Components/HelpDesk/HelpDeskSetting/HelpDeskSetting";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 
 

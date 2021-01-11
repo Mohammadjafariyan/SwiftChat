@@ -735,6 +735,7 @@ color:@pluginCustomized.TopHeaderRightColor !important;
        bottom: 39px;
        overflow: hidden;
        padding: 0px;
+       z-index: 99999;
     }
 
 
@@ -1469,6 +1470,32 @@ color:@pluginCustomized.TopHeaderRightColor !important;
         </audio>
     }
 
+<audio controls style="display:none" id="gapCallerSound" gapCallerSound>
+            <source src="@baseUrl/Alam/ViewerAlarm?websiteToken=@website.WebsiteToken"
+                    type="audio/mp3">
+            مرورگر شما از صدا پشتیبانی نمی کند
+        </audio>
+
+
+
+
+<!-- Modal -->
+
+<style>
+    #gapCall{
+  position: fixed;
+      left: 50px;
+      bottom: 50px;
+      border-radius: 10px 10px 10px 10px;
+      box-shadow: 1px 1px 1px 1px;
+      padding: 2%;
+           background-image: linear-gradient(to right,  @pluginCustomized.TopHeaderRightColor,@pluginCustomized.TopHeaderLeftColor );
+
+    }
+</style>
+<div id="gapCall" class="adp-hide"></div>
+
+<div id="gapPlace"></div>
 
 </body>
 </html>

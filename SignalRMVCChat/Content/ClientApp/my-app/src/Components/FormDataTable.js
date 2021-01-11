@@ -1,11 +1,12 @@
 ﻿import React, {Component} from 'react';
-import {MyCaller, CurrentUserInfo} from './../Help/Socket';
+import {MyCaller} from './../Help/Socket';
 import {_showError, _showMsg} from "../Pages/LayoutPage";
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import '../styles/myStyle.css'
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class FormDataTable extends Component {
 

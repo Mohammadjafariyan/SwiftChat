@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import PageVisitStat from "./PageVisitStat/PageVisitStat";
-import {CurrentUserInfo} from "../Help/Socket";
 import StatUtility from "./StatUtility";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class StatBase extends PageVisitStat {
     state = {

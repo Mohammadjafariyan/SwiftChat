@@ -7,7 +7,8 @@ import CategoryLayout from "./CategoryLayout";
 import Col from "react-bootstrap/cjs/Col";
 import {Button} from "primereact/button";
 import {Spinner} from "react-bootstrap";
-import {CurrentUserInfo,MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CategoryDelete extends Component {
     state={};

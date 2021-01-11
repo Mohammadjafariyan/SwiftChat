@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { CurrentUserInfo, MyCaller } from "../Help/Socket";
+import { MyCaller } from "../Help/Socket";
 import { DataHolder } from "../Help/DataHolder";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { SelectButton } from "primereact/selectbutton";
@@ -12,6 +12,7 @@ import "../styles/myStyle.css";
 import { Editor } from "primereact/editor";
 import { Fieldset } from "primereact/fieldset";
 import ChatFormTypeSwitch from "./ChatForm/ChatFormTypeSwitch";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 export default class ChatForm extends Component {
   justifyOptions = [

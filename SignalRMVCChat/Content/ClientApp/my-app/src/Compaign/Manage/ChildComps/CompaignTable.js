@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { CurrentUserInfo, MyCaller } from "../../../Help/Socket";
+import { MyCaller } from "../../../Help/Socket";
 import { MyCard, MyFieldset } from "../../../Routing/Manage/RoutingSave";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,6 +11,7 @@ import { Spinner } from "react-bootstrap";
 import { MyModal } from "../../../Components/Modal";
 import CompaignLogReceiverTable from "../Logs/CompaignLogReceiverTable";
 import { _showMsg } from "../../../Pages/LayoutPage";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 
 class CompaignTable extends Component {
   state = {

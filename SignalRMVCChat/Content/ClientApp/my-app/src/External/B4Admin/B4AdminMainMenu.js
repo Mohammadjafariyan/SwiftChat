@@ -1,5 +1,4 @@
 ﻿import React, {Component} from "react";
-import {CurrentUserInfo} from "../../Help/Socket";
 import {DataHolder} from "../../Help/DataHolder";
 import {Col, Container, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
@@ -9,6 +8,7 @@ import {ShowPlusCount} from "../../Components/Menu";
 
 
 import '../../styles/myStyle.css'
+import {CurrentUserInfo} from "../../CurrentUserInfo";
 
 export default class B4AdminMainMenu extends Component {
     constructor(arg) {

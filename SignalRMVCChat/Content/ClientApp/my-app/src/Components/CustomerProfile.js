@@ -1,12 +1,12 @@
 ﻿import React, {Component} from 'react';
 import Button from "react-bootstrap/Button";
 import {DataHolder} from "../Help/DataHolder";
-import {CurrentUserInfo} from "../Help/Socket";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import CustomerTrackingList from "./Profile/CustomerTrackingList";
 import {CustomerProfileSideBar} from "./Profile/CustomerProfileSideBar";
+import {CurrentUserInfo} from "../CurrentUserInfo";
 
 class CustomerProfile extends Component {
     state = {};

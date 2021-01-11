@@ -1,12 +1,13 @@
 ﻿import React, {Component} from 'react';
 import Button from "react-bootstrap/cjs/Button";
-import {CurrentUserInfo, MyCaller} from "../../../Help/Socket";
+import {MyCaller} from "../../../Help/Socket";
 import Language from "./Language";
 import {BootstrapModal} from "./ConfirmModal";
 import {Modal} from "react-bootstrap";
 
 import '../../../styles/myStyle.css'
 import {_getHelpDesk} from "../../../Pages/HelpDeskPage";
+import {CurrentUserInfo} from "../../../CurrentUserInfo";
 class AddLanguage extends Component {
     state={};
 

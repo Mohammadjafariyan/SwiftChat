@@ -1,5 +1,32 @@
-﻿
-var ADP = function () { var e = function (e) { return !e.classList.contains("adp-hide") }, n = function (e) { e && e() }, i = function (i, t, a) { if (e(i)) n(a); else { var d = function () { i.classList.remove(t + "-adp-show"), n(a), i.removeEventListener(s, d) }; i.addEventListener(s, d), i.classList.remove("adp-hide"), i.classList.add(t + "-adp-show") } }, t = function (i, t, a) { if (e(i)) { var d = function () { i.classList.add("adp-hide"), i.classList.remove(t + "-adp-hide"), n(a), i.removeEventListener(s, d) }; i.addEventListener(s, d), i.classList.add(t + "-adp-hide") } else n(a) }, s = function () { var e = document.createElement("div"); return e.style.webkitAnimation ? "webkitAnimationEnd" : e.style.mozAnimation ? "mozAnimationEnd" : "animationend" }(); return { show: i, hide: t, toggle: function (n, s, a) { e(n) ? t(n, s, a) : i(n, s, a) } } }();
+﻿var ADP = function () {
+    var e = function (e) {
+        return !e.classList.contains("adp-hide")
+    }, n = function (e) {
+        e && e()
+    }, i = function (i, t, a) {
+        if (e(i)) n(a); else {
+            var d = function () {
+                i.classList.remove(t + "-adp-show"), n(a), i.removeEventListener(s, d)
+            };
+            i.addEventListener(s, d), i.classList.remove("adp-hide"), i.classList.add(t + "-adp-show")
+        }
+    }, t = function (i, t, a) {
+        if (e(i)) {
+            var d = function () {
+                i.classList.add("adp-hide"), i.classList.remove(t + "-adp-hide"), n(a), i.removeEventListener(s, d)
+            };
+            i.addEventListener(s, d), i.classList.add(t + "-adp-hide")
+        } else n(a)
+    }, s = function () {
+        var e = document.createElement("div");
+        return e.style.webkitAnimation ? "webkitAnimationEnd" : e.style.mozAnimation ? "mozAnimationEnd" : "animationend"
+    }();
+    return {
+        show: i, hide: t, toggle: function (n, s, a) {
+            e(n) ? t(n, s, a) : i(n, s, a)
+        }
+    }
+}();
 
 var url = '@@@';
 var baseUrl = "#baseUrl#";
@@ -132,14 +159,14 @@ class SenderLiveAssistService {
 
     getScroll() {
         if (window.pageYOffset != undefined) {
-            return { sx: pageXOffset, sy: pageYOffset };
+            return {sx: pageXOffset, sy: pageYOffset};
         } else {
             var sx, sy, d = document,
                 r = d.documentElement,
                 b = d.body;
             sx = r.scrollLeft || b.scrollLeft || 0;
             sy = r.scrollTop || b.scrollTop || 0;
-            return { sx, sy };
+            return {sx, sy};
         }
     }
 
@@ -790,8 +817,7 @@ class EventTrigger {
         this.Action();
 
 
-
-        MyCaller.Send('EventFired', { name: name, id: this.bean.Id })
+        MyCaller.Send('EventFired', {name: name, id: this.bean.Id})
 
     }
 
@@ -815,7 +841,7 @@ function RegisterOnUrlChange(callback) {
         const pushState = history.pushState;
         history.pushState = function (state) {
             if (typeof history.onpushstate == "function") {
-                history.onpushstate({ state: state });
+                history.onpushstate({state: state});
             }
             callback();
             return pushState.apply(history, arguments);
@@ -841,7 +867,7 @@ function getSplitted(s) {
     let name = url;
     let splitted = url.split('/')
 
-    return { splitted, name };
+    return {splitted, name};
 }
 
 const _EventTriggerManager = new EventTriggerManager();
@@ -862,7 +888,7 @@ let Logger = function (msg) {
 
         // درخواست html ها
         xhttp.open("POST", baseUrlForapi + "/log/log", true);
-        xhttp.send(JSON.stringify({ log: msg }));
+        xhttp.send(JSON.stringify({log: msg}));
     } catch (e) {
         console.error(e);
         console.error('عدم امکان ارسال لاگ سیستم');
@@ -949,7 +975,7 @@ function socketConnect(responseText) {
 
         if (!shadow) {
 
-            shadow = gapPlugin.attachShadow({ mode: 'open' });
+            shadow = gapPlugin.attachShadow({mode: 'open'});
         }
 
 
@@ -975,6 +1001,9 @@ function socketConnect(responseText) {
                 CurrentUserInfo.plugin.bind(getDoc().getElementById("onTheFly"))
 
                 CurrentUserInfo.plugin.Register();
+
+                // اطلاعات کاربر انتخاب شده را برمیگرداند در صورت انتخاب 
+                MyCaller.Send('GetSelectedAdmin');
 
             } else {
                 CurrentUserInfo.plugin = new AdminPlugin();
@@ -1134,7 +1163,10 @@ function bindChatPanelScrollPaging() {
 
                 if (!CurrentUserInfo.AllChatsRead) {
                     CurrentUserInfo.pageNumber++;
-                    MyCaller.Send("ReadChat", { targetId: CurrentUserInfo.targetId, pageNumber: CurrentUserInfo.pageNumber });
+                    MyCaller.Send("ReadChat", {
+                        targetId: CurrentUserInfo.targetId,
+                        pageNumber: CurrentUserInfo.pageNumber
+                    });
                 }
             }
         }, 5000)
@@ -1148,7 +1180,7 @@ function bindChatPanelScrollPaging() {
     getDoc().querySelector('#chatPanel').addEventListener("wheel", function () {
         if (!CurrentUserInfo.pageNumber || CurrentUserInfo.pageNumber === 1) {
             CurrentUserInfo.pageNumber++;
-            MyCaller.Send("ReadChat", { targetId: CurrentUserInfo.targetId, pageNumber: CurrentUserInfo.pageNumber });
+            MyCaller.Send("ReadChat", {targetId: CurrentUserInfo.targetId, pageNumber: CurrentUserInfo.pageNumber});
         }
     });
 
@@ -1237,6 +1269,10 @@ function OpenChatScreen(AccountId, AccountName, ProfilePhotoId) {
     let gap_onlines = getDoc().querySelector('#gap_onlines');
     if (gap_onlines) {
         gap_onlines.innerHTML = '';
+    }
+
+    if (!AccountName) {
+        AccountName = "پشتیبانی"
     }
 
     let bgImage = ProfilePhotoId ? `background-image: url(${baseUrlForapi}/Upload/Upload?id=${ProfilePhotoId})` : '';
@@ -1348,11 +1384,11 @@ function addCircleOnNewOrOnlineAgain(res) {
 }
 
 function changeDotPic() {
-    CurrentUserInfo.targetId = cookieManager.getItem('targetId')
-    CurrentUserInfo.targetName = cookieManager.getItem('targetName')
-    CurrentUserInfo.targetStatus = cookieManager.getItem('targetStatus')
-    CurrentUserInfo.ProfileImageId = cookieManager.getItem('ProfileImageId')
-
+    /* CurrentUserInfo.targetId = cookieManager.getItem('targetId')
+     CurrentUserInfo.targetName = cookieManager.getItem('targetName')
+     CurrentUserInfo.targetStatus = cookieManager.getItem('targetStatus')
+     CurrentUserInfo.ProfileImageId = cookieManager.getItem('ProfileImageId')
+ */
 
     if (!CurrentUserInfo.targetName)
         return;
@@ -1372,7 +1408,9 @@ function changeDotPic() {
 <i class="fa fa-user-circle-o" aria-hidden="true" style="font-size: 32px" 
  
 ></i></div>`;
-        getDoc().querySelector('#dot').innerHTML = html;
+
+        if (getDoc().querySelector('#dot'))
+            getDoc().querySelector('#dot').innerHTML = html;
 
     }
 
@@ -1617,7 +1655,7 @@ class BasePlugin {
 
             if (!isGapMe) {
                 MyCaller.Send("MultimediaDeliverd",
-                    { chatId: res.Content.Id })
+                    {chatId: res.Content.Id})
             }
 
 
@@ -1672,7 +1710,6 @@ class BasePlugin {
     Register() {
 
 
-
         let URL = window.location.href;
 
         let Title = document.title;
@@ -1681,7 +1718,7 @@ class BasePlugin {
         // let content= document.querySelector('meta[name="description"]');
 
         let desc = '';
-        MyCaller.Send("Register", { Description: desc, Title: Title, URL: URL });
+        MyCaller.Send("Register", {Description: desc, Title: Title, URL: URL});
     }
 
     registerCallback(res) {
@@ -1785,7 +1822,7 @@ class BasePlugin {
         }
 
         if (!CurrentUserInfo.IsCustomer) {
-            _html = this.makeRowItem({ Name: 'پیام های آماده', Id: 'SavedPms' }) + _html;
+            _html = this.makeRowItem({Name: 'پیام های آماده', Id: 'SavedPms'}) + _html;
 
         }
 
@@ -2019,7 +2056,7 @@ class BasePlugin {
 
                 //screen record request from admin
                 if (arr[i].ChatContentType === 3 && !arr[i].ChatContentTypeJobDone) {
-                    html += screenRecordAccessRequestCallback({ Content: arr[i] }, true);
+                    html += screenRecordAccessRequestCallback({Content: arr[i]}, true);
 
                 } else {
                     html += CurrentUserInfo.commonDomManager.makeChatDom(arr[i].Message, gapMe, deliverdSign, arr[i].gapFileUniqId, arr[i].UniqId, arr[i].Time, arr[i]);
@@ -2063,7 +2100,7 @@ class BasePlugin {
                 if (!formParent || !formParent.querySelector('form')) {
 
                     if (!arr[i].FormPassed) {
-                        MyCaller.Send('CustomerGetFormSingle', { formId: arr[i].formId, chatId: arr[i].Id })
+                        MyCaller.Send('CustomerGetFormSingle', {formId: arr[i].formId, chatId: arr[i].Id})
 
                     } else {
                         formParent.innerHTML = `<p>${arr[i].FormPassed}</p>`
@@ -2191,8 +2228,6 @@ class BasePlugin {
 
             getDoc().querySelector('#chatPanel').innerHTML = getDoc().querySelector('#chatPanel').innerHTML
                 + html;
-
-
 
 
             scrollToBottomChatPanel();
@@ -2340,7 +2375,7 @@ function login(el) {
 
     el.innerText = "در حال ورود به سیتم";
 
-    MyCaller.Send("AdminLogin", { username: admin, password });
+    MyCaller.Send("AdminLogin", {username: admin, password});
 }
 
 class AdminPlugin extends BasePlugin {
@@ -2433,7 +2468,7 @@ class AdminPlugin extends BasePlugin {
         }
 
 
-        MyCaller.Send("AdminLogin", { username: admin, password });
+        MyCaller.Send("AdminLogin", {username: admin, password});
 
     }
 
@@ -2663,7 +2698,6 @@ function newChatMsg(isGapMe, contentMedia, isReturn, _gapFileUniqId, UniqId, tim
         div.className = "gapMultimediaMsg gapHe gapInnerMsg ";
 
 
-
     if (time) {
 
         let t = document.createElement('div');
@@ -2775,7 +2809,7 @@ width:100%;height:100%;"><img src="${el.src}" style="width:80% !important;"/>
     document.querySelector('body').append(img);
 
     if ($) {
-        $("html, body").animate({ scrollTop: 0 }, "slow");
+        $("html, body").animate({scrollTop: 0}, "slow");
 
     } else {
         window.scrollTo(0, 0);
@@ -3155,7 +3189,7 @@ function DeleteMsgOnClick(uniqId, gapFileUniqId, THIS) {
 
     }
 
-    MyCaller.Send("DeleteMessage", { uniqId, targetId: CurrentUserInfo.targetId });
+    MyCaller.Send("DeleteMessage", {uniqId, targetId: CurrentUserInfo.targetId});
     console.log(' درخواست حذف پیغام ارسال شد ');
 
 }
@@ -3270,7 +3304,6 @@ function getSenderProfile(chat, isCustomer) {
     //}
 
 
-
     let fullname = chat.AccountName;
 
     let name = (chat.AccountName ? chat.AccountName : "ک").charAt(0);
@@ -3332,6 +3365,8 @@ class DomManager {
         let gapFileUniqId = randomIntFromInterval(1, 99999);
 
         let messages = GetChats();
+        messages = messages ? messages : 0;
+
         let uniqId = messages + 1;
         var html = CurrentUserInfo.commonDomManager.makeChatDom(text, true, false, gapFileUniqId, uniqId, 'همین الان', null, true);
 
@@ -3353,7 +3388,6 @@ class DomManager {
     }
 
     makeChatDom(msg, gapMe, delivered, gapFileUniqId, uniqId, time, chat, isAnim) {
-
 
 
         var dom = ` <div uniqid='${uniqId}' class=\"gapMsg msg-${uniqId} ${isAnim ? 'adp-hide' : ''}\"  id='msg_${gapFileUniqId}'>\n`;
@@ -3629,7 +3663,6 @@ ${getSenderProfile(chat, false)}
             toggle(x);
 
 
-
             if (!CurrentUserInfo.IsCustomer) {
 
                 if (_currentAdminInfo.adminToken && _currentAdminInfo.adminToken.length > 20) {
@@ -3709,31 +3742,28 @@ ${getSenderProfile(chat, false)}
             //  ADP.hide(x, 'slide-down');
 
 
-
-
-
             // اطلاعات کاربر انتخاب شده را برمیگرداند در صورت انتخاب 
             MyCaller.Send('GetSelectedAdmin');
 
 
-            if (cookieManager.getItem('targetId')) {
-                CurrentUserInfo.targetId = cookieManager.getItem('targetId')
-                CurrentUserInfo.targetName = cookieManager.getItem('targetName')
-                CurrentUserInfo.targetStatus = cookieManager.getItem('targetStatus')
-                CurrentUserInfo.ProfileImageId = cookieManager.getItem('ProfileImageId')
-
-
-                //اطلاعات شبکه های اجتماعی را بر میگرداند
-                if (!getDoc().querySelector('#gapSocialCirlces')) {
-                    MyCaller.Send('GetSocialChannelsInfo')
-
-                }
-
-
-                //   OpenChatScreen(CurrentUserInfo.targetId, CurrentUserInfo.targetName, CurrentUserInfo.ProfileImageId);
-
-
-            }
+            /* if (cookieManager.getItem('targetId')) {
+           /!*      CurrentUserInfo.targetId = cookieManager.getItem('targetId')
+                 CurrentUserInfo.targetName = cookieManager.getItem('targetName')
+                 CurrentUserInfo.targetStatus = cookieManager.getItem('targetStatus')
+                 CurrentUserInfo.ProfileImageId = cookieManager.getItem('ProfileImageId')
+ *!/
+ 
+                 //اطلاعات شبکه های اجتماعی را بر میگرداند
+                 if (!getDoc().querySelector('#gapSocialCirlces')) {
+                     MyCaller.Send('GetSocialChannelsInfo')
+ 
+                 }
+ 
+ 
+                 //   OpenChatScreen(CurrentUserInfo.targetId, CurrentUserInfo.targetName, CurrentUserInfo.ProfileImageId);
+ 
+ 
+             }*/
 
             CurrentUserInfo.plugin.readChat(CurrentUserInfo.targetId);
 
@@ -3975,15 +4005,15 @@ let MyCaller = {
             alert('در حال اتصال به سرور و ارسال درخواست');
             setTimeout(() => {
 
-                if (CurrentUserInfo.ws.readyState === WebSocket.CLOSED ||
-                    CurrentUserInfo.ws.readyState === WebSocket.CLOSED) {
+                    if (CurrentUserInfo.ws.readyState === WebSocket.CLOSED ||
+                        CurrentUserInfo.ws.readyState === WebSocket.CLOSED) {
 
-                    startUp();
-                }
+                        startUp();
+                    }
 
-                alert('در حال اتصال');
-                this.Send(name, data);
-            },
+                    alert('در حال اتصال');
+                    this.Send(name, data);
+                },
                 1000);
 
             return;
@@ -4063,8 +4093,23 @@ class dispatcher {
 
             /*============================ END ===========================*/
 
+            /*============================ Callilng ===========================*/
+            case 'VC_AdminCallInitCallback':
+                VC_AdminCallInitCallback(res);
+                break;
 
+            case 'vC_AdminIsAcceptOrRejectCallback':
+                vC_AdminIsAcceptOrRejectCallback(res);
+                break;
+            case 'vC_AdminInAnotherCallingCallback':
+                cC_AdminInAnotherCallingCallback(res);
+                break;
 
+            case 'vC_AdminSpeakCallback':
+                vC_AdminSpeakCallback(res);
+                break;
+
+            /*============================ END ===========================*/
 
 
             /*============================ Users Separation ===========================*/
@@ -4154,7 +4199,6 @@ class dispatcher {
                 EditMessageCallback(res);
                 break;
             case "ClearCookie":
-
 
 
                 cookieManager.removeItem('customerToken')
@@ -4472,7 +4516,7 @@ function getSearchScreenPanel() {
         "<label>جستجو</label>" +
         " <input style='height: 25px;' onkeyup='gapChatSearchInputOnChange(this,event)' placeholder=\"در اینجا تایپ نمایید\" id=\"gapChatSearchInput\"/>\n" +
         "</div>"
-        ;
+    ;
     return createElementFromHTML(html);
 }
 
@@ -4662,20 +4706,21 @@ function GetChats() {
 
     let gapMsgs = getDoc().querySelectorAll('.gapMsg');
     if (gapMsgs) {
-        let lastMsg = gapMsgs[gapMsgs.length - 1];
-
-        if (lastMsg) {
-            let uniqId = lastMsg.getAttribute('uniqid');
-            if (!uniqId) {
-                alert('کد پیغام نال است');
-            }
-            try {
-                return parseInt(uniqId + "");
-            } catch (e) {
-
-                alert('فرمت کد پیغام درست نیست');
-            }
-        }
+        return gapMsgs.length;
+        /* let lastMsg = gapMsgs[gapMsgs.length - 1];
+ 
+         if (lastMsg) {
+             let uniqId = lastMsg.getAttribute('uniqid');
+             if (!uniqId) {
+                 alert('کد پیغام نال است');
+             }
+             try {
+                 return parseInt(uniqId + "");
+             } catch (e) {
+ 
+                 alert('فرمت کد پیغام درست نیست');
+             }
+         }*/
 
     }
     return 0;
@@ -5037,7 +5082,7 @@ function changeScreen(id, cls) {
             "style=\"float: left; background-color: white;border: none;\" " +
             " onclick='ScreenBack(this)'>x</button>\n" +
             "</div>"
-            ;
+        ;
         getDoc().querySelector('#onTheFly').appendChild(createElementFromHTML(
             html
         ));
@@ -5054,7 +5099,7 @@ let CommentService = function (msg, callback) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ text: msg }),
+            body: JSON.stringify({text: msg}),
             // -- or --
             // body : JSON.stringify({
             // user : document.getElementById('user').value,
@@ -5204,7 +5249,7 @@ function getTagsCallback(res) {
     }
 
     if ($) {
-        $(chatPanel).animate({ scrollTop: chatPanel.scrollHeight }, "slow");
+        $(chatPanel).animate({scrollTop: chatPanel.scrollHeight}, "slow");
 
     } else {
         chatPanel.scrollTo(0, chatPanel.scrollHeight);
@@ -5340,7 +5385,7 @@ function newTagAdd() {
     }
     showLoadingChats("#chatPanel");
 
-    MyCaller.Send("NewTagAdd", { tagTitle: gapTagTitle.value });
+    MyCaller.Send("NewTagAdd", {tagTitle: gapTagTitle.value});
 
 
     //newTagAddCallback x 
@@ -5380,7 +5425,7 @@ function newTagAddScreen(THIS) {
 
 function GetUserAddedToTags(target) {
 
-    MyCaller.Send('GetUserAddedToTags', { target: target });
+    MyCaller.Send('GetUserAddedToTags', {target: target});
 }
 
 //button
@@ -5498,7 +5543,7 @@ function getAllTagsForCurrentAdminCallback(res) {
 
 function deleteTagById(tagId) {
 
-    MyCaller.Send('DeleteTagById', { tagId: tagId });
+    MyCaller.Send('DeleteTagById', {tagId: tagId});
 }
 
 function closeTagsPanel(THIS) {
@@ -5574,7 +5619,7 @@ function getUsersByTagId(tagId, tagName) {
 
 function deleteTagFormUserTagsById(tagId, THIS) {
     THIS.parentNode.remove();
-    MyCaller.Send("DeleteTagFormUserTagsById", { tagId: tagId, target: CurrentUserInfo.targetId });
+    MyCaller.Send("DeleteTagFormUserTagsById", {tagId: tagId, target: CurrentUserInfo.targetId});
 }
 
 
@@ -5593,7 +5638,6 @@ function gapStickerOpen(THIS) {
         setTimeout(function () {
             gapStickers.remove();
         }, 500)
-
 
 
         return;
@@ -5629,7 +5673,6 @@ ${temp}
     }
 
     chatPanel.append(createElementFromHTML(html));
-
 
 
     toggle(getDoc().querySelector('.gapStickerHolder'))
@@ -5673,7 +5716,7 @@ function bindIsTyping() {
         if (strg) {
 
 
-            MyCaller.Send('CustomerStartTyping', { text: strg });
+            MyCaller.Send('CustomerStartTyping', {text: strg});
 
             CustomerStartTypingSent = true;
 
@@ -5765,7 +5808,16 @@ function getSocialChannelsInfoCallback(res) {
 
     html += `<a  onclick="vc_CustomerCallInit()" class="gap_online_admin" aria-label="برقراری تماس صوتی" 
 data-microtip-position="left" role="tooltip">
-                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <i id="gap_speaking_off" class="fa fa-phone" aria-hidden="true"></i>
+                            
+                            <i style="display: none" id="gap_speaking" class="fa fa-volume-up" aria-hidden="true"></i>
+                                </a>`;
+
+
+    html += `<a  onclick="recordVoice()" class="gap_online_admin" aria-label="ضبط و ارسال صدا" 
+data-microtip-position="left" role="tooltip">
+                            <i class="fa fa-microphone" aria-hidden="true"></i>
+
                                 </a>`;
 
     /* html += `<a   class="gap_online_admin VIDEOrecord" aria-label="نمایش برخط مانیتور" data-microtip-position="left" role="tooltip">
@@ -5857,7 +5909,7 @@ let gapDeskApiCaller = function (url, data, callback) {
 function gapHelpDeskSearchChanged(THIS, api) {
     getDoc().querySelector('.gapHelpDeskLinks').innerHTML = '<p style="text-align: center">در حال خواندن اطلاعات</p>';
     let searchTerm = THIS.value;
-    gapDeskApiCaller(api, { searchTerm: searchTerm, websiteToken: websiteToken }, function (responseText) {
+    gapDeskApiCaller(api, {searchTerm: searchTerm, websiteToken: websiteToken}, function (responseText) {
 
         if (!responseText) {
 
@@ -6033,7 +6085,7 @@ function adminSendFormToCustomerCallback(res) {
     if (!formParent) {
 
         html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
-            Math.random(), 'همین الان', { formId: form.Id, Id: chatId });
+            Math.random(), 'همین الان', {formId: form.Id, Id: chatId});
 
 
         getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
@@ -6130,18 +6182,18 @@ function seriJson(form) {
 
                 } else {
                     let Id = elem.getAttribute("formelementid")
-                    arr.push({ FieldName: elem.name, Value: elem.value, Id: Id ? Id : 0 });
+                    arr.push({FieldName: elem.name, Value: elem.value, Id: Id ? Id : 0});
                 }
             } else {
                 let Id = elem.getAttribute("formelementid")
-                arr.push({ FieldName: elem.name, Value: elem.value, Id: Id ? Id : 0 });
+                arr.push({FieldName: elem.name, Value: elem.value, Id: Id ? Id : 0});
             }
 
         }
 
 
     });
-    return { requestArray, arr };
+    return {requestArray, arr};
 }
 
 
@@ -6172,7 +6224,7 @@ function startCapture() {
             videoElem.srcObject = res;
 
 
-            var mediaRecorder = new MediaRecorder(res);
+            mediaRecorder = new MediaRecorder(res);
 
 
             mediaRecorder.ondataavailable = function (e) {
@@ -6221,7 +6273,7 @@ function dumpOptionsInfo() {
 let videoElem;
 let mediaSource;
 let chunks = [];
-let mediaRecorder;
+let voiceRecordchunks = [];
 
 let captureStream;
 
@@ -6399,7 +6451,7 @@ function VIDEO_CALL_INIT(THIS, callback, chatId) {
                 }).then(function (buffer) {
 
 
-                    MyCaller.Send('ScreenRecordSave', { targetMyAccountId: CurrentUserInfo.targetId, buffer })
+                    MyCaller.Send('ScreenRecordSave', {targetMyAccountId: CurrentUserInfo.targetId, buffer})
                 })
                 chunks.push(e.data);
             }
@@ -6454,11 +6506,11 @@ function VOICE_CALL_INIT() {
     if (navigator.mediaDevices.getUserMedia) {
         console.log('getUserMedia supported.');
 
-        const constraints = { audio: true };
-        let chunks = [];
+        const constraints = {audio: true};
+        chunks = [];
 
         let onSuccess = function (stream) {
-            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder = new MediaRecorder(stream);
 
             visualize(stream);
 
@@ -6511,7 +6563,7 @@ function VOICE_CALL_INIT() {
                 soundClips.appendChild(clipContainer);
 
                 audio.controls = true;
-                const blob = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
+                const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'});
                 chunks = [];
                 const audioURL = window.URL.createObjectURL(blob);
                 audio.src = audioURL;
@@ -6630,7 +6682,7 @@ const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
         byteArrays.push(byteArray);
     }
 
-    const blob = new Blob(byteArrays, { type: contentType });
+    const blob = new Blob(byteArrays, {type: contentType});
     return blob;
 }
 
@@ -6655,7 +6707,7 @@ function screenRecordAccessRequestCallback(res, isReturn) {
     `;
 
     html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
-        res.Content.UniqId, 'همین الان', { Id: res.Content.Id });
+        res.Content.UniqId, 'همین الان', {Id: res.Content.Id});
 
     if (isReturn)
         return html;
@@ -6669,20 +6721,21 @@ function setMsg(THIS, msg, err, isAccepted, chatId, callback) {
     if (THIS.parentNode && THIS.parentNode.previousSibling && THIS.parentNode.previousSibling.previousSibling)
         THIS.parentNode.previousSibling.previousSibling.innerText = msg;
 
-    THIS.parentNode.style.display = "none";
+    if (THIS && THIS.parentNode)
+        THIS.parentNode.style.display = "none";
 
-    getDoc().querySelector('#gapChatInput').value = msg;
+    /* getDoc().querySelector('#gapChatInput').value = msg;
+ 
+     CurrentUserInfo.commonDomManager.enterNewText();
+ 
+     CurrentUserInfo.plugin.sendNewText();*/
 
-    CurrentUserInfo.commonDomManager.enterNewText();
-
-    CurrentUserInfo.plugin.sendNewText();
-
-    if (err) {
+    /*if (err) {
         msg;
     }
 
     // در دو جا استفاده شده است در موقع بستن لازم نیست این متد فراخوانی شود
-    if (!callback && THIS.parentNode && THIS.parentNode.previousSibling && THIS.parentNode.previousSibling.previousSibling)
+   /!* if (!callback && THIS.parentNode && THIS.parentNode.previousSibling && THIS.parentNode.previousSibling.previousSibling)
         MyCaller.Send('SetScreenRecordAccessRequestIsAccepted',
             {
                 msg: msg, err: null, isAccepted: isAccepted, myAccountId: CurrentUserInfo.targetId,
@@ -6690,7 +6743,7 @@ function setMsg(THIS, msg, err, isAccepted, chatId, callback) {
             })
 
     if (callback)
-        callback(msg, isAccepted, CurrentUserInfo.targetId, chatId)
+        callback(msg, isAccepted, CurrentUserInfo.targetId, chatId)*!/*/
 
 }
 
@@ -6740,7 +6793,7 @@ function screenRecordAdminShareRequestCallback(res) {
     `;
 
     html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
-        res.Content.UniqId, 'همین الان', { Id: res.Content.Id });
+        res.Content.UniqId, 'همین الان', {Id: res.Content.Id});
 
     getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
 
@@ -6781,7 +6834,7 @@ function screenRecordAdminShareCallback(res) {
 
     videoData.push(blob);
 
-    let wholeVideoBlob = new Blob(videoData, { 'type': 'video/webm' })
+    let wholeVideoBlob = new Blob(videoData, {'type': 'video/webm'})
 
     let blobUrl = URL.createObjectURL(wholeVideoBlob);
 
@@ -6804,62 +6857,184 @@ function screenRecordAdminShareCallback(res) {
 
 }
 
+let gap_speaking;
+let gap_speaking2;
+let gap_speaking3;
 
-function VC_AdminCallInitCallback(res) {
+function VC_AdminCallInitCallback(res, dontIncludeButtons) {
 
+    Array.from(document.querySelectorAll('.VC_AdminCallInitCallback')).forEach(el => el.remove());
+
+
+    if (gap_speaking)
+        clearInterval(gap_speaking);
+
+
+    ADP.show(getDoc().querySelector('#gapCall'), 'slide-left')
+
+
+    let closeCallbutton = `
+<a id="closeCallbutton" onclick="vc_voiceCallReject(this,'${res.Content.Id}','${res.Content.MyAccountId}')" class="gap_online_admin" 
+aria-label="بستن تماس" data-microtip-position="left" role="tooltip">
+                                    <i class="fa fa-times" aria-hidden="true" id="closeCallbuttonIcon"></i>
+                                </a>
+`;
+
+
+    let buttons = ` <button  class="vc_voiceCallReject"  style="padding: 5px;border-radius: 3px 3px 3px 3px ;border:none;background-color: red" 
+    onclick="vc_voiceCallReject(this,'${res.Content.Id}','${res.Content.MyAccountId}')">
+    قطع
+      <i style="font-size: 20px;" class="fa fa-window-close-o" aria-hidden="true"></i>
+
+
+      </button>
+    
+    <button  class="vc_voiceCallAccept" style="padding: 5px;border-radius: 3px 3px 3px 3px ;border:none;background-color: green" 
+    onclick="vc_voiceCallAccept(this,'${res.Content.Id}','${res.Content.MyAccountId}')">
+    گفتگوی صوتی
+    <i  style="font-size: 20px;" class="fa fa-phone" aria-hidden="true"></i>
+
+</button>`;
+
+    if (dontIncludeButtons) {
+        buttons = dontIncludeButtons;
+    }
+
+    //getDoc().querySelector('#gapSocialCirlces').appendChild(createElementFromHTML(closeCallbutton));
 
     let html = `
     
-    <p>تماس صوتی از پشتیبانی</p>
     
+         <p>تماس صوتی </p>
+
    <div>
+
+    <audio class="VC_AdminCallInitCallback"  style="display: none"
+    controls id="VC_AdminCallInitCallback_${res.Content.Id}" autoplay>
     
-    <voice style="width: 100%; height: 100%" muted="muted" controls id="VC_AdminCallInitCallback_${res.Content.Id}" autoplay>
-    
-    
-    </voice>
+                        <source src="" type="audio/mp3"  class="vc_audio_source"/>
+
+    </audio>
   
-     <button  class="gapMainColor" style="padding: 5px;border-radius: 3px 3px 3px 3px ;border:none" 
-    onclick="vc_voiceCallReject(this,'${res.Content.Id}')">رد </button>
-    
-    <button  class="gapMainColor" style="padding: 5px;border-radius: 3px 3px 3px 3px ;border:none" 
-    onclick="vc_voiceCallAccept(this,'${res.Content.Id}')">جواب</button>
+    ${buttons}
 </div>
     `;
 
     html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, null, 0,
-        res.Content.UniqId, 'همین الان', { Id: res.Content.Id });
+        res.Content.UniqId, 'همین الان', {
+            Id: res.Content.Id,
+            AccountName: CurrentUserInfo.targetName
+        });
 
-    getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
+
+    showNewOnTheFlyMessage(html);
+
+
+    getDoc().querySelector('#gapCall').innerHTML = '';
+    getDoc().querySelector('#gapCall').append(createElementFromHTML(html));
+    getDoc().querySelector('#gapCall').appendChild(createElementFromHTML(closeCallbutton));
 
 }
 
-function vc_voiceCallReject(THIS, chatId) {
+function vc_voiceCallReject(THIS, chatId, myAccountId) {
+    debugger;
+    stopRecording();
+
+    closeCall();
+
+    /*  getDoc().querySelector('#gapChatInput').value = 'تماس توسط کاربر رد شد';
+  
+      CurrentUserInfo.commonDomManager.enterNewText();
+  
+      CurrentUserInfo.plugin.sendNewText();*/
 
 
+    // در دو جا استفاده شده است در موقع بستن لازم نیست این متد فراخوانی شود
+
+    MyCaller.Send('VC_CustomerIsAcceptOrReject',
+        {
+            msg: 'تماس توسط کاربر رد شد', err: null, isAccepted: false, myAccountId: myAccountId,
+            chatId: chatId
+        })
     setMsg(THIS, 'تماس توسط کاربر رد شد', null, true, chatId,
         function (msg, isAccepted, targetId, chatId) {
             MyCaller.Send('VC_CustomerIsAcceptOrReject',
                 {
-                    msg: msg, err: null, isAccepted: false, myAccountId: targetId,
+                    msg: msg, err: null, isAccepted: false, myAccountId: myAccountId,
                     chatId: chatId
                 })
         });
+
+    toggle(getDoc().querySelector('#gapCall'), 'slide-left')
 }
 
-function vc_voiceCallAccept(THIS, chatId) {
+function startShowHide() {
+    gap_speaking = setInterval(() => {
+        let el = getDoc().querySelector('#gap_speaking');
+        if (!el) {
+            clearInterval(gap_speaking)
+        }
+        ADP.toggle(el, 'fade');
+    }, 1000)
+
+    gap_speaking2 = setInterval(() => {
+        let el = getDoc().querySelector('#closeCallbuttonIcon');
+        if (!el) {
+            clearInterval(gap_speaking2)
+        }
+        ADP.toggle(el, 'fade');
+    }, 1000)
+
+    gap_speaking3 = setInterval(() => {
+        let el = getDoc().querySelector('.whileCalling');
+        if (!el) {
+            clearInterval(gap_speaking3)
+        }
+        ADP.toggle(el, 'fade');
+    }, 1000)
 
 
-    setMsg(THIS, 'کاربر جواب داد', null, true, chatId,
+    getDoc().querySelector('#gap_speaking').style.display = null;
+    getDoc().querySelector('#gap_speaking_off').style.display = 'none';
+
+
+}
+
+function vc_voiceCallAccept(THIS, chatId, myAccountId) {
+
+    startShowHide();
+
+    setMsg(THIS, 'تماس برقرار است', null, true, chatId,
         function (msg, isAccepted, targetId, chatId) {
             MyCaller.Send('VC_CustomerIsAcceptOrReject',
                 {
-                    msg: msg, err: null, isAccepted: true, myAccountId: targetId,
+                    msg: msg, err: null, isAccepted: true, myAccountId: myAccountId,
                     chatId: chatId
                 })
         });
 
+
+    MyCaller.Send('VC_CustomerIsAcceptOrReject',
+        {
+            msg: 'تماس توسط کاربر پاسخ داده شد', err: null, isAccepted: true, myAccountId: myAccountId,
+            chatId: chatId
+        })
     //todo:toooodo
+    customerAcceptCall(myAccountId)
+}
+
+
+function closeCall() {
+
+    try {
+
+        getDoc().querySelector('#gap_speaking').style.display = 'none';
+        getDoc().querySelector('#gap_speaking_off').style.display = null;
+
+        getDoc().querySelector('#closeCallbutton').remove();
+    } catch (e) {
+
+    }
 
 }
 
@@ -6873,42 +7048,69 @@ function vC_AdminSpeakCallback(res) {
     }
 
 
-    const voiceElem = getDoc().querySelector(`VC_AdminCallInitCallback_${res.Content.chatId}`)
+    const voiceElem = getDoc().querySelector(`.VC_AdminCallInitCallback`)
+    const voiceElemSrc = getDoc().querySelector(`.vc_audio_source`)
+
+    if (!voiceElem || !voiceElemSrc) {
+        setMsg(THIS, 'تماس توسط کاربر رد شد', null, true, chatId,
+            function (msg, isAccepted, targetId, chatId) {
+                MyCaller.Send('VC_CustomerIsAcceptOrReject',
+                    {
+                        msg: msg, err: null, isAccepted: false, myAccountId: myAccountId,
+                        chatId: chatId
+                    })
+            });
+        return
+    }
 
     let base64 = btoa(res.Content.buffer)
-    let blob = b64toBlob(base64, 'video/mp4');
+    let blob = b64toBlob(base64, 'audio/mp3');
 
     voiceData.push(blob);
 
-    let wholeVideoBlob = new Blob(voiceData, { 'type': 'video/webm' })
+    let wholeVideoBlob = new Blob(voiceData, {'type': 'audio/mp3'})
 
     let blobUrl = URL.createObjectURL(wholeVideoBlob);
 
-    // برای اولین بار نال است
-    if (voiceElem) {
-        // blobUrl= URL.revokeObjectURL(blobUrl)
+    // blobUrl= URL.revokeObjectURL(blobUrl)
 
-        let lastTime = voiceElem.currentTime ? voiceElem.currentTime : 0;
+    let lastTime = voiceElem.currentTime ? voiceElem.currentTime : 0;
 
-        voiceElem.src = blobUrl;
+    voiceElemSrc.src = blobUrl;
 
-        voiceElem.load()
+    voiceElem.load()
 
-        voiceElem.currentTime = lastTime;
-        voiceElem.play();
-    }
+    voiceElem.currentTime = lastTime;
+    voiceElem.play();
     return blobUrl;
 }
 
 
 function vc_CustomerCallInit() {
 
-    if (!CurrentUserInfo.targetId) {
+    if (!CurrentUserInfo.targetId || CurrentUserInfo.targetId == '') {
         alert("ادمین یافت نشد می توانید صفحه را از نو باز کنید تا اشکالات احتمالی حل شود");
         return;
     }
 
-    MyCaller.Send('VC_CustomerCallInit', { myAccountId: CurrentUserInfo.targetId })
+    MyCaller.Send('VC_CustomerCallInit', {myAccountId: CurrentUserInfo.targetId});
+
+    let res = {};
+
+    res.Content = {};
+    res.Content.Id = 0;
+    res.Content.MyAccountId = CurrentUserInfo.targetId
+    VC_AdminCallInitCallback(res, `
+    
+    <div style="height: 30px">
+    <i style="font-size: 24px" class="whileCalling  fa fa-phone" aria-hidden="true"></i>
+</div>
+
+    
+    `);
+
+
+    startShowHide();
 
 }
 
@@ -6919,30 +7121,75 @@ function vC_AdminIsAcceptOrRejectCallback(res) {
     }
 
 
-    const voiceElem = getDoc().querySelector(`VC_AdminCallInitCallback_${res.Content.chatId}`)
+    Array.from(getDoc().querySelectorAll('.waiting')).forEach(el => el.remove());
 
 
-    if (res.Content.IsAccepted)
-        voiceElem.parentNode.append(createElementFromHTML(`<p>به تماس پاسخ داد</p>`))
-    else {
-        voiceElem.parentNode.append(createElementFromHTML(`<p>تماس شما توسط پشتیبانی رد شد</p>`))
+    // const voiceElem = getDoc().querySelector(`VC_AdminCallInitCallback_${res.Content.chatId}`)
+    const voiceElem = getDoc().querySelector(`.VC_AdminCallInitCallback`)
+
+
+    if (res.Content.IsAccepted) {
+        voiceElem.parentNode.append(createElementFromHTML(`<p>تماس برقرار است</p>`))
+
+        /*  getDoc().querySelector('.vc_voiceCallAccept').style.display='none';
+          getDoc().querySelector('.vc_voiceCallReject').style.display='none';*/
+
+        startShowHide();
+
+    } else {
+        voiceElem.parentNode.append(createElementFromHTML(`<p>تماس توسط پشتیبانی قطع شد</p>`))
+
+        closeCall();
+        stopRecording();
+
+        setTimeout(() => {
+            toggle(getDoc().querySelector('#gapCall'), 'slide-left')
+
+        }, 3000)
 
     }
 }
 
 
 function cC_AdminInAnotherCallingCallback(res) {
-    if (!res || !res.Content || !res.Content.buffer) {
+    if (!res || !res.Content) {
         alert("صدا برگشتی فرمت صحیح ندارد");
         return;
     }
 
+    Array.from(getDoc().querySelectorAll('.waiting')).forEach(el => el.remove());
 
-    const voiceElem = getDoc().querySelector(`VC_AdminCallInitCallback_${res.Content.chatId}`)
+
+    //  const voiceElem = getDoc().querySelector(`.VC_AdminCallInitCallback_${res.Content.chatId}`)
+    const voiceElem = getDoc().querySelector(`.VC_AdminCallInitCallback`)
 
 
-    voiceElem.parentNode.append(createElementFromHTML(`<p>پشتیبانی در حال مکالمه است لطفا منتظر بمانید</p>`))
+    voiceElem.parentNode.append(createElementFromHTML(`<p class="waiting">پشتیبانی در حال مکالمه است لطفا منتظر بمانید</p>`))
 
+
+    /* setTimeout(()=>{
+         
+     },3000)*/
+
+    /*  closeCall();
+      stopRecording();
+  
+      if (getDoc().querySelector('.whileCalling')) {
+          getDoc().querySelector('.whileCalling').remove();
+      }
+  
+      if (gap_speaking) {
+          clearInterval(gap_speaking);
+      }
+      
+      if (gap_speaking2) {
+          clearInterval(gap_speaking2);
+      }
+  
+      if (gap_speaking3) {
+          clearInterval(gap_speaking3);
+      }*/
+    // toggle(getDoc().querySelector('#gapCall'), 'slide-left')
 }
 
 
@@ -7053,9 +7300,6 @@ function customerGetUsersSeparationConfigCallback(res) {
     }
 
 
-
-
-
 }
 
 
@@ -7107,7 +7351,7 @@ function adminSendRatingRequestCallback(res) {
 function gapComment(rate, el) {
 
 
-    MyCaller.Send("CustomerRate", { rate });
+    MyCaller.Send("CustomerRate", {rate});
     let html = `
    
     <h3>
@@ -7148,8 +7392,6 @@ window.addEventListener('beforeunload', function () {
 });
 
 
-
-
 function playSound() {
 
     try {
@@ -7165,3 +7407,307 @@ function playSound() {
     }
 
 }
+
+/*
+
+function VC_AdminCallInitCallback(res) {
+
+    let myAccountId=res.Content.MyAccountId;
+    let html = `
+    <div class="newCallFromAdmin">
+    پشتیبانی در حال تماس به شماست : 
+    <hr/>
+    <button class="btn btn-info" onclick="customerAcceptCall(${myAccountId})">پاسخ</button>
+    <button class="btn btn-info" onclick="customerRejectCall(${myAccountId})">رد تماس</button>
+    </div>
+    `;
+
+    getDoc().querySelector('#gapCallerSound').play();
+
+    html = CurrentUserInfo.commonDomManager.makeChatDom(html, false, false, 651, 65165, null
+        , {}, true);
+
+    getDoc().querySelector('#chatPanel').append(createElementFromHTML(html));
+
+
+}*/
+
+function customerAcceptCall(myAccountId) {
+    ACCESS_TO_VOICE((stream) => {
+        startRecording(myAccountId)
+
+    }, (err) => {
+
+
+    })
+}
+
+/*function customerRejectCall(myAccountId){
+
+    MyCaller.Send('VC_CustomerCloseCall',{myAccountId})
+}*/
+
+
+//*----------------------------- record voice ------------------------------------------------------*!/
+
+let streamrecorder, webcamstream, mediaRecorder, inCalling = false;
+
+function startRecording(myAccountId) {
+    inCalling = true;
+    mediaRecorder = new MediaRecorder(webcamstream);
+    mediaRecorder.start(3000);
+    mediaRecorder.ondataavailable = function (e) {
+
+        new Promise(resolve => {
+
+            const fileReader = new FileReader();
+            fileReader.addEventListener("loadend", () => {
+
+                resolve(fileReader.result)
+            });
+
+            fileReader.readAsBinaryString(e.data);
+
+        }).then(function (buffer) {
+
+
+            MyCaller.Send('VC_CustomerSpeak', {myAccountId: myAccountId, buffer})
+        })
+        chunks.push(e.data);
+    }
+}
+
+function stopRecording() {
+    try {
+        if (mediaRecorder)
+            mediaRecorder.stop();
+        inCalling = false;
+    } catch (e) {
+
+    }
+
+}
+
+
+function ACCESS_TO_VOICE(successCallback, failCallback) {
+
+
+    navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+
+// Get access to microphone
+    navigator.getUserMedia(
+        // Only request audio
+        {video: false, audio: true},
+
+        // Success callback
+        function success(localAudioStream) {
+            // Do something with audio stream
+
+            webcamstream = localAudioStream;
+            voiceData = [];
+            successCallback(localAudioStream)
+
+        },
+        // Failure callback
+        function error(err) {
+            // handle error
+            failCallback(err)
+        }
+    );
+}
+
+//!*----------------------------- end ------------------------------------------------------*
+
+
+//!*----------------------------- Record Voice ------------------------------------------------------*
+
+function recordVoice() {
+    ACCESS_TO_VOICE((stream) => {
+
+        //-------------- بازکردن پنل
+        let gapStickers = getDoc().querySelector('#gapStickers');
+        if (gapStickers) {
+            gapStickers.remove();
+        }
+
+        let html = `
+            <ul class="gapStickerHolder adp-hide" id="gapStickers" style="overflow: auto">
+
+
+<div style="height: 40px" id="whiteRecordingHolder">
+<button   class="whiteRecording Rec" style="float: right" onclick="stopRecording()">
+<i style="font-size: 33px" class="fa fa-microphone" aria-hidden="true"></i>
+</button>
+
+<div class="whileRecordingVoice"  style="text-align: center;float: right">
+<p>در حال ضبط</p>
+</div>
+
+
+
+
+<div style="float: left">
+<button class="btn btn-primary" onclick="stopRecording()" style="    margin-top: 20px;
+    margin-left: 20px;" >توقف ضبط صوت</button>
+
+</div>
+
+<div class="whileRecordingTimer"  >
+</div>
+
+</div>
+
+</ul>
+`;
+
+        let chatPanel = getDoc().querySelector('#chatPanel');
+
+        if (!chatPanel) {
+            alert('chatPanel is null');
+            return;
+        }
+
+        chatPanel.append(createElementFromHTML(html));
+
+
+        toggle(getDoc().querySelector('.gapStickerHolder'))
+
+
+        voiceRecordConfig(stream);
+
+
+        window['whileRecordingVoice'] = setInterval(() => {
+
+      /*      var time = new Date();
+            var now=time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+            
+            getDoc().querySelector('.whileRecordingTimer').innerText=now;*/
+            
+            toggle(getDoc().querySelector('.whileRecordingVoice'))
+        }, 1000)
+        
+        
+
+
+        
+
+    }, (err) => {
+
+
+    })
+}
+
+
+function recoredVoiceSend(myAccountId) {
+
+
+    var fileReader = new FileReader();
+    fileReader.onload = function (e) {
+        console.log(e.target.result)
+        
+        debugger;
+
+        let uniqId = GetChats() + 1;
+        CurrentUserInfo.uniqId = uniqId;
+
+        addNewMultimediaMessage(e.target.result, null, function () {
+            CurrentUserInfo.plugin.multimediaSend();
+        }, true, null, null, true, uniqId, "همین الان")
+
+        window['audioURL']=null;
+        
+        
+        toggle(getDoc().querySelector('.gapStickerHolder'));
+    }
+
+    fileReader.readAsDataURL(        window['audioURL']);
+
+
+
+ /*   let uniqId = GetChats() + 1;
+    CurrentUserInfo.uniqId = uniqId;
+    addNewMultimediaMessage(window['audioURL'], null, function () {
+        CurrentUserInfo.plugin.multimediaSend();
+    }, true, null, null, true, uniqId, "همین الان")*/
+
+}
+
+
+function recordedVoiceCancel() {
+    if (getDoc().querySelector('.gapStickerHolder')) {
+        toggle(getDoc().querySelector('.gapStickerHolder'))
+        getDoc().querySelector('.gapStickerHolder').remove();
+    }
+}
+
+function voiceRecordConfig(webcamstream) {
+    mediaRecorder = new MediaRecorder(webcamstream);
+    voiceRecordchunks = [];
+
+    mediaRecorder.start();
+    mediaRecorder.ondataavailable = function (e) {
+        voiceRecordchunks.push(e.data);
+    }
+
+    mediaRecorder.onstop = function (e) {
+
+
+        if (window['whileRecordingVoice']) {
+            clearInterval(window['whileRecordingVoice']);
+        }
+
+        getDoc().querySelector('#whiteRecordingHolder').remove();
+
+        console.log("recorder stopped");
+
+
+        const clipContainer = document.createElement('article');
+        const clipLabel = document.createElement('p');
+        const audio = document.createElement('audio');
+        const deleteButton = document.createElement('button');
+
+
+        
+
+        clipContainer.classList.add('clip');
+        audio.setAttribute('controls', '');
+        deleteButton.innerHTML = "حذف و لغو";
+        clipLabel.innerHTML = "";
+
+        clipContainer.appendChild(audio);
+        clipContainer.appendChild(clipLabel);
+        clipContainer.appendChild(createElementFromHTML(`
+        <button class="btn btn-primary" onclick="recoredVoiceSend()">
+        ارسال صدا
+        
+        `))
+        clipContainer.appendChild(deleteButton);
+
+
+        let gapStickers = getDoc().querySelector('#gapStickers');
+        gapStickers.appendChild(clipContainer);
+
+        //const blob = new Blob(voiceRecordchunks, {'type': 'audio/ogg; codecs=opus'});
+        const blob = new Blob(voiceRecordchunks, {'type': 'audio/mpeg'});
+        
+        const audioURL = window.URL.createObjectURL(blob);
+        window['audioURL']=blob;
+        audio.src = audioURL;
+
+        voiceRecordchunks = [];
+
+
+        deleteButton.onclick = function (e) {
+            let evtTgt = e.target;
+            evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+
+            voiceRecordchunks=[];
+            toggle(getDoc().querySelector('.gapStickerHolder'));
+
+        }
+
+
+    }
+}
+
+//!*----------------------------- end ------------------------------------------------------*
