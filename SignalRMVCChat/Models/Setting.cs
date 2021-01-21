@@ -16,7 +16,7 @@ namespace SignalRMVCChat.Service
 
             FromMailAddress = "mahdijafariyan2@gmail.com";
             Host = "smtp.gmail.com";
-            FromMailAddressPassword = "m21430037j";
+            FromMailAddressPassword = "*******";
 
 
             OperatorsBotName = "@operatorsSupBot";

@@ -9,91 +9,84 @@ namespace Engine.SysAdmin.Service
 {
     public class ContextFactory
     {
-
         private static GapChatContext context;
 
         public static GapChatContext GetContext(string name)
         {
             if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
             {
-             
                 var connection = Effort.DbConnectionFactory.CreatePersistent("1");
                 ContextFactory.context = new GapChatContext(connection);
 
 
                 if (MyGlobal.IsUnitTestEnvirementNoSeed)
                 {
-                    
                 }
                 else
                 {
                     ContextFactory.context.Seed(new DatabaseSeeder());
-
                 }
+
                 return ContextFactory.context;
             }
 
-            if (string.IsNullOrEmpty(name)==false && name.ToLower()=="security")
+            if (string.IsNullOrEmpty(name) == false && name.ToLower() == "security")
             {
-
                 return new GapChatContext();
             }
 
-            return new GapChatContext();
+      
+            
+            
+            
+            // ContextFactory.context.Seed(new DatabaseSeeder());
+
+            /*------------------------- برای راه اندازی سیستم در حالت دیباگ  کد های زیر را فعال نمایید -----------------------------*/
+            //  context= new GapChatContext();
+
+            //  context.Seed(new DatabaseSeeder());
+            /*------------------------- اتمام -----------------------------*/
+            
+            
+
+            return context;
 
 
             // return new TaavoniKhosrowshahDbContext();
             //  return new SampleContext();
             // return new GapChatContext();
         }
-        
-        
+
+
         public static void Migrate(string contextName)
         {
             GetContext(contextName).Database.Initialize(false);
         }
-
-     
-
-        
-        
-     
-
     }
-    
+
     public class ServiceImplementaionFactory
     {
-
-        public static GenericImp<T> GetActual<T>(string contexName)where  T: class, IEntity,new()
+        public static GenericImp<T> GetActual<T>(string contexName) where T : class, IEntity, new()
         {
             return new GenericImp<T>(contexName);
         }
-        
-        
-        public static GenericSingleImp<T> GetSingleActual<T>(string contexName)where  T: class, IEntity,new()
+
+
+        public static GenericSingleImp<T> GetSingleActual<T>(string contexName) where T : class, IEntity, new()
         {
             return new GenericSingleImp<T>(contexName);
         }
-        
-        public static GenericImp<T> GetMock<T,ServiceType>(T t, ServiceType serviceType)
-            where  T: class, IEntity,new() where ServiceType:BaseService<T>
+
+        public static GenericImp<T> GetMock<T, ServiceType>(T t, ServiceType serviceType)
+            where T : class, IEntity, new() where ServiceType : BaseService<T>
         {
-            return new MockImp<T,ServiceType>(serviceType);
+            return new MockImp<T, ServiceType>(serviceType);
         }
-        
-        public static GenericSafeDeleteImp<T> GetSafeDeleteImp<T>(string contextName)where  T: class, IEntitySafeDelete,new()
+
+        public static GenericSafeDeleteImp<T> GetSafeDeleteImp<T>(string contextName)
+            where T : class, IEntitySafeDelete, new()
         {
             return new GenericSafeDeleteImp<T>(contextName);
         }
-        
-        
-      
-     
-
-        
-        
-     
-
     }
-
 }
