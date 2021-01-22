@@ -48,8 +48,7 @@ namespace Engine.SysAdmin.Service
             /*------------------------- اتمام -----------------------------*/
             
             
-
-            return context;
+           return new GapChatContext();
 
 
             // return new TaavoniKhosrowshahDbContext();
