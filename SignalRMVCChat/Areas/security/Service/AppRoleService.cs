@@ -79,7 +79,7 @@ namespace SignalRMVCChat.Areas.security.Service
 
             string[] rolesArr = roles.Split(',');
 
-          var anyAppUserFind=  GetQuery().Include(q => q.AppUsers)
+            var anyAppUserFind=  GetQuery().Include(q => q.AppUsers)
                 .Where(q => rolesArr.Contains(q.Name) ).
                 Any(q=>q.AppUsers.Any(au=>au.Id==vmAppUserId));
 
@@ -88,7 +88,25 @@ namespace SignalRMVCChat.Areas.security.Service
                 var list=GetQuery().Include(q => q.AppUsers).ToList();
             }
 
-          return anyAppUserFind;
+            return anyAppUserFind;
+
+        }
+        
+        public bool IsInRoleAdmin(int vmAppUserId, string roles)
+        {
+
+            string[] rolesArr = roles.Split(',');
+
+            var anyAppUserFind=  GetQuery().Include(q => q.AppAdmins)
+                .Where(q => rolesArr.Contains(q.Name) ).
+                Any(q=>q.AppAdmins.Any(au=>au.Id==vmAppUserId));
+
+            if (MyGlobal.IsAttached)
+            {
+                var list=GetQuery().Include(q => q.AppUsers).ToList();
+            }
+
+            return anyAppUserFind;
 
         }
 

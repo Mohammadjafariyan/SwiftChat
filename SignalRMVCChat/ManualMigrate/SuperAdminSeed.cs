@@ -42,9 +42,9 @@ namespace SignalRMVCChat.ManualMigrate
             
             var  appRoleService= new AppRoleService();
 
-            if (!appRoleService.IsInRole(superAdminId ,"superAdmin"))
+            if (!appRoleService.IsInRoleAdmin(superAdminId ,"superAdmin"))
             {
-                await roleService.AddToRoleAsync(superAdminId, "superAdmin");
+                await roleService.AddToRoleAdminAsync(superAdminId, "superAdmin");
             }
             
          
