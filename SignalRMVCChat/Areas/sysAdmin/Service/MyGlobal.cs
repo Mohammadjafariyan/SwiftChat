@@ -44,8 +44,8 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
         {
             get
             {
-                 //return false;
-                return Debugger.IsAttached;
+                 return false;
+               // return Debugger.IsAttached;
             }
         }
 
