@@ -16,6 +16,9 @@ namespace SignalRMVCChat.Areas.Admin.Controllers
         {
             return View("Detail");
         }
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
     }
 }

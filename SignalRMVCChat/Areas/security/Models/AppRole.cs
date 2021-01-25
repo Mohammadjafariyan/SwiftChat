@@ -8,6 +8,7 @@ namespace SignalRMVCChat.Areas.security.Models
         public AppRole()
         {
             AppUsers=new List<AppUser>();
+            AppAdmins = new List<AppAdmin>();
         }
         public List<AppUser> AppUsers { get; set; }
         public string Name { get; set; }

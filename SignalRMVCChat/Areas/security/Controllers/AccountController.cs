@@ -18,6 +18,10 @@ namespace SignalRMVCChat.Areas.security.Controllers
             AppRoleService = Injector.Inject<AppRoleService>();
         }
         
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         public override ActionResult LoginError(dynamic model)
         {
             return View("~/Areas/Security/Views/Account/Login.cshtml",model);

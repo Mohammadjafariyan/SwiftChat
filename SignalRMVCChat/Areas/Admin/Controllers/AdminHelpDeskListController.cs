@@ -13,5 +13,10 @@ namespace SignalRMVCChat.Areas.Admin.Controllers
             var paging= HelpDeskService.GetAsPaging(take ?? 20, skip,null);
             return View("Index",paging);
         }
+        
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
     }
 }

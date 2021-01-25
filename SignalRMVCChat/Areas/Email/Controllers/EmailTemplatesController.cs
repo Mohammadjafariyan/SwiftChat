@@ -20,7 +20,10 @@ namespace SignalRMVCChat.Areas.Email.Controllers
         {
             Service = emailTemplateService;
         }
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
 
         public override ActionResult Detail(int id)
         {

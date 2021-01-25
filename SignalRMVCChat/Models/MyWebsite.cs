@@ -25,9 +25,23 @@ namespace SignalRMVCChat.Service
        
         public MyWebsite(string baseUrl)
         {
+            TelegramBots = new List<TelegramBotSetting>();
             BaseUrl = baseUrl;
             Admins = new List<MySocket>();
             Customers = new List<MySocket>();
+            PluginCustomized = new List<PluginCustomized>();
+            Tags = new List<Tag>();
+            Forms = new List<Form>();
+            HelpDesks = new List<Models.HelpDesk.HelpDesk>();
+            EventTriggers = new List<Models.ET.EventTrigger>();
+            Bots = new List<Models.Bot.Bot>();
+            UsersSeparations = new List<Models.UsersSeparation.UsersSeparation>();
+            ReadyPms = new List<Models.ReadyPm.ReadyPm>();
+            RemindMes = new List<Models.RemindMe.RemindMe>();
+            CompaignTemplates = new List<CompaignTemplate>();
+            Compaigns = new List<Models.Compaign.Compaign>();
+            Routings = new List<Models.Routing.Routing>();
+            MyWebsiteSettings = new List<MyWebsiteSetting>();
         }
         
         

@@ -23,6 +23,10 @@ namespace SignalRMVCChat.Controllers
         private MyWebsiteService websiteService = Injector.Inject<MyWebsiteService>();
         private byte[] buff;
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         // GET: Alam
         public ActionResult AdminAlarm(int userId, string websiteToken)
         {

@@ -12,6 +12,26 @@ namespace SignalRMVCChat.Models
 {
     public class Customer : Entity
     {
+        public Customer()
+        {
+            Comments = new List<Comment>();
+            this.CreationDateTime = DateTime.Now;
+
+            TrackInfos = new List<CustomerTrackInfo>();
+
+            CustomerTags = new List<CustomerTag>();
+            OnlineStatus = OnlineStatus.Offline;
+
+            Chats = new List<Chat>();
+            MySockets = new List<MySocket>();
+            CustomerDatas = new List<CustomerData>();
+            FormValues = new List<FormValue>();
+
+            RemindMes = new List<RemindMe.RemindMe>();
+            CompaignLogReceivers = new List<CompaignLogReceiver>();
+        }
+
+        
         public long TelegramChatId { get; set; }
 
         public bool IsResolved { get; set; }
@@ -21,16 +41,7 @@ namespace SignalRMVCChat.Models
         public string Phone { get; set; }
         [NotMapped] public string OnlineTp { get; set; }
 
-        public Customer()
-        {
-            this.CreationDateTime = DateTime.Now;
-
-            TrackInfos = new List<CustomerTrackInfo>();
-
-
-            OnlineStatus = OnlineStatus.Offline;
-        }
-
+  
 
         public DateTime CreationDateTime { get; set; } = DateTime.Now;
 

@@ -12,6 +12,7 @@ namespace SignalRMVCChat.Models
         public Form()
         {
             Elements = new List<FormElement>();
+            FormValues = new List<FormValue>();
         }
 
         public bool OnlyMe { get; set; }

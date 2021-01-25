@@ -12,6 +12,10 @@ namespace SignalRMVCChat.Areas.Admin.Controllers
     [MyAuthorizeFilter(Roles = "superAdmin")]
     public class DashboardLogController:Controller
     {
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
     
         public ActionResult Comments(int? page)
         {

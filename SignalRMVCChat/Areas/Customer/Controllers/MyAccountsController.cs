@@ -25,7 +25,10 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
         {
             Service = Injector.Inject<MyAccountProviderService>();
         }
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
 
         [HttpPost]
         public ActionResult SaveSelectedWebsites(int myAccountId, int parentId, int[] selectedWebsites)

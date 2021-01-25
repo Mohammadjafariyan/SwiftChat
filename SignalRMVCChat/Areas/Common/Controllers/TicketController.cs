@@ -32,7 +32,10 @@ namespace SignalRMVCChat.Areas.Common.Controllers
             TicketService = service;
             _myfileService = myfileService;
         }
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
 
         public override ActionResult Index(int? take, int? skip, int? dependId)
         {

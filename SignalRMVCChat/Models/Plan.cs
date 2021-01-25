@@ -11,6 +11,8 @@ namespace SignalRMVCChat.Service
         public Plan()
         {
             ShowWatermark = true;
+            MyAccountPlans = new List<MyAccountPlans>();
+            MyAccountPayments = new List<MyAccountPayment>();
         }
         /// <summary>
         /// اختصاص صفحات خاص به پشتیبان های خاص

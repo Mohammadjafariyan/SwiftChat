@@ -11,6 +11,10 @@ namespace SignalRMVCChat.Models.TelegramBot
 {
     public class TelegramBotSetting : BaseEntity
     {
+        public TelegramBotSetting()
+        {
+            TelegramBotRegisteredOperators = new List<TelegramBotRegisteredOperator>();
+        }
 
 
         [NotMapped]

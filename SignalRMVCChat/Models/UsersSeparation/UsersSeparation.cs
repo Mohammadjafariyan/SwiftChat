@@ -9,6 +9,11 @@ namespace SignalRMVCChat.Models.UsersSeparation
 {
     public class UsersSeparation:BaseEntity
     {
+        public UsersSeparation()
+        {
+            Customers = new List<Customer>();
+        }
+
         public bool enabled{ get; set; }
 
         public string type { get; set; }

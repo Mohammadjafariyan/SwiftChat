@@ -8,7 +8,10 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
     [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class IdPayBaseController:Controller 
     {
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         public virtual string GetCallbackUrl()
         {
              throw new NotImplementedException();

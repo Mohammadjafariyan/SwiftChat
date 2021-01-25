@@ -16,6 +16,7 @@ namespace SignalRMVCChat.Service
         public MySocket()
         {
             CreationDateTime = DateTime.Now;
+            Chats = new List<Chat>();
         }
 
         public DateTime CreationDateTime { get; set; } = DateTime.Now;

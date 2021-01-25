@@ -19,7 +19,10 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
     {
         private CustomerProviderService customerProviderService = Injector.Inject<CustomerProviderService>();
 
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         [HttpGet]
         public ActionResult CustomerChatHtml(string token)
         {

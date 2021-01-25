@@ -14,7 +14,10 @@ namespace SignalRMVCChat.Controllers
     public class UpdateApplicationController:Controller
     {
 
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         public ActionResult Index()
         {
             return View("Index");

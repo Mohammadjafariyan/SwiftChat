@@ -7,6 +7,11 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
     [MyAuthorizeFilter]
     public class NewWebsiteGuideController : Controller
     {
+        
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         // GET
         public ActionResult Index()
         {

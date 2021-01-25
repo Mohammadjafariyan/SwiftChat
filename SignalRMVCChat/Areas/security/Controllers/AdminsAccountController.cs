@@ -20,6 +20,10 @@ namespace SignalRMVCChat.Areas.security.Controllers
             AppRoleService = Injector.Inject<AppRoleService>();
         }
         
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -44,7 +48,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
 
                 var appRoleService = Injector.Inject<AppRoleService>();
-                bool isSuperAdmin = appRoleService.IsInRole(result.Id, "superAdmin");
+                bool isSuperAdmin = appRoleService.IsInRoleAdmin(result.Id, "superAdmin");
 
 
                 if (isSuperAdmin)

@@ -23,6 +23,10 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
             _pluginCustomizedService = pluginCustomizedService;
         }
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         public ActionResult MyWebsiteList()
         {
             try

@@ -23,6 +23,10 @@ namespace SignalRMVCChat.Controllers
 
             return Json(true);
         }
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
     }
 
     [Serializable]

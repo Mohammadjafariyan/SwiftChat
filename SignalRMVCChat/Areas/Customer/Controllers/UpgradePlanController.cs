@@ -15,6 +15,11 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
         {
             _paymentBusinessListenerService = paymentBusinessListenerService;
         }
+        
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
 
         [HttpGet]
         public ActionResult Index()

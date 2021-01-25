@@ -15,6 +15,8 @@ namespace SignalRMVCChat.Controllers
     [SetCurrentRequestFilter]
     public class OperatorsLoginController : Controller
     {
+        
+        
         public ActionResult Index(string returnUrl, string token, string adminToken)
         {
             var websiteService = Injector.Inject<MyWebsiteService>();

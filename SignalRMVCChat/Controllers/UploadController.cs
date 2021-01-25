@@ -11,6 +11,10 @@ namespace SignalRMVCChat.Controllers
     public class UploadController:Controller
     {
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         private ImageService _service = Injector.Inject<ImageService>();
         public ActionResult Upload(int id)
         {

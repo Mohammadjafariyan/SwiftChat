@@ -17,13 +17,12 @@ namespace SignalRMVCChat.Areas.security.Service
     {
         private readonly AppUserService _appUserService;
         private readonly AppAdminService _appAdminService;
-        
 
-       
+
         public AppRoleService() : base(MyGlobal.SecurityContextName)
         {
-            _appUserService = DependencyInjection.Injector.Inject< AppUserService>();
-            _appAdminService = DependencyInjection.Injector.Inject< AppAdminService>();
+            _appUserService = DependencyInjection.Injector.Inject<AppUserService>();
+            _appAdminService = DependencyInjection.Injector.Inject<AppAdminService>();
         }
 
         public async Task CreateAsync(AppRole role)
@@ -53,7 +52,7 @@ namespace SignalRMVCChat.Areas.security.Service
 
             _appUserService.Save(User.Single);
         }
-        
+
         public async Task AddToRoleAdminAsync(int userId, string role)
         {
             if (RoleExists(role) == false)
@@ -76,74 +75,62 @@ namespace SignalRMVCChat.Areas.security.Service
 
         public bool IsInRole(int vmAppUserId, string roles)
         {
-
             string[] rolesArr = roles.Split(',');
 
-            var anyAppUserFind=  GetQuery().Include(q => q.AppUsers)
-                .Where(q => rolesArr.Contains(q.Name) ).
-                Any(q=>q.AppUsers.Any(au=>au.Id==vmAppUserId));
+            var anyAppUserFind = GetQuery().Include(q => q.AppUsers)
+                .Include(q => q.AppAdmins)
+                .Where(q => rolesArr.Contains(q.Name)).Any(q => q.AppUsers.Any(au => au.Id == vmAppUserId) ||
+                                                                q.AppAdmins.Any(au => au.Id == vmAppUserId));
 
             if (MyGlobal.IsAttached)
             {
-                var list=GetQuery().Include(q => q.AppUsers).ToList();
+                var list = GetQuery().Include(q => q.AppUsers).ToList();
             }
 
             return anyAppUserFind;
-
         }
-        
+
         public bool IsInRoleAdmin(int vmAppUserId, string roles)
         {
-
             string[] rolesArr = roles.Split(',');
 
-            var anyAppUserFind=  GetQuery().Include(q => q.AppAdmins)
-                .Where(q => rolesArr.Contains(q.Name) ).
-                Any(q=>q.AppAdmins.Any(au=>au.Id==vmAppUserId));
+            var anyAppUserFind = GetQuery().Include(q => q.AppAdmins)
+                .Where(q => rolesArr.Contains(q.Name) && q.AppAdmins.Count > 0)
+                .Any(q => q.AppAdmins.Any(au => au.Id == vmAppUserId));
 
             if (MyGlobal.IsAttached)
             {
-                var list=GetQuery().Include(q => q.AppUsers).ToList();
+                var list = GetQuery().Include(q => q.AppUsers).ToList();
             }
 
             return anyAppUserFind;
-
         }
 
 
-        public List<Ticket>  SetIsInRole( List<Ticket> tickets, string roles)
+        public List<Ticket> SetIsInRole(List<Ticket> tickets, string roles)
         {
-
             string[] rolesArr = roles.Split(',');
 
-            var ids= tickets.Select(u => u.AppUserId).ToList();
+            var ids = tickets.Select(u => u.AppUserId).ToList();
 
             var inRoleUsers = GetQuery().Include(q => q.AppUsers)
-                  .Where(q => rolesArr.Contains(q.Name)).
-                  Where(q => q.AppUsers.Any(au => ids.Contains( au.Id))).SelectMany(au=>au.AppUsers);
-
+                .Where(q => rolesArr.Contains(q.Name)).Where(q => q.AppUsers.Any(au => ids.Contains(au.Id)))
+                .SelectMany(au => au.AppUsers);
 
 
             foreach (var inRoleUser in inRoleUsers)
             {
-                tickets.Where(u => u.AppUserId == inRoleUser.Id).ForEach(r =>
-                {
-                    r.IsAdmin = true;
-                });
-
+                tickets.Where(u => u.AppUserId == inRoleUser.Id).ForEach(r => { r.IsAdmin = true; });
             }
 
 
             return tickets;
-
         }
     }
 
 
     public class AppRoleServiceTest
     {
-
-
         [Test]
         public void IsInRole()
         {
@@ -163,17 +150,16 @@ namespace SignalRMVCChat.Areas.security.Service
             }).Single;
 
 
-            bool isIn= appRoleService.IsInRole(appUserId, "Admin");
-            bool isnotIn= appRoleService.IsInRole(appUserId, "Admin2");
-            
-            
+            bool isIn = appRoleService.IsInRole(appUserId, "Admin");
+            bool isnotIn = appRoleService.IsInRole(appUserId, "Admin2");
+
+
             Assert.True(isIn);
             Assert.False(isnotIn);
-            
-             isIn= appRoleService.IsInRole(appUserId, "Admin2,Admin");
 
-             Assert.True(isIn);
+            isIn = appRoleService.IsInRole(appUserId, "Admin2,Admin");
 
+            Assert.True(isIn);
         }
     }
 }

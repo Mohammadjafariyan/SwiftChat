@@ -10,6 +10,11 @@ namespace SignalRMVCChat.Models.Bot
     [TableName("Bot")]
     public class Bot : BaseBot
     {
+        public Bot()
+        {
+            Compaigns = new List<Compaign.Compaign>();
+        }
+
         #region JOINS
 
         /*------------------------------ JOINS ---------------------------------*/

@@ -20,7 +20,10 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
         {
             Service =Injector.Inject<MyWebsiteService>();
         }
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         
         public override ActionResult Index(int? take, int? skip,int? dependId)
         {

@@ -19,6 +19,10 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
     [MyAuthorizeFilter]
     public class ArchiveController : Controller
     {
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         [System.Web.Mvc.HttpPost]
         public ActionResult GetChats([FromUri] string adminToken,
             [FromBody] int? page, [FromBody] int myAccountId, [FromBody] int customerId,

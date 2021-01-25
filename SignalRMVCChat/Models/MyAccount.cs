@@ -17,6 +17,7 @@ namespace SignalRMVCChat.Models
     {
         public MyAccount()
         {
+            TelegramBots = new List<TelegramBotSetting>();
             MyWebsites = new List<MyWebsite>();
             Chats = new List<Chat>();
             MySockets = new List<MySocket>();
@@ -27,6 +28,13 @@ namespace SignalRMVCChat.Models
             Forms = new List<Form>();
             ReceivedPrivateChats = new List<ReceivedPrivateChat>();
             MyAccountType = MyAccountType.Normal;
+            ChatAutomatics = new List<ChatAutomatic>();
+            EventTriggers = new List<EventTrigger>();
+            UsersSeparations = new List<UsersSeparation.UsersSeparation>();
+            ReadyPms = new List<ReadyPm.ReadyPm>();
+            RemindMes = new List<RemindMe.RemindMe>();
+            Compaigns = new List<Compaign.Compaign>();
+            Bots = new List<Bot.Bot>();
         }
 
 

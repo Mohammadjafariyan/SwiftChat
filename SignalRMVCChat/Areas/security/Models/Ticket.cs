@@ -16,6 +16,7 @@ namespace SignalRMVCChat.Areas.security.Models
         {
             AdminTicketSeenStatus = TicketSeenStatus.NotSeen;
             CustomerTicketSeenStatus = TicketSeenStatus.NotSeen;
+            MyFiles = new List<MyFile>();
         }
           
           [NotMapped]

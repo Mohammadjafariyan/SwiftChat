@@ -8,7 +8,10 @@ namespace SignalRMVCChat.Areas.Admin.Controllers
     public class SignWebsitesController:Controller
     {
 
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         [HttpGet]
         public ActionResult Index()
         {

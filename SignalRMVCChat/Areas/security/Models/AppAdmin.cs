@@ -10,6 +10,7 @@ namespace SignalRMVCChat.Areas.security.Models
         public AppAdmin()
         {
             SignUpDateTime=DateTime.Now;
+            Tickets = new List<Ticket>();
         }
 
     

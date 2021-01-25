@@ -15,6 +15,11 @@ namespace SignalRMVCChat.Areas.Admin.Controllers
     [MyAuthorizeFilter(Roles = "superAdmin")]
     public class EditorController : Controller
     {
+        
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         // GET: Customer/Editor
         public ActionResult Index()
         {

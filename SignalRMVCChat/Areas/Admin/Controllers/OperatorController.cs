@@ -18,6 +18,10 @@ namespace SignalRMVCChat.Areas.Admin.Controllers
     public class OperatorController : Controller
     {
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         public OperatorController(MyAccountProviderService myAccountProviderService,
             AppUserService appUserService,
             MyAccountPlansService myAccountPlansService)

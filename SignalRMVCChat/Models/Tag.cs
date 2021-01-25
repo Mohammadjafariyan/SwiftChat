@@ -6,7 +6,11 @@ namespace SignalRMVCChat.Models
 {
     public class Tag:Entity
     {
-        
+        public Tag()
+        {
+            CustomerTags = new List<CustomerTag>();
+        }
+
         public string Name { get; set; }
 
 

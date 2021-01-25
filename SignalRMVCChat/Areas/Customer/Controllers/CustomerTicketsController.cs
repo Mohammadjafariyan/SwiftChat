@@ -12,7 +12,10 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
         {
             return View("Index");
         }
-        
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         
         public ActionResult Detail()
         {

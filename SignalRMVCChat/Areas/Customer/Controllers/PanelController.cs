@@ -17,6 +17,11 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
     [AllowCrossSite]
     public class PanelController : Controller
     {
+        
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         // GET: Customer/Panel
         public ActionResult Index(string websiteToken)
         {

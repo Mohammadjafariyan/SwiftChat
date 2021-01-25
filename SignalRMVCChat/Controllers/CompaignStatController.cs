@@ -13,7 +13,10 @@ namespace SignalRMVCChat.Controllers
     {
 
         private CompaignLogService compaignLogService = DependencyInjection.Injector.Inject<CompaignLogService>();
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         public ActionResult LinkClick(int compaignLogId, string redirectUrl)
         {
 

@@ -8,6 +8,11 @@ namespace SignalRMVCChat.Models
 {
     public class MyAccountPayment:Entity
     {
+        public MyAccountPayment()
+        {
+            MyAccountPlans = new List<MyAccountPlans>();
+        }
+
         public List<MyAccountPlans> MyAccountPlans { get; set; }
         public MyAccount MyAccount { get; set; }
         public int MyAccountId { get; set; }

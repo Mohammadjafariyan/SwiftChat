@@ -21,6 +21,7 @@ namespace SignalRMVCChat.Controllers
 
         private HelpDeskService HelpDeskService = Injector.Inject<HelpDeskService>();
 
+        
         [HttpGet()]
         public async Task<ActionResult> Index(string websiteBaseUrl, string lang,
             string searchTerm=null)

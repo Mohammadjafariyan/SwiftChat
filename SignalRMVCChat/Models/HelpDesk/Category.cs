@@ -15,6 +15,7 @@ namespace SignalRMVCChat.Models.HelpDesk
     {
         public Category()
         {
+            Articles = new List<Article>();
             Order = 0;
         }
 
@@ -56,6 +57,7 @@ namespace SignalRMVCChat.Models.HelpDesk
         public Article()
         {
             Comments = new List<Comment>();
+            ArticleVisits = new List<ArticleVisit>();
         }
 
 
@@ -112,6 +114,10 @@ namespace SignalRMVCChat.Models.HelpDesk
 
     public class Language : EntitySafeDelete
     {
+        public Language()
+        {
+            HelpDesks = new List<HelpDesk>();
+        }
 
         public string Name { get; set; }
 
@@ -123,7 +129,10 @@ namespace SignalRMVCChat.Models.HelpDesk
 
     public class HelpDesk : EntitySafeDelete
     {
-
+        public HelpDesk()
+        {
+            Categories = new List<Category>();
+        }
 
         public string GoToWebsiteUrl { get; set; }
         public string HeaderText { get; set; }

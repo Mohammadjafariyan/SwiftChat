@@ -12,7 +12,10 @@ namespace SignalRMVCChat.Areas.Common.Controllers
         {
             _myFileService = myFileService;
         }
-
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
 
         public FileResult Download(int fileId)
         {

@@ -11,7 +11,10 @@ namespace SignalRMVCChat.Models
     [TableName("Chat")]
     public class Chat : ChatAbstract
     {
-
+        public Chat()
+        {
+            FormValues = new List<FormValue>();
+        }
 
         [NotMapped]
         public string AccountName

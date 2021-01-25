@@ -23,6 +23,10 @@ namespace SignalRMVCChat.Areas.security.Controllers
         public ManageController()
         {
         }
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {

@@ -13,6 +13,9 @@ namespace SignalRMVCChat.Areas.security.Models
         public AppUser()
         {
             SignUpDateTime=DateTime.Now;
+            EmailSents = new List<EmailSent>();
+            Tickets = new List<Ticket>();
+
         }
 
         public bool Difn { get; set; }

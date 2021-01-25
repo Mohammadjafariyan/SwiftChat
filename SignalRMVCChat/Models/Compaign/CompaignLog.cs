@@ -11,6 +11,7 @@ namespace SignalRMVCChat.Models.Compaign
         {
             LinkClicked = 0;
             EmailOpened = 0;
+            CompaignLogReceivers = new List<CompaignLogReceiver>();
         }
 
         [NotMapped]

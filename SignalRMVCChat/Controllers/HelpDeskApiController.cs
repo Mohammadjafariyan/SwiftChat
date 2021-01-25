@@ -20,6 +20,10 @@ namespace SignalRMVCChat.Controllers
         private HelpDeskService _helpDeskService = Injector.Inject<HelpDeskService>();
         private MyWebsiteService websiteService = Injector.Inject<MyWebsiteService>();
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
 
         [HttpPost]
         public ActionResult Search( string searchTerm,string websiteToken,string language=null,bool isAdmin=false)

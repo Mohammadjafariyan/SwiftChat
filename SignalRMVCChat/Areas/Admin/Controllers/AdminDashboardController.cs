@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using SignalRMVCChat.Models;
 using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Areas.Admin.Controllers
@@ -13,6 +14,11 @@ namespace SignalRMVCChat.Areas.Admin.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
         }
     }
 }

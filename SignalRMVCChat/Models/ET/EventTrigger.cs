@@ -10,6 +10,11 @@ namespace SignalRMVCChat.Models.ET
 {
     public class EventTrigger : Entity
     {
+        public EventTrigger()
+        {
+            Compaigns = new List<Compaign.Compaign>();
+        }
+
         /*------------------------------info------------------------------*/
         /// <summary>
         /// نام 

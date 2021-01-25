@@ -15,6 +15,7 @@ namespace SignalRMVCChat.Models.Compaign
         public Compaign()
         {
             CompaignTemplates = new List<CompaignTemplate>();
+            CompaignLogs = new List<CompaignLog>();
         }
         public bool IsConfigured { get; set; } //todo:
         public DateTime LastChangeDateTime { get; set; } = DateTime.Now;
