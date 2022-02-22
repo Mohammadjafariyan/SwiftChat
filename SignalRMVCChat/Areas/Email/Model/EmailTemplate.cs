@@ -14,6 +14,7 @@ namespace SignalRMVCChat.Areas.Email.Model
         public EmailTemplate()
         {
             EmailSents = new List<EmailSent>();
+            
         }
 
         [Required]
@@ -42,9 +43,7 @@ namespace SignalRMVCChat.Areas.Email.Model
         Signup,
         [Display(Name = "قالب معمولی")]
         Normal,
-
         [Display(Name = "خوش آمد گویی بعد از ثبت نام")]
         Welcome,
-
     }
 }
