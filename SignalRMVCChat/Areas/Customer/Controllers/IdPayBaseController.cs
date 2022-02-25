@@ -61,7 +61,7 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
             });
         }
 
-        
+        [AllowAnonymous]
         public async Task<ActionResult> AfterPayment()
         {
             string Message = "";
@@ -151,6 +151,7 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<JsonResult> Inquiry(string ID, string OrderID)
         {
             string Message = "";

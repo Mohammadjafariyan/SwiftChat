@@ -73,6 +73,7 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
 
 
             childAccount.AccessWebsites = selectedWebsites;
+            myAccountProviderService.VanillaSave(childAccount);
             myAccountProviderService.Save(childAccount);
 
             return new HttpStatusCodeResult(200);

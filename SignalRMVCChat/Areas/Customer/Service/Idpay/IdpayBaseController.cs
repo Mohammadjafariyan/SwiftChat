@@ -8,6 +8,7 @@ namespace TelegramBotsWebApplication.Idpay
     public class IdpayBaseController:Controller
     {
           [HttpPost]
+          
         public async Task<JsonResult> Payment(string Amount)
         {
             string Link = "", Message = "";
@@ -34,7 +35,7 @@ namespace TelegramBotsWebApplication.Idpay
             return Json(new { PaymentUrl = Link, Message = Message }, JsonRequestBehavior.AllowGet);
         }
 
-        
+        [AllowAnonymous]
         public async Task<ActionResult> AfterPayment()
         {
             string Message = "";
@@ -81,6 +82,7 @@ namespace TelegramBotsWebApplication.Idpay
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<JsonResult> Inquiry(string ID, string OrderID)
         {
             string Message = "";
