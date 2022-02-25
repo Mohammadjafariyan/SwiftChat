@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -26,7 +27,17 @@ namespace SignalRMVCChat.Controllers
         public async   Task<ActionResult> Update(string command)
         {
 
-            string directory = @"c:\\wwwroot\telegrambot\gapchat.ashpazerooz.ir\wwwroot\";// Environment.CurrentDirectory; // directory of the git repository
+
+            string exePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string exeDir = System.IO.Path.GetDirectoryName(exePath);
+            var binDir = System.IO.Directory.GetParent(exeDir);
+            
+            
+            string filePath = Server.MapPath(Url.Content("~/"));
+            
+        //    string file = (new System.Uri(Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
+
+            string directory = filePath; //  @"c:\\wwwroot\telegrambot\gapchat.ashpazerooz.ir\wwwroot\";// Environment.CurrentDirectory; // directory of the git repository
 
             if (string.IsNullOrEmpty(command)==false)
             {
