@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import {MyCaller} from "./../Help/Socket";
-import AddTag from "./AddTag";
 import {ListGroup, Form, Button} from "react-bootstrap";
 import {DataHolder} from "../Help/DataHolder";
 import {CurrentUserInfo} from "../CurrentUserInfo";
+import AddTag from "./AddTag";
+
 
 export default class TagList extends Component {
 

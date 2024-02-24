@@ -3,6 +3,7 @@
 
 import './css/sb-admin-2.min.css'
 import './css/all.min.css'
+import './css/custom.css'
 import useScript from "../../Components/Utilities/UseScript";
 import LayoutPage from "../../Pages/LayoutPage";
 import B4AdminBody from "./B4AdminBody";
@@ -52,7 +53,7 @@ class B4AdminLayout extends Component {
     }
 
     render() {
-    let imgUrl = RandomBgGenerator();
+    //let imgUrl = RandomBgGenerator();
 
         return (
             <div>
@@ -61,7 +62,6 @@ class B4AdminLayout extends Component {
                     <B4AdminLayoutScripts/>
 
                    
-                    <B4AdminMenu></B4AdminMenu>
                      {/* <!-- End of Sidebar-->*/}
 
                      {/* <!-- Content Wrapper-->*/}
@@ -69,7 +69,7 @@ class B4AdminLayout extends Component {
 
                          {/* <!-- Main Content-->*/}
                         <div id="content" style={{
-           backgroundImage: `url('${imgUrl}')`,
+      //     backgroundImage: `url('${imgUrl}')`,
             left: "0px",
             right: "0px",
             bottom: "0px",
@@ -110,6 +110,7 @@ class B4AdminLayout extends Component {
 
                     </div>
                      {/* <!-- End of Content Wrapper-->*/}
+                    <B4AdminMenu></B4AdminMenu>
 
                 </div>
                 

@@ -78,9 +78,6 @@ namespace SignalRMVCChat.Areas.Customer.Controllers
                 obj.hashed_card_no = Request.Params["hashed_card_no"];
                 obj.date = double.Parse(Request.Params["date"]);
 
-
-
-
                 if (!obj.IsOK)
                 {
                     ViewBag.ID = obj.id;

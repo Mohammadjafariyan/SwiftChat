@@ -152,7 +152,7 @@ export default class Menu extends Component {
                         onClick={() => {
                             this.setPage('EventTrigger');
                         }}>
-                    ها     EventTrigger 
+                         EventTrigger ها 
                 </Button>
 
                 <Button variant="light" id={'formCreatorButton'} className={'btn btn-default ' +(DataHolder.currentPage==='BotData' ? ' bg-primary text-white ' : '')} type="button"

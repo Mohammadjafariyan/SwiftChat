@@ -17,11 +17,14 @@ class B4AdminMenu extends Component {
 
     render() {
 
-    let color= colors[Math.floor(Math.random() * colors.length)];
+    let color= localStorage.getItem("menubg") ? localStorage.getItem("menubg") :  colors[0];
 
         return (
             <>
-                <ul className={"navbar-nav  sidebar sidebar-dark accordion"  + ` bg-gradient-${color} `} id="accordionSidebar">
+                <ul
+                    
+                    style={{backgroundColor:color}}
+                    className={"navbar-nav  sidebar sidebar-dark accordion"  + ` bg-gradient-${color} `} id="accordionSidebar">
 
                     {/*      {/* <!-- Sidebar - Brand-->*/}
                     <a className="sidebar-brand d-flex align-items-center justify-content-center" >
@@ -49,7 +52,7 @@ class B4AdminMenu extends Component {
                             CurrentUserInfo.B4AdminMainMenu.setPage('dashboard')
 
                         }} >
-                            <i className="fa fa-cog" aria-hidden="true"></i>
+                            <i className="fa fa-desktop" aria-hidden="true"></i>
                             <span>پیشخوان</span></a>
                     </li>
                   

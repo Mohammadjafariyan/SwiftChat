@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import FormBuilder from "@langleyfoxall/react-dynamic-form-builder";
+/*import FormBuilder from "@langleyfoxall/react-dynamic-form-builder";*/
 import { _EmailSettingForm } from "./EmailSettingForm";
 import { MyCaller} from "../../Help/Socket";
 import { _showError, _showMsg } from "../../Pages/LayoutPage";
@@ -75,7 +75,7 @@ export default class EmailSetting extends Component {
           header={"تنظیمات ایمیل"}
           title={"برای ارسال ایمیل های کمپین این تنظیمات لازم است"}
         >
-          {this.state.values && (
+         {/* {this.state.values && (
             <FormBuilder
               defaultValues={this.state.values}
               form={this.state.form}
@@ -86,7 +86,7 @@ export default class EmailSetting extends Component {
               defaultInputClass={" form-control "}
               defaultSubmitClass={" btn btn-info mt-5 "}
             />
-          )}
+          )}*/}
         </MyCard>
       </div>
     );

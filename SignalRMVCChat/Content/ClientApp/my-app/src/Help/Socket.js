@@ -86,7 +86,7 @@ return;
 
 
         } else {
-            let websiteToken = document.getElementById('websiteToken').value;
+            let websiteToken = localStorage.getItem("mjChatWebPanelToken") ? localStorage.getItem("mjChatWebPanelToken") : document.getElementById('websiteToken').value;
 
             req.WebsiteToken = websiteToken;
 
@@ -106,7 +106,7 @@ return;
 
 export const Socket = function (onOpen) {
 
-    let baseUrl=document.getElementById('baseUrl').value;
+    let baseUrl= 'localhost' //document.getElementById('baseUrl').value;
     CurrentUserInfo.ws = new WebSocket("ws://" + baseUrl + ":8181/");
     CurrentUserInfo.ws.onopen = function () {
         console.log('اتصال برقرار شد');

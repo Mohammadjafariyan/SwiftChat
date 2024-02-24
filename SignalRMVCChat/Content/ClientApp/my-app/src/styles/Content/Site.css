@@ -8,7 +8,6 @@
         width: 14rem;
     }
 }
-
 /*---------------------------------------------------recording animation--------------------------------------*/
 .whiteRecording {
     width: 35px;
@@ -462,14 +461,14 @@
 /*pace end*/
 @font-face {
     font-family: byekan;
-    src: url(../fonts/Sahel.ttf);
+    src: url(./fonts/Sahel.ttf);
 }
 span,td,th,p,div,a{
     font-size: 14px !important;
 }
 @font-face {
     font-family: koodak;
-    src: url(../fonts/koodak.ttf);
+    src: url(./fonts/koodak.ttf);
 }
 
 .pcoded[theme-layout="vertical"][vertical-placement="right"] .pcoded-navbar .pcoded-item>li>a .pcoded-mtext{

@@ -65,7 +65,7 @@ class OntTheFlyChatPanel extends Component {
 
                 
                 <Dialog rtl={true} modal={false} header={DataHolder.selectedCustomer ? DataHolder.selectedCustomer.Name:'چت باکس'} visible={this.state.displayPosition}
-                        position={'bottom-right'}
+                        position={'bottom-left'}
                         style={{width: '40vw'}}
                         maximizable={true}
                         onHide={() => this.setState({displayPosition:false})}>

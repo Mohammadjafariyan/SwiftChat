@@ -95,9 +95,9 @@ export default class B4AdminMainMenu extends Component {
                         this.setPage('EventTrigger');
 
                     }}>
-                        <i className={'fa fa-map-marker'} aria-hidden="true"></i>
+                        <i className={'fa fa-anchor'}  aria-hidden="true"></i>
                         <span>
-                                ها     EventTrigger
+                                     محرک راه اندازی رویداد ها  
                             </span></a>
                 </li>
 
@@ -137,7 +137,7 @@ export default class B4AdminMainMenu extends Component {
                         this.setPage('BotData');
                         DataHolder.subPage = null;
                     }}>
-                        <i className={'fa fa-cogs'} aria-hidden="true"></i>
+                        <i className={'fa fa-line-chart'} aria-hidden="true"></i>
                         <span>
 
 
@@ -150,7 +150,7 @@ export default class B4AdminMainMenu extends Component {
                     <a className="nav-link" onClick={() => {
                         this.setPage('usersSeparation');
                     }}>
-                        <i className="fas fa-fw fa-chart-area"></i>
+                        <i className="fas fa-fw fa fa-address-book-o"></i>
                         <span>تفکیک کاربران عضو</span></a>
                 </li>
 
@@ -159,7 +159,7 @@ export default class B4AdminMainMenu extends Component {
                     <a className="nav-link" onClick={() => {
                         this.setPage('RoutingPage');
                     }}>
-                        <i className="fas fa-fw fa-chart-area"></i>
+                        <i className="fas fa-fw fa fa-headphones"></i>
                         <span>اختصاص اتوماتیک اوپراتور ها به صفحهات </span></a>
                 </li>
 
@@ -168,7 +168,7 @@ export default class B4AdminMainMenu extends Component {
                     <a className="nav-link" onClick={() => {
                         this.setPage('CompaignPage');
                     }}>
-                        <i className="fas fa fa-send-o"></i>
+                        <i className="fas fa fa-group"></i>
                         <span>کمپین(ارسال گروهی - اتوماتیک)</span></a>
                 </li>
                 
@@ -178,7 +178,7 @@ export default class B4AdminMainMenu extends Component {
                         this.setPage('AutomaticSend');
 
                     }}>
-                        <i className={'fa fa-map-marker'} aria-hidden="true"></i>
+                        <i className={'fa fa-hourglass-1'} aria-hidden="true"></i>
                         <span>
                                 ارسال های اتوماتیک
                             </span></a>
@@ -189,7 +189,7 @@ export default class B4AdminMainMenu extends Component {
                         this.setPage('FormCreator');
 
                     }}>
-                        <i className="fa fa-check-square" aria-hidden="true"></i>
+                        <i className="fa fa-id-card-o" aria-hidden="true"></i>
                         <span>
 
 
@@ -223,7 +223,7 @@ export default class B4AdminMainMenu extends Component {
                     <a className="nav-link" onClick={() => {
                         this.setPage('FormDataPage');
                     }}>
-                        <i className={'fa fa-map-marker'} aria-hidden="true"></i>
+                        <i className={'fa fa-newspaper-o'} aria-hidden="true"></i>
                         <span>اطلاعات فرم ها</span></a>
                 </li>
 
@@ -232,7 +232,7 @@ export default class B4AdminMainMenu extends Component {
                     <a className="nav-link" onClick={() => {
                         this.setPage('ContactsPage');
                     }}>
-                        <i className={'fa fa-map-marker'} aria-hidden="true"></i>
+                        <i className={'fa fa-address-card'} aria-hidden="true"></i>
                         <span>اطلاعات کاربران</span></a>
                 </li>
 
@@ -259,7 +259,7 @@ export default class B4AdminMainMenu extends Component {
                         this.setPage("SettingPage");
 
                     }}>
-                       <i className="fa fa-cog" aria-hidden="true"></i>
+                       <i className="fa fa-th-large" aria-hidden="true"></i>
  <span>
 
                                 تنظیمات
@@ -273,7 +273,7 @@ export default class B4AdminMainMenu extends Component {
                         this.setPage("ArchivePage");
 
                     }}>
-                       <i className="fa fa-cog" aria-hidden="true"></i>
+                       <i className="fa fa-archive" aria-hidden="true"></i>
  <span>
 
                                 آرشیو گفتگو ها
@@ -284,7 +284,7 @@ export default class B4AdminMainMenu extends Component {
                         this.setPage('SocialChannels');
 
                     }}>
-                        <i className={'fa fa-map-marker'} aria-hidden="true"></i>
+                        <i className={'fa fa-instagram'} aria-hidden="true"></i>
                         <span>
 
 

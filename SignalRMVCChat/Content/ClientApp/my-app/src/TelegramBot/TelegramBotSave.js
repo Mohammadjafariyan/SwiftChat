@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { MyCard, MyFieldset } from "./../Routing/Manage/RoutingSave";
 import { Row, Col, Button, Alert } from "react-bootstrap";
 import { MyCaller} from "./../Help/Socket";
-import FormBuilder from "@langleyfoxall/react-dynamic-form-builder";
+/*import FormBuilder from "@langleyfoxall/react-dynamic-form-builder";*/
 import { _TelegramBotForm } from "./TelegramBotForm";
 import { _showError, _showMsg } from "../Pages/LayoutPage";
 import  Spinner from 'react-bootstrap/Spinner';
@@ -180,7 +180,7 @@ export default class TelegramBotSave extends Component {
             "بازدیدکنندگان سایت می توانند از طریق این ربات با شما ارتباط برقرار کنند"
           }
         >
-          {this.state.values && (
+        {/*  {this.state.values && (
             <FormBuilder
               defaultValues={this.state.values}
               form={this.state.form}
@@ -191,7 +191,7 @@ export default class TelegramBotSave extends Component {
               defaultInputClass={" form-control "}
               defaultSubmitClass={" btn btn-info mt-5 "}
             />
-          )}
+          )}*/}
         </MyCard>
       </>
     );

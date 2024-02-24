@@ -2,6 +2,7 @@
 import CustomerTags from "./CustomerTags";
 import {DataHolder} from "../Help/DataHolder";
 import AddTag from "./AddTag";
+
 import TagSingleCustomer from "./TagSingleCustomer";
 import {Card} from "react-bootstrap";
 import TagList from "./TagList";

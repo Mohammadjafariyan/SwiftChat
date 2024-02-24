@@ -2,7 +2,7 @@
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import SiteVisit from "./SiteVisit/SiteVisit";
-import 'react-datepicker-persian/dist/react-datepicker-persian.min.css';
+//import 'react-datepicker-persian/dist/react-datepicker-persian.min.css';
 import moment from 'moment-jalaali';
 import {Calendar} from "primereact/calendar";
 import Button from "react-bootstrap/cjs/Button";
