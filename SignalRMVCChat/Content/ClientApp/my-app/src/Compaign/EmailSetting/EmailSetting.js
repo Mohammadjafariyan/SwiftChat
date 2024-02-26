@@ -6,6 +6,7 @@ import { _showError, _showMsg } from "../../Pages/LayoutPage";
 import { Spinner } from "react-bootstrap";
 import { MyCard } from "../../Routing/Manage/RoutingSave";
 import {CurrentUserInfo} from "../../CurrentUserInfo";
+import {FormBuilder} from "../../Components/Form-Builder";
 
 export default class EmailSetting extends Component {
   state = {};
@@ -23,14 +24,14 @@ export default class EmailSetting extends Component {
   }
 
   onSubmit(submission) {
-    if (!submission.valid) {
+    if (!submission.EmailName || !submission.CustomEmailName) {
       _showError("مقادیر فرم صحیح نیست ");
       return;
     }
 
     this.setState({ loading: true });
 
-    MyCaller.Send("SaveEmailSetting", submission.data.form);
+    MyCaller.Send("SaveEmailSetting", submission);
   }
 
   saveEmailSettingCallback(res) {
@@ -75,7 +76,7 @@ export default class EmailSetting extends Component {
           header={"تنظیمات ایمیل"}
           title={"برای ارسال ایمیل های کمپین این تنظیمات لازم است"}
         >
-         {/* {this.state.values && (
+          {this.state.values && (
             <FormBuilder
               defaultValues={this.state.values}
               form={this.state.form}
@@ -86,7 +87,7 @@ export default class EmailSetting extends Component {
               defaultInputClass={" form-control "}
               defaultSubmitClass={" btn btn-info mt-5 "}
             />
-          )}*/}
+          )}
         </MyCard>
       </div>
     );

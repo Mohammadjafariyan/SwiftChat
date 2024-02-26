@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@langleyfoxall/react-dynamic-form-builder':
+    specifier: 1.2.0-rc.8
+    version: 1.2.0-rc.8(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
   '@testing-library/jest-dom':
     specifier: ^6.4.2
     version: 6.4.2(jest@27.5.1)
@@ -1964,6 +1967,18 @@ packages:
 
   /@kurkle/color@0.3.2:
     resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
+    dev: false
+
+  /@langleyfoxall/react-dynamic-form-builder@1.2.0-rc.8(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-LT5QMpkHwCR+qKzqzScHJmy/QP//fuTR1+6q8e2mm6xSJtt2UAqc5Cug6TX3Qo1wGo1HLCQQ+W6jOz+l/Ed5uA==}
+    peerDependencies:
+      prop-types: ^15.6.2
+      react: ^16.5.2
+      react-dom: ^16.5.2
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@leichtgewicht/ip-codec@2.0.4:

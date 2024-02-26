@@ -9,5 +9,7 @@ export  const _EmailSettingForm = [
     name: "CustomEmailName",
     label: "نام ایمیل سفارشی ",
     placeholder: "برای استفاده از سرور دیگری بغیر از سرور ما",
+    defaultInputClass:'form-control'
+
   },
 ];

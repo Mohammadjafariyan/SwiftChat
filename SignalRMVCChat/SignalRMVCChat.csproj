@@ -2393,6 +2393,7 @@
     <Content Include="Content\ClientApp\my-app\src\Components\EventTriggers\TriggerHelpForms\ETFormTriggerEvents.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\EventTriggers\TriggerHelpForms\ETFormTriggerPlatforms.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\EventTriggers\TriggerHelpForms\EventTriggerForm.js" />
+    <Content Include="Content\ClientApp\my-app\src\Components\Form-Builder.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\FormDataTable.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\FormInputs.js" />
     <Content Include="Content\ClientApp\my-app\src\Components\FormShowerInChat.js" />

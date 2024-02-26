@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import { MyCard, MyFieldset } from "./../Routing/Manage/RoutingSave";
 import { Row, Col, Button, Alert } from "react-bootstrap";
@@ -7,6 +8,7 @@ import { _TelegramBotForm } from "./TelegramBotForm";
 import { _showError, _showMsg } from "../Pages/LayoutPage";
 import  Spinner from 'react-bootstrap/Spinner';
 import {CurrentUserInfo} from "../CurrentUserInfo";
+import {FormBuilder} from "../Components/Form-Builder";
 
 export default class TelegramBotSave extends Component {
   state = {
@@ -180,7 +182,7 @@ export default class TelegramBotSave extends Component {
             "بازدیدکنندگان سایت می توانند از طریق این ربات با شما ارتباط برقرار کنند"
           }
         >
-        {/*  {this.state.values && (
+          {this.state.values && (
             <FormBuilder
               defaultValues={this.state.values}
               form={this.state.form}
@@ -191,7 +193,7 @@ export default class TelegramBotSave extends Component {
               defaultInputClass={" form-control "}
               defaultSubmitClass={" btn btn-info mt-5 "}
             />
-          )}*/}
+          )}
         </MyCard>
       </>
     );
@@ -203,7 +205,7 @@ export default class TelegramBotSave extends Component {
   }
 
   onSubmit(submission) {
-    if (!submission.valid) {
+    if (!submission.CustomerBotWelcomeMessage || !submission.CustomerBotToken) {
       _showError("مقادیر فرم صحیح نیست ");
       return;
     }
@@ -211,6 +213,6 @@ export default class TelegramBotSave extends Component {
 
     this.setState({ loading: true });
 
-    MyCaller.Send("TelegramBotSettingSave", submission.data.form);
+    MyCaller.Send("TelegramBotSettingSave", submission);
   }
 }
