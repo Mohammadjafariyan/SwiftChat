@@ -20,7 +20,7 @@ namespace SignalRMVCChat.Models
             TelegramBots = new List<TelegramBotSetting>();
             MyWebsites = new List<MyWebsite>();
             Chats = new List<Chat>();
-            MySockets = new List<MySocket>();
+            ChatConnections = new List<ChatConnection>();
             Children = new List<MyAccount>();
             MyAccountPlans = new List<MyAccountPlans>();
             MyAccountPayments = new List<MyAccountPayment>();
@@ -88,7 +88,7 @@ namespace SignalRMVCChat.Models
         /// در هر اتصال یک ابجکت ایجاد می شود و یا از دیتابیس فراخوانی می شود اطلاعات اتصال
         /// </summary>
         [JsonIgnore]
-        public List<MySocket> MySockets { get; set; }
+        public List<ChatConnection> ChatConnections { get; set; }
 
         /// <summary>
         /// وب سایت هایی که ادمین ثبت کرده است

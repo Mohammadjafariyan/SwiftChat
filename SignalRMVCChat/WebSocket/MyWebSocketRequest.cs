@@ -31,7 +31,7 @@ namespace SignalRMVCChat.WebSocket
         /// <summary>
         /// درخواستی که این ریکوست متعلق به ان است
         /// </summary>
-        public virtual MySocket MySocket { get; set; }
+        public virtual ChatConnection ChatConnection { get; set; }
 
         public ParsedCustomerTokenViewModel CurrentRequest { get; set; }
         

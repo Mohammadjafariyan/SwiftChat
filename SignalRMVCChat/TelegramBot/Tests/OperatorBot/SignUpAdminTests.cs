@@ -106,9 +106,9 @@ namespace SignalRMVCChat.TelegramBot.Tests.OperatorBot
             WebsiteSingleTon.WebsiteService.Websites
                 .Add(new MyWebsite
                 {
-                    Customers=new List<MySocket>
+                    Customers=new List<ChatConnection>
                     {
-                        new MySocket
+                        new ChatConnection
                         {
 
                         }

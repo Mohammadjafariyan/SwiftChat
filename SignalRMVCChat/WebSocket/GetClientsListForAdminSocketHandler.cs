@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using Engine.SysAdmin.Service;
+using Newtonsoft.Json;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
@@ -48,17 +50,17 @@ namespace SignalRMVCChat.WebSocket
                     /// لیست کاربران این سایت
                     var customers = db.Customers
                         /*.Include(c => c.TrackInfos)*/
-                        .Include(c => c.MySockets)
+                        .Include(c => c.ChatConnections)
                         .Include(c => c.TrackInfos)
                         .Include(c => c.Chats)
                         .Include(c => c.CustomerTags)
                         .Include(c => c.CustomerTags.Select(t => t.Tag))
-                        .Where(c => c.MySockets.Any(m => m.CustomerWebsiteId == currMySocketReq.MyWebsite.Id ||
+                        .Where(c => c.ChatConnections.Any(m => m.CustomerWebsiteId == currMySocketReq.MyWebsite.Id ||
                                                          m.AdminWebsiteId == currMySocketReq.MyWebsite.Id));
 
-                    if (MyGlobal.IsAttached)
+                    if (Debugger.IsAttached)
                     {
-                        var list222 = customers.ToList();
+                       MyGlobal.LogConsole(customers);
                     }
 
                     if (_request.Body?.FromBot != null)
@@ -68,21 +70,27 @@ namespace SignalRMVCChat.WebSocket
                     }
 
 
+                    
+                    if (Debugger.IsAttached)
+                    {
+                        MyGlobal.LogConsole(customers);
+                    }
 
                     // لیست آنلاین ها
                     var onlineCustomersIds = WebsiteSingleTon.WebsiteService.Websites
                         ?.Where(w => w.Id == currMySocketReq.MyWebsite.Id)
                         .SelectMany(w => w.Customers).Where(c =>
-                            c.Socket.IsAvailable &&
+                            HubSingleton.IsAvailable(c.SignalRConnectionId) &&
                             c.CustomerId.HasValue).Select(c => c.CustomerId);
 
+                    
                     switch (userType)
                     {
                         case "CustomersChattedWithMe":
 
                             query = chatProviderService.GetTotalChatted(null, new DateFromToDateViewModel(), null,
                                     customers)
-                                .Where(w => w.Chats.All(c => c.MyAccountId == currMySocketReq.MySocket.MyAccountId));
+                                .Where(w => w.Chats.All(c => c.MyAccountId == currMySocketReq.ChatConnection.MyAccountId));
 
                             break;
                         case "WaitingForAnswer":
@@ -288,7 +296,7 @@ namespace SignalRMVCChat.WebSocket
                     Id = c.Id,
                     Name = c.Name,
                     TrackInfos = c.TrackInfos,
-                    MySockets = c.MySockets,
+                    ChatConnections = c.ChatConnections,
                     CreationDateTime = c.CreationDateTime,
                     CustomerTagsForClientTemp = c.CustomerTags.Select(t => t.Tag),
                     LastTrackInfo = c.TrackInfos.OrderByDescending(o => o.Id)

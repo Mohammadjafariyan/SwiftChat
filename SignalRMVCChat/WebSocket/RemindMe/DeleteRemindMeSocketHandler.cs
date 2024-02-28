@@ -27,11 +27,11 @@ namespace SignalRMVCChat.WebSocket.RemindMe
             var readyPm = _service.GetById(recordId, "رکورد یافت نشد").Single;
 
 
-            var account = MyAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value).Single;
+            var account = MyAccountProviderService.GetById(currMySocketReq.ChatConnection.MyAccountId.Value).Single;
 
             if (!account.HasRootPrivilages)
             {
-                if (readyPm.MyAccountId != currMySocketReq.MySocket.MyAccountId)
+                if (readyPm.MyAccountId != currMySocketReq.ChatConnection.MyAccountId)
                 {
                     Throw("شما ایجاد کننده این پیغام نیستید و نمیتوانید آن را حذف کنید");
                 }

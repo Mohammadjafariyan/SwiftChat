@@ -114,8 +114,8 @@ namespace SignalRMVCChat.WebsocketTests
                 #region mock server
 
                 var request = new Mock<MyWebSocketRequest>();
-                var mysocket = new Mock<MySocket>();
-                request.Setup(r => r.MySocket).Returns(mysocket.Object);
+                var mysocket = new Mock<ChatConnection>();
+                request.Setup(r => r.ChatConnection).Returns(mysocket.Object);
 
                 mysocket.Setup(m => m.CustomerId).Returns(CustomerId);
 
@@ -123,7 +123,7 @@ namespace SignalRMVCChat.WebsocketTests
                 var socket = new Mock<IWebSocketConnection>();
 
                 socket.Setup(s => s.IsAvailable).Returns(true);
-                socket.Setup(s => s.ConnectionInfo).Returns(new MyConnectionInfo
+                /*socket.Setup(s => s.ConnectionInfo).Returns(new MyConnectionInfo
                 {
                     Host = "http://127.0.0.1",
                     Origin = "http://127.0.0.1",
@@ -132,10 +132,8 @@ namespace SignalRMVCChat.WebsocketTests
                     ClientIpAddress = "127.0.0.1",
                     Cookies = { },
                     Headers = { },
-                    SubProtocol = "",
-                    NegotiatedSubProtocol = "",
                     Id = new Guid()
-                });
+                });*/
 
                 socket.Setup(s => s.Send(It.IsAny<string>()))
                     .Callback((string s) =>
@@ -145,15 +143,15 @@ namespace SignalRMVCChat.WebsocketTests
                         Assert.True(chat.DeliverDateTime.HasValue);
                         Assert.True(chat.Id == chatId);
                     });
-                mysocket.Setup(m => m.Socket).Returns(socket.Object);
+             //   mysocket.Setup(m => m.Socket).Returns(socket.Object);
 
                 #endregion
 
                 #region make onlines
 
                 var website = new Mock<MyWebsite>();
-                var admins = new List<MySocket>();
-                var customers = new List<MySocket>();
+                var admins = new List<ChatConnection>();
+                var customers = new List<ChatConnection>();
 
 
                 request.Setup(r => r.MyWebsite).Returns(website.Object);

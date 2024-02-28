@@ -27,8 +27,8 @@ namespace SignalRMVCChat.Service
         {
             TelegramBots = new List<TelegramBotSetting>();
             BaseUrl = baseUrl;
-            Admins = new List<MySocket>();
-            Customers = new List<MySocket>();
+            Admins = new List<ChatConnection>();
+            Customers = new List<ChatConnection>();
             PluginCustomized = new List<PluginCustomized>();
             Tags = new List<Tag>();
             Forms = new List<Form>();
@@ -47,11 +47,11 @@ namespace SignalRMVCChat.Service
         
         public MyWebsite()
         {
-            Admins = new List<MySocket>();
-            Customers = new List<MySocket>();
+            Admins = new List<ChatConnection>();
+            Customers = new List<ChatConnection>();
         }
 
-        public async Task<MySocket> AddOrUpdate(List<MySocket> arr, MySocket con, MyWebSocketRequest request)
+        public async Task<ChatConnection> AddOrUpdate(List<ChatConnection> arr, ChatConnection con, MyWebSocketRequest request)
         {
 
             if (string.IsNullOrEmpty(con.Token))
@@ -67,7 +67,7 @@ namespace SignalRMVCChat.Service
             if (index >= 0)
             {
 
-                if (arr[index].Socket.IsAvailable)
+                if (HubSingleton.IsAvailable(arr[index].SignalRConnectionId))
                 {
                     // اگر قبلا وصل بوده باشد و الان نیز همان اتصال قدیمی را انجام میدهد
                 }
@@ -156,8 +156,8 @@ namespace SignalRMVCChat.Service
         public int? MyAccountId { get; set; }
         public string WebsiteToken { get; set; }
         
-        public  List<MySocket> Admins { get;set; }
-        public  List<MySocket> Customers { get; set; }
+        public  List<ChatConnection> Admins { get;set; }
+        public  List<ChatConnection> Customers { get; set; }
         public List<PluginCustomized> PluginCustomized { get; set; }
         public string WebsiteTitle { get; set; }
         public List<Form> Forms { get; set; }

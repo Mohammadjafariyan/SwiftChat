@@ -23,7 +23,7 @@ namespace SignalRMVCChat.WebSocket.LiveAssist
 
                 Content = new
                 {
-                    MyAccountId = currMySocketReq.MySocket.MyAccountId
+                    MyAccountId = currMySocketReq.ChatConnection.MyAccountId
                 },
 
                 Name = "liveAssistRequestCallback"

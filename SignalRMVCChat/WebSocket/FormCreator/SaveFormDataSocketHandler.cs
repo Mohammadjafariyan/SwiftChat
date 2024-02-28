@@ -35,7 +35,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
                 Throw("این عملیات فقط برای بازدید کننده ها مجاز است");
             }
 
-            if (currMySocketReq.MySocket.CustomerId.HasValue == false)
+            if (currMySocketReq.ChatConnection.CustomerId.HasValue == false)
             {
                 Throw("بازدیدکننده ارسال نشده است");
             }
@@ -140,11 +140,11 @@ namespace SignalRMVCChat.WebSocket.FormCreator
             //=============================================================================
 
             var newChatId = ChatProviderService.CustomerSendToAdmin(chat.MyAccountId.Value,
-                currMySocketReq.MySocket.CustomerId.Value, "", currMySocketReq.MySocket.Id,
+                currMySocketReq.ChatConnection.CustomerId.Value, "", currMySocketReq.ChatConnection.Id,
                 0,
 
 
-                ChatProviderService.GetQuery().Count(c => c.CustomerId == currMySocketReq.MySocket.CustomerId.Value
+                ChatProviderService.GetQuery().Count(c => c.CustomerId == currMySocketReq.ChatConnection.CustomerId.Value
                                                           && c.MyAccountId == chat.MyAccountId.Value) + 1
 
 
@@ -162,7 +162,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
                 FormValues.Add(new FormValue
                 {
                     FormId = formId,
-                    CustomerId = currMySocketReq.MySocket.CustomerId.Value,
+                    CustomerId = currMySocketReq.ChatConnection.CustomerId.Value,
                     FormElementId = formElement.Id,
                     Value = formElement.Value,
                     ChatId = newChatId
@@ -208,7 +208,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
                 FormValues.Add(new FormValue
                 {
                     FormId = formId,
-                    CustomerId = currMySocketReq.MySocket.CustomerId.Value,
+                    CustomerId = currMySocketReq.ChatConnection.CustomerId.Value,
                     FormElementId = formElement.Id,
                     Value = formElement.Value,
                     FormElement = formElement,
@@ -263,7 +263,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
         private void CheckForUserInfoAndSet(List<FormElement> formElements, MyWebSocketRequest currMySocketReq, MyWebSocketRequest request)
         {
             var customerProviderService = Injector.Inject<CustomerProviderService>();
-            var customer = customerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value).Single;
+            var customer = customerProviderService.GetById(currMySocketReq.ChatConnection.CustomerId.Value).Single;
             foreach (var formElement in formElements)
             {
                 if (CheckContains(formElement, "ایمیل") == true ||

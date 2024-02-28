@@ -26,6 +26,7 @@ namespace SignalRMVCChat.WebsocketTests
             var socket = new Mock<IWebSocketConnection>();
 
             socket.Setup(s => s.IsAvailable).Returns(true);
+            /*
             socket.Setup(s => s.ConnectionInfo).Returns(new MyConnectionInfo
             {
                 Host = "http://127.0.0.1",
@@ -35,10 +36,11 @@ namespace SignalRMVCChat.WebsocketTests
                 ClientIpAddress = "127.0.0.1",
                 Cookies = { },
                 Headers = { },
-                SubProtocol = "",
-                NegotiatedSubProtocol = "",
+           //     SubProtocol = "",
+              //  NegotiatedSubProtocol = "",
                 Id = new Guid()
             });
+            */
 
             socket.Setup(s => s.Send(It.IsAny<string>()))
                 .Callback((string s) =>
@@ -50,6 +52,7 @@ namespace SignalRMVCChat.WebsocketTests
           
           
 
+            /*
             WebSocketRequestThreadMaker.DoChat(new MyWebSocketRequest
             {
                 Name = name,
@@ -57,7 +60,7 @@ namespace SignalRMVCChat.WebsocketTests
                 Token = token,
                 WebsiteToken = _websiteToken,
                 IsAdminOrCustomer =isAdmin ?(int) MySocketUserType.Admin:(int)MySocketUserType.Customer 
-            }.Serialize(), socket.Object);
+            }.Serialize(), socket.Object);*/
             
            
         }

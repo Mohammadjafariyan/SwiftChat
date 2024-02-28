@@ -126,7 +126,7 @@ namespace SignalRMVCChat.WebSocket
 
             int accountId = currMySocketReq?.CurrentRequest?.myAccountId ?? systemMyAccount.Id;
 
-            int socketId = currMySocketReq?.CurrentRequest?.myAccountId != null ? currMySocketReq.MySocket.Id : systemMyAccount.MySockets.Select(m => m.Id).FirstOrDefault();
+            int socketId = currMySocketReq?.CurrentRequest?.myAccountId != null ? currMySocketReq.ChatConnection.Id : systemMyAccount.ChatConnections.Select(m => m.Id).FirstOrDefault();
             var chat = chatProviderServices
                 .AdminSendToCustomer(accountId
                     , targetUserId, typedMessage, socketId, gapFileUniqId, uniqId);
@@ -181,7 +181,7 @@ namespace SignalRMVCChat.WebSocket
                 
                 foreach (var contactAdmin in customer_target.ContactAdmins)
                 {
-                    if (contactAdmin.Id!=currMySocketReq.MySocket.MyAccountId)
+                    if (contactAdmin.Id!=currMySocketReq.ChatConnection.MyAccountId)
                     {
                         await MySocketManagerService.SendToAdmin(contactAdmin.Id, currMySocketReq.MyWebsite.Id,
                             response); 

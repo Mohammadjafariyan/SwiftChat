@@ -81,7 +81,7 @@ namespace SignalRMVCChat.Models
         /// <summary>
         /// اطلاعات ارسال کننده
         /// </summary>
-        public MySocket SenderMySocket { get; set; }
+        public ChatConnection SenderChatConnection { get; set; }
 
         public int? SenderMySocketId { get; set; }
         public int? ReceiverMyAccountId { get; set; }

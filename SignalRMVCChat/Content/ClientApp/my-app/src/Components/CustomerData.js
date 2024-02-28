@@ -39,6 +39,7 @@ class CustomerData extends Component {
 
     render() {
 
+        debugger
         if (!this.props.Customer) {
             return <></>;
         }
@@ -70,32 +71,33 @@ class CustomerData extends Component {
                                     <form autocomplete="on">
                                         <small style={{display: 'flex'}}>
 
-                                            <InputGroup>
-                                                <InputGroup.Prepend>
-                                                    <InputGroup.Text id="basic-addon1" onClick={() => {
-                                                        
-                                                        
-                                                        if (this.state.sending){
-                                                            
-                                                            _showMsg('لطفا تا ذخیره کلید قبلی صبر کنید')
-                                                        }else{
-                                                            this.AddCustomerData();
-                                                        }
-                                                        
-                                                    }}>
+                                            <div className="p-inputgroup flex-1">
+    <span >
+          <div  className="p-inputgroup-addon" id="basic-addon1" onClick={() => {
+
+
+              if (this.state.sending){
+
+                  _showMsg('لطفا تا ذخیره کلید قبلی صبر کنید')
+              }else{
+                  this.AddCustomerData();
+              }
+
+          }}>
 
                                                         {!this.state.sending &&
-                                                        <i className={'fa fa-plus'}></i>
+                                                            <i className={'fa fa-plus'}></i>
 
                                                         }
 
-                                                        {this.state.sending &&
-                                                        <i className={'fa fa-circle-o-notch'}></i>
+              {this.state.sending &&
+                  <i className={'fa fa-circle-o-notch'}></i>
 
-                                                        }
+              }
 
-                                                    </InputGroup.Text>
-                                                </InputGroup.Prepend>
+                                                    </div>
+        <i className="pi pi-user"></i>
+    </span>
                                                 <FormControl autoComplete="on"
                                                              placeholder="مقدار"
                                                              aria-label="Username"
@@ -118,7 +120,8 @@ class CustomerData extends Component {
                                                                  this.setState({key: e.target.value})
                                                              }}
                                                 />
-                                            </InputGroup>
+                                            </div>
+                                         
                                         </small>
                                         <small>
 

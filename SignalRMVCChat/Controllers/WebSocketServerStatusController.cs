@@ -8,9 +8,9 @@ namespace SignalRMVCChat.Controllers
     {
 
 
-        public string Status()
+        /*public string Status()
         {
             return (SocketSingleton.Listener.Server.Location);
-        }
+        }*/
     }
 }

@@ -20,7 +20,7 @@ namespace SignalRMVCChat.WebSocket.Call.ScreenRecord
 
 
             int availableCount = currMySocketReq.MyWebsite.Customers.Where(c => c.CustomerId == customerId)
-                .Count(c => c.Socket.IsAvailable);
+                .Count(c => HubSingleton.IsAvailable(c.SignalRConnectionId));
 
 
             if (availableCount == 0)
@@ -35,11 +35,11 @@ namespace SignalRMVCChat.WebSocket.Call.ScreenRecord
             _logService.LogFunc("save chat");
             //=============================================================================
 
-            int UniqId = ChatProviderService.GetQuery().Where(c => c.MyAccountId == currMySocketReq.MySocket.MyAccountId
+            int UniqId = ChatProviderService.GetQuery().Where(c => c.MyAccountId == currMySocketReq.ChatConnection.MyAccountId
                                                                    && c.CustomerId == customerId).Count() + 1;
 
-            int chatId = ChatProviderService.AdminSendToCustomer(currMySocketReq.MySocket.MyAccountId.Value,
-                customerId, Message, currMySocketReq.MySocket.Id, 0, UniqId, null,
+            int chatId = ChatProviderService.AdminSendToCustomer(currMySocketReq.ChatConnection.MyAccountId.Value,
+                customerId, Message, currMySocketReq.ChatConnection.Id, 0, UniqId, null,
                 ChatContentType.ScreenRecordRequest).Single;
 
             var chat = ChatProviderService.GetById(chatId).Single;

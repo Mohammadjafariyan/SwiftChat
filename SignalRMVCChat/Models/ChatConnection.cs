@@ -5,15 +5,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Fleck;
 using Newtonsoft.Json;
+using SignalRMVCChat.Hubs;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.WebSocket;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Service
 {
-    public class MySocket : Entity
+    public class ChatConnection : Entity
     {
-        public MySocket()
+        public ChatConnection()
         {
             CreationDateTime = DateTime.Now;
             Chats = new List<Chat>();
@@ -21,34 +22,10 @@ namespace SignalRMVCChat.Service
 
         public DateTime CreationDateTime { get; set; } = DateTime.Now;
 
-        [JsonIgnore]
-        [NotMapped] private IWebSocketConnection _connection;
 
         public string _myConnectionInfo { get; set; }
+        
 
-        [JsonIgnore]
-        [NotMapped]
-        public virtual IWebSocketConnection Socket
-        {
-            get => _connection;
-            set
-            {
-                _connection = value;
-                this.MyConnectionInfo = new MyConnectionInfo
-                {
-                    Cookies = value.ConnectionInfo.Cookies,
-                    Headers = value.ConnectionInfo.Headers,
-                    Host = value.ConnectionInfo.Host,
-                    Origin = value.ConnectionInfo.Origin,
-                    Path = value.ConnectionInfo.Path,
-                    ClientPort = value.ConnectionInfo.ClientPort,
-                    SubProtocol = value.ConnectionInfo.SubProtocol,
-                    ClientIpAddress = value.ConnectionInfo.ClientIpAddress,
-                    NegotiatedSubProtocol = value.ConnectionInfo.NegotiatedSubProtocol,
-                    Id = value.ConnectionInfo.Id,
-                };
-            }
-        }
 
         [NotMapped]
         public MyConnectionInfo MyConnectionInfo
@@ -60,8 +37,22 @@ namespace SignalRMVCChat.Service
                 {
                     return new MyConnectionInfo();
                 }
-                var res = JsonConvert.DeserializeObject<MyConnectionInfo>(_myConnectionInfo);
-                return res;
+
+                try
+                {
+                    var res = JsonConvert.DeserializeObject<MyConnectionInfo>(_myConnectionInfo);
+                    return res;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                   //ignore
+                   return new MyConnectionInfo
+                   {
+                       ErrMessage=e.Message,
+                       ErrMessageContent=_myConnectionInfo,
+                   };
+                }
             }
             set => _myConnectionInfo = JsonConvert.SerializeObject(value);
         }
@@ -109,7 +100,7 @@ namespace SignalRMVCChat.Service
             {
                 this.MyAccount.OnlineStatus = OnlineStatus.Offline;
                 anotherAvailableConnection = myWebsite.Admins
-                    .Count(c => c.MyAccountId == MyAccountId && c.Socket.IsAvailable);
+                    .Count(c => c.MyAccountId == MyAccountId && HubSingleton.IsAvailable(c.SignalRConnectionId));
 
                 if (anotherAvailableConnection > 0)
                 {
@@ -127,7 +118,7 @@ namespace SignalRMVCChat.Service
             {
                 this.Customer.OnlineStatus = OnlineStatus.Offline;
                 anotherAvailableConnection = myWebsite.Customers
-                    .Count(c => c.CustomerId == CustomerId && c.Socket.IsAvailable);
+                    .Count(c => c.CustomerId == CustomerId && HubSingleton.IsAvailable(c.SignalRConnectionId));
 
 
                 // تغییرات در دیتابیس 
@@ -177,7 +168,10 @@ namespace SignalRMVCChat.Service
         /// </summary>
         public List<Chat> Chats { get; set; }
 
+        public string SignalRConnectionId { get; set; }
+        [NotMapped]
+        public CustomerHub Hub { get; set; }
 
-
+        
     }
 }

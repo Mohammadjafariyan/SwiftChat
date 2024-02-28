@@ -6,13 +6,13 @@ using TelegramBotsWebApplication.Areas.Admin.Service;
 
 namespace SignalRMVCChat.Service
 {
-    public class MySocketService : GenericService<MySocket>
+    public class MySocketService : GenericService<ChatConnection>
     {
         public MySocketService() : base(null)
         {
         }
 
-        public MyEntityResponse<int> SaveWithAttach(MySocket model)
+        public MyEntityResponse<int> SaveWithAttach(ChatConnection model)
         {
             if (MyGlobal.IsUnitTestEnvirement)
             {
@@ -58,7 +58,7 @@ namespace SignalRMVCChat.Service
                 return 1;
             });
         }*/
-        public void Update(MySocket con)
+        public void Update(ChatConnection con)
         {
             Impl.AttachUpdate(con, (socket, entry) =>
             {

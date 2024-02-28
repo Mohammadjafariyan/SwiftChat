@@ -89,7 +89,7 @@ namespace SignalRMVCChat.Service
             var firstOrDefault = query.Where(e=>e.WebsiteToken!=null).FirstOrDefault(w =>token.Equals(w.WebsiteToken));
             if (firstOrDefault==null)
             {
-                throw new Exception("توکن متعلق به هیچ وب سایتی نیست برای ثبت نام به وب سایت گپ چت مراجعه فرمایید");
+                throw new Exception("توکن متعلق به هیچ وب سایتی نیست برای ثبت نام به وب سایت سوئیفت چت مراجعه فرمایید");
             }
 
             

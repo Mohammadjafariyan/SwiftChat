@@ -50,9 +50,9 @@ namespace SignalRMVCChat.WebSocket
                 /// لیست کاربران این سایت
                 var customers = db.Customers
                     .Include(c => c.TrackInfos)
-                    .Include(c => c.MySockets)
+                    .Include(c => c.ChatConnections)
                     .Include(c => c.Chats)
-                    .Where(c => c.MySockets.Any(m => m.CustomerWebsiteId == currMySocketReq.MyWebsite.Id ||
+                    .Where(c => c.ChatConnections.Any(m => m.CustomerWebsiteId == currMySocketReq.MyWebsite.Id ||
                                                      m.AdminWebsiteId == currMySocketReq.MyWebsite.Id)
                     && c.OnlineStatus==OnlineStatus.Online);
 
@@ -79,12 +79,12 @@ namespace SignalRMVCChat.WebSocket
                 int? MyAccountId = null;
                 if (currMySocketReq.IsAdminOrCustomer==(int)MySocketUserType.Admin)
                 {
-                    MyAccountId = currMySocketReq.MySocket.MyAccountId;
+                    MyAccountId = currMySocketReq.ChatConnection.MyAccountId;
                 }
                 else
                 {
                     MyAccountId = chatProviderService.GetQuery().Where(
-                        c => c.CustomerId == currMySocketReq.MySocket.CustomerId
+                        c => c.CustomerId == currMySocketReq.ChatConnection.CustomerId
                     ).Select(c => c.MyAccountId).FirstOrDefault();
 
                  
@@ -148,7 +148,7 @@ namespace SignalRMVCChat.WebSocket
                     .Count(w => w.Chats.All(c => c.MyAccountId.HasValue == false));
 
 
-                var assignToMeCustomersQuery = currMySocketReq.MySocket.MyAccountId.HasValue ?  RoutingService.GetAssingedToMe(_request, currMySocketReq, customers, db) : new List<Customer>().AsQueryable();
+                var assignToMeCustomersQuery = currMySocketReq.ChatConnection.MyAccountId.HasValue ?  RoutingService.GetAssingedToMe(_request, currMySocketReq, customers, db) : new List<Customer>().AsQueryable();
 
 
 

@@ -15,8 +15,8 @@ namespace SignalRMVCChat.WebSocket.Compaign
         protected override IQueryable<Customer> FilterAccess(IQueryable<Customer> getQuery, MyWebSocketRequest request,
             MyWebSocketRequest currMySocketReq)
         {
-            getQuery = getQuery.Include(c => c.MySockets)
-                .Where(q => q.MySockets.Any(m => m.CustomerWebsiteId == currMySocketReq.MyWebsite.Id));
+            getQuery = getQuery.Include(c => c.ChatConnections)
+                .Where(q => q.ChatConnections.Any(m => m.CustomerWebsiteId == currMySocketReq.MyWebsite.Id));
 
             string searchTerm = GetParam<string>("searchTerm", false);
             if (string.IsNullOrEmpty(searchTerm) == false)

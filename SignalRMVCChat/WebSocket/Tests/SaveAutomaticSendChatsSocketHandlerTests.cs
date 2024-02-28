@@ -46,13 +46,13 @@ myAccountId = 2
             
             WebsiteSingleTon.WebsiteService.Websites.Add(new MyWebsite
             {
-                Admins = { new MySocket
+                Admins = { new ChatConnection
                 {
                     MyAccountId = 1,
                     IsCustomerOrAdmin = MySocketUserType.Admin
 
                 }},
-                Customers = { new MySocket
+                Customers = { new ChatConnection
                 {
                     CustomerId = 1,
                     IsCustomerOrAdmin = MySocketUserType.Customer,

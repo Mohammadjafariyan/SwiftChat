@@ -54,8 +54,8 @@ namespace SignalRMVCChat.WebSocket.FormCreator
             //=============================================================================
             var systemMyAccount = MyAccountProviderService.GetSystemMyAccount(currMySocketReq.MyWebsite.Id);
 
-            int myAccountId = currMySocketReq.MySocket.MyAccountId ?? systemMyAccount.Id;
-            int mySocketId = currMySocketReq.MySocket.MyAccountId.HasValue ? currMySocketReq.MySocket.Id : systemMyAccount.MySockets.ToList().Select(t => t.Id).FirstOrDefault();
+            int myAccountId = currMySocketReq.ChatConnection.MyAccountId ?? systemMyAccount.Id;
+            int mySocketId = currMySocketReq.ChatConnection.MyAccountId.HasValue ? currMySocketReq.ChatConnection.Id : systemMyAccount.ChatConnections.ToList().Select(t => t.Id).FirstOrDefault();
 
             int chatId = ChatProviderService.AdminSendToCustomer(myAccountId,
                 customerId, "", mySocketId, 0, UniqId, form.Id).Single;

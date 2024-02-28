@@ -3,8 +3,8 @@
 
 @{
 
-    var adminChat=  Model?.EntityList?.FirstOrDefault(f => f.SenderMySocket.IsCustomerOrAdmin ==  MySocketUserType.Admin);
-    var customerChat=  Model?.EntityList?.FirstOrDefault(f => f.SenderMySocket.IsCustomerOrAdmin ==  MySocketUserType.Customer);
+    var adminChat=  Model?.EntityList?.FirstOrDefault(f => f.SenderChatConnection.IsCustomerOrAdmin ==  MySocketUserType.Admin);
+    var customerChat=  Model?.EntityList?.FirstOrDefault(f => f.SenderChatConnection.IsCustomerOrAdmin ==  MySocketUserType.Customer);
  
     ViewBag.AdminName = adminChat?.MyAccount?.Name ;
     ViewBag.CustomerName = customerChat?.Customer?.Name;
@@ -50,14 +50,14 @@
 
                         <tr class="achat" >
                             <td >
-                                @if (chat.SenderMySocket.IsCustomerOrAdmin == MySocketUserType.Customer)
+                                @if (chat.SenderChatConnection.IsCustomerOrAdmin == MySocketUserType.Customer)
                                 {
                                     <span class="btn btn-info">@Html.Partial("renderSingleChat", chat)</span>
                                 }
 
                             </td>
                             <td style="border-right: 1px solid #ddd " >
-                                @if (chat.SenderMySocket.IsCustomerOrAdmin == MySocketUserType.Admin)
+                                @if (chat.SenderChatConnection.IsCustomerOrAdmin == MySocketUserType.Admin)
                                 {    
                                    
 

@@ -17,7 +17,7 @@ namespace SignalRMVCChat.WebSocket.Call.AdminScreenRecord
           var res=  await base.ExecuteAsync(request, currMySocketReq);
             
             
-            await MySocketManagerService.SendToAdmin(currMySocketReq.MySocket.MyAccountId.Value, currMySocketReq.MyWebsite.Id,
+            await MySocketManagerService.SendToAdmin(currMySocketReq.ChatConnection.MyAccountId.Value, currMySocketReq.MyWebsite.Id,
                 new MyWebSocketResponse
                 {
                     Name = Callback,

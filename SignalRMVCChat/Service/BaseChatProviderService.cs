@@ -203,7 +203,7 @@ namespace SignalRMVCChat.Service
         }
         public virtual MyDataTableResponse<Chat> GetChats(int myAccountId, int customerId, int websiteId)
         {
-            var query = GetQuery().Include(q => q.SenderMySocket);
+            var query = GetQuery().Include(q => q.SenderChatConnection);
 
             //for tesing
             if (Debugger.IsAttached)
@@ -212,8 +212,8 @@ namespace SignalRMVCChat.Service
             }
             var res= query.Where(q => q.MyAccountId == myAccountId &&
                                       q.CustomerId == customerId
-                                      && (q.SenderMySocket.CustomerWebsiteId == websiteId ||
-                                          q.SenderMySocket.AdminWebsiteId == websiteId))
+                                      && (q.SenderChatConnection.CustomerWebsiteId == websiteId ||
+                                          q.SenderChatConnection.AdminWebsiteId == websiteId))
                 .OrderByDescending(o=>o.Id).AsQueryable();
 
 
@@ -237,15 +237,15 @@ namespace SignalRMVCChat.Service
             }
             
             
-            var query = GetQuery().Include(q => q.SenderMySocket)
+            var query = GetQuery().Include(q => q.SenderChatConnection)
                 .Include(m=>m.MyAccount)
                 .Include(m=>m.Customer);
             page = (page ?? 1) > 1 ? page : 1;
 
             var res= query.Where(q => q.MyAccountId == myAccountId &&
                                       q.CustomerId == customerId
-                                      && (q.SenderMySocket.CustomerWebsiteId == websiteId ||
-                                          q.SenderMySocket.AdminWebsiteId == websiteId));
+                                      && (q.SenderChatConnection.CustomerWebsiteId == websiteId ||
+                                          q.SenderChatConnection.AdminWebsiteId == websiteId));
 
             if (DateFrom.HasValue)
             {

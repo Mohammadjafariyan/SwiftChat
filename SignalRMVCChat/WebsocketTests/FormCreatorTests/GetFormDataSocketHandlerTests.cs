@@ -46,7 +46,7 @@ namespace SignalRMVCChat.WebsocketTests.FormCreatorTests
                 }
             }.Serialize(), new MyWebSocketRequest
             {
-                MySocket = new MySocket
+                ChatConnection = new ChatConnection
                 {
                     MyAccountId = 1
                 },
@@ -97,7 +97,7 @@ namespace SignalRMVCChat.WebsocketTests.FormCreatorTests
                 }
             }.Serialize(), new MyWebSocketRequest
             {
-                MySocket = new MySocket
+                ChatConnection = new ChatConnection
                 {
                     MyAccountId = accountId
                 },

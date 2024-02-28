@@ -48,7 +48,7 @@ namespace SignalRMVCChat.WebSocket
                     LogService.LogFunc("چت هایی یافت شد که دریافت کننده ای ندارند");
                     foreach (var chat in list)
                     {
-                        chat.MyAccountId = currMySocketReq.MySocket.MyAccountId;
+                        chat.MyAccountId = currMySocketReq.ChatConnection.MyAccountId;
                         chat.ReachDateTime = DateTime.Now;
                     }
 
@@ -86,11 +86,11 @@ namespace SignalRMVCChat.WebSocket
                     new Chat
                     {
                         CustomerId=customerId,
-                        MyAccountId=currMySocketReq.MySocket.MyAccountId,
+                        MyAccountId=currMySocketReq.ChatConnection.MyAccountId,
                         ChatType=ChatType.Hidden,
                         Message="هدایت به پشتیبانی",
                         UniqId=1,
-                        SenderMySocketId=currMySocketReq.MySocket.Id,
+                        SenderMySocketId=currMySocketReq.ChatConnection.Id,
                         SenderType=ChatSenderType.AccountToCustomer,
                         DeliverDateTime=DateTime.Now,
                         ReachDateTime=DateTime.Now,
@@ -136,7 +136,7 @@ namespace SignalRMVCChat.WebSocket
             var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
 
             var myAccount =
-                myAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value, "ادمین یافت نشد");
+                myAccountProviderService.GetById(currMySocketReq.ChatConnection.MyAccountId.Value, "ادمین یافت نشد");
 
             // انتخاب ادمین سمت بازدیدککندگان
             await MySocketManagerService.SendToCustomer(customerId, currMySocketReq.MyWebsite.Id,

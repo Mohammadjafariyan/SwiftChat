@@ -18,7 +18,7 @@ namespace SignalRMVCChat.WebSocket
         }
 
 
-        private async Task Help<T>(T t, List<MySocket> list, string method, MyWebSocketRequest currMySocketReq)
+        private async Task Help<T>(T t, List<ChatConnection> list, string method, MyWebSocketRequest currMySocketReq)
         {
             var response = new MyWebSocketResponse
             {
@@ -76,7 +76,7 @@ namespace SignalRMVCChat.WebSocket
         /// <param name="con"></param>
         /// <param name="request"></param>
         /// <exception cref="Exception"></exception>
-        public async Task InformOnlineStatusAgain(MySocket con, MyWebsite website,MyWebSocketRequest request,OnlineStatus status=OnlineStatus.Online)
+        public async Task InformOnlineStatusAgain(ChatConnection con, MyWebsite website,MyWebSocketRequest request,OnlineStatus status=OnlineStatus.Online)
         {
             if (con.IsCustomerOrAdmin == MySocketUserType.Admin)
             {

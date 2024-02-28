@@ -30,7 +30,7 @@ namespace SignalRMVCChat.WebSocket.Profile
                 Throw("عنوان وارد نشده است");
             }
 
-            if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
+            if (currMySocketReq.ChatConnection.MyAccountId.HasValue == false)
             {
                 Throw("اکانت نال است");
             }
@@ -42,7 +42,7 @@ namespace SignalRMVCChat.WebSocket.Profile
 
             var myAccountService = DependencyInjection.Injector.Inject<MyAccountProviderService>();
             var imageService = DependencyInjection.Injector.Inject<ImageService>();
-            var myAccount = myAccountService.GetById(currMySocketReq.MySocket.MyAccountId.Value, "اکانت شما یافت نشد")
+            var myAccount = myAccountService.GetById(currMySocketReq.ChatConnection.MyAccountId.Value, "اکانت شما یافت نشد")
                 .Single;
 
 

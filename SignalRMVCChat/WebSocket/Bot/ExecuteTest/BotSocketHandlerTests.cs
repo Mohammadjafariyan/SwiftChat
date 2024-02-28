@@ -68,7 +68,7 @@ namespace SignalRMVCChat.WebSocket.Bot.ExecuteTest
                     {
                         myAccountId = 2
                     },
-                    MySocket = new MySocket
+                    ChatConnection = new ChatConnection
                     {
                         Customer = new Customer
                         {

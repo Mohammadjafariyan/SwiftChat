@@ -91,7 +91,7 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #region Myaccount
 
-            modelBuilder.Entity<MyAccount>().HasMany(a => a.MySockets)
+            modelBuilder.Entity<MyAccount>().HasMany(a => a.ChatConnections)
                 .WithOptional(we => we.MyAccount).HasForeignKey(we => we.MyAccountId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<MyAccount>()
@@ -136,7 +136,7 @@ namespace SignalRMVCChat.Models.GapChatContext
 
 
             modelBuilder.Entity<Customer>()
-                .HasMany(a => a.MySockets)
+                .HasMany(a => a.ChatConnections)
                 .WithOptional(socket => socket.Customer).HasForeignKey(we => we.CustomerId)
                 .WillCascadeOnDelete(false);
 
@@ -149,9 +149,9 @@ namespace SignalRMVCChat.Models.GapChatContext
 
             #endregion
 
-            modelBuilder.Entity<MySocket>()
+            modelBuilder.Entity<ChatConnection>()
                 .HasMany(a => a.Chats)
-                .WithOptional(socket => socket.SenderMySocket).HasForeignKey(we => we.SenderMySocketId)
+                .WithOptional(socket => socket.SenderChatConnection).HasForeignKey(we => we.SenderMySocketId)
                 .WillCascadeOnDelete(false);
 
 
@@ -744,7 +744,7 @@ namespace SignalRMVCChat.Models.GapChatContext
         public DbSet<MyWebsite> MyWebsites { get; set; }
         public DbSet<ChatAutomatic> ChatAutomatics { get; set; }
         public DbSet<MyAccount> MyAccounts { get; set; }
-        public DbSet<MySocket> MySockets { get; set; }
+        public DbSet<ChatConnection> ChatConnections { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Plan> Plans { get; set; }
         public DbSet<Setting> Settings { get; set; }
@@ -915,9 +915,9 @@ namespace SignalRMVCChat.Models.GapChatContext
             {
                 BaseUrl = "http://localhost:60518/",
                 WebsiteTitle = "سایت نمونه",
-                Admins = new List<MySocket>
+                Admins = new List<ChatConnection>
                 {
-                    new MySocket
+                    new ChatConnection
                     {
                         MyAccount = myAccount,
                     }

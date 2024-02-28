@@ -48,7 +48,7 @@ namespace SignalRMVCChat.WebSocket.MyWSetting
 
 
             website.AdminSound = alarms.Where(a => a.AlarmType == Models.Alarms.AlarmType.Admin
-            && a.MyAccountId == currMySocketReq.MySocket.MyAccountId.Value)
+            && a.MyAccountId == currMySocketReq.ChatConnection.MyAccountId.Value)
                 .Select(a => a.Name).FirstOrDefault();
             website.ViewerSound = alarms.Where(a => a.AlarmType == Models.Alarms.AlarmType.Viewer).Select(a => a.Name).FirstOrDefault();
 

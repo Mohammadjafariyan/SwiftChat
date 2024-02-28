@@ -12,7 +12,7 @@ namespace SignalRMVCChat.WebSocket
         protected override async Task<Chat> SaveAndSend(int targetUserId, string typedMessage, int uniqId, int gapFileUniqId,
             string request, MyWebSocketRequest currMySocketReq)
         {
-            MySocket admin = currMySocketReq.MyWebsite.Admins.FirstOrDefault(c => c.MyAccountId == targetUserId);
+            ChatConnection admin = currMySocketReq.MyWebsite.Admins.FirstOrDefault(c => c.MyAccountId == targetUserId);
 
             if (admin == null)
             {
@@ -32,7 +32,7 @@ namespace SignalRMVCChat.WebSocket
 
             var chat = chatProviderServices
                 .AdminSendToAdmin(accountId
-                    , targetUserId, typedMessage, currMySocketReq.MySocket.Id, gapFileUniqId, uniqId);
+                    , targetUserId, typedMessage, currMySocketReq.ChatConnection.Id, gapFileUniqId, uniqId);
 
 
             var chatProviderService = DependencyInjection.Injector.Inject<AdminModeChatProviderService>();

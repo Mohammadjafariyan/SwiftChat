@@ -302,14 +302,14 @@ namespace SignalRMVCChat.Service.Compaign
 
             /*------------------ send to chat -----------------*/
 
-            int? tempMySocketMyAccountId = currMySocketReq?.MySocket?.MyAccountId;
-            int? tempMyAccountId = currMySocketReq?.MySocket?.MyAccountId;
-            int? tempCustomerId = currMySocketReq?.MySocket?.CustomerId;
+            int? tempMySocketMyAccountId = currMySocketReq?.ChatConnection?.MyAccountId;
+            int? tempMyAccountId = currMySocketReq?.ChatConnection?.MyAccountId;
+            int? tempCustomerId = currMySocketReq?.ChatConnection?.CustomerId;
             /*------------------ send to chat -----------------*/
             if (currMySocketReq != null)
             {
-                currMySocketReq.MySocket.MyAccountId = systemMyAccount.Id;
-                currMySocketReq.MySocket.CustomerId = customer.Id;
+                currMySocketReq.ChatConnection.MyAccountId = systemMyAccount.Id;
+                currMySocketReq.ChatConnection.CustomerId = customer.Id;
 
                 currMySocketReq.CurrentRequest.myAccountId = systemMyAccount.Id;
             }
@@ -343,9 +343,9 @@ namespace SignalRMVCChat.Service.Compaign
                 }
             }
 
-            if (currMySocketReq?.MySocket != null)
+            if (currMySocketReq?.ChatConnection != null)
             {
-                currMySocketReq.MySocket.MyAccountId = tempMySocketMyAccountId;
+                currMySocketReq.ChatConnection.MyAccountId = tempMySocketMyAccountId;
 
             }
             if (currMySocketReq?.CurrentRequest != null)
@@ -353,9 +353,9 @@ namespace SignalRMVCChat.Service.Compaign
                 currMySocketReq.CurrentRequest.myAccountId = tempMyAccountId;
             }
 
-            if (currMySocketReq?.MySocket != null)
+            if (currMySocketReq?.ChatConnection != null)
             {
-                currMySocketReq.MySocket.CustomerId = tempCustomerId;
+                currMySocketReq.ChatConnection.CustomerId = tempCustomerId;
             }
 
         }

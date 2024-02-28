@@ -17,9 +17,9 @@ namespace SignalRMVCChat.WebSocket
     public abstract class BaseChanageMessageSocketHandler
 
     {
-        public MySocket GetTarget(string request, MyWebSocketRequest currMySocketReq, int targetId)
+        public ChatConnection GetTarget(string request, MyWebSocketRequest currMySocketReq, int targetId)
         {
-            MySocket target = null;
+            ChatConnection target = null;
             if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Admin)
             {
                 target = currMySocketReq.MyWebsite.Customers.FirstOrDefault(
@@ -89,7 +89,7 @@ namespace SignalRMVCChat.WebSocket
                     res);
 
 
-                if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
+                if (currMySocketReq.ChatConnection.MyAccountId.HasValue == false)
                 {
                     throw new Exception("sender currMySocketReq.MySocket.MyAccountId == null");
                 }
@@ -97,7 +97,7 @@ namespace SignalRMVCChat.WebSocket
                 //send to current user
                 // اگر از جای دیگری هم وصل شده باشد این پیغام را در جای دیگر هم نشان بده
                 //NotifySelf
-                await MySocketManagerService.SendToAdmin(currMySocketReq.MySocket.MyAccountId.Value,
+                await MySocketManagerService.SendToAdmin(currMySocketReq.ChatConnection.MyAccountId.Value,
                     currMySocketReq.MyWebsite.Id,
                     res);
             }
@@ -112,12 +112,12 @@ namespace SignalRMVCChat.WebSocket
                  
                 }
                 
-                if (currMySocketReq.MySocket.CustomerId.HasValue == false)
+                if (currMySocketReq.ChatConnection.CustomerId.HasValue == false)
                 {
                     throw new Exception("sender currMySocketReq.MySocket.CustomerId == null");
                 }
                 //send to current user
-                await MySocketManagerService.SendToCustomer(currMySocketReq.MySocket.CustomerId.Value,
+                await MySocketManagerService.SendToCustomer(currMySocketReq.ChatConnection.CustomerId.Value,
                     currMySocketReq.MyWebsite.Id,
                     res);
               
@@ -138,7 +138,7 @@ namespace SignalRMVCChat.WebSocket
             {
                 chat = chatProviderService.GetQuery()
                     .FirstOrDefault(c => c.CustomerId == targetId
-                                         && c.MyAccountId == currMySocketReq.MySocket.MyAccountId
+                                         && c.MyAccountId == currMySocketReq.ChatConnection.MyAccountId
                                          && c.UniqId == uniqId);
             }
             else
@@ -146,7 +146,7 @@ namespace SignalRMVCChat.WebSocket
                 
                 chat = chatProviderService.GetQuery()
                     .FirstOrDefault(c => c.MyAccountId == targetId
-                                         && c.CustomerId == currMySocketReq.MySocket.CustomerId
+                                         && c.CustomerId == currMySocketReq.ChatConnection.CustomerId
                                          && c.UniqId == uniqId);
             }
 

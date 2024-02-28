@@ -13,7 +13,7 @@ namespace SignalRMVCChat.WebSocket.Rate
             await base.ExecuteAsync(request, currMySocketReq);
 
 
-            var customer= CustomerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value, "این بخش مخصوص کاربران است").Single;
+            var customer= CustomerProviderService.GetById(currMySocketReq.ChatConnection.CustomerId.Value, "این بخش مخصوص کاربران است").Single;
 
             int rate=GetParam<int>("rate", true, "rate ارسال نشده است");
 

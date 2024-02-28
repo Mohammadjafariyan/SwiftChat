@@ -9,7 +9,7 @@ namespace SignalRMVCChat.WebSocket
 {
     public class AdminModeSearchHandler : BaseSearchHandler
     {
-        protected override MyWebSocketResponse ReadAndReturn(List<MySocket> customerlist, MyWebSocketRequest currMySocketReq,
+        protected override MyWebSocketResponse ReadAndReturn(List<ChatConnection> customerlist, MyWebSocketRequest currMySocketReq,
             string searchTerm)
         {
             var chatProviderService = Injector.Inject<ChatProviderService>();
@@ -19,15 +19,15 @@ namespace SignalRMVCChat.WebSocket
             // پیام هایی که خودش فرستاده یا دریافت کرده است
             var msgList = chatProviderService.GetQuery()
                 .Include(c => c.MyAccount).Where(c => 
-                    (c.MyAccountId == currMySocketReq.MySocket.MyAccountId 
-                    || c.ReceiverMyAccountId == currMySocketReq.MySocket.MyAccountId)
+                    (c.MyAccountId == currMySocketReq.ChatConnection.MyAccountId 
+                    || c.ReceiverMyAccountId == currMySocketReq.ChatConnection.MyAccountId)
                                                       && c.Message != null)
                 .Where(c => c.Message.Contains(searchTerm)).ToList();
 
             var sendMsgList = msgList.Where(c => c.SenderType == ChatSenderType.AccountToAccount && 
-                                                 c.ReceiverMyAccountId==currMySocketReq.MySocket.MyAccountId);
+                                                 c.ReceiverMyAccountId==currMySocketReq.ChatConnection.MyAccountId);
             var receiveMsgList = msgList.Where(c => c.SenderType == ChatSenderType.AccountToAccount 
-                                                    &&  c.ReceiverMyAccountId!=currMySocketReq.MySocket.MyAccountId);
+                                                    &&  c.ReceiverMyAccountId!=currMySocketReq.ChatConnection.MyAccountId);
 
 
             return new MyWebSocketResponse
@@ -43,7 +43,7 @@ namespace SignalRMVCChat.WebSocket
             };
         }
 
-        protected override async Task<List<MySocket>> GetUsersList(MyWebSocketRequest currMySocketReq, string searchTerm)
+        protected override async Task<List<ChatConnection>> GetUsersList(MyWebSocketRequest currMySocketReq, string searchTerm)
         {
             return currMySocketReq.MyWebsite.Admins
                 .Where(c => c.MyAccount?.Name?.Contains(searchTerm) ?? false).ToList();

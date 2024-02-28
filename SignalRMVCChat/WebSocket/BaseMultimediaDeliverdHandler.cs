@@ -46,7 +46,7 @@ namespace SignalRMVCChat.WebSocket
                 Name = "multimediaDeliveredCallback",
                 Content = chat
             };
-            MySocket notifyMySocket = null;
+            ChatConnection notifyChatConnection = null;
             // اکانت فرستاده است پس بایستی خبر به اکانت برورد
             if (chat.SenderType == ChatSenderType.AccountToCustomer)
             {

@@ -26,24 +26,19 @@ namespace SignalRMVCChat.Service
 
             var myAccounts = list.Select(c =>
             {
-
-                return new MyAccount
-                {
-                    Name = type == MySocketUserType.Customer ? c.GetCustomerName() : c.GetAdminName(),
-                    Id = type == MySocketUserType.Customer ? c.CustomerId.Value : c.MyAccountId.Value,
-                    OnlineStatus = c.Socket.IsAvailable ? OnlineStatus.Online : OnlineStatus.Offline,
-                    TotalUnRead = QueryTotalUnRead(c, requesterId, type, request),
-
-                    LastTrackInfo = type == MySocketUserType.Customer ? c.Customer.LastTrackInfo : null,
-                    Email = c.Customer?.Email,
-                    Phone = c.Customer?.Phone,
-                    UsersSeparationParams = c.Customer?.UsersSeparationParams,
-
-                    IsBlocked = c.Customer?.IsBlocked == true,
-                    IsResolved = c.Customer?.IsResolved == true,
-                    LastMessage = c.Chats?.OrderByDescending(o => o.Id).FirstOrDefault()
-
-                };
+                var account = new MyAccount();
+                account.Name = type == MySocketUserType.Customer ? c.GetCustomerName() : c.GetAdminName();
+                account.Id = type == MySocketUserType.Customer ? c.CustomerId.Value : c.MyAccountId.Value;
+                account.OnlineStatus = HubSingleton.IsAvailable(c.SignalRConnectionId) ? OnlineStatus.Online : OnlineStatus.Offline;
+                account.TotalUnRead = QueryTotalUnRead(c, requesterId, type, request);
+                account.LastTrackInfo = type == MySocketUserType.Customer ? c.Customer.LastTrackInfo : null;
+                account.Email = c.Customer?.Email;
+                account.Phone = c.Customer?.Phone;
+                account.UsersSeparationParams = c.Customer?.UsersSeparationParams;
+                account.IsBlocked = c.Customer?.IsBlocked == true;
+                account.IsResolved = c.Customer?.IsResolved == true;
+                account.LastMessage = c.Chats?.OrderByDescending(o => o.Id).FirstOrDefault();
+                return account;
             }).ToList();
             /*c =>
                             new Customer
@@ -71,7 +66,7 @@ namespace SignalRMVCChat.Service
             };
         }
 
-        private static int QueryTotalUnRead(MySocket c, int requesterId, MySocketUserType type,
+        private static int QueryTotalUnRead(ChatConnection c, int requesterId, MySocketUserType type,
             MyWebSocketRequest request)
         {
             ChatProviderService chatProviderService = DependencyInjection.Injector.Inject<ChatProviderService>();
@@ -109,7 +104,7 @@ namespace SignalRMVCChat.Service
         /// <param name="website"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        private static List<MySocket> DetermineAndFilter(MyWebsite website, MySocketUserType type)
+        private static List<ChatConnection> DetermineAndFilter(MyWebsite website, MySocketUserType type)
         {
             #region filter online only
 
@@ -150,14 +145,14 @@ namespace SignalRMVCChat.Service
             return res;
         }
 
-        private static List<MySocket> DistinctWithAvailablePriority(List<MySocket> users)
+        private static List<ChatConnection> DistinctWithAvailablePriority(List<ChatConnection> users)
         {
 
             //users= users.OrderByDescending(u=>u.Socket.IsAvailable).DistinctBy(u => u.MyConnectionInfo.ClientIpAddress).ToList();
 
 
-            var availables = users.Where(u => u.Socket.IsAvailable).ToList();
-            var offlines = users.Where(u => !u.Socket.IsAvailable);
+            var availables = users.Where(u => HubSingleton.IsAvailable(u.SignalRConnectionId)).ToList();
+            var offlines = users.Where(u => !HubSingleton.IsAvailable(u.SignalRConnectionId));
 
 
 

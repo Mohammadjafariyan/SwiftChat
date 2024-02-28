@@ -30,11 +30,11 @@ namespace SignalRMVCChat.WebSocket.Call.ScreenRecord
             _logService.LogFunc("save chat");
             //=============================================================================
 
-            int UniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.MySocket.CustomerId
+            int UniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.ChatConnection.CustomerId
                                                                    && c.MyAccountId == myAccountId).Count() + 1;
 
             int chatId = ChatProviderService.AdminSendToCustomer(myAccountId,
-                currMySocketReq.MySocket.CustomerId.Value, Message, currMySocketReq.MySocket.Id, 0, UniqId, null,
+                currMySocketReq.ChatConnection.CustomerId.Value, Message, currMySocketReq.ChatConnection.Id, 0, UniqId, null,
                 ChatContentType.ScreenRecordRequest).Single;
 
             var chat = ChatProviderService.GetById(chatId).Single;

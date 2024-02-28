@@ -44,7 +44,7 @@ namespace SignalRMVCChat.WebSocket.RemindMe
                 Throw("کاربر انتخاب نشده است");
             }
 
-            record.MyAccountId = _currMySocketReq.MySocket.MyAccountId.Value;
+            record.MyAccountId = _currMySocketReq.ChatConnection.MyAccountId.Value;
 
             record.MyWebsiteId = _currMySocketReq.MyWebsite.Id;
 

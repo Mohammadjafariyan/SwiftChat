@@ -12,7 +12,7 @@ namespace SignalRMVCChat.WebSocket
         {
             var _request = MyWebSocketRequest.Deserialize(request);
 
-            if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
+            if (currMySocketReq.ChatConnection.MyAccountId.HasValue == false)
             {
                 throw new Exception("کاربر درخواست کننده کد ادمین ندارد ");
             }

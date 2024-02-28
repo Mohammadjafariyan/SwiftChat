@@ -34,7 +34,7 @@ namespace SignalRMVCChat.Service
             return website;
         }
 
-        private static async Task Call(List<MySocket> customers, MyWebSocketResponse resp)
+        private static async Task Call(List<ChatConnection> customers, MyWebSocketResponse resp)
         {
             if (customers.Count == 0)
             {
@@ -52,12 +52,11 @@ namespace SignalRMVCChat.Service
             customers=customers.DistinctBy(c => c.MyConnectionInfo.Id).ToList();
             foreach (var customer in customers.ToList())
             {
-                if (customer.Socket.IsAvailable)
+                if (HubSingleton.IsAvailable(customer.SignalRConnectionId))
                 {
                     try
                     {
-                         customer.Socket.Send(resp.Serilize())?
-                            .GetAwaiter().GetResult();
+                        HubSingleton.Send(customer.SignalRConnectionId,resp.Serilize());
                     }
                     catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);
@@ -91,11 +90,12 @@ namespace SignalRMVCChat.Service
         {
             var website = GetWebsite(currReq.MyWebsite.Id);
 
-            if (currReq.MySocket.Socket.IsAvailable)
+            if (HubSingleton.IsAvailable(currReq.ChatConnection.SignalRConnectionId))
             {
                 try
                 {
-                    await currReq.MySocket.Socket.Send(resp.Serilize());
+                    
+                    HubSingleton.Send(currReq.ChatConnection.SignalRConnectionId,resp.Serilize());
                 }
                 catch (Exception e)
             {SignalRMVCChat.Service.LogService.Log(e);
@@ -112,15 +112,15 @@ namespace SignalRMVCChat.Service
                 Name = "newSendPMByMeInAnotherPlaceCallback",
                 Content = chat
             };
-            if (type==MySocketUserType.Admin && request.MySocket.MyAccountId.HasValue)
+            if (type==MySocketUserType.Admin && request.ChatConnection.MyAccountId.HasValue)
             {
-                await SendToAdmin(request.MySocket.MyAccountId.Value, websiteId, resp);
+                await SendToAdmin(request.ChatConnection.MyAccountId.Value, websiteId, resp);
             }
             else
             {
-                if ( request.MySocket.CustomerId.HasValue)
+                if ( request.ChatConnection.CustomerId.HasValue)
                 {
-                    await SendToCustomer(request.MySocket.CustomerId.Value, websiteId, resp);
+                    await SendToCustomer(request.ChatConnection.CustomerId.Value, websiteId, resp);
 
                 }
             }

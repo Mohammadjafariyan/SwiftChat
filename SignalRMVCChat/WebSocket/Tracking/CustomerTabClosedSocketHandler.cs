@@ -16,13 +16,13 @@ namespace SignalRMVCChat.WebSocket.Tracking
             
             var customerTrackerService = Injector.Inject<CustomerTrackerService>();
 
-            var trackInfo= MyGlobal.Clone(currMySocketReq.MySocket.Customer.LastTrackInfo);
+            var trackInfo= MyGlobal.Clone(currMySocketReq.ChatConnection.Customer.LastTrackInfo);
             if (trackInfo==null)
             {
                 trackInfo=new CustomerTrackInfo
                 {
                     DateTime = DateTime.Now,
-                    CustomerId = currMySocketReq.MySocket.CustomerId.Value,
+                    CustomerId = currMySocketReq.ChatConnection.CustomerId.Value,
                 };
             }
             
@@ -40,7 +40,7 @@ namespace SignalRMVCChat.WebSocket.Tracking
 
             customerTrackerService.Save(trackInfo);
 
-            currMySocketReq.MySocket.Customer.LastTrackInfo = trackInfo;
+            currMySocketReq.ChatConnection.Customer.LastTrackInfo = trackInfo;
 
             return await Task.FromResult<MyWebSocketResponse>(null);
         }

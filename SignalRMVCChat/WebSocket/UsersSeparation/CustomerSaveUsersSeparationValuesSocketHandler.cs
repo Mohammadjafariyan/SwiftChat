@@ -19,7 +19,7 @@ namespace SignalRMVCChat.WebSocket.UsersSeparation
             
             var record = GetParamsAndValidate(request, currMySocketReq);
 
-            var customer= CustomerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value, "کاربر یافت نشد قاطی در سیستم")
+            var customer= CustomerProviderService.GetById(currMySocketReq.ChatConnection.CustomerId.Value, "کاربر یافت نشد قاطی در سیستم")
                 .Single;
 
 

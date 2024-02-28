@@ -13,12 +13,12 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
 
         protected override Models.ET.EventTrigger SetParams(Models.ET.EventTrigger record, Models.ET.EventTrigger existRecord)
         {
-            if (_currMySocketReq.MySocket.MyAccountId.HasValue==false)
+            if (_currMySocketReq.ChatConnection.MyAccountId.HasValue==false)
             {
                 Throw("شما ادمین نیستید و یا ادمین کنونی کد ندارد و ثبت نام نشده است");
             }
             record.MyWebsiteId = _currMySocketReq.MyWebsite.Id;
-            record.MyAccountId = _currMySocketReq.MySocket.MyAccountId.Value;
+            record.MyAccountId = _currMySocketReq.ChatConnection.MyAccountId.Value;
             return record;
         }
     }

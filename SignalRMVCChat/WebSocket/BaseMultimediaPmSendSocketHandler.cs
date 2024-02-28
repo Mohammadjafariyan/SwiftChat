@@ -88,7 +88,7 @@ namespace SignalRMVCChat.WebSocket
             };
 
 
-            MySocket target = null;
+            ChatConnection target = null;
 
 
             target = GetTarget(target, chat, currMySocketReq);
@@ -125,14 +125,14 @@ namespace SignalRMVCChat.WebSocket
                 {
 
                     // ادمین در حال ارسال پیام مولتی مدیا به بازدید کننده است و میگوید که این مقدار پیام جدید هم دارید
-                    chat.TotalReceivedMesssages = chatProviderService.GetTotalUnseen(currMySocketReq.MySocket.MyAccountId.Value
+                    chat.TotalReceivedMesssages = chatProviderService.GetTotalUnseen(currMySocketReq.ChatConnection.MyAccountId.Value
                         , target.CustomerId.Value, ChatSenderType.AccountToCustomer);
 
                 }
                 else
                 {
                     chat.TotalReceivedMesssages = chatProviderService.GetTotalUnseen(target.MyAccountId.Value
-                        , currMySocketReq.MySocket.CustomerId.Value, ChatSenderType.CustomerToAccount);
+                        , currMySocketReq.ChatConnection.CustomerId.Value, ChatSenderType.CustomerToAccount);
                 }
             }
 
@@ -153,7 +153,7 @@ namespace SignalRMVCChat.WebSocket
 
         }
 
-        protected virtual async Task Send(MySocket target, MyWebSocketRequest currMySocketReq,
+        protected virtual async Task Send(ChatConnection target, MyWebSocketRequest currMySocketReq,
             MyWebSocketResponse response, Chat chat)
         {
 
@@ -188,7 +188,7 @@ namespace SignalRMVCChat.WebSocket
             }
         }
 
-        protected virtual ChatSenderType GetSenderType(MySocket target)
+        protected virtual ChatSenderType GetSenderType(ChatConnection target)
         {
             return target.IsCustomerOrAdmin == MySocketUserType.Admin
                 ? ChatSenderType.CustomerToAccount
@@ -196,7 +196,7 @@ namespace SignalRMVCChat.WebSocket
                     .AccountToCustomer;
         }
 
-        protected virtual MySocket GetTarget(MySocket target, Chat chat, MyWebSocketRequest currMySocketReq)
+        protected virtual ChatConnection GetTarget(ChatConnection target, Chat chat, MyWebSocketRequest currMySocketReq)
         {
             /// اگر ادمین باشد پس قبلا کد آن شناسایی شده است و یا کاستمور باشد که همینطور
             if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)

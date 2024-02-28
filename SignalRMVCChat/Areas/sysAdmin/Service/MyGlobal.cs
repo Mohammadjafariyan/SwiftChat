@@ -633,6 +633,21 @@ namespace SignalRMVCChat.Areas.sysAdmin.Service
                 return null;
             }
         }
+
+        public static void LogConsole(IQueryable<Models.Customer> customers)
+        {
+            var l = customers.ToList();
+            Console.WriteLine("customers:"+l.Count);
+            foreach (var customer in customers)
+            {
+                Console.WriteLine("customer:");
+                /*Console.WriteLine(customer);
+                Console.WriteLine(JsonConvert.SerializeObject(customer),new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling =ReferenceLoopHandling.Ignore
+                });*/
+            }
+        }
     }
 
     [Serializable]

@@ -23,7 +23,7 @@ namespace SignalRMVCChat.WebSocket
         {
             var _request = MyWebSocketRequest.Deserialize(request);
 
-            if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
+            if (currMySocketReq.ChatConnection.MyAccountId.HasValue == false)
             {
                 throw new Exception("کاربر درخواست کننده کد ادمین ندارد ");
             }
@@ -51,7 +51,7 @@ namespace SignalRMVCChat.WebSocket
             if (customerId.HasValue)
             {
 var usertags=                tags.Include(t => t.CustomerTags).Where(c => c.CustomerTags.Any(t => t.CustomerId == customerId));
-await MySocketManagerService.SendToAdmin(currMySocketReq.MySocket.MyAccountId.Value,
+await MySocketManagerService.SendToAdmin(currMySocketReq.ChatConnection.MyAccountId.Value,
     currMySocketReq.MyWebsite.Id,
     new MyWebSocketResponse
     {

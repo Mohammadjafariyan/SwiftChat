@@ -11,7 +11,7 @@ namespace SignalRMVCChat.WebSocket
             string request)
         {
             var res= base.GetAllOnlineByType(currMySocketReq,request);
-            res.EntityList=res.EntityList.Where(e => e.Id != currMySocketReq.MySocket.MyAccountId).ToList();
+            res.EntityList=res.EntityList.Where(e => e.Id != currMySocketReq.ChatConnection.MyAccountId).ToList();
             return res;
         }
 

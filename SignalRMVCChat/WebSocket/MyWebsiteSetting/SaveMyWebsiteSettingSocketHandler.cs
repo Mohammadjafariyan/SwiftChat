@@ -50,7 +50,7 @@ namespace SignalRMVCChat.WebSocket.MyWebsiteSetting
 
 
             var AdminSound = alarms.Where(a => a.AlarmType == Models.Alarms.AlarmType.Admin
-            && a.MyAccountId == currMySocketReq.MySocket.MyAccountId.Value).FirstOrDefault();
+            && a.MyAccountId == currMySocketReq.ChatConnection.MyAccountId.Value).FirstOrDefault();
             var ViewerSound = alarms.Where(a => a.AlarmType == Models.Alarms.AlarmType.Viewer).FirstOrDefault();
 
             if (!string.IsNullOrEmpty(website.AdminSound))
@@ -60,7 +60,7 @@ namespace SignalRMVCChat.WebSocket.MyWebsiteSetting
                     AdminSound = new Models.Alarms.Alarm
                     {
                         MyWebsiteId = currMySocketReq.MyWebsite.Id,
-                        MyAccountId=currMySocketReq.MySocket.MyAccountId.Value,
+                        MyAccountId=currMySocketReq.ChatConnection.MyAccountId.Value,
                         AlarmType=Models.Alarms.AlarmType.Admin
                     };
                 }

@@ -76,7 +76,7 @@ namespace SignalRMVCChat.WebSocket
             {
                 Admins =
                 {
-                    new MySocket
+                    new ChatConnection
                     {
                         MyAccountId = accountId
                     }

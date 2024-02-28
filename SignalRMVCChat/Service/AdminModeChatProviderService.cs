@@ -97,7 +97,7 @@ namespace SignalRMVCChat.Service
         }
         public override MyDataTableResponse<Chat> GetChats(int myAccountId, int targetAccountId, int websiteId)
         {
-            var query = GetQuery().Include(q => q.SenderMySocket);
+            var query = GetQuery().Include(q => q.SenderChatConnection);
 
             //for tesing
             if (Debugger.IsAttached)
@@ -106,8 +106,8 @@ namespace SignalRMVCChat.Service
             }
             var res= query.Where(q => q.MyAccountId == myAccountId &&
                                       q.ReceiverMyAccountId == targetAccountId
-                                      && (q.SenderMySocket.CustomerWebsiteId == websiteId ||
-                                          q.SenderMySocket.AdminWebsiteId == websiteId))
+                                      && (q.SenderChatConnection.CustomerWebsiteId == websiteId ||
+                                          q.SenderChatConnection.AdminWebsiteId == websiteId))
                 .OrderByDescending(o=>o.Id).AsQueryable();
 
 
@@ -119,13 +119,13 @@ namespace SignalRMVCChat.Service
         public override MyDataTableResponse<Chat> GetChats(int? page, int myAccountId, int targetAccountId, int websiteId
         ,string datefrom,string dateto)
         {
-            var query = GetQuery().Include(q => q.SenderMySocket);
+            var query = GetQuery().Include(q => q.SenderChatConnection);
             page = (page ?? 1) > 1 ? page : 1;
 
             var res= query.Where(q => q.MyAccountId == myAccountId &&
                                       q.ReceiverMyAccountId == targetAccountId
-                                      && (q.SenderMySocket.CustomerWebsiteId == websiteId ||
-                                          q.SenderMySocket.AdminWebsiteId == websiteId))
+                                      && (q.SenderChatConnection.CustomerWebsiteId == websiteId ||
+                                          q.SenderChatConnection.AdminWebsiteId == websiteId))
                 .OrderByDescending(o=>o.Id).AsQueryable();
 
 

@@ -46,7 +46,7 @@ namespace SignalRMVCChat.WebSocket
             return ReadAndReturn(customerlist, currMySocketReq, searchTerm);
         }
 
-        protected virtual MyWebSocketResponse ReadAndReturn(List<MySocket> customerlist, MyWebSocketRequest currMySocketReq,
+        protected virtual MyWebSocketResponse ReadAndReturn(List<ChatConnection> customerlist, MyWebSocketRequest currMySocketReq,
             string searchTerm)
         {
             var chatProviderService = Injector.Inject<ChatProviderService>();
@@ -55,7 +55,7 @@ namespace SignalRMVCChat.WebSocket
             // کاربر دنبال یک پیغام می گردد
             // پیام هایی که خودش فرستاده یا دریافت کرده است
             var msgList = chatProviderService.GetQuery()
-                .Include(c => c.Customer).Where(c => c.MyAccountId == currMySocketReq.MySocket.MyAccountId
+                .Include(c => c.Customer).Where(c => c.MyAccountId == currMySocketReq.ChatConnection.MyAccountId
                                                      && c.Message != null)
                 .Where(c => c.Message.Contains(searchTerm)).ToList();
 
@@ -76,7 +76,7 @@ namespace SignalRMVCChat.WebSocket
             };
         }
 
-        protected virtual async Task<List<MySocket>> GetUsersList(MyWebSocketRequest currMySocketReq, string searchTerm)
+        protected virtual async Task<List<ChatConnection>> GetUsersList(MyWebSocketRequest currMySocketReq, string searchTerm)
         {
             return currMySocketReq.MyWebsite.Customers
                 .Where(c => c.Customer?.Name?.Contains(searchTerm) ?? false).ToList();

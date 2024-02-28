@@ -441,7 +441,7 @@
     <Compile Include="Models\MyAccount.cs" />
     <Compile Include="Models\MyAccountPayment.cs" />
     <Compile Include="Models\MyAccountPlans.cs" />
-    <Compile Include="Models\MySocket.cs" />
+    <Compile Include="Models\ChatConnection.cs" />
     <Compile Include="Models\MySpecificGlobal.cs" />
     <Compile Include="Models\MyWebsite.cs" />
     <Compile Include="Models\OnlineStatus.cs" />
@@ -679,6 +679,7 @@
     <Compile Include="WebSocket\HelpDesk\Language\SelectHelpDeskSocketHandler.cs" />
     <Compile Include="WebSocket\HelpDesk\RemoveLanguageSocketHandler.cs" />
     <Compile Include="WebSocket\HelpDesk\Stat\HelpdeskFeedbackForArticlesSocketHandler.cs" />
+    <Compile Include="WebSocket\HubSingleton.cs" />
     <Compile Include="WebSocket\ISocketHandler.cs" />
     <Compile Include="WebSocket\LiveAssist\LiveAssistFireEventByAdminSocketHandler.cs" />
     <Compile Include="WebSocket\LiveAssist\LiveAssistFireEventSocketHandler.cs" />
@@ -2285,36 +2286,25 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap4.css" />
     <Content Include="Content\bootstrapGrid\bootstrap.min.css" />
-    <Content Include="Content\ClientApp\my-app\babel.config.js" />
     <Content Include="Content\ClientApp\my-app\build\asset-manifest.json" />
     <Content Include="Content\ClientApp\my-app\build\bootstrap.css" />
     <Content Include="Content\ClientApp\my-app\build\favicon.ico" />
     <Content Include="Content\ClientApp\my-app\build\index.html" />
-    <Content Include="Content\ClientApp\my-app\build\js\0.chunk.js" />
-    <Content Include="Content\ClientApp\my-app\build\js\0.chunk.js.map" />
-    <Content Include="Content\ClientApp\my-app\build\js\1.chunk.js" />
-    <Content Include="Content\ClientApp\my-app\build\js\1.chunk.js.map" />
-    <Content Include="Content\ClientApp\my-app\build\js\bundle.js" />
-    <Content Include="Content\ClientApp\my-app\build\js\bundle.js.map" />
-    <Content Include="Content\ClientApp\my-app\build\js\main.chunk.js" />
-    <Content Include="Content\ClientApp\my-app\build\js\main.chunk.js.map" />
     <Content Include="Content\ClientApp\my-app\build\logo192.png" />
     <Content Include="Content\ClientApp\my-app\build\logo512.png" />
     <Content Include="Content\ClientApp\my-app\build\manifest.json" />
-    <Content Include="Content\ClientApp\my-app\build\media\color.c7a33805.png" />
-    <Content Include="Content\ClientApp\my-app\build\media\logo.ee7cd8ed.svg" />
     <Content Include="Content\ClientApp\my-app\build\robots.txt" />
-    <Content Include="Content\ClientApp\my-app\build\static\css\main.48fed164.css" />
-    <Content Include="Content\ClientApp\my-app\build\static\css\main.48fed164.css.map" />
+    <Content Include="Content\ClientApp\my-app\build\static\css\main.4aa87f5f.css" />
+    <Content Include="Content\ClientApp\my-app\build\static\css\main.4aa87f5f.css.map" />
     <Content Include="Content\ClientApp\my-app\build\static\js\207.0d538a22.chunk.js" />
     <Content Include="Content\ClientApp\my-app\build\static\js\207.0d538a22.chunk.js.LICENSE.txt" />
     <Content Include="Content\ClientApp\my-app\build\static\js\207.0d538a22.chunk.js.map" />
     <Content Include="Content\ClientApp\my-app\build\static\js\880.19e5f7d8.chunk.js" />
     <Content Include="Content\ClientApp\my-app\build\static\js\880.19e5f7d8.chunk.js.LICENSE.txt" />
     <Content Include="Content\ClientApp\my-app\build\static\js\880.19e5f7d8.chunk.js.map" />
-    <Content Include="Content\ClientApp\my-app\build\static\js\main.f616d6ee.js" />
-    <Content Include="Content\ClientApp\my-app\build\static\js\main.f616d6ee.js.LICENSE.txt" />
-    <Content Include="Content\ClientApp\my-app\build\static\js\main.f616d6ee.js.map" />
+    <Content Include="Content\ClientApp\my-app\build\static\js\main.2464f335.js" />
+    <Content Include="Content\ClientApp\my-app\build\static\js\main.2464f335.js.LICENSE.txt" />
+    <Content Include="Content\ClientApp\my-app\build\static\js\main.2464f335.js.map" />
     <Content Include="Content\ClientApp\my-app\build\static\media\fontawesome-webfont.1e59d2330b4c6deb84b3.ttf" />
     <Content Include="Content\ClientApp\my-app\build\static\media\fontawesome-webfont.8b43027f47b20503057d.eot" />
     <Content Include="Content\ClientApp\my-app\build\static\media\koodak.1efeafa21a6de97fd69f.ttf" />
@@ -3045,6 +3035,13 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="pk\cert.pem" />
+    <Content Include="pk\certificate.pfx" />
+    <Content Include="pk\chat.bulus.ir.pfx" />
+    <Content Include="pk\chatplugin_ssl_certificate.pfx" />
+    <Content Include="pk\csr.pem" />
+    <Content Include="pk\key.pem" />
+    <Content Include="pk\test.com.pfx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -3141,8 +3138,8 @@
     <Folder Include="Areas\HubPartials\Models\" />
     <Folder Include="Areas\HubPartials\Views\HubHelper\" />
     <Folder Include="Areas\HubPartials\Views\Shared\" />
+    <Folder Include="Content\ClientApp\my-app\public" />
     <Folder Include="Content\ClientApp\my-app\public\" />
-    <Folder Include="Content\ClientApp\my-app\src\Content\" />
     <Folder Include="Content\ClientApp\my-app\src\styles\Content\fontAwsome" />
     <Folder Include="Test\UpgradePlanTests\" />
     <Folder Include="Views\Alam\" />
@@ -3164,9 +3161,10 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!--<Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!--<Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />-->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  -->
+  
+  
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
   </Target>

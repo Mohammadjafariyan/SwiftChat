@@ -24,7 +24,7 @@ namespace SignalRMVCChat.WebSocket.LiveAssist
             {
                 Content = new
                 {
-                    CustomerId = currMySocketReq.MySocket.CustomerId,
+                    CustomerId = currMySocketReq.ChatConnection.CustomerId,
                     x,
                     y,
                     Event,

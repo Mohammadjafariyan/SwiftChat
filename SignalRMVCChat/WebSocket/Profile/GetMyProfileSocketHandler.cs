@@ -10,7 +10,7 @@ namespace SignalRMVCChat.WebSocket.Profile
         {
             await base.ExecuteAsync(request, currMySocketReq);
              
-             if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
+             if (currMySocketReq.ChatConnection.MyAccountId.HasValue == false)
              {
                  Throw("اکانت نال است");
              }
@@ -19,7 +19,7 @@ namespace SignalRMVCChat.WebSocket.Profile
              var imageService = DependencyInjection.Injector.Inject<ImageService>();
              
              
-             var myAccount = myAccountService.GetById(currMySocketReq.MySocket.MyAccountId.Value, "اکانت شما یافت نشد")
+             var myAccount = myAccountService.GetById(currMySocketReq.ChatConnection.MyAccountId.Value, "اکانت شما یافت نشد")
                  .Single;
              string image = null;
              if (myAccount.ProfileImageId.HasValue)

@@ -17,7 +17,7 @@ namespace SignalRMVCChat.WebSocket.Compaign
         protected override Models.Compaign.Compaign SetParams(Models.Compaign.Compaign record,
             Models.Compaign.Compaign existRecord)
         {
-            if (_currMySocketReq.MySocket.MyAccountId.HasValue == false)
+            if (_currMySocketReq.ChatConnection.MyAccountId.HasValue == false)
             {
                 Throw("این عملیات مخصوص اوپراتور است");
             }
@@ -26,7 +26,7 @@ namespace SignalRMVCChat.WebSocket.Compaign
 
 
             record.MyWebsiteId = _currMySocketReq.MyWebsite.Id;
-            record.MyAccountId = _currMySocketReq.MySocket.MyAccountId.Value;
+            record.MyAccountId = _currMySocketReq.ChatConnection.MyAccountId.Value;
 
 
             record.selectedBotId = record.selectedBot != null ? record.selectedBot.Id : record.selectedBotId.HasValue ? record.selectedBotId : null;

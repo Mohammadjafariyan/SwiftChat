@@ -34,14 +34,14 @@ namespace SignalRMVCChat.WebSocket
             {
                 Admins =
                 {
-                    new MySocket
+                    new ChatConnection
                     {
                         MyAccountId = accountId
                     }
                 },
                 Customers =
                 {
-                    new MySocket
+                    new ChatConnection
                     {
                         CustomerId = customerId
                     }

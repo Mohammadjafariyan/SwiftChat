@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Authentication;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -25,11 +27,27 @@ namespace SignalRMVCChat.WebSocket
     public class MySocketServer
     {
         
-        public  readonly WebSocketServer Server =
-            new WebSocketServer("ws://0.0.0.0:8181" );
+       // public  readonly WebSocketServer Server =
+       //     new WebSocketServer("wss://0.0.0.0:8181" );
+
+        
 
         public MySocketServer()
         {
+            /*X509Certificate2 Certificate = new X509Certificate2(HttpContext.Current.Server.MapPath("~/pk/test.com.pfx")
+                , "1234");
+                //, "mohammadjafariyan");
+            
+            if (Certificate != null)
+            {
+                Server.Certificate = Certificate;
+
+                //Server.EnabledSslProtocols =
+               //     SslProtocols.Ssl3 | SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12;
+
+                  Server.EnabledSslProtocols = SslProtocols.Tls12;
+            }
+            
             Server.RestartAfterListenError = true;
             Server.Start(socket =>
             {
@@ -63,7 +81,7 @@ namespace SignalRMVCChat.WebSocket
                     }
 
                 };
-            });
+            });*/
         }
     }
 

@@ -54,7 +54,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
             return  Task.FromResult<MyWebSocketResponse>(null).GetAwaiter().GetResult();
             }
 
-            var chatUniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.MySocket.CustomerId).Count();
+            var chatUniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.ChatConnection.CustomerId).Count();
 
             _currMySocketReq.CurrentRequest.myAccountId = admin.Id;
 
@@ -68,7 +68,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
                     {
                         Body = new
                         {
-                            targetUserId = currMySocketReq.MySocket.CustomerId,
+                            targetUserId = currMySocketReq.ChatConnection.CustomerId,
                             typedMessage = eventTriggerLocalizedMessage.textArea,
                             uniqId = chatUniqId++,
                             gapFileUniqId = 6161,
@@ -79,7 +79,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
 
             // ================== log 
 
-            var customer = CustomerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value).Single;
+            var customer = CustomerProviderService.GetById(currMySocketReq.ChatConnection.CustomerId.Value).Single;
 
             var firedEvents = customer.FiredEventForCustomers;
             if (firedEvents == null || firedEvents?.Count == 0)
@@ -120,7 +120,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
             var name = GetParam<string>("name", true, "عنوان پارامتر ارسال نشده است");
 
 
-            var customer = CustomerProviderService.GetById(_currMySocketReq.MySocket.CustomerId.Value, "کاربر یافت نشد").Single;
+            var customer = CustomerProviderService.GetById(_currMySocketReq.ChatConnection.CustomerId.Value, "کاربر یافت نشد").Single;
 
             var list = customer.FiredEventForCustomers;
             if (list == null)

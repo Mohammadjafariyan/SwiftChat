@@ -12,10 +12,10 @@ namespace TestProject1
         {
             WebsiteSingleTon.WebsiteService.Websites.Add(new MyWebsite
             {
-                Admins = { new MySocket
+                Admins = { new ChatConnection
                 {
                 }},
-                Customers = { new MySocket()},
+                Customers = { new ChatConnection()},
             });
         }
     }

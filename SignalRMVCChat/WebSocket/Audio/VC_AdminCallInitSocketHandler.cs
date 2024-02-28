@@ -19,7 +19,7 @@ namespace SignalRMVCChat.WebSocket.Audio
 
             var chatId = _providerService.Save(new Chat
             {
-                MyAccountId = currMySocketReq.MySocket.MyAccountId.Value,
+                MyAccountId = currMySocketReq.ChatConnection.MyAccountId.Value,
                 CustomerId = customerId,
                 Message = "تماس صوتی از ادمین",
                 UniqId = uniqueId
@@ -31,7 +31,7 @@ namespace SignalRMVCChat.WebSocket.Audio
                     Content = new
                     {
                         Id = chatId,
-                        MyAccountId = currMySocketReq.MySocket.MyAccountId,
+                        MyAccountId = currMySocketReq.ChatConnection.MyAccountId,
                     },
 
                     Name = "VC_AdminCallInitCallback"
@@ -59,7 +59,7 @@ namespace SignalRMVCChat.WebSocket.Audio
                 {
                     Content = new
                     {
-                        CustomerId=currMySocketReq.MySocket.CustomerId,
+                        CustomerId=currMySocketReq.ChatConnection.CustomerId,
                         buffer
                     },
 
@@ -90,7 +90,7 @@ namespace SignalRMVCChat.WebSocket.Audio
                 {
                     Content = new
                     {
-                        MyAccountId=currMySocketReq.MySocket.MyAccountId,
+                        MyAccountId=currMySocketReq.ChatConnection.MyAccountId,
                         buffer
                     },
 
@@ -138,15 +138,15 @@ namespace SignalRMVCChat.WebSocket.Audio
             int myAccountId = GetParam<int>("myAccountId", true, "کد کاربر ارسال نشده است");
 
 
-            var uniqueId = _providerService.GetQuery().Where(chat => chat.CustomerId == currMySocketReq.MySocket.CustomerId.Value).Count() + 1;
+            var uniqueId = _providerService.GetQuery().Where(chat => chat.CustomerId == currMySocketReq.ChatConnection.CustomerId.Value).Count() + 1;
 
 
-            var customer=_customerProvider.GetById(currMySocketReq.MySocket.CustomerId.Value).Single;
+            var customer=_customerProvider.GetById(currMySocketReq.ChatConnection.CustomerId.Value).Single;
             
             var chatId = _providerService.Save(new Chat
             {
                 MyAccountId = myAccountId,
-                CustomerId = currMySocketReq.MySocket.CustomerId.Value,
+                CustomerId = currMySocketReq.ChatConnection.CustomerId.Value,
                 Message = "تماس صوتی از ادمین",
                 UniqId = uniqueId
             }).Single;
@@ -157,7 +157,7 @@ namespace SignalRMVCChat.WebSocket.Audio
                     Content = new
                     {
                         chatId = chatId,
-                        MyAccountId = currMySocketReq.MySocket.MyAccountId,
+                        MyAccountId = currMySocketReq.ChatConnection.MyAccountId,
                         Customer=customer,
                     },
 
@@ -188,7 +188,7 @@ namespace SignalRMVCChat.WebSocket.Audio
                         chatId = chatId,
                         Message = msg,
                         IsAccepted = isAccepted,
-                        MyAccountId=currMySocketReq.MySocket.MyAccountId
+                        MyAccountId=currMySocketReq.ChatConnection.MyAccountId
                     },
 
                     Name = "vC_AdminIsAcceptOrRejectCallback"

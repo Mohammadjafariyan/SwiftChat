@@ -17,7 +17,7 @@ namespace SignalRMVCChat.WebSocket.Alarm
         {
             await base.ExecuteAsync(request, currMySocketReq);
 
-            if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
+            if (currMySocketReq.ChatConnection.MyAccountId.HasValue == false)
             {
                 Throw("این عملیات مخصوص ادمین است");
             }

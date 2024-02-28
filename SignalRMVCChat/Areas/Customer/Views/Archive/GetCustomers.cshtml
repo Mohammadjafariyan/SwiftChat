@@ -46,10 +46,10 @@
                         {
                             customer.Customer.Name = " بازدید کننده ";
                         }
-                        if (customer.Customer.MySockets?.Count > 0)
+                        if (customer.Customer.ChatConnections?.Count > 0)
                         {
-                            var ip = customer.Customer.MySockets.Select(m => m.MyConnectionInfo.ClientIpAddress).FirstOrDefault();
-                            var createTime = customer.Customer.MySockets.Select(m => m.CreationDateTime).FirstOrDefault();
+                            var ip = customer.Customer.ChatConnections.Select(m => m.MyConnectionInfo.ClientIpAddress).FirstOrDefault();
+                            var createTime = customer.Customer.ChatConnections.Select(m => m.CreationDateTime).FirstOrDefault();
                             <span>@customer.Customer.Name (@ip )
 
                                 @{

@@ -61,7 +61,7 @@ namespace SignalRMVCChat.WebSocket
             // از زمان ایجاد انها چند دقیقه گذشته است
             // از زمان ایجاد ان ها بازه زمانی یکی از چت های آماده را دربر می گیرد
             var customers= currMySocketReq.MyWebsite.Customers
-                ?.Where(c => c.Socket.IsAvailable)
+                ?.Where(c => HubSingleton.IsAvailable(c.SignalRConnectionId))
                 .Where(c=>
                     chats.Any(chat=>DateTime.Now .Subtract(c.CreationDateTime).TotalMinutes >=chat.delay.Value)
                     ).ToList();
@@ -137,15 +137,15 @@ namespace SignalRMVCChat.WebSocket
                     
                     
                     
-                    int? tempMySocketMyAccountId = currMySocketReq.MySocket.MyAccountId;
-                    int? tempMySocketMyCustomerId = currMySocketReq.MySocket.CustomerId;
+                    int? tempMySocketMyAccountId = currMySocketReq.ChatConnection.MyAccountId;
+                    int? tempMySocketMyCustomerId = currMySocketReq.ChatConnection.CustomerId;
                     int? tempMyAccountId = currMySocketReq.CurrentRequest.myAccountId;
 
                     try
                     {
                        
-                        currMySocketReq.MySocket.MyAccountId = admin.MyAccountId;
-                        currMySocketReq.MySocket.CustomerId = customer.CustomerId;
+                        currMySocketReq.ChatConnection.MyAccountId = admin.MyAccountId;
+                        currMySocketReq.ChatConnection.CustomerId = customer.CustomerId;
 
                         chat.targetId = customer.CustomerId;
 
@@ -190,8 +190,8 @@ namespace SignalRMVCChat.WebSocket
                         
                     }
                     
-                    currMySocketReq.MySocket.MyAccountId= tempMySocketMyAccountId ;
-                    currMySocketReq.MySocket.CustomerId= tempMySocketMyCustomerId ;
+                    currMySocketReq.ChatConnection.MyAccountId= tempMySocketMyAccountId ;
+                    currMySocketReq.ChatConnection.CustomerId= tempMySocketMyCustomerId ;
                     currMySocketReq.CurrentRequest.myAccountId = tempMyAccountId;
 
 

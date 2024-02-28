@@ -14,6 +14,9 @@ module.exports = function override(config) {
     };
 
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    config.plugins.push( new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify('development'),
+    }));
     Object.assign(fallback, {
         "crypto":false,
         "stream":false,

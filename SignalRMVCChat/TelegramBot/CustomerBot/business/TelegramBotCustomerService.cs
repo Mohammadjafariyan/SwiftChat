@@ -21,10 +21,10 @@ namespace SignalRMVCChat.TelegramBot.CustomerBot.business
         {
 
             var user = customerProviderService.GetQuery()
-                .Include(c => c.MySockets)
+                .Include(c => c.ChatConnections)
                 .Where(c => c.UserType == CustomerType.TelegramUser)
                 .Where(c => c.TelegramUserId == telegramUserId &&
-                c.MySockets.Any(m => m.AdminWebsiteId == botViewModel.Setting.MyWebsiteId||
+                c.ChatConnections.Any(m => m.AdminWebsiteId == botViewModel.Setting.MyWebsiteId||
                 m.CustomerWebsiteId == botViewModel.Setting.MyWebsiteId))
                 .FirstOrDefault();
 
@@ -65,7 +65,7 @@ namespace SignalRMVCChat.TelegramBot.CustomerBot.business
                 });
                 db.SaveChanges();
 
-                db.MySockets.Add(new MySocket
+                db.ChatConnections.Add(new ChatConnection
                 {
                     CustomerWebsiteId = botViewModel.Setting.MyWebsiteId,
                     AdminWebsiteId = botViewModel.Setting.MyWebsiteId,

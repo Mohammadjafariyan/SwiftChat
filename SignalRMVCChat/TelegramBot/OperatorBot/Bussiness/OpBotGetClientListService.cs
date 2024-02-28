@@ -36,7 +36,7 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
                 new MyWebSocketRequest
                 {
                     MyWebsite = website.Single,
-                    MySocket = new MySocket
+                    ChatConnection = new ChatConnection
                     {
                         MyAccountId = myAccountId
                     }

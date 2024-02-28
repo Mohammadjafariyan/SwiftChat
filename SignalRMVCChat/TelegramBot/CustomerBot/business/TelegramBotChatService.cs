@@ -40,7 +40,7 @@ namespace SignalRMVCChat.TelegramBot.CustomerBot.business
                 SenderType = Service.ChatSenderType.CustomerToAccount,
                 ChatContentType = Service.ChatContentType.Normal,
                 CustomerId = customer.Id,
-                SenderMySocketId = customer.MySockets.Select(m => m.Id).FirstOrDefault(),
+                SenderMySocketId = customer.ChatConnections.Select(m => m.Id).FirstOrDefault(),
                 MyAccountId = adminSelectedId,
                 UniqId = unique
             };

@@ -9,7 +9,7 @@ namespace SignalRMVCChat.WebSocket
     public class AdminModeMultimediaPmSendSocketHandler : BaseMultimediaPmSendSocketHandler
     {
         
-        protected override  async Task Send(MySocket target, MyWebSocketRequest currMySocketReq,
+        protected override  async Task Send(ChatConnection target, MyWebSocketRequest currMySocketReq,
             MyWebSocketResponse response, Chat chat)
         {
             if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Admin)
@@ -27,7 +27,7 @@ namespace SignalRMVCChat.WebSocket
             }
         }
 
-        protected override  ChatSenderType GetSenderType(MySocket target)
+        protected override  ChatSenderType GetSenderType(ChatConnection target)
         {
             return target.IsCustomerOrAdmin == MySocketUserType.Admin
                 ? ChatSenderType.AccountToAccount
@@ -35,7 +35,7 @@ namespace SignalRMVCChat.WebSocket
                 throw new Exception("استفاده از این متد فقط برای ادمین ها مجاز است");
         }
 
-        protected override MySocket GetTarget(MySocket target, Chat chat, MyWebSocketRequest currMySocketReq)
+        protected override ChatConnection GetTarget(ChatConnection target, Chat chat, MyWebSocketRequest currMySocketReq)
         {
             /// اگر ادمین باشد پس قبلا کد آن شناسایی شده است و یا کاستمور باشد که همینطور
             if (currMySocketReq.IsAdminOrCustomer == (int) MySocketUserType.Admin)

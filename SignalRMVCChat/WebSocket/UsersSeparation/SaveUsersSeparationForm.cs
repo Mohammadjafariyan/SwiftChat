@@ -28,7 +28,7 @@ namespace SignalRMVCChat.WebSocket.UsersSeparation
         protected override Models.UsersSeparation.UsersSeparation SetParams(Models.UsersSeparation.UsersSeparation record, Models.UsersSeparation.UsersSeparation existRecord)
         {
             record.MyWebsiteId = _currMySocketReq.MyWebsite.Id;
-            record.MyAccountId = _currMySocketReq.MySocket.MyAccountId.Value;
+            record.MyAccountId = _currMySocketReq.ChatConnection.MyAccountId.Value;
 
             if (record.enabled)
             {
@@ -81,7 +81,7 @@ namespace SignalRMVCChat.WebSocket.UsersSeparation
                 
             }.Serialize(), new MyWebSocketRequest
             {
-                MySocket = new MySocket
+                ChatConnection = new ChatConnection
                 {
                     MyAccountId = 1
                 }

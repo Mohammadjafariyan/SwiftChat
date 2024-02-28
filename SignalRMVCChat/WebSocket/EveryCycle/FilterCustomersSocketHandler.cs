@@ -31,7 +31,7 @@ namespace SignalRMVCChat.WebSocket.EveryCycle
             var customerIds = WebsiteSingleTon.WebsiteService.Websites.Where(w => w.Id == currMySocketReq.MyWebsite.Id)
                 .SelectMany(c => c.Customers)
                 .Where(c => c != null && c?.CustomerId.HasValue == true &&
-                c?.Socket?.IsAvailable == true)
+                            HubSingleton.IsAvailable(c.SignalRConnectionId) == true)
                 .Select(c => c.CustomerId).ToList();
 
 

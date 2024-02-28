@@ -59,7 +59,7 @@ namespace SignalRMVCChat.Service
                 track.latitude = cord.Key;
                 track.longitude = cord.Value;
 
-                var socket = new MySocket
+                var socket = new ChatConnection
                 {
                     AdminWebsiteId = 1,
                     CustomerWebsiteId = 1,
@@ -73,7 +73,7 @@ namespace SignalRMVCChat.Service
                 {
                     track
                 },
-                    MySockets = new List<MySocket>
+                    ChatConnections = new List<ChatConnection>
                 {
                     socket
                 }
@@ -86,7 +86,7 @@ namespace SignalRMVCChat.Service
 
                
 
-                db.MySockets.Add(socket);
+                db.ChatConnections.Add(socket);
                 db.CustomerTrackInfo.Add(track);
                 db.SaveChanges();
 
@@ -138,7 +138,7 @@ namespace SignalRMVCChat.Service
 
             var myEntityResponse = Save(new Customer
             {
-                Name = "کاربر آنلاین" + " " + (currMySocketReq?.MySocket?.MyConnectionInfo?.ClientIpAddress ?? DateTime.Now.ToString("HH:mm")),
+                Name = "کاربر آنلاین" + " " + (currMySocketReq?.ChatConnection?.MyConnectionInfo?.ClientIpAddress ?? DateTime.Now.ToString("HH:mm")),
                 Email = MyGlobal.IsAttached ? "pcpc19551@gmail.com" : null,
                 OnlineStatus = OnlineStatus.Online
             });
@@ -171,9 +171,9 @@ namespace SignalRMVCChat.Service
                 var chatsQuery = db.Chats;
 
                 var query = db.Customers
-                    .Include(c => c.MySockets)
+                    .Include(c => c.ChatConnections)
                     .Include(c => c.TrackInfos)
-                    .Where(c => c.MySockets.Any(ms => ms.CustomerWebsiteId == websiteId));
+                    .Where(c => c.ChatConnections.Any(ms => ms.CustomerWebsiteId == websiteId));
 
 
                 /*var allquery=/* db.cust.Include(w => w.Customers)

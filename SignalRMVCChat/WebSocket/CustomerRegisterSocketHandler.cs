@@ -24,7 +24,7 @@ namespace SignalRMVCChat.WebSocket
         {
             // var customerProviderService = Injector.Inject<CustomerProviderService>();
 
-            int customerId = currMySocketReq.MySocket.CustomerId.Value;
+            int customerId = currMySocketReq.ChatConnection.CustomerId.Value;
 
             // هر کاربر ابتدا این کلاس را فراخانی میکند و ریجستر می شود            
             //int customerId = customerProviderService.RegisterNewCustomer(currMySocketReq);
@@ -53,8 +53,8 @@ namespace SignalRMVCChat.WebSocket
 
             //var html= new HubHelperController().AllAdminsPartial();
 
-            currMySocketReq.MySocket.CustomerId = customerId;
-            currMySocketReq.MySocket.Customer = new Customer
+            currMySocketReq.ChatConnection.CustomerId = customerId;
+            currMySocketReq.ChatConnection.Customer = new Customer
             {
                 Id = customerId,
                 OnlineStatus=OnlineStatus.Online
@@ -92,7 +92,7 @@ namespace SignalRMVCChat.WebSocket
                         var handler = new AdminSendToCustomerSocketHandler();
 
 
-                        var uniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.MySocket.CustomerId).Count() +
+                        var uniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.ChatConnection.CustomerId).Count() +
                                      1;
 
                         new AdminSendToCustomerSocketHandler()
@@ -100,7 +100,7 @@ namespace SignalRMVCChat.WebSocket
                        {
                            Body = new
                            {
-                               targetUserId = currMySocketReq.MySocket.CustomerId,
+                               targetUserId = currMySocketReq.ChatConnection.CustomerId,
                                typedMessage = myWebsiteSetting?.workingHourSetting_sentMessageText,
                                uniqId = uniqId++,
                                gapFileUniqId = 6161,
@@ -131,7 +131,7 @@ namespace SignalRMVCChat.WebSocket
                         try
                         {
 
-                            var uniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.MySocket.CustomerId).Count() +
+                            var uniqId = ChatProviderService.GetQuery().Where(c => c.CustomerId == currMySocketReq.ChatConnection.CustomerId).Count() +
                                          1;
                             new AdminSendFormToCustomerSocketHandler()
                       .ExecuteAsync(new MyWebSocketRequest
@@ -139,7 +139,7 @@ namespace SignalRMVCChat.WebSocket
                           Body = new
                           {
                               formId = myWebsiteSetting.workingHourSetting_sentFormSelect?.Id,
-                              customerId = currMySocketReq.MySocket.CustomerId,
+                              customerId = currMySocketReq.ChatConnection.CustomerId,
                               UniqId= uniqId
                           }
                       }.Serialize(), currMySocketReq).GetAwaiter()

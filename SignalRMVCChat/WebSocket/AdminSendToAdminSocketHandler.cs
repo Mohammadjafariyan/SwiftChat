@@ -38,7 +38,7 @@ namespace SignalRMVCChat.WebSocket
             var typedMessage = _request.Body.typedMessage?.ToString();
             
 
-            MySocket myAccount = currMySocketReq.MyWebsite.Admins.FirstOrDefault(c => c.MyAccountId == targetUserId);
+            ChatConnection myAccount = currMySocketReq.MyWebsite.Admins.FirstOrDefault(c => c.MyAccountId == targetUserId);
 
             if (myAccount == null || myAccount.MyAccountId.HasValue==false)
             {
@@ -65,7 +65,7 @@ namespace SignalRMVCChat.WebSocket
 
             var chat =  chatProviderServices
                 .AdminSendToAdmin(accountId
-                    ,targetUserId,typedMessage,currMySocketReq.MySocket.Id,gapFileUniqId,uniqId);
+                    ,targetUserId,typedMessage,currMySocketReq.ChatConnection.Id,gapFileUniqId,uniqId);
 
 
             var chatProviderService = DependencyInjection.Injector.Inject<ChatProviderService>();

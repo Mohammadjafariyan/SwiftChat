@@ -23,7 +23,7 @@ namespace SignalRMVCChat.Models
             OnlineStatus = OnlineStatus.Offline;
 
             Chats = new List<Chat>();
-            MySockets = new List<MySocket>();
+            ChatConnections = new List<ChatConnection>();
             CustomerDatas = new List<CustomerData>();
             FormValues = new List<FormValue>();
 
@@ -45,7 +45,7 @@ namespace SignalRMVCChat.Models
 
         public DateTime CreationDateTime { get; set; } = DateTime.Now;
 
-        [JsonIgnore] public List<MySocket> MySockets { get; set; }
+        [JsonIgnore] public List<ChatConnection> ChatConnections { get; set; }
         public List<Chat> Chats { get; set; }
         public OnlineStatus OnlineStatus { get; set; }
         public List<CustomerTrackInfo> TrackInfos { get; set; }

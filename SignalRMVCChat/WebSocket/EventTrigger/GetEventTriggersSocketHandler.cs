@@ -37,7 +37,7 @@ namespace SignalRMVCChat.WebSocket.EventTrigger
             var adminsCount = currMySocketReq.MyWebsite.Admins.Count;
 
             var customer = CustomerProviderService.GetQuery()
-                .Where(c => c.Id == currMySocketReq.MySocket.CustomerId.Value)
+                .Where(c => c.Id == currMySocketReq.ChatConnection.CustomerId.Value)
                 .Include(c => c.TrackInfos).FirstOrDefault();
 
             if (customer==null)

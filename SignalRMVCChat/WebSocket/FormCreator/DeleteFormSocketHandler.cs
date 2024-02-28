@@ -48,7 +48,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
             
 
 
-            var myAccount= MyAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value, "اکانت کنونی وجود ندارد").Single;
+            var myAccount= MyAccountProviderService.GetById(currMySocketReq.ChatConnection.MyAccountId.Value, "اکانت کنونی وجود ندارد").Single;
 
             //=============================================================================
             _logService.LogFunc("به چه سایت هایی دسترسی دارد ؟");

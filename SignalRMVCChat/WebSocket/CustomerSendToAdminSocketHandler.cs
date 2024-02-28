@@ -45,7 +45,7 @@ namespace SignalRMVCChat.WebSocket
             if (_request.Body.uniqId == null)
             {
                 uniqId = chatProviderService.GetQuery()
-                    .Where(q => q.CustomerId == currMySocketReq.MySocket.CustomerId.Value)
+                    .Where(q => q.CustomerId == currMySocketReq.ChatConnection.CustomerId.Value)
                     .Count() + 1;
             }
             else
@@ -90,10 +90,10 @@ namespace SignalRMVCChat.WebSocket
 
             MyEntityResponse<int> chat = chatProviderService
                 .CustomerSendToAdmin(targetAccountIdTEMP
-                    , customerId, typedMessage, currMySocketReq.MySocket.Id, gapFileUniqId, uniqId);
+                    , customerId, typedMessage, currMySocketReq.ChatConnection.Id, gapFileUniqId, uniqId);
 
             var w = WebsiteSingleTon.WebsiteService.Websites.ToList();
-            MySocket admin = null;
+            ChatConnection admin = null;
 
             MyAccount myAccount = null;
             bool isFindAdmin = true;

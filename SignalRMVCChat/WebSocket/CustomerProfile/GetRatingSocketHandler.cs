@@ -14,7 +14,7 @@ namespace SignalRMVCChat.WebSocket.CustomerProfile
 
         protected async override Task<MyWebSocketResponse> ReturnResponse(Customer record)
         {
-            if (_currMySocketReq.MySocket.MyAccountId.HasValue==false)
+            if (_currMySocketReq.ChatConnection.MyAccountId.HasValue==false)
             {
                 Throw("ادمین کنونی کد ندارد");
             }

@@ -13,7 +13,7 @@ namespace SignalRMVCChat.WebSocket.Bot
         protected override Models.Bot.Bot SetParams(Models.Bot.Bot record, Models.Bot.Bot existRecord)
         {
                 
-            record.MyAccountId = _currMySocketReq.MySocket.MyAccountId.Value;
+            record.MyAccountId = _currMySocketReq.ChatConnection.MyAccountId.Value;
             record.MyWebsiteId = _currMySocketReq.MyWebsite.Id;
 
 

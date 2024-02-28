@@ -73,7 +73,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
                 Name = Name,
                 AfterMessage = AfterMessage,
                 MyWebsiteId = currMySocketReq.MyWebsite.Id,
-                MyAccountId = currMySocketReq.MySocket.MyAccountId.Value,
+                MyAccountId = currMySocketReq.ChatConnection.MyAccountId.Value,
                 Message=Message
                 //  Elements = elements
             };
@@ -90,7 +90,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
                 //=============================================================================
 
 
-                var myAccont= MyAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value, "ادمین کنونی یافت نشد").Single;
+                var myAccont= MyAccountProviderService.GetById(currMySocketReq.ChatConnection.MyAccountId.Value, "ادمین کنونی یافت نشد").Single;
 
                 //=============================================================================
                 _logService.LogFunc("اگر دسترسی روت دارد مشکلی ندارد ولی اگر دسترسی اش نرم است فقط فرم های خودش را می تواند ویرایش  کند");

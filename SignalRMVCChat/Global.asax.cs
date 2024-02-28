@@ -25,7 +25,7 @@ namespace SignalRMVCChat
         {
             // This is where it "should" be
            
-            
+          
             
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -35,7 +35,7 @@ namespace SignalRMVCChat
             
             MyDependencyResolver.RegisterDependencies();
 
-            var d=SocketSingleton.Listener;
+           // var d=SocketSingleton.Listener;
 
             ContextFactory.GetContext(null);
 

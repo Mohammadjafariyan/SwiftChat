@@ -6,7 +6,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Fleck;
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hosting;
 using SignalRMVCChat.DependencyInjection;
+using SignalRMVCChat.Hubs;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.WebSocket;
 using TelegramBotsWebApplication.Service;
@@ -21,7 +24,9 @@ namespace SignalRMVCChat.Service
         {
             return WebsiteSingleTon.WebsiteService?.Websites?
                             .Where(w => w.Id == websiteId)
-                            .Any(w => w.Admins?.All(a => a.Socket?.IsAvailable == false) == true) == true;
+                            .Any(w => w.Admins?.All(a => 
+                                
+                                HubSingleton.IsAvailable(a.SignalRConnectionId) == false) == true) == true;
         }
     }
 
@@ -44,7 +49,7 @@ namespace SignalRMVCChat.Service
                 var myWebsiteService = Injector.Inject<MyWebsiteService>();
 
                 site = myWebsiteService.GetById(website.Id,
-                    "این وب سایت ثبت نشده است برای ثبت نام به سایت گپ چت مراجعه فرمایید").Single;
+                    "این وب سایت ثبت نشده است برای ثبت نام به سایت سوئیفت چت مراجعه فرمایید").Single;
 
                 Websites.Add(site);
             }
@@ -64,11 +69,11 @@ namespace SignalRMVCChat.Service
 
         public async Task AddToOnwSite(MyWebSocketRequest request)
         {
-            if (request.MySocket.Id != 0)
+            if (request.ChatConnection.Id != 0)
             {
-                if (request.MySocket.CustomerId != request.CurrentRequest.customerId
-                    || request.MySocket.MyAccountId != request.CurrentRequest.myAccountId
-                    || request.MySocket.IsCustomerOrAdmin != request.CurrentRequest.IsAdminOrCustomer
+                if (request.ChatConnection.CustomerId != request.CurrentRequest.customerId
+                    || request.ChatConnection.MyAccountId != request.CurrentRequest.myAccountId
+                    || request.ChatConnection.IsCustomerOrAdmin != request.CurrentRequest.IsAdminOrCustomer
                 )
                 {
                     throw new Exception("خطا در سیستم کانکشکن متفاوت با قبلی تشخیص داده شده است");
@@ -76,21 +81,21 @@ namespace SignalRMVCChat.Service
             }
             else
             {
-                request.MySocket.CustomerId = request.CurrentRequest.customerId;
-                request.MySocket.MyAccountId = request.CurrentRequest.myAccountId;
-                request.MySocket.IsCustomerOrAdmin = request.CurrentRequest.IsAdminOrCustomer;
+                request.ChatConnection.CustomerId = request.CurrentRequest.customerId;
+                request.ChatConnection.MyAccountId = request.CurrentRequest.myAccountId;
+                request.ChatConnection.IsCustomerOrAdmin = request.CurrentRequest.IsAdminOrCustomer;
             }
 
 
-            if (request.MySocket.IsCustomerOrAdmin == MySocketUserType.Admin)
+            if (request.ChatConnection.IsCustomerOrAdmin == MySocketUserType.Admin)
             {
-                request.MySocket =
-                    await request.MyWebsite.AddOrUpdate(request.MyWebsite.Admins, request.MySocket, request);
+                request.ChatConnection =
+                    await request.MyWebsite.AddOrUpdate(request.MyWebsite.Admins, request.ChatConnection, request);
             }
             else
             {
-                request.MySocket =
-                    await request.MyWebsite.AddOrUpdate(request.MyWebsite.Customers, request.MySocket, request);
+                request.ChatConnection =
+                    await request.MyWebsite.AddOrUpdate(request.MyWebsite.Customers, request.ChatConnection, request);
             }
         }
 
@@ -101,13 +106,13 @@ namespace SignalRMVCChat.Service
         /// <param name="request"></param>
         /// <exception cref="Exception"></exception>
         /// <exception cref="FindAndSetExcaption"></exception>
-        public void FindAndSet(IWebSocketConnection socket, MyWebSocketRequest request)
+        public void FindAndSet(CustomerHub hub, MyWebSocketRequest request)
         {
             var logService = Injector.Inject<LogService>();
             if (string.IsNullOrEmpty(request.WebsiteToken))
             {
                 throw new Exception(
-                    "این وب سایت شناسایی نشد جهت ثبت نام و ایجاد توکن پلاگین لطفا به وب سایت گپ چت پشتیبان مراجعه فرمایید");
+                    "این وب سایت شناسایی نشد جهت ثبت نام و ایجاد توکن پلاگین لطفا به وب سایت سوئیفت چت پشتیبان مراجعه فرمایید");
             }
 
             // در هر فایل که توکنی می فرستیم اینجا از طریق آن توکن شناسایی می کنیم که ریکوئست مال کدام وب سایت است و ادمین ها یا کاربران انررا شناسایی می کنیم
@@ -136,7 +141,7 @@ namespace SignalRMVCChat.Service
             }
             */
             // هر کانکشن اتصال به دیتابیس 
-            MySocket mysocket = null;
+            ChatConnection mysocket = null;
 
           
 
@@ -164,26 +169,42 @@ namespace SignalRMVCChat.Service
             /// یعنی بار اولش است که مراجعه به سایت کرده است و باید شناسایی شود با لوگین ورود یا کاستومر
             if (mysocket == null)
             {
-                mysocket = new MySocket
+                mysocket = new ChatConnection
                 {
                     Token = request.Token,
                     IsCustomerOrAdmin = null,
-                    Socket = socket,
+                    SignalRConnectionId = hub.Context.ConnectionId,
+                    Hub = hub,
+                    MyConnectionInfo = new MyConnectionInfo
+                    {
+                        Cookies = hub.Context.RequestCookies
+                            .ToDictionary(s=>s.Key,d=>d.Value?.Value),
+                        Headers = hub.Context.Headers,
+                        Host = hub.Context.Request.Url.Host,
+                        //Environment = hub.Context.Request.Environment,
+                        Origin = hub.Context.Request.Headers["Origin"],
+                        Path = hub.Context.Request.Url.PathAndQuery,
+                        ClientPort = hub.Context.Request.Url.Port,
+                        UserInfo = hub.Context.Request.Url.UserInfo,
+                        ClientIpAddress = hub.Context.Request.GetHttpContext().Request.UserHostAddress,
+                        SignalRConnectionId = hub.Context.ConnectionId
+                    },
                     CustomerWebsiteId = myWebsite.Id,
                     AdminWebsiteId = myWebsite.Id,
                     CustomerId= CurrentRequest?.customerId,
                     MyAccountId= CurrentRequest?.myAccountId
                 };
+
                 //mySocketService.Save(mysocket);
             }
             else
             {
-                mysocket.Socket = socket;
+                mysocket.SignalRConnectionId = hub.Context.ConnectionId;
             }
 
 
             request.MyWebsite = myWebsite;
-            request.MySocket = mysocket;
+            request.ChatConnection = mysocket;
         }
 
         /// <summary>
@@ -192,10 +213,10 @@ namespace SignalRMVCChat.Service
         /// <param name="request"></param>
         /// <param name="myWebsite"></param>
         /// <returns></returns>
-        private MySocket Identify(MyWebSocketRequest request, MyWebsite myWebsite)
+        private ChatConnection Identify(MyWebSocketRequest request, MyWebsite myWebsite)
         {
             var mySocketService = Injector.Inject<MySocketService>();
-            MySocket mysocket = null; // = mySocketService.GetQuery().FirstOrDefault(q => q.Token == request.Token);
+            ChatConnection mysocket = null; // = mySocketService.GetQuery().FirstOrDefault(q => q.Token == request.Token);
             // از بین آنلاین ها می گردیم
             var customer = myWebsite.Customers.FirstOrDefault(c => c.Token == request.Token);
             if (customer != null)
@@ -242,22 +263,25 @@ namespace SignalRMVCChat.Service
 
 
         Task AddToOnwSite(MyWebSocketRequest response);
-        void FindAndSet(IWebSocketConnection socket, MyWebSocketRequest request);
+        void FindAndSet(CustomerHub logData, MyWebSocketRequest request);
     }
 
-    public class MyConnectionInfo : IWebSocketConnectionInfo
+    public class MyConnectionInfo 
     {
-        public string SubProtocol { get; set; }
         public string Origin { get; set; }
         public string Host { get; set; }
         public string Path { get; set; }
         public string ClientIpAddress { get; set; }
         public int ClientPort { get; set; }
         public IDictionary<string, string> Cookies { get; set; }
-        public IDictionary<string, string> Headers { get; set; }
+        public INameValueCollection Headers { get; set; }
 
         [NotMapped] public Guid Id { get; set; }
-        public string NegotiatedSubProtocol { get; set; }
+        public IDictionary<string,object> Environment { get; set; }
+        public string UserInfo { get; set; }
+        public string SignalRConnectionId { get; set; }
+        public string ErrMessage { get; set; }
+        public string ErrMessageContent { get; set; }
     }
 
     public enum MySocketUserType

@@ -36,7 +36,7 @@ namespace SignalRMVCChat.Service.Routing
                 .ToList();
 
             routingsList = routingsList
-                .Where(r => r.admins?.Select(a => a.Id)?.Contains(currMySocketReq.MySocket.MyAccountId.Value)==true).ToList();
+                .Where(r => r.admins?.Select(a => a.Id)?.Contains(currMySocketReq.ChatConnection.MyAccountId.Value)==true).ToList();
 
             #endregion
 

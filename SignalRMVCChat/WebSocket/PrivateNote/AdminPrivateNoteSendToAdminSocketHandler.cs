@@ -30,7 +30,7 @@ namespace SignalRMVCChat.WebSocket.PrivateNote
             string request,
             MyWebSocketRequest currMySocketReq)
         {
-            MySocket customerSocket =
+            ChatConnection customerSocket =
                 currMySocketReq.MyWebsite.Customers.FirstOrDefault(c => c.CustomerId == targetUserId);
 
             if (customerSocket == null)
@@ -54,7 +54,7 @@ namespace SignalRMVCChat.WebSocket.PrivateNote
 
             var chat = chatProviderServices
                 .AdminSendToCustomer(accountId
-                    , targetUserId, typedMessage, currMySocketReq.MySocket.Id, gapFileUniqId, uniqId);
+                    , targetUserId, typedMessage, currMySocketReq.ChatConnection.Id, gapFileUniqId, uniqId);
 
 
             var chatProviderService = DependencyInjection.Injector.Inject<ChatProviderService>();

@@ -2293,12 +2293,90 @@ class BasePlugin {
 }
 
 let configWebSocket = function (onOpen) {
-    CurrentUserInfo.ws = new WebSocket("ws://" + baseUrl + ":8181/");
+
+    $(function () {
+        // Reference the auto-generated proxy for the hub.  
+        var chat = $.connection.customerHub;
+        
+        // Create a function that the hub can call back to display messages.
+        chat.client.onmessage = function (evt) {
+
+            var data = JSON.parse(evt);
+
+            console.log(evt);
+            _dispatcher.dispatch(data);
+            
+        };
+
+        CurrentUserInfo.ws = chat.server;
+        
+        $.connection.hub.start().done(function () {
+
+            console.log('اتصال برقرار شد');
+
+
+            if (onOpen) {
+                onOpen();
+                if (CurrentUserInfo.dotColorBackup) {
+                    getDoc().getElementById('dot').style.backgroundColor = CurrentUserInfo.dotColorBackup;
+                }
+
+            }
+            
+        });
+
+
+    
+
+
+        $.connection.hub.disconnected(function() {
+            console.log('reconnecting in 5 seconds...');
+            setTimeout(function() {
+                console.log('attempt to reconnect..');
+
+                $.connection.hub.start();
+            }, 5000); // Restart connection after 5 seconds.
+        });
+
+        $.connection.hub.error(function(error) {
+            console.log('SignalrAdapter: ' + error);
+
+
+            console.log(error);
+            console.error("اتصال قطع شد");
+
+
+        });
+
+        $.connection.hub.connectionSlow(function() {
+           // notifyUserOfConnectionProblem(); // Your function to notify user.
+        });
+
+        var tryingToReconnect = false;
+
+        $.connection.hub.reconnecting(function() {
+            tryingToReconnect = true;
+        });
+
+        $.connection.hub.reconnected(function() {
+            tryingToReconnect = false;
+        });
+
+        $.connection.hub.disconnected(function() {
+            if(tryingToReconnect) {
+              //  notifyUserOfDisconnect(); // Your function to notify user.
+            }
+        });
+        
+    });
+    
+    
+   /* CurrentUserInfo.ws = new WebSocket("wss://" + baseUrl + ":8181/");
     CurrentUserInfo.ws.onopen = function () {
         console.log('اتصال برقرار شد');
-        /*alert("About to send data");
+        /!*alert("About to send data");
         ws.send("Hello World"); // I WANT TO SEND THIS MESSAGE TO THE SERVER!!!!!!!!
-        alert("Message sent!");*/
+        alert("Message sent!");*!/
 
 
         if (onOpen) {
@@ -2326,7 +2404,7 @@ let configWebSocket = function (onOpen) {
         //    socketConnect();
         //    CurrentUserInfo.dotColorBackup = getDoc().querySelector('#dot').style.backgroundColor;
         //    getDoc().querySelector('#dot').style.backgroundColor = 'grey';
-    };
+    };*/
 }
 
 class CustomerPlugin extends BasePlugin {
@@ -4001,7 +4079,7 @@ let MyCaller = {
         }
 
 
-        if (CurrentUserInfo.ws.readyState != WebSocket.OPEN) {
+      /*  if (CurrentUserInfo.ws.readyState != WebSocket.OPEN) {
             alert('در حال اتصال به سرور و ارسال درخواست');
             setTimeout(() => {
 
@@ -4023,7 +4101,7 @@ let MyCaller = {
 
             //}
 
-        }
+        }*/
 
         var req = {};
         req.Name = name;
@@ -5708,7 +5786,8 @@ let CustomerStartTypingSent = false;
 
 function bindIsTyping() {
     var searchTimeout;
-    getDoc().querySelector('#gapChatInput').onkeyup = function () {
+
+    let handleInput = function () {
         if (searchTimeout !== undefined) clearTimeout(searchTimeout);
 
         let strg = getDoc().querySelector('#gapChatInput').value;
@@ -5716,22 +5795,35 @@ function bindIsTyping() {
         if (strg) {
 
 
-            MyCaller.Send('CustomerStartTyping', {text: strg});
+            searchTimeout = setTimeout(()=>{
 
-            CustomerStartTypingSent = true;
+                MyCaller.Send('CustomerStartTyping', {text: strg});
+
+                CustomerStartTypingSent = true;
+                
+            }, 1000)
+           
 
             //   if (strg || strg.trim() === '' && !CustomerStartTypingSent) {
 
 
         } else {
 
-            CustomerStartTypingSent = false;
+            searchTimeout = setTimeout(()=>{
 
-            callServerScript();
+                CustomerStartTypingSent = false;
+
+                callServerScript();
+
+            }, 1000)
+          
         }
         // searchTimeout = setTimeout(callServerScript, 1000);
     };
 
+    getDoc().querySelector('#gapChatInput').addEventListener("input", handleInput);
+
+  
 }
 
 function callServerScript() {

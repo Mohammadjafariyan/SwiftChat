@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Fleck;
 using SignalRMVCChat.Areas.sysAdmin.Service;
+using SignalRMVCChat.Hubs;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.WebSocket.Bot.Execute;
@@ -16,12 +17,12 @@ namespace SignalRMVCChat.WebSocket
 {
     public class WebSocketRequestThreadMaker
     {
-        public static async Task HandleRequest(string result, IWebSocketConnection socket)
+        public static async Task HandleRequest(string result,CustomerHub hub)
         {
-            await DoChat(result, socket);
+            await DoChat(result,hub);
         }
 
-        public static async Task DoChat(string result, IWebSocketConnection socket)
+        public static async Task DoChat(string result,CustomerHub hub)
         {
             try
             {
@@ -35,7 +36,7 @@ namespace SignalRMVCChat.WebSocket
                 var request = MyWebSocketRequest.Deserialize(result);
 
                 // اینجا شناسایی می کنیم از کدام سایت است و چه کسی است ؟
-                WebsiteSingleTon.WebsiteService.FindAndSet(socket, request);
+                WebsiteSingleTon.WebsiteService.FindAndSet(hub, request);
 
                 // فیلتر در این جا اطلاعاتی در مورد درخواست می فهمیم
                 var filterHandler = new FilterHandler();
@@ -50,9 +51,9 @@ namespace SignalRMVCChat.WebSocket
                     var body = response.Serilize();
 
 
-                    if (socket.IsAvailable)
+                    if (HubSingleton.IsAvailable(hub.Context.ConnectionId))
                     {
-                        socket.Send(body)?.GetAwaiter().GetResult();
+                        HubSingleton.Send(hub.Context.ConnectionId,body);
 
                     }
                 }
@@ -149,12 +150,14 @@ namespace SignalRMVCChat.WebSocket
 
                 if (MyGlobal.IsUnitTestEnvirement)
                 {
-                    await DoChat(result, socket);
+                    await DoChat(result, hub);
                 }
 
                 try
                 {
-                    await socket.Send(errJson);
+                    
+                   HubSingleton.Send(hub.Context.ConnectionId,errJson);
+
                 }
                 catch (Exception exception)
                 {

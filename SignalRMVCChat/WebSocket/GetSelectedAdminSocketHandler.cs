@@ -31,7 +31,7 @@ namespace SignalRMVCChat.WebSocket
              _logService.LogFunc("یکی از چت هارا بردار و از روی آن تشخیص بده که ادمین انتخاب شده چه کسی است");
              var chatProviderService = Injector.Inject<ChatProviderService>();
              var chat = chatProviderService.GetQuery().Include(c=>c.MyAccount)
-                 .FirstOrDefault(c => c.CustomerId==currMySocketReq.MySocket.CustomerId && c.MyAccount.MyAccountType!=MyAccountType.SystemMyAccount);
+                 .FirstOrDefault(c => c.CustomerId==currMySocketReq.ChatConnection.CustomerId && c.MyAccount.MyAccountType!=MyAccountType.SystemMyAccount);
 
              if (chat?.MyAccount==null)
              {
@@ -59,7 +59,7 @@ namespace SignalRMVCChat.WebSocket
                      {
                          AccountId = chat.MyAccount.Id,
                          pageNumber = 1,
-                         targetId = currMySocketReq.MySocket.CustomerId,
+                         targetId = currMySocketReq.ChatConnection.CustomerId,
                          AccountName =accountName,
                          OnlineStatus = onlineStatus ?? OnlineStatus.Offline,
                          ProfileImageId = chat.MyAccount.ProfileImageId

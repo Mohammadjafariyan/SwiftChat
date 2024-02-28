@@ -24,8 +24,8 @@ namespace TestProject1
             {
                 MyWebsite = new MyWebsite
                 {
-                    Admins = { new MySocket()},
-                    Customers = { new MySocket()},
+                    Admins = { new ChatConnection()},
+                    Customers = { new ChatConnection()},
                 }
             });
             
@@ -44,8 +44,8 @@ namespace TestProject1
             {
                 MyWebsite = new MyWebsite
                 {
-                    Admins = { new MySocket()},
-                    Customers = { new MySocket()},
+                    Admins = { new ChatConnection()},
+                    Customers = { new ChatConnection()},
                 }
             });
             

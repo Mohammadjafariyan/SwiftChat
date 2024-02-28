@@ -29,9 +29,9 @@ namespace SignalRMVCChat.Service
                 }
 
                 var customers = db.Customers
-                    .Include(c => c.MySockets)
+                    .Include(c => c.ChatConnections)
                     .Include(c => c.Chats)
-                    .Where(c => c.MySockets.Any(m => m.CustomerWebsiteId == currentRequestInfo.websiteId ||
+                    .Where(c => c.ChatConnections.Any(m => m.CustomerWebsiteId == currentRequestInfo.websiteId ||
                                                      m.AdminWebsiteId == currentRequestInfo.websiteId));
 
 
@@ -54,8 +54,8 @@ namespace SignalRMVCChat.Service
                 var onlineCustomersIds = WebsiteSingleTon.WebsiteService.Websites
                     ?.Where(w => w.Id == currentRequestInfo.websiteId)
                     .SelectMany(w => w.Customers).Where(c =>
-                        c.Socket.IsAvailable &&
-                        c.CustomerId.HasValue).Select(c => c.CustomerId);
+                            HubSingleton.IsAvailable(c.SignalRConnectionId) &&
+                                                                           c.CustomerId.HasValue).Select(c => c.CustomerId);
 
 
                 //	کاربران ترک کرده ، یا از دست رفته  
@@ -96,7 +96,7 @@ namespace SignalRMVCChat.Service
             var onlineCustomers = WebsiteSingleTon.WebsiteService.Websites
                 ?.Where(w => w.Id == websiteId)
                 .SelectMany(w => w.Customers).Where(c =>
-                    c.Socket.IsAvailable &&
+                    HubSingleton.IsAvailable(c.SignalRConnectionId) &&
                     c.CustomerId.HasValue).Select(c => c.Customer).ToList();
 
             
@@ -191,18 +191,18 @@ namespace SignalRMVCChat.Service
 
             if (dates.DateFrom.HasValue)
             {
-                customers = customers.Where(c => c.MySockets
+                customers = customers.Where(c => c.ChatConnections
                     .Any(m => m.CreationDateTime >= dates.DateFrom));
             }
 
             if (dates.DateTo.HasValue)
             {
-                customers = customers.Where(c => c.MySockets
+                customers = customers.Where(c => c.ChatConnections
                     .Any(m => m.CreationDateTime <= dates.DateTo));
             }
 
 
-            return customers.Where(c => c.MySockets
+            return customers.Where(c => c.ChatConnections
                                             .GroupBy(m => EntityFunctions.TruncateTime(m.CreationDateTime)).Count() ==
                                         1);
         }
@@ -215,13 +215,13 @@ namespace SignalRMVCChat.Service
 
             if (dates.DateFrom.HasValue)
             {
-                customers = customers.Where(c => c.MySockets
+                customers = customers.Where(c => c.ChatConnections
                     .Any(m => m.CreationDateTime >= dates.DateFrom));
             }
 
             if (dates.DateTo.HasValue)
             {
-                customers = customers.Where(c => c.MySockets
+                customers = customers.Where(c => c.ChatConnections
                     .Any(m => m.CreationDateTime <= dates.DateTo));
             }
 
@@ -237,13 +237,13 @@ namespace SignalRMVCChat.Service
 
             if (dates.DateFrom.HasValue)
             {
-                customers = customers.Where(c => c.MySockets
+                customers = customers.Where(c => c.ChatConnections
                     .Any(m => m.CreationDateTime >= dates.DateFrom));
             }
 
             if (dates.DateTo.HasValue)
             {
-                customers = customers.Where(c => c.MySockets
+                customers = customers.Where(c => c.ChatConnections
                     .Any(m => m.CreationDateTime <= dates.DateTo));
             }
 
@@ -258,7 +258,7 @@ namespace SignalRMVCChat.Service
 
             if (customers.Count() == 0)
             {
-                customers = customers.Where(c => c.MySockets
+                customers = customers.Where(c => c.ChatConnections
                                                      .GroupBy(m => EntityFunctions.TruncateTime(m.CreationDateTime))
                                                      .Count() >
                                                  1);
@@ -273,7 +273,7 @@ namespace SignalRMVCChat.Service
             customers = GetNotChattedCustomers(db, dates, currentRequestInfo, customers);
 
 
-            return customers.Where(c => c.MySockets
+            return customers.Where(c => c.ChatConnections
                 .GroupBy(m =>
                     System.Data.Entity.Core.Objects.EntityFunctions.TruncateTime(
                         m.CreationDateTime)).Count() > 1);
@@ -287,13 +287,13 @@ namespace SignalRMVCChat.Service
 
             if (dates.DateFrom.HasValue)
             {
-                customers = customers.Where(c => c.MySockets
+                customers = customers.Where(c => c.ChatConnections
                     .Any(m => m.CreationDateTime >= dates.DateFrom));
             }
 
             if (dates.DateTo.HasValue)
             {
-                customers = customers.Where(c => c.MySockets
+                customers = customers.Where(c => c.ChatConnections
                     .Any(m => m.CreationDateTime <= dates.DateTo));
             }
 
@@ -415,7 +415,7 @@ namespace SignalRMVCChat.Service
     {
         public int CustomerId { get; set; }
         public int ChatCounts { get; set; }
-        public MySocket Customer { get; set; }
+        public ChatConnection Customer { get; set; }
     }
 
     public class GetVisitedPagesViewModel

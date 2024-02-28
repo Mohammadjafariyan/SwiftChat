@@ -19,7 +19,7 @@ namespace SignalRMVCChat.WebSocket
 
             var myWebsiteService = Injector.Inject<MyWebsiteService>();
 
-            if (currMySocketReq.MySocket.MyAccountId.HasValue==false)
+            if (currMySocketReq.ChatConnection.MyAccountId.HasValue==false)
             {
                 throw new Exception("کاربر درخواست کننده کد ادمین ندارد ");
             }
@@ -40,7 +40,7 @@ namespace SignalRMVCChat.WebSocket
                 ;*/
 
            admins= admins.Where(c => c.ParentId.HasValue && c.AccessWebsites.Contains(currMySocketReq.MyWebsite.Id) 
-           && c.Id!=currMySocketReq.MySocket.MyAccountId).ToList();
+           && c.Id!=currMySocketReq.ChatConnection.MyAccountId).ToList();
             /*currMySocketReq.MySocket.Socket.Send(new MyWebSocketResponse
             {
 

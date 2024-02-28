@@ -88,7 +88,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
                 await base.InitAsync(request, currMySocketReq);
 
-                this.CurrentCustomer = CustomerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value,
+                this.CurrentCustomer = CustomerProviderService.GetById(currMySocketReq.ChatConnection.CustomerId.Value,
                     "کاربر درخواستی یافت نشد و یا این عملیات برای ادمین مجاز نیست").Single;
 
 
@@ -139,7 +139,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                         /*-----------Compaign---------------*/
                         var compaignTriggerService = Injector.Inject<CompaignTriggerService>();
 
-                        var customer = CustomerProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value).Single;
+                        var customer = CustomerProviderService.GetById(currMySocketReq.ChatConnection.CustomerId.Value).Single;
 
                         compaignTriggerService.ExecuteCompaginsOnBotEvent(
                            customer,
@@ -365,7 +365,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
 
             var tags = db.CustomerTag.Include(c => c.Tag)
-                .Where(c => c.CustomerId == _currMySocketReq.MySocket.CustomerId)
+                .Where(c => c.CustomerId == _currMySocketReq.ChatConnection.CustomerId)
                 .OrderByDescending(o => o.Id).ToList();
 
 
@@ -401,7 +401,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
             }
 
 
-            var trackInfo = db.CustomerTrackInfo.Where(c => c.CustomerId == _currMySocketReq.MySocket.CustomerId)
+            var trackInfo = db.CustomerTrackInfo.Where(c => c.CustomerId == _currMySocketReq.ChatConnection.CustomerId)
                 .OrderByDescending(o => o.Id).FirstOrDefault();
 
 
@@ -435,7 +435,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
             }
 
 
-            var trackInfo = db.CustomerTrackInfo.Where(c => c.CustomerId == _currMySocketReq.MySocket.CustomerId)
+            var trackInfo = db.CustomerTrackInfo.Where(c => c.CustomerId == _currMySocketReq.ChatConnection.CustomerId)
                 .OrderByDescending(o => o.Id).FirstOrDefault();
 
 
@@ -551,7 +551,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
         private bool CheckUserMessage(List<string> patterns)
         {
-            var lastChat = db.Chats.Where(c => c.CustomerId == _currMySocketReq.MySocket.CustomerId)
+            var lastChat = db.Chats.Where(c => c.CustomerId == _currMySocketReq.ChatConnection.CustomerId)
                 .OrderByDescending(o => o.Id)
                 .FirstOrDefault();
 
@@ -601,7 +601,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
             }
 
 
-            var trackInfo = db.CustomerTrackInfo.Where(c => c.CustomerId == _currMySocketReq.MySocket.CustomerId)
+            var trackInfo = db.CustomerTrackInfo.Where(c => c.CustomerId == _currMySocketReq.ChatConnection.CustomerId)
                 .OrderByDescending(o => o.Id).FirstOrDefault();
 
 
@@ -647,7 +647,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
                 return false;
             }
 
-            var trackInfo = db.CustomerTrackInfo.Where(c => c.CustomerId == _currMySocketReq.MySocket.CustomerId)
+            var trackInfo = db.CustomerTrackInfo.Where(c => c.CustomerId == _currMySocketReq.ChatConnection.CustomerId)
                 .OrderByDescending(o => o.Id).FirstOrDefault();
 
 
@@ -901,7 +901,7 @@ namespace SignalRMVCChat.WebSocket.Bot.Execute
 
             MyWebSocketRequest currMySocketReq = new MyWebSocketRequest
             {
-                MySocket = _currMySocketReq.MySocket,
+                ChatConnection = _currMySocketReq.ChatConnection,
                 CurrentRequest = new ParsedCustomerTokenViewModel
                 {
                     myAccountId = SystemMyAccount.Id

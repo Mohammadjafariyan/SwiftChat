@@ -83,7 +83,7 @@ namespace SignalRMVCChat.TelegramBot.OperatorBot.Bussiness
                 }.Serialize(),
                 new MyWebSocketRequest
                 {
-                    MySocket = new MySocket
+                    ChatConnection = new ChatConnection
                     {
                         MyAccountId = botViewModel.CurrentTelegramBotRegisteredOperator.MyAccountId
                     },

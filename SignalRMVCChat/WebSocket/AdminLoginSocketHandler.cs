@@ -46,8 +46,8 @@ namespace SignalRMVCChat.WebSocket
             {
 
                 clerkProviderService.CheckForAcceblity(myAccount.Id, currMySocketReq.MyWebsite.Id);
-                currMySocketReq.MySocket.MyAccountId = myAccount.Id;
-                currMySocketReq.MySocket.MyAccount = myAccount;
+                currMySocketReq.ChatConnection.MyAccountId = myAccount.Id;
+                currMySocketReq.ChatConnection.MyAccount = myAccount;
                 
                 var response = new MyWebSocketResponse
                 {

@@ -20,7 +20,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
 
 
             var myAccount = MyAccountProviderService
-                .GetById(currMySocketReq.MySocket.MyAccountId.Value, "ادمین کنونی وجود ندارد").Single;
+                .GetById(currMySocketReq.ChatConnection.MyAccountId.Value, "ادمین کنونی وجود ندارد").Single;
 
 
             //=============================================================================
@@ -50,7 +50,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
 
 
             var myAccont = MyAccountProviderService
-                .GetById(currMySocketReq.MySocket.MyAccountId.Value, "ادمین کنونی یافت نشد").Single;
+                .GetById(currMySocketReq.ChatConnection.MyAccountId.Value, "ادمین کنونی یافت نشد").Single;
 
             //=============================================================================
             _logService.LogFunc(
@@ -101,7 +101,7 @@ namespace SignalRMVCChat.WebSocket.FormCreator
 
                 var ChatProviderService = Injector.Inject<ChatProviderService>();
                 var usedFormIds = ChatProviderService.GetQuery()
-                    .Where(c => c.MyAccountId == currMySocketReq.MySocket.MyAccountId &&
+                    .Where(c => c.MyAccountId == currMySocketReq.ChatConnection.MyAccountId &&
                                 c.CustomerId == customerId && c.formId.HasValue)
                     .Select(c => c.formId).ToList();
 

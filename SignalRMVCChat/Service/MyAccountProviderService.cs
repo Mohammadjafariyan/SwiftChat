@@ -32,7 +32,7 @@ namespace SignalRMVCChat.Service
         /// <returns></returns>
         public MyAccount GetSystemMyAccount(int websiteId)
         {
-            var firstOrDefault = GetQuery().Include(c => c.MySockets)
+            var firstOrDefault = GetQuery().Include(c => c.ChatConnections)
                 .FirstOrDefault(m => m.MyAccountType == MyAccountType.SystemMyAccount);
 
             if (firstOrDefault == null)
@@ -48,7 +48,7 @@ namespace SignalRMVCChat.Service
 
                 var socketService = Injector.Inject<MySocketService>();
 
-                var socket = new MySocket
+                var socket = new ChatConnection
                 {
                     MyAccountId = firstOrDefault.Id,
                     AdminWebsiteId = websiteId,
@@ -57,7 +57,7 @@ namespace SignalRMVCChat.Service
                 };
                 socketService.Save(socket);
 
-                firstOrDefault.MySockets.Add(socket);
+                firstOrDefault.ChatConnections.Add(socket);
             }
 
 
@@ -129,7 +129,7 @@ namespace SignalRMVCChat.Service
             if (account == null)
             {
                 throw new Exception(
-                    "نام کاربری یا رمز عبور صحیح نیست جهت ثبت نام یا بازیابی رمز عبور می توانید به سایت گپ چت مراجعه فرمایید");
+                    "نام کاربری یا رمز عبور صحیح نیست جهت ثبت نام یا بازیابی رمز عبور می توانید به سایت سوئیفت چت مراجعه فرمایید");
             }
 
             return account;
@@ -329,12 +329,12 @@ namespace SignalRMVCChat.Service
                         throw new Exception("currReq is null    ");
                     }
 
-                    if (currReq.MySocket.MyAccountId.HasValue == false)
+                    if (currReq.ChatConnection.MyAccountId.HasValue == false)
                     {
                         throw new Exception("currReq.MySocket.MyAccountId is null");
                     }
 
-                    var parent = accountProviderService.GetById(currReq.MySocket.MyAccountId.Value);
+                    var parent = accountProviderService.GetById(currReq.ChatConnection.MyAccountId.Value);
                     if (parent.Single.ParentId.HasValue)
                     {
                         account = accountProviderService.GetById(parent.Single.ParentId.Value).Single;

@@ -22,11 +22,11 @@ namespace SignalRMVCChat.WebSocket.Alarm
         {
             await base.ExecuteAsync(request, currMySocketReq);
 
-            if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
+            if (currMySocketReq.ChatConnection.MyAccountId.HasValue == false)
             {
                 Throw("این عملیات مخصوص ادمین است");
             }
-            var account = _service.GetById(currMySocketReq.MySocket.MyAccountId.Value, "اکانت یافت نشد").Single;
+            var account = _service.GetById(currMySocketReq.ChatConnection.MyAccountId.Value, "اکانت یافت نشد").Single;
 
             bool IsNotificationMute = GetParam<bool>("IsNotificationMute", true, "IsNotificationMute ارسال نشده ");
 
@@ -66,7 +66,7 @@ namespace SignalRMVCChat.WebSocket.Alarm
                 }
             }.Serialize(), new MyWebSocketRequest
             {
-                MySocket = new MySocket
+                ChatConnection = new ChatConnection
                 {
                     MyAccountId = 1
                 }

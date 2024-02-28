@@ -28,7 +28,7 @@ namespace SignalRMVCChat.WebSocket.Typing
                         Name = CallbackName,
                         Content = new
                         {
-                            targetCustomerId = currMySocketReq.MySocket.CustomerId,
+                            targetCustomerId = currMySocketReq.ChatConnection.CustomerId,
                             text
                         }
                     });

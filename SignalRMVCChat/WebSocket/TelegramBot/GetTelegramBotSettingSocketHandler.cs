@@ -38,11 +38,11 @@ namespace SignalRMVCChat.WebSocket.TelegramBot
 
                 telegramBotSetting = new TelegramBotSetting
                 {
-                    MyAccountId = currMySocketReq.MySocket.MyAccountId,
+                    MyAccountId = currMySocketReq.ChatConnection.MyAccountId,
                     MyWebsiteId = currMySocketReq.MyWebsite.Id,
                     UniqOperatorCodes = new List<TelegramBotSettingUniqAccessCode>
                     {
-                        new TelegramBotSettingUniqAccessCode(currMySocketReq.MySocket.MyAccountId.Value,uniq)
+                        new TelegramBotSettingUniqAccessCode(currMySocketReq.ChatConnection.MyAccountId.Value,uniq)
                     }
                 };
 
@@ -53,12 +53,12 @@ namespace SignalRMVCChat.WebSocket.TelegramBot
 
                 //------------ کد مخصوص این کاربر----------
                 var hasUniqCodeForthisAdmin = telegramBotSetting.
-                    UniqOperatorCodes.Any(u => u.MyAccountId == currMySocketReq.MySocket.MyAccountId);
+                    UniqOperatorCodes.Any(u => u.MyAccountId == currMySocketReq.ChatConnection.MyAccountId);
                 if (!hasUniqCodeForthisAdmin)
                 {
                     var list = telegramBotSetting.UniqOperatorCodes; ;
                     list.Add(new TelegramBotSettingUniqAccessCode
-                        (currMySocketReq.MySocket.MyAccountId.Value, uniq));
+                        (currMySocketReq.ChatConnection.MyAccountId.Value, uniq));
 
                     telegramBotSetting.UniqOperatorCodes = list;
 
@@ -68,7 +68,7 @@ namespace SignalRMVCChat.WebSocket.TelegramBot
 
 
             var uniqAccessCodeForThisAdmin = telegramBotSetting.
-                   UniqOperatorCodes.Single(u => u.MyAccountId == currMySocketReq.MySocket.MyAccountId);
+                   UniqOperatorCodes.Single(u => u.MyAccountId == currMySocketReq.ChatConnection.MyAccountId);
 
 
             //------------ کد مخصوص این کاربر----------

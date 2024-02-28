@@ -36,14 +36,14 @@ namespace SignalRMVCChat.Service
                 return;
             }
 
-            if (currMySocketReq.MySocket.MyAccountId.HasValue == false)
+            if (currMySocketReq.ChatConnection.MyAccountId.HasValue == false)
             {
                 throw new PlanException(" ادمین کد ندارد");
             }
 
             // لیست ادمین های این اکانت را بده
             var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
-            MyAccount myAccount = myAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value).Single;
+            MyAccount myAccount = myAccountProviderService.GetById(currMySocketReq.ChatConnection.MyAccountId.Value).Single;
 
             if (myAccount.ParentId != null)
             {

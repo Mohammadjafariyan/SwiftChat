@@ -78,12 +78,12 @@ namespace SignalRMVCChat.WebSocket
                     //admin
                     var resp = await new AdminLoginSocketHandler().RegisterAndGenerateToken(request, currMySocketReq);
 
-                    currMySocketReq.MySocket.IsCustomerOrAdmin = MySocketUserType.Admin;
-                    currMySocketReq.MySocket.MyAccount = resp.Content;
+                    currMySocketReq.ChatConnection.IsCustomerOrAdmin = MySocketUserType.Admin;
+                    currMySocketReq.ChatConnection.MyAccount = resp.Content;
 
-                    if (currMySocketReq.MySocket.MyAccountId != resp.Content.Id)
+                    if (currMySocketReq.ChatConnection.MyAccountId != resp.Content.Id)
                         throw new Exception("کد های ادمین برابر نیست2");
-                    currMySocketReq.MySocket.Token = resp.Token;
+                    currMySocketReq.ChatConnection.Token = resp.Token;
 
                     //currMySocketReq.CurrentRequest = new ParsedCustomerTokenViewModel
                     //{
@@ -102,10 +102,10 @@ namespace SignalRMVCChat.WebSocket
                     // customer
                     var rsp = await new CustomerRegisterSocketHandler().RegisterAndGenerateToken(request,
                         currMySocketReq);
-                    currMySocketReq.MySocket.IsCustomerOrAdmin = MySocketUserType.Customer;
-                    currMySocketReq.MySocket.Customer = rsp.Temp;
+                    currMySocketReq.ChatConnection.IsCustomerOrAdmin = MySocketUserType.Customer;
+                    currMySocketReq.ChatConnection.Customer = rsp.Temp;
 
-                    currMySocketReq.MySocket.Token = rsp.Token;
+                    currMySocketReq.ChatConnection.Token = rsp.Token;
                 }
 
 
@@ -116,7 +116,7 @@ namespace SignalRMVCChat.WebSocket
             }
 
 
-            onCloseListenerSet(currMySocketReq);
+            onCloseListenerSet( currMySocketReq);
 
 
             /// نگه داری کانکشن و اساین فرد به سایت مخصوص خود
@@ -128,14 +128,14 @@ namespace SignalRMVCChat.WebSocket
             currMySocketReq = SetObjects(currMySocketReq);
 
             // یعنی شناخته شده باشد که ادمین است یا کاستومر
-            if (currMySocketReq.MySocket.MyAccountId.HasValue || currMySocketReq.MySocket.CustomerId.HasValue)
+            if (currMySocketReq.ChatConnection.MyAccountId.HasValue || currMySocketReq.ChatConnection.CustomerId.HasValue)
             {
                 /// این بخش مهم است زیرا ابجکت ها را نیز وصل می کند
                 if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)
                 {
 
                     // ----------------------- online status -----------------------------
-                    var myaccount = MyAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value).Single;
+                    var myaccount = MyAccountProviderService.GetById(currMySocketReq.ChatConnection.MyAccountId.Value).Single;
                     myaccount.OnlineStatus = OnlineStatus.Online;
                     MyAccountProviderService.VanillaSave(myaccount);
                     // ----------------------- END -----------------------------
@@ -143,7 +143,7 @@ namespace SignalRMVCChat.WebSocket
 
                     // خبر دار کردن همه کابران ان سایت از انلاین شدن ادمین جدید
                     await new AnotherSideNewOnlineInformerHandler().InformNewAdminRegistered(
-                        currMySocketReq.MySocket.MyAccount,
+                        currMySocketReq.ChatConnection.MyAccount,
                         currMySocketReq);
 
                 }
@@ -151,7 +151,7 @@ namespace SignalRMVCChat.WebSocket
                 {
 
                     // ----------------------- online status -----------------------------
-                    var customer = currMySocketReq.MySocket.Customer;
+                    var customer = currMySocketReq.ChatConnection.Customer;
                     customer.OnlineStatus = OnlineStatus.Online;
                     customerProviderService.Save(customer);
                     // ----------------------- END -----------------------------
@@ -159,7 +159,7 @@ namespace SignalRMVCChat.WebSocket
 
                     // خبر دار کردن همه ادمین های ان سایت از انلاین شدن کاستومر جدید
                     await new AnotherSideNewOnlineInformerHandler()
-                        .InformNewCustomerRegistered(currMySocketReq.MySocket.Customer, currMySocketReq);
+                        .InformNewCustomerRegistered(currMySocketReq.ChatConnection.Customer, currMySocketReq);
                 }
             }
 
@@ -192,16 +192,14 @@ namespace SignalRMVCChat.WebSocket
 
 
                         CustomerTrackInfoType trackInfoType = CustomerTrackInfoType.NotDetect;
-                        if (currMySocketReq.MySocket.Customer.LastTrackInfo == null)
+                        if (currMySocketReq.ChatConnection.Customer.LastTrackInfo == null)
                         {
                             trackInfoType = CustomerTrackInfoType.EnterWebsite;
                         }
 
                         // اگر به تازگی اطلاعاتش را دریافت نکرده باشیم و ایا اینکه ایپی کاربر تغییر کرده باشد مجددا بخواند
-                        if (currMySocketReq.MySocket.Customer.LastTrackInfo == null
-                            || currMySocketReq.MySocket.Customer.LastTrackInfo?.ip != currMySocketReq.MySocket.Socket
-                                .ConnectionInfo
-                                .ClientIpAddress)
+                        if (currMySocketReq.ChatConnection.Customer.LastTrackInfo == null
+                            || currMySocketReq.ChatConnection.Customer.LastTrackInfo?.ip != currMySocketReq.ChatConnection?.MyConnectionInfo?.ClientIpAddress)
                         {
                             if (!MyGlobal.IsAttached)
                             {
@@ -211,17 +209,16 @@ namespace SignalRMVCChat.WebSocket
 
                             // اطلاعات کاربر را از سایت شخص ثالث می گیرد
                             inforByIp =
-                                await ipInfoService.GetInforByIp(currMySocketReq.MySocket.Socket.ConnectionInfo
-                                    .ClientIpAddress);
+                                await ipInfoService.GetInforByIp(currMySocketReq.ChatConnection?.MyConnectionInfo?.ClientIpAddress);
                         }
                         else
                         {
-                            if (currMySocketReq.MySocket.Customer.LastTrackInfo?.CustomerTrackInfoType ==
+                            if (currMySocketReq.ChatConnection.Customer.LastTrackInfo?.CustomerTrackInfoType ==
                                 CustomerTrackInfoType.ExitWebsite)
                             {
                                 trackInfoType = CustomerTrackInfoType.ComeBack;
                             }
-                            else if (currMySocketReq.MySocket.Customer.LastTrackInfo?.Url != _request.Body.URL)
+                            else if (currMySocketReq.ChatConnection.Customer.LastTrackInfo?.Url != _request.Body.URL)
                             {
                                 /*------------------------------ is page changed----------------------------*/
                                 trackInfoType = CustomerTrackInfoType.PageChange;
@@ -229,25 +226,25 @@ namespace SignalRMVCChat.WebSocket
                             }
                             else
                             {
-                                trackInfoType = currMySocketReq.MySocket.Customer.LastTrackInfo?.CustomerTrackInfoType ?? CustomerTrackInfoType.NoChange;
+                                trackInfoType = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.CustomerTrackInfoType ?? CustomerTrackInfoType.NoChange;
                             }
 
                             inforByIp = new IpInfoViewModel
                             {
 
-                                city = currMySocketReq.MySocket.Customer.LastTrackInfo?.city,
-                                continent_code = currMySocketReq.MySocket.Customer.LastTrackInfo?.continent_code,
-                                continent_name = currMySocketReq.MySocket.Customer.LastTrackInfo?.continent_name,
-                                ip = currMySocketReq.MySocket.Customer.LastTrackInfo?.ip,
-                                latitude = currMySocketReq.MySocket.Customer.LastTrackInfo?.latitude,
-                                longitude = currMySocketReq.MySocket.Customer.LastTrackInfo?.longitude,
-                                country_code = currMySocketReq.MySocket.Customer.LastTrackInfo?.country_code,
-                                country_name = currMySocketReq.MySocket.Customer.LastTrackInfo?.country_name,
-                                region_code = currMySocketReq.MySocket.Customer.LastTrackInfo?.region_code,
-                                region_name = currMySocketReq.MySocket.Customer.LastTrackInfo?.region_name,
-                                type = currMySocketReq.MySocket.Customer.LastTrackInfo?.type,
-                                Region = currMySocketReq.MySocket.Customer.LastTrackInfo?.Region,
-                                CityName = currMySocketReq.MySocket.Customer.LastTrackInfo?.CityName,
+                                city = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.city,
+                                continent_code = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.continent_code,
+                                continent_name = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.continent_name,
+                                ip = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.ip,
+                                latitude = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.latitude,
+                                longitude = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.longitude,
+                                country_code = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.country_code,
+                                country_name = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.country_name,
+                                region_code = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.region_code,
+                                region_name = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.region_name,
+                                type = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.type,
+                                Region = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.Region,
+                                CityName = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.CityName,
                             };
                         }
 
@@ -259,8 +256,8 @@ namespace SignalRMVCChat.WebSocket
 
                         /*header infos:*/
 
-                        var browser = currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["User-Agent"];
-                        var language = currMySocketReq.MySocket.Socket.ConnectionInfo.Headers["Accept-Language"];
+                        var browser = currMySocketReq.ChatConnection?.MyConnectionInfo?.Headers["User-Agent"];
+                        var language = currMySocketReq.ChatConnection?.MyConnectionInfo?.Headers["Accept-Language"];
 
                         string countryLanguage = "";
                         /*en-US,en;q=0.9*/
@@ -287,11 +284,11 @@ namespace SignalRMVCChat.WebSocket
                         var customerTrackerService = Injector.Inject<CustomerTrackerService>();
                         var track = new CustomerTrackInfo
                         {
-                            PrevTrackInfoId = currMySocketReq.MySocket.Customer.LastTrackInfo?.Id,
-                            PrevTrackInfoDateTime = currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime,
+                            PrevTrackInfoId = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.Id,
+                            PrevTrackInfoDateTime = currMySocketReq.ChatConnection.Customer.LastTrackInfo?.DateTime,
 
-                            TimeSpent = MySpecificGlobal.CalculateTimeSpentOnPage(currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime),
-                            TimeSpentNum = MySpecificGlobal.CalculateTimeSpentOnPageNum(currMySocketReq.MySocket.Customer.LastTrackInfo?.DateTime),
+                            TimeSpent = MySpecificGlobal.CalculateTimeSpentOnPage(currMySocketReq.ChatConnection.Customer.LastTrackInfo?.DateTime),
+                            TimeSpentNum = MySpecificGlobal.CalculateTimeSpentOnPageNum(currMySocketReq.ChatConnection.Customer.LastTrackInfo?.DateTime),
                             CustomerTrackInfoType = trackInfoType,
                             CustomerId = currMySocketReq.CurrentRequest.customerId.Value,
                             Url = url + "",
@@ -325,14 +322,14 @@ namespace SignalRMVCChat.WebSocket
                         };
                         customerTrackerService.Save(track);
 
-                        if (currMySocketReq.MySocket.Customer.Name?.Contains(" کاربر آنلاین جدید ") == true)
+                        if (currMySocketReq.ChatConnection.Customer.Name?.Contains(" کاربر آنلاین جدید ") == true)
                         {
-                            currMySocketReq.MySocket.Customer.Name = track.Address;
+                            currMySocketReq.ChatConnection.Customer.Name = track.Address;
 
-                           await  customerProviderService.SaveAsync(currMySocketReq.MySocket.Customer);
+                           await  customerProviderService.SaveAsync(currMySocketReq.ChatConnection.Customer);
                         }
                         // چون این اطلاعات در رم است می توانیم آن را به این ابجکت بدهیم و نیازی نیست هر بار از دیتابیس بخوانیم
-                        currMySocketReq.MySocket.Customer.LastTrackInfo = track;
+                        currMySocketReq.ChatConnection.Customer.LastTrackInfo = track;
                     }
                     catch (Exception e)
                     {
@@ -351,23 +348,23 @@ namespace SignalRMVCChat.WebSocket
 
         private MyWebSocketRequest SetObjects(MyWebSocketRequest currMySocketReq)
         {
-            if (currMySocketReq.MySocket.MyAccount == null && currMySocketReq.MySocket.Customer == null)
+            if (currMySocketReq.ChatConnection.MyAccount == null && currMySocketReq.ChatConnection.Customer == null)
             {
                 if (currMySocketReq.IsAdminOrCustomer == (int)MySocketUserType.Admin)
                 {
-                    currMySocketReq.MySocket.MyAccountId = currMySocketReq.CurrentRequest.myAccountId;
+                    currMySocketReq.ChatConnection.MyAccountId = currMySocketReq.CurrentRequest.myAccountId;
                     var myAccountProviderService = Injector.Inject<MyAccountProviderService>();
-                    var myEntityResponse = myAccountProviderService.GetById(currMySocketReq.MySocket.MyAccountId.Value);
+                    var myEntityResponse = myAccountProviderService.GetById(currMySocketReq.ChatConnection.MyAccountId.Value);
 
-                    currMySocketReq.MySocket.MyAccount = myEntityResponse.Single;
+                    currMySocketReq.ChatConnection.MyAccount = myEntityResponse.Single;
                 }
                 else
                 {
-                    currMySocketReq.MySocket.CustomerId = currMySocketReq.CurrentRequest.customerId;
+                    currMySocketReq.ChatConnection.CustomerId = currMySocketReq.CurrentRequest.customerId;
                     var myAccountProviderService = Injector.Inject<CustomerProviderService>();
-                    var myEntityResponse = myAccountProviderService.GetById(currMySocketReq.MySocket.CustomerId.Value);
+                    var myEntityResponse = myAccountProviderService.GetById(currMySocketReq.ChatConnection.CustomerId.Value);
 
-                    currMySocketReq.MySocket.Customer = myEntityResponse.Single;
+                    currMySocketReq.ChatConnection.Customer = myEntityResponse.Single;
                 }
             }
 
@@ -377,9 +374,13 @@ namespace SignalRMVCChat.WebSocket
 
         private async Task onCloseListenerSet(MyWebSocketRequest currMySocketReq)
         {
-            currMySocketReq.MySocket.Socket.OnClose = async () =>
+
+            currMySocketReq.ChatConnection.Hub.OnDisconnect += async (string connectionId) =>
             {
-                await currMySocketReq.MySocket.OnSocketClose(currMySocketReq.MyWebsite, currMySocketReq);
+                if (connectionId==currMySocketReq.ChatConnection.SignalRConnectionId)
+                {
+                    await currMySocketReq.ChatConnection.OnSocketClose(currMySocketReq.MyWebsite, currMySocketReq);
+                }
             };
         }
 
@@ -401,11 +402,11 @@ namespace SignalRMVCChat.WebSocket
                 // حساس به آدرس وب سایت استفاده کننده باشد 
 
                 var baseUrl = new Uri(websiteUrl);
-                var requestbaseUrl = new Uri(currMySocketReq.MySocket.MyConnectionInfo.Origin);
+                var requestbaseUrl = new Uri(currMySocketReq.ChatConnection.MyConnectionInfo.Origin);
                 if (requestbaseUrl.Authority != baseUrl.Authority)
                 {
                     throw new Exception(
-                        "این وب سایت ثبت نام نشده است لطفا برای استفاده از پلاگین گپ چت ابتدا ثبت نام نموده و سپس پلاگین مخصوص وب سایت دلخواه خود را تعریف نمایید");
+                        "این وب سایت ثبت نام نشده است لطفا برای استفاده از پلاگین سوئیفت چت ابتدا ثبت نام نموده و سپس پلاگین مخصوص وب سایت دلخواه خود را تعریف نمایید");
                 }
 
                 #endregion
