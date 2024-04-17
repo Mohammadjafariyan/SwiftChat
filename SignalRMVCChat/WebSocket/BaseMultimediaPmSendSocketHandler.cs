@@ -46,7 +46,7 @@ namespace SignalRMVCChat.WebSocket
             }
             else
             {
-                ValidateAndSavethenSendToTarget(chat, currMySocketReq);
+                await ValidateAndSavethenSendToTarget(chat, currMySocketReq);
             }
 
 
@@ -73,7 +73,7 @@ namespace SignalRMVCChat.WebSocket
             chatProviderService.Save(chat);
         }
 
-        protected virtual async void ValidateAndSavethenSendToTarget(Chat chat, MyWebSocketRequest currMySocketReq)
+        protected virtual async Task ValidateAndSavethenSendToTarget(Chat chat, MyWebSocketRequest currMySocketReq)
         {
             if (chat.targetId.HasValue == false && chat.gapFileUniqId.HasValue == false)
             {

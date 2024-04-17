@@ -6,18 +6,18 @@ using Microsoft.Owin.Security.Cookies;
 using Owin;
 using SignalRMVCChat;
 using SignalRMVCChat.Areas.security.Models;
+using SignalRMVCChat.Models.GapChatContext;
 using TelegramBotsWebApplication;
 
-[assembly: OwinStartup(typeof(Startup))]
 namespace SignalRMVCChat
 {
-    public  class Startup
+    public partial class Startup
     {
         // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
-        public void Configuration(IAppBuilder app)
+        public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context, user manager and signin manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(GapChatContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 

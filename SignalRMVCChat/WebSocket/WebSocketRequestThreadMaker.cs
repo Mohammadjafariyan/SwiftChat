@@ -42,7 +42,7 @@ namespace SignalRMVCChat.WebSocket
                 var filterHandler = new FilterHandler();
                 await filterHandler.ExecuteAsync(result, request);
 
-                MyWebSocketResponse response = await handler.ExecuteAsync(result, request);
+                MyWebSocketResponse response = handler.ExecuteAsync(result, request).GetAwaiter().GetResult();
 
 
                 if (response != null)

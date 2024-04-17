@@ -51,7 +51,7 @@
     @{
         var appRoleService = Injector.Inject<AppRoleService>();
         var appUserId = CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.AppUserId ?? 0;
-
+        
         var isSuperAdmin = appRoleService.IsInRole(appUserId, "superAdmin");
     }
     <tr>

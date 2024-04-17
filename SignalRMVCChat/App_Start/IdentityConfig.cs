@@ -11,8 +11,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
  using SignalRMVCChat.Areas.security.Models;
+using SignalRMVCChat.Models.GapChatContext;
 
- namespace TelegramBotsWebApplication
+namespace TelegramBotsWebApplication
 {
     public class EmailService : IIdentityMessageService
     {
@@ -42,7 +43,7 @@ using Microsoft.Owin.Security;
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<GapChatContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {

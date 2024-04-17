@@ -2,31 +2,52 @@
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
-using Engine.SysAdmin.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.security.Service;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
-using SignalRMVCChat.ManualMigrate;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.Service.Compaign.Email;
-using SignalRMVCChat.SysAdmin.Service;
+using TelegramBotsWebApplication;
 using TelegramBotsWebApplication.ActionFilters;
 using TelegramBotsWebApplication.Areas.Admin.Service;
+using EmailService = SignalRMVCChat.Service.Compaign.Email.EmailService;
 
 namespace SignalRMVCChat.Areas.security.Controllers
 {
     [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    public abstract class BaseAccountController<TUserService, T> : Controller where TUserService : GenericService<T>, IAppUserService<T> where T : Entity, new()
+    [Authorize]
+    public abstract class BaseAccountController<TUserService, T> : Controller
+        where TUserService : GenericService<T>, IAppUserService<T> where T : Entity, new()
     {
         public TUserService UserService;
         public SecurityService SecurityService;
         public AppRoleService AppRoleService;
 
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
 
 
+        public ApplicationSignInManager SignInManager
+        {
+            get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
+            private set { _signInManager = value; }
+        }
+        
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         /*
         [AllowAnonymous]
@@ -73,6 +94,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
                     requestUrl = null;
                 }
             }
+
             ViewBag.ReturnUrl = requestUrl;
             return View();
         }
@@ -104,7 +126,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public virtual async Task<ActionResult> Login(LoginViewModel model, string requestUrl = null)
+        public virtual async Task<ActionResult> Login(LoginViewModel model, string returnUrl, string requestUrl = null)
         {
             try
             {
@@ -112,6 +134,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
                 {
                     requestUrl = null;
                 }
+
                 if (!ModelState.IsValid)
                 {
                     return View(model);
@@ -124,7 +147,40 @@ namespace SignalRMVCChat.Areas.security.Controllers
                 var result = SecurityService.SignInAsync(model.Email, model.Password);
 
 
+                var signInStatus = await SignInManager.PasswordSignInAsync(model.Email, model.Password,
+                    model.RememberMe, shouldLockout: false);
 
+                switch (signInStatus)
+                {
+                    case SignInStatus.Success:
+                        Response.Cookies.Add(new HttpCookie("gaptoken", result.Token));
+
+
+                        if (string.IsNullOrEmpty(requestUrl) == false)
+                        {
+                            return Redirect(requestUrl);
+                        }
+
+
+                        if (string.IsNullOrEmpty(returnUrl))
+                        {
+                            return RedirectToAction("Index", "Dashboard", new { area = "Customer" });
+                        }
+                        else
+                        {
+                            return RedirectToLocal(returnUrl);
+                        }
+
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+                    case SignInStatus.RequiresVerification:
+                        return RedirectToAction("SendCode",
+                            new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    case SignInStatus.Failure:
+                    default:
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return View(model);
+                }
                 //var appRoleService = Injector.Inject<AppRoleService>();
                 //bool isSuperAdmin = appRoleService.IsInRole(result.Id, "superAdmin");
 
@@ -134,17 +190,6 @@ namespace SignalRMVCChat.Areas.security.Controllers
                 //    throw new Exception("ادمین اصلی مجاز به ورود به این بخش نیست");
                 // //   return RedirectToAction("Index", "AdminDashboard", new {area = "Admin"});
                 //}
-
-                Response.Cookies.Add(new HttpCookie("gaptoken", result.Token));
-
-
-                if (string.IsNullOrEmpty(requestUrl) == false)
-                {
-                    return Redirect(requestUrl);
-                }
-
-
-                return RedirectToAction("Index", "Dashboard", new { area = "Customer" });
             }
             catch (Exception e)
             {
@@ -276,6 +321,13 @@ namespace SignalRMVCChat.Areas.security.Controllers
             return View(model);
         }
 
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
         //
         // POST: /Account/Register
         [HttpPost]
@@ -285,7 +337,6 @@ namespace SignalRMVCChat.Areas.security.Controllers
         {
             try
             {
-
                 if (string.IsNullOrEmpty(requestUrl) == false)
                 {
                     if (requestUrl?.ToLower()?.Contains("logoff") == true)
@@ -305,6 +356,18 @@ namespace SignalRMVCChat.Areas.security.Controllers
                     }
 
                     UserService.Save(user);
+                    var registerNewUserResult = await UserManager.CreateAsync(new ApplicationUser
+                    {
+                        UserName = user.Email, Email = user.Email,
+                        Name = user.Name,
+                        LastName = user.LastName,
+                    }, model.Password);
+                    if (!registerNewUserResult.Succeeded)
+                    {
+                        AddErrors(registerNewUserResult);
+                        return View(model);
+
+                    }
 
                     user = SecurityService.SignInAsync(user.UserName, user.Password);
 
@@ -319,45 +382,64 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
                     var result = SecurityService.SignInAsync(model.Email, model.Password);
 
-                    var cookie = new HttpCookie("token", result.Token);
-                    Response.Cookies.Add(cookie);
-                    Request.Cookies.Add(cookie);
+                    var signInStatus = await SignInManager.PasswordSignInAsync(model.Email, model.Password,
+                        false, shouldLockout: false);
 
-                    //Session["token"] = user.Token;
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserService.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserService.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-
-                    //------- send welcome email
-
-                    var emailService = Injector.Inject<EmailService>();
-
-
-                    var emailParameters = new EmailParametersViewModel
+                    switch (signInStatus)
                     {
-                        full = model.Name + " " + model.LastName,
-                        name = model.Name,
-                        lastname = model.LastName,
-                        email = model.Email,
-                        password = model.Password,
-                    };
+                        case SignInStatus.Success:
+                            var cookie = new HttpCookie("token", result.Token);
+                            Response.Cookies.Add(cookie);
+                            Request.Cookies.Add(cookie);
 
-                    emailService.SendByTemplateType(model.Email, result.Id, Email.Model.EmailTemplateType.Welcome, emailParameters);
+                            //Session["token"] = user.Token;
+                            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                            // Send an email with this link
+                            // string code = await UserService.GenerateEmailConfirmationTokenAsync(user.Id);
+                            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                            // await UserService.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    //------- end
+
+                            //------- send welcome email
+
+                            var emailService = Injector.Inject<EmailService>();
 
 
+                            var emailParameters = new EmailParametersViewModel
+                            {
+                                full = model.Name + " " + model.LastName,
+                                name = model.Name,
+                                lastname = model.LastName,
+                                email = model.Email,
+                                password = model.Password,
+                            };
 
-                    if (string.IsNullOrEmpty(requestUrl) == false)
-                    {
-                        return Redirect(requestUrl);
+                            emailService.SendByTemplateType(model.Email, result.Id,
+                                Email.Model.EmailTemplateType.Welcome, emailParameters);
+
+                            //------- end
+
+
+                            if (string.IsNullOrEmpty(requestUrl) == false)
+                            {
+                                return Redirect(requestUrl);
+                            }
+
+
+                            return RedirectToAction("Index", "Dashboard", new { area = "Customer" });
+
+
+                        case SignInStatus.LockedOut:
+                            return View("Lockout");
+                        case SignInStatus.RequiresVerification:
+                            return RedirectToAction("SendCode",
+                                new { ReturnUrl = "", RememberMe = false });
+                        case SignInStatus.Failure:
+                        default:
+                            ModelState.AddModelError("", "Invalid login attempt.");
+                            return View(model);
                     }
 
-
-                    return RedirectToAction("Index", "Dashboard", new { area = "Customer" });
 
                     // If we got this far, something failed, redisplay form
                 }

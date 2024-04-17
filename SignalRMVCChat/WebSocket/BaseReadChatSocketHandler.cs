@@ -112,7 +112,7 @@ namespace SignalRMVCChat.WebSocket
             chats = await ReadChats(accountId, customerId, pageNumber, currMySocketReq);
 
 
-            if (currMySocketReq.IsAdminMode==false)
+            if (currMySocketReq.IsAdminMode ==null || currMySocketReq.IsAdminMode==false)
             {
                 ///•	رسید کاستومر وقتی ادمین بعدا پیام هایش را می بیند
                 foreach (var chat in chats.EntityList)

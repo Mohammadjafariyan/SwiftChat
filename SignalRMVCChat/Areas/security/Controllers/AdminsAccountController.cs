@@ -27,7 +27,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public  override async Task<ActionResult> Login(LoginViewModel model, string requestUrl=null)
+        public  override async Task<ActionResult> Login(LoginViewModel model , string returnUrl, string requestUrl=null)
         {
             try
             {

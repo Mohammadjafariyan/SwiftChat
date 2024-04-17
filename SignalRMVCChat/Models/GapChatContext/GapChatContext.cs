@@ -8,6 +8,8 @@ using System.Web.Helpers;
 using Castle.Components.DictionaryAdapter;
 using Engine.SysAdmin.Service;
 using EntityFramework.DynamicFilters;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 using Newtonsoft.Json;
 using SignalRMVCChat.Areas.Customer.Service;
 using SignalRMVCChat.Areas.Email.Model;
@@ -781,6 +783,11 @@ namespace SignalRMVCChat.Models.GapChatContext
         public void Seed(DatabaseSeeder databaseSeeder)
         {
             databaseSeeder.Seed(this);
+        }
+
+        public static GapChatContext Create()
+        {
+            return new GapChatContext();
         }
     }
 

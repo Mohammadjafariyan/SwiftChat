@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 @using Microsoft.AspNet.Identity.EntityFramework
 @using SignalRMVCChat.Areas.security.Models
+@using SignalRMVCChat.Models.GapChatContext
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account" 
@@ -11,7 +12,7 @@
     <ul class="nav navbar-nav navbar-right">
         <li>
             @{
-                using (var db = new ApplicationDbContext())
+                using (var db = new GapChatContext())
                 {
                     string currentUserId = User.Identity.GetUserId();
                     ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);

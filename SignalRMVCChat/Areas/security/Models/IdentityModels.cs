@@ -22,7 +22,7 @@ namespace SignalRMVCChat.Areas.security.Models
         public string LastName { get; set; }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    /*public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
             : base(MySpecificGlobal.GetConnectionString(), throwIfV1Schema: false)
@@ -35,5 +35,5 @@ namespace SignalRMVCChat.Areas.security.Models
         {
             return new ApplicationDbContext();
         }
-    }
+    }*/
 }

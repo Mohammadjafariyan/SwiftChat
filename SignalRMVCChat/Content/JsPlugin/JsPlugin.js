@@ -5801,7 +5801,7 @@ function bindIsTyping() {
 
                 CustomerStartTypingSent = true;
                 
-            }, 1000)
+            }, 2000)
            
 
             //   if (strg || strg.trim() === '' && !CustomerStartTypingSent) {
@@ -5815,7 +5815,7 @@ function bindIsTyping() {
 
                 callServerScript();
 
-            }, 1000)
+            }, 2000)
           
         }
         // searchTimeout = setTimeout(callServerScript, 1000);

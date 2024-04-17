@@ -4,13 +4,15 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Engine.SysAdmin.Service;
+using Microsoft.AspNet.Identity.EntityFramework;
+using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Models;
 
 namespace Engine.SysAdmin.Service
 {
    
 
-    public class MyContextBase : DbContext
+    public class MyContextBase : IdentityDbContext<ApplicationUser>
     {
         public MyContextBase(DbConnection connection,bool contextOwnConnection) : base(connection, contextOwnConnection)
         {

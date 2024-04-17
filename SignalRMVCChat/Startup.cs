@@ -1,10 +1,11 @@
-﻿using System.Web.Routing;
-using Microsoft.AspNet.SignalR;
-using Microsoft.Owin.Cors;
+﻿using System.Data.Entity;
+using Microsoft.Owin;
 using Owin;
+using SignalRMVCChat.Migrations;
+using SignalRMVCChat.Models.GapChatContext;
 
-
-namespace IdentitySample
+[assembly: OwinStartup(typeof(SignalRMVCChat.Startup))]
+namespace SignalRMVCChat
 {
     public partial class Startup
     {
@@ -12,6 +13,15 @@ namespace IdentitySample
         {
 
          
+            ConfigureAuth(app);
+            // Replace YourDbContext with your actual DbContext type
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<GapChatContext, Configuration>());
+        
+            // You may also want to explicitly trigger the database initialization
+            using (var context = new GapChatContext())
+            {
+                context.Database.Initialize(force: true);
+            }
 
             app.MapSignalR();
             
