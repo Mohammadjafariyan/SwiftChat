@@ -10,12 +10,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Areas.Email.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [MyAuthorizeFilter(Roles = "superAdmin")]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [TokenAuthorizeFilter(Roles = "superAdmin")]
     public class SendEmailController : Controller
     {
         public EmailService EmailService { get; }

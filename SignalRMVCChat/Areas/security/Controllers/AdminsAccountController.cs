@@ -10,7 +10,7 @@ using SignalRMVCChat.ManualMigrate;
 
 namespace SignalRMVCChat.Areas.security.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class AdminsAccountController  : BaseAccountController<AppAdminService,AppAdmin>
     {
         public AdminsAccountController()

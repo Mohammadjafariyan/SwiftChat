@@ -1,0 +1,72 @@
+﻿@using Engine.Localization
+@model SignalRMVCChat.Areas.security.Models.RegisterViewModel
+
+<div class="col-md-6" style="text-align: right"> 
+
+    <div class="form-group">
+        @Html.LabelFor(m=>m.Name)
+        @Html.TextBoxFor(m => m.Name, new { placeholder = Request.GetText("نام *"), @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m=>m.LastName)
+        @Html.TextBoxFor(m => m.LastName, new { placeholder = Request.GetText("نام خانوادگی *"), @class = "form-control" })
+    </div>
+    <div class="form-group">
+              @Html.LabelFor(m=>m.Password)
+  @Html.PasswordFor(m => m.Password, new { placeholder = Request.GetText("رمز عبور *"), @class = "form-control" })
+    </div>
+    <div class="form-group">
+                    @Html.LabelFor(m=>m.ConfirmPassword)
+  @Html.PasswordFor(m => m.ConfirmPassword, new { placeholder = Request.GetText("تکرار رمز عبور *"), @class = "form-control" })
+    </div>
+    
+
+</div>
+<div class="col-md-6" style="text-align: right">
+    <div class="form-group">
+                          @Html.LabelFor(m=>m.Email)
+  @Html.TextBoxFor(m => m.Email, new { placeholder = Request.GetText("ایمیل شما *"), @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @*@Html.TextBoxFor(m => m.Mobile, new { placeholder = Request.GetText("موبایل شما "), @class = "form-control" })*@
+    </div>
+    @*<div class="form-group" style="    height: calc(2.25rem + 2px);">
+                                    $1$<select class="form-control" >
+                                        <option class="hidden" selected disabled>یک سوال امنیتی انتخاب نمایید</option>
+                                        <option>What is your Birthdate?</option>
+                                        <option>What is Your old Phone Number</option>
+                                        <option>What is your Pet Name?</option>
+                                    </select>#1#
+                                </div>*@
+    @*<div class="form-group" style="    height: calc(2.25rem + 2px);">
+                                    @#1#Html.PasswordFor(m => m.Password, new { placeholder = Request.GetText("پاسخ امنیتی *"), @class = "form-control" })#1#
+                                </div>*@
+    <div class="form-group" style="text-align: right">
+
+
+        <div >
+            <label class=" ">
+                              <span> @Request.GetText("مرد") </span>
+  <input type="radio" name="Gender" value="male" checked>
+            </label>
+            <label class=" ">
+                                <span>@Request.GetText("زن") </span>
+<input type="radio" name="Gender" value="female">
+            </label>
+        </div>
+        
+     
+    </div>
+    
+    
+    
+    <div class="form-group">
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+    
+    </div>
+    
+    <div class="form-group">
+            <input type="submit" class="btnRegister" value="ثبت نام"/>
+    
+        </div>
+</div>

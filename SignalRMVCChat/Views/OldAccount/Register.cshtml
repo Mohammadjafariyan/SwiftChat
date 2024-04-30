@@ -1,9 +1,7 @@
-﻿@model SignalRMVCChat.Areas.security.Models.RegisterViewModel
+﻿@model SignalRMVCChat.Models.RegisterViewModel
 @{
     ViewBag.Title = "ثبت نام جدید گپ افزونه چت پشتیبانی وب سایت ";
 }
-
-<h2>@ViewBag.Title.</h2>
 
  <style>
          .login-container{
@@ -80,11 +78,9 @@
                 <div class="row">
                     <div class="col-md-12 login-form-1">
                         <h3></h3>
-                       @using (Html.BeginForm("RegisterAdmin", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                       @using (Html.BeginForm("Register", "OldAccount", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                        {
                            @Html.AntiForgeryToken()
-                           <h4>Create a new account.</h4>
-                           <hr />
                            @Html.ValidationSummary("", new { @class = "text-danger" })
                            <div class="form-group">
                                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
@@ -106,7 +102,7 @@
                            </div>
                            <div class="form-group">
                                <div class="col-md-offset-2 col-md-10">
-                                   <input type="submit" class="btn btn-default" value="ثبت نام مدیر سایت" />
+                                   <input type="submit" class="btn btn-default" value="ثبت نام" />
                                </div>
                            </div>
                        }

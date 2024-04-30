@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace SignalRMVCChat.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class CompaignStatController : Controller
     {
 

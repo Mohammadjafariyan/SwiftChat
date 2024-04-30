@@ -326,12 +326,11 @@
     <Compile Include="Areas\Email\Service\EmailTemplateService.cs" />
     <Compile Include="Areas\HubPartials\Controllers\HubHelperController.cs" />
     <Compile Include="Areas\HubPartials\HubPartialsAreaRegistration.cs" />
-    <Compile Include="Areas\security\Controllers\AccountController.cs" />
+    <Compile Include="Areas\security\Controllers\OldAccountController.cs" />
     <Compile Include="Areas\security\Controllers\AccountControllerTests.cs" />
     <Compile Include="Areas\security\Controllers\AdminsAccountController.cs" />
     <Compile Include="Areas\security\Controllers\BaseAccountController.cs" />
     <Compile Include="Areas\security\Controllers\ForgetPasswordController.cs" />
-    <Compile Include="Areas\security\Controllers\ManageController.cs" />
     <Compile Include="Areas\security\Models\AccountViewModels.cs" />
     <Compile Include="Areas\security\Models\AppAdmin.cs" />
     <Compile Include="Areas\security\Models\AppRole.cs" />
@@ -350,8 +349,9 @@
     <Compile Include="Areas\security\Service\SecurityDbContext.cs" />
     <Compile Include="Areas\security\Service\SecurityService.cs" />
     <Compile Include="Areas\security\temp.cs" />
-    <Compile Include="Areas\sysAdmin\ActionFilters\CurrentRequstSetterAttribute.cs" />
+    <Compile Include="Areas\sysAdmin\ActionFilters\SetCurrentRequestFilter.cs" />
     <Compile Include="Areas\sysAdmin\ActionFilters\EnumHelpers.cs" />
+    <Compile Include="Areas\sysAdmin\ActionFilters\TokenAuthorizeFilter.cs" />
     <Compile Include="Areas\sysAdmin\ActionFilters\WebApiCurrentRequstSetterAttribute.cs" />
     <Compile Include="Areas\sysAdmin\Controllers\GenericApiController.cs" />
     <Compile Include="Areas\sysAdmin\Controllers\GenericController.cs" />
@@ -379,6 +379,7 @@
     <Compile Include="Areas\sysAdmin\Service\SkipException.cs" />
     <Compile Include="Areas\sysAdmin\SysAdminAreaRegistration.cs" />
     <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlamController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
@@ -388,6 +389,7 @@
     <Compile Include="Controllers\HelpDeskController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OperatorsLoginController.cs" />
     <Compile Include="Controllers\UpdateApplicationController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
@@ -398,6 +400,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\CustomerHub.cs" />
+    <Compile Include="Localization\Languages.cs" />
+    <Compile Include="Localization\Localizer.cs" />
+    <Compile Include="Localization\LocalizerExtention.cs" />
+    <Compile Include="Localization\TextTranslation.cs" />
     <Compile Include="ManualMigrate\ManualMigrate.cs" />
     <Compile Include="ManualMigrate\SuperAdminSeed.cs" />
     <Compile Include="ManualMigrate\SuperAdminSeedTests.cs" />
@@ -806,26 +812,20 @@
     <Content Include="Areas\HubPartials\Views\_ViewStart.cshtml" />
     <Content Include="Areas\security\README.md" />
     <Content Include="Areas\security\temp" />
-    <Content Include="Areas\security\Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Areas\security\Views\Account\DisplayEmail.cshtml" />
-    <Content Include="Areas\security\Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Areas\security\Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Areas\security\Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Areas\security\Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Areas\security\Views\Account\Login.cshtml" />
-    <Content Include="Areas\security\Views\Account\Register.cshtml" />
-    <Content Include="Areas\security\Views\Account\RegisterAdmin.cshtml" />
-    <Content Include="Areas\security\Views\Account\ResetPassword.cshtml" />
-    <Content Include="Areas\security\Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Areas\security\Views\Account\SendCode.cshtml" />
-    <Content Include="Areas\security\Views\Account\VerifyCode.cshtml" />
-    <Content Include="Areas\security\Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Areas\security\Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Areas\security\Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Areas\security\Views\Manage\Index.cshtml" />
-    <Content Include="Areas\security\Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Areas\security\Views\Manage\SetPassword.cshtml" />
-    <Content Include="Areas\security\Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\ConfirmEmail.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\DisplayEmail.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\ExternalLoginFailure.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\ForgotPassword.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\Login.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\Register.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\RegisterAdmin.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\ResetPassword.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\SendCode.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\VerifyCode.cshtml" />
+    <Content Include="Areas\security\Views\OldAccount\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Areas\security\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\security\Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Areas\security\Views\_ViewStart.cshtml" />
@@ -2987,6 +2987,8 @@
     <Content Include="fonts\Sahel(1).woff" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Localization\Languages\default_English.json" />
+    <Content Include="Localization\Languages\default_Persian.json" />
     <Content Include="Models\GapChatContext\NewFile1.txt" />
     <Content Include="libman.json" />
     <Content Include="Areas\Admin\Views\Operator\Detail.cshtml" />
@@ -3059,7 +3061,27 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Service\Init\towns.json" />
-    <Content Include="Views\Account\RegisterAdmin.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\RegisterFormPartial.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Home\Price.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\OldAccount\RegisterAdmin.cshtml" />
     <Content Include="Views\HelpDesk\Article.cshtml" />
     <Content Include="Views\HelpDesk\Detail.cshtml" />
     <Content Include="Views\HelpDesk\Error.cshtml" />
@@ -3093,22 +3115,22 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\RolesAdmin\Edit.cshtml" />
     <Content Include="Views\RolesAdmin\Create.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\DisplayEmail.cshtml" />
-    <Content Include="Views\Account\AdminLogin.cshtml" />
+    <Content Include="Views\OldManage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\OldManage\SetPassword.cshtml" />
+    <Content Include="Views\OldManage\ManageLogins.cshtml" />
+    <Content Include="Views\OldManage\Index.cshtml" />
+    <Content Include="Views\OldManage\ChangePassword.cshtml" />
+    <Content Include="Views\OldManage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\OldAccount\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\OldAccount\VerifyCode.cshtml" />
+    <Content Include="Views\OldAccount\SendCode.cshtml" />
+    <Content Include="Views\OldAccount\ResetPassword.cshtml" />
+    <Content Include="Views\OldAccount\Register.cshtml" />
+    <Content Include="Views\OldAccount\Login.cshtml" />
+    <Content Include="Views\OldAccount\ForgotPassword.cshtml" />
+    <Content Include="Views\OldAccount\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\OldAccount\DisplayEmail.cshtml" />
+    <Content Include="Views\OldAccount\AdminLogin.cshtml" />
     <Content Include="TelegramBot\Tests\OperatorBot\SampleTelegramRequest.json" />
     <Content Include="Views\Home\AboutUs.cshtml" />
     <Content Include="Views\Home\Rules.cshtml" />
@@ -3122,10 +3144,10 @@
     <Content Include="Views\RolesAdmin\Delete.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\OldAccount\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\OldAccount\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\OldAccount\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\OldAccount\ConfirmEmail.cshtml" />
     <None Include="Views\web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -3160,7 +3182,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+<!--  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />-->
   <!--
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
 -->

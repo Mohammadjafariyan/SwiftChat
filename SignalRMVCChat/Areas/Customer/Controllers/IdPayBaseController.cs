@@ -5,7 +5,7 @@ using TelegramBotsWebApplication.Idpay;
 
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class IdPayBaseController:Controller 
     {
         protected override void OnException(ExceptionContext filterContext)

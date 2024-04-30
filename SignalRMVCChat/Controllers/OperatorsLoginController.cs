@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;

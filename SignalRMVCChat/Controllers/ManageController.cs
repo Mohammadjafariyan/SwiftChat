@@ -1,17 +1,19 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using SignalRMVCChat.Controllers;
-using TelegramBotsWebApplication.Models;
+using SignalRMVCChat.Areas.security.Models;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
+using TelegramBotsWebApplication;
+using TelegramBotsWebApplication.ActionFilters;
 
-namespace TelegramBotsWebApplication.Controllers
+namespace SignalRMVCChat.Areas.security.Controllers
 {
     [Authorize]
+    [TokenAuthorizeFilter]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -231,7 +233,7 @@ namespace TelegramBotsWebApplication.Controllers
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.ConfirmPassword, model.NewPassword);
             if (result.Succeeded)
             {
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());

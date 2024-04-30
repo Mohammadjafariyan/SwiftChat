@@ -13,7 +13,7 @@ using TelegramBotsWebApplication;
 
 namespace SignalRMVCChat.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class HomeController : Controller
     {
         [AllowAnonymous]
@@ -35,7 +35,24 @@ namespace SignalRMVCChat.Controllers
         {
             SignalRMVCChat.Models.MySpecificGlobal.OnControllerException(filterContext, ViewData);
         }
+
         [HttpGet]
+        public ActionResult Price()
+
+        {
+            return View();
+        }
+        
+        
+        [HttpGet]
+        public ActionResult Error()
+
+        {
+            return View();
+        }
+
+    
+ [HttpGet]
         public ActionResult Index()
         {
 

@@ -10,7 +10,7 @@
     var QUERY = TicketService.
                GetQuery();
 
-    if (CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+    if (CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.IsAdmin==true)
     {
         QUERY = QUERY.Where(c => c.AdminTicketSeenStatus == TicketSeenStatus.NotSeen
        && c.AppUserId.HasValue);

@@ -27,13 +27,13 @@ import LoginPage from "./Pages/LoginPage";
 
 function App() {
 
-    let adminToken= cookieManager.getItem("adminToken");
+    let adminToken = cookieManager.getItem("adminToken");
     //console.log(adminToken)
 
 
     // console.log(adminToken)
 
-    if (adminToken && adminToken!='null' && adminToken!='undefined') {
+    if (adminToken && adminToken != 'null' && adminToken != 'undefined') {
         return (
             <div className="App">
 
@@ -48,14 +48,14 @@ function App() {
 
             </div>
         );
-    }else{
+    } else {
 
         return (
             <div className="App">
 
                 <div>
-                    
-                    
+
+
                     <LayoutPage/>
                 </div>
 
@@ -63,9 +63,8 @@ function App() {
             </div>
         );
     }
-    
-    
-  
+
+
 }
 
 export default App;

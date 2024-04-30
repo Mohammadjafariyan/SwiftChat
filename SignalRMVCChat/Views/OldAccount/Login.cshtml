@@ -1,0 +1,198 @@
+﻿@model SignalRMVCChat.Areas.security.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "ورود به ناحیه کاربری";
+}    <style>
+
+
+
+.validation {
+float: right;
+color: red;
+    direction: rtl;
+}
+
+.validation * {
+float: right;
+color: red;
+}
+label{
+}
+         .login-container{
+         }
+         .login-form-1{
+             padding: 5%;
+             box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+         }
+         .login-form-1 h3{
+             text-align: center;
+             color: #333;
+         }
+         .login-form-2{
+             padding: 5%;
+             background: #0062cc;
+             box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+         }
+         .login-form-2 h3{
+             text-align: center;
+             color: #fff;
+         }
+         .login-container form{
+         }
+         .btnSubmit
+         {
+             width: 50%;
+             border-radius: 1rem;
+             padding: 1.5%;
+             border: none;
+             cursor: pointer;
+         }
+         .login-form-1 .btnSubmit{
+             font-weight: 600;
+             color: #fff;
+             background-color: #29b3d2;
+         }
+         .login-form-2 .btnSubmit{
+             font-weight: 600;
+             color: #0062cc;
+             background-color: #fff;
+         }
+         .login-form-2 .ForgetPwd{
+             color: #fff;
+             font-weight: 600;
+             text-decoration: none;
+         }
+         .login-form-1 .ForgetPwd{
+             color: #29b3d2;
+             font-weight: 600;
+             text-decoration: none;
+         }
+ 
+         input{
+             border: #29b3d2 solid 1px !important;
+         }
+ 
+         .form-group{
+             text-align: right;
+         }
+         .form-group *{
+             text-align: right;
+         }
+     </style>
+
+
+<section class="banner bg-4" id="home">
+    <div class="container">
+        <div class="row">
+            <div class="container login-container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 login-form-1" style="background-color: white">
+                    <h3>@ViewBag.Title</h3>
+
+                        @using (Html.BeginForm("Login", "OldAccount", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
+                                        @Html.AntiForgeryToken()
+                            <div class="validation">
+                                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                            </div>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <label >ایمیل</label>
+                                        @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
+                                        @Html.ValidationMessageFor(m => m.Email, "", new {@class = "text-danger"})
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <label>رمز عبور</label>
+                                        @Html.PasswordFor(m => m.Password, new {@class = "form-control"})
+                                        @Html.ValidationMessageFor(m => m.Password, "", new {@class = "text-danger"})
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.CheckBoxFor(m => m.RememberMe)
+                                                                                              <label>مرا به یا</label>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10" style="text-align: center">
+                                        <input style="text-align: center" type="submit" class="btnSubmit" value="ورود"/>
+                                       
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                 <p>عضو نیستید ؟</p>
+                                                                                        <p>
+                                                                                            @Html.ActionLink("ثبت نام", "Register")
+                                                                                        </p> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                @*<p>
+                                            @Html.ActionLink("Forget your password?", "ForgotPassword")
+                                        </p>*@
+                                }
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
+                @Html.AntiForgeryToken()
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Log in" class="btn btn-default" />
+                    </div>
+                </div>
+                <p>
+                    @Html.ActionLink("Register a new user?", "Register")
+                </p>
+                <p>
+                    @Html.ActionLink("Forget your password?", "ForgotPassword")
+                </p>
+            }
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial", new SignalRMVCChat.Models.ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+    </div>
+</div>
+*@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

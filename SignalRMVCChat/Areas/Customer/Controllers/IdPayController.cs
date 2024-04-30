@@ -2,6 +2,7 @@
 using System.Linq;
 using SignalRMVCChat.Areas.Customer.Service;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Service;
@@ -11,8 +12,8 @@ using TelegramBotsWebApplication.Idpay;
 
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [MyAuthorizeFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [TokenAuthorizeFilter]
     public class IdPayController : IdPayBaseController
     {
         private readonly IdpayPaymentBusinessListenerService _listenerService;

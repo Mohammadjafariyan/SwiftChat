@@ -34,7 +34,7 @@
                     <li> <a href="/Admin/AdminTickets/Index">	تیکت ها</a></li>
                     <li> <a href="/Admin/Setting/Detail?id=0">تنظیمات سیستم</a></li>
                      <li onclick="document.getElementById('logoutForm').submit()">
-                                                    @using (Html.BeginForm("LogOff", "Account"
+                                                    @using (Html.BeginForm("LogOff", "OldAccount"
                                                         , new {area = ""}, FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
                                                     {
                                                         @Html.AntiForgeryToken()

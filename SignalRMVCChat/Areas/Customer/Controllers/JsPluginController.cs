@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using Engine.SysAdmin.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
 using SignalRMVCChat.Models.GapChatContext;
@@ -13,8 +14,7 @@ using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [AllowCrossSite]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class JsPluginController : Controller
     {
         private CustomerProviderService customerProviderService = Injector.Inject<CustomerProviderService>();

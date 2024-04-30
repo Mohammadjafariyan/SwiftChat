@@ -83,7 +83,7 @@
                     else
                     {
 
-                        if (CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+                        if (CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.IsAdmin==true)
                         {
                             <a target="_blank" href="/admin/operator/detail?operatorId=@tick.AppUser.Id">کاربر : @tick.AppUser.Name @tick.AppUser.LastName</a>
 

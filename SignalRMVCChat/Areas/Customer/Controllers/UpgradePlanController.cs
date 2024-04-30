@@ -1,12 +1,13 @@
 ﻿using System.Web.Mvc;
 using SignalRMVCChat.Areas.Customer.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [MyAuthorizeFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [TokenAuthorizeFilter]
     public class UpgradePlanController:Controller
     {
         private readonly IdpayPaymentBusinessListenerService _paymentBusinessListenerService;

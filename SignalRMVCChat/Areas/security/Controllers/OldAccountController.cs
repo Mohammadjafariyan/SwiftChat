@@ -8,10 +8,10 @@ using TelegramBotsWebApplication;
 
 namespace SignalRMVCChat.Areas.security.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    public class AccountController : BaseAccountController<AppUserService,AppUser>
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    public class OldAccountController : BaseAccountController<AppUserService,AppUser>
     {
-        public AccountController()
+        public OldAccountController()
         {
             UserService = Injector.Inject<AppUserService>();
             SecurityService = Injector.Inject<SecurityService>();

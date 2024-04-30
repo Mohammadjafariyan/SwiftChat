@@ -1,10 +1,11 @@
 ﻿using System.Web.Mvc;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
-    [MyAuthorizeFilter]
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [TokenAuthorizeFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class CustomerTicketsController:Controller
     {
 

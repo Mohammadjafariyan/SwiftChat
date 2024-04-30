@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
@@ -18,7 +19,7 @@ using EmailService = SignalRMVCChat.Service.Compaign.Email.EmailService;
 
 namespace SignalRMVCChat.Areas.security.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     [Authorize]
     public abstract class BaseAccountController<TUserService, T> : Controller
         where TUserService : GenericService<T>, IAppUserService<T> where T : Entity, new()
@@ -679,7 +680,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [MyAuthorizeFilter]
+        [TokenAuthorizeFilter]
         public ActionResult LogOff()
         {
             //            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

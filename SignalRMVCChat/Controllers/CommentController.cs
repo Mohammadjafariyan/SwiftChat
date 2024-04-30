@@ -7,7 +7,7 @@ using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class CommentController: Controller
     {
         

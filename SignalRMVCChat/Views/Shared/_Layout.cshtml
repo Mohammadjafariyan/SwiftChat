@@ -1,4 +1,5 @@
-﻿@using SignalRMVCChat.Areas.sysAdmin.Service
+﻿@using System.Diagnostics
+@using SignalRMVCChat.Areas.sysAdmin.Service
 @using SignalRMVCChat.Service
 @using TelegramBotsWebApplication
 <!DOCTYPE html>
@@ -64,7 +65,7 @@
                         <a class="nav-link scrollTo" href="@baseUrl/#feature">امکانات</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link scrollTo" href="@baseUrl/#pricingTable">قیمت</a>
+                        <a class="nav-link scrollTo" href="@Url.Action("Price")">قیمت</a>
                     </li>
                     @*<li class="nav-item">
                             <a class="nav-link scrollTo" href="@baseUrl/#FreeDownloadNow">دانلود اپ های پشتیبان</a>
@@ -163,7 +164,11 @@
                         </ul>*@
                     <!-- Footer Links -->
                     <ul class="footer-links list-inline">
-                        <li> <a id="sysAdminLogin" style="color: white" class="scrollTo" href="/Account/AdminLogin">ورود به سیستم</a></li>
+                       
+                        @if (Debugger.IsAttached)
+                        {
+                            <li> <a id="sysAdminLogin" style="color: white" class="scrollTo" href="/Account/AdminLogin">ورود به سیستم</a></li>
+                        }
 
                         @if (SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal.IsAttached)
                         {

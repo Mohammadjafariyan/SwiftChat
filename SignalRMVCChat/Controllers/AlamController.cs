@@ -8,13 +8,13 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Controllers
 {
 
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [AllowCrossSite]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class AlamController : Controller
     {
 

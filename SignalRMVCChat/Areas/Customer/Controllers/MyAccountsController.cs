@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
@@ -17,8 +18,8 @@ using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [MyAuthorizeFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [TokenAuthorizeFilter]
     public class MyAccountsController : GenericController<MyAccount>
     {
         public MyAccountsController()

@@ -24,7 +24,7 @@
     {
         var ticket = _ticketService.GetById(ticketId).Single;
 
-        if (CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+        if (CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.IsAdmin==true)
         {
             ticket.AdminTicketSeenStatus =
        SignalRMVCChat.Areas.security.Models.TicketSeenStatus.Seen;

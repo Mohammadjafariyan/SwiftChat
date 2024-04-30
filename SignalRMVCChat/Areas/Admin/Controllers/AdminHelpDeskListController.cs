@@ -4,7 +4,7 @@ using SignalRMVCChat.Service.HelpDesk;
 
 namespace SignalRMVCChat.Areas.Admin.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class AdminHelpDeskListController:Controller
     {
         private HelpDeskService HelpDeskService = Injector.Inject<HelpDeskService>();

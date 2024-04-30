@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Models;
@@ -13,8 +14,7 @@ using TelegramBotsWebApplication.ActionFilters;
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
 
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [AllowCrossSite]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class PanelController : Controller
     {
         

@@ -256,6 +256,12 @@
                             <i class="feather icon-chevron-down"></i>
                         </div>
                         <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                           
+                            <li>
+                                <a href="@Url.Action("Index","Manage", new {area=""})">
+                                    <i class="feather icon-settings"></i> مدیریت پروفایل من
+                                </a>
+                            </li>
                             @*<li>
                                 <a href="#!">
                                     <i class="feather icon-settings"></i> Settings
@@ -277,7 +283,7 @@
                                 </a>
                             </li>*@
                             <li onclick="document.getElementById('logoutForm').submit()">
-                                @using (Html.BeginForm("LogOff", "Account"
+                                @using (Html.BeginForm("LogOff", "OldAccount"
                                     , new {area = ""}, FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
                                 {
                                     @Html.AntiForgeryToken()
@@ -748,7 +754,21 @@
                 TempData["err"] = null;
             }
 
-            @RenderBody()
+            <div class="page-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+            
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>@ViewBag.Title</h5>
+                                    </div>
+                                    <div class="card-block">
+                                               @RenderBody()
+              </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
 
         </div>
         <!-- Main-body end -->

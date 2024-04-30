@@ -15,7 +15,7 @@ using SignalRMVCChat.Service.HelpDesk.Article;
 
 namespace SignalRMVCChat.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class HelpDeskController:Controller
     {
 

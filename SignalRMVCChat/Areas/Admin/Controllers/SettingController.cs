@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.ActionFilters;
 using TelegramBotsWebApplication.Areas.Admin.Controllers;
@@ -7,8 +8,8 @@ using TelegramBotsWebApplication.Areas.Admin.Models;
 namespace SignalRMVCChat.Areas.Admin.Controllers
 {
     
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [MyAuthorizeFilter(Roles = "superAdmin")]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [TokenAuthorizeFilter(Roles = "superAdmin")]
     public class SettingController:GenericController<Setting>
     {
         private readonly SettingService _settingService;

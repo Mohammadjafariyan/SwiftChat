@@ -208,7 +208,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
                     TempData[MySpecificGlobal.SuccessMessageTempData] = "رمز عبور شما با موفقیت تغییر یافت اکنون می توانید با رمز عبور جدید وارد سیستم شوید";
 
 
-                    return RedirectToAction("login", "Account", new { area = "security" });
+                    return RedirectToAction("login", "OldAccount", new { area = "security" });
                 }
             }
             catch (Exception e)

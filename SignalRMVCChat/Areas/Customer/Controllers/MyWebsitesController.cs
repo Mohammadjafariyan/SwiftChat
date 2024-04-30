@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Service;
 using SignalRMVCChat.SysAdmin.Service;
@@ -11,8 +12,8 @@ using TelegramBotsWebApplication.Areas.Admin.Models;
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
     
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [MyAuthorizeFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [TokenAuthorizeFilter]
     public class MyWebsitesController:GenericController<MyWebsite>
     {
 

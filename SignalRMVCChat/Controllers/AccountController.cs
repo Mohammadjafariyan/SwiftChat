@@ -1,92 +1,68 @@
-﻿using SignalRMVCChat.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using SignalRMVCChat.Areas.security.Models;
+using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.DependencyInjection;
-using SignalRMVCChat.Service;
+using SignalRMVCChat.Models;
 using TelegramBotsWebApplication;
-using TelegramBotsWebApplication.Models;
 
-namespace SignalRMVCChat.Controllers
+namespace SignalRMVCChat.Areas.security.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "SuperUser,SystemAdmin")]
     public class AccountController : Controller
     {
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+        
+        public SecurityService SecurityService;
+
         public AccountController()
         {
+            SecurityService = Injector.Inject<SecurityService>();
             
+            UserService = Injector.Inject<AppUserService>();
+            SecurityService = Injector.Inject<SecurityService>();
+            AppRoleService = Injector.Inject<AppRoleService>();
         }
-        
-        public async Task CreateRolesIfNotExist(){
-            
-            ApplicationDbContext context = new ApplicationDbContext();
 
-            
-            
-            var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+        public AppUserService UserService { get; set; }
+        public AppRoleService AppRoleService { get; set; }
 
-            if(!RoleManager.RoleExists("admin"))
-            {
-                var role = new IdentityRole("admin");
-                role.Name = "admin";
-              await  RoleManager.CreateAsync(role);
-            }
-            
-            if(!RoleManager.RoleExists("customer"))
-            {
-                var role = new IdentityRole();
-                role.Name = "customer";
-                RoleManager.Create(role);
-            }
-            
-            
-        }
-        
-     
-
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        private ApplicationUserManager _userManager;
+        public ApplicationSignInManager SignInManager
+        {
+            get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
+            private set { _signInManager = value; }
+        }
+
+
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
         }
 
         //
         // GET: /Account/Login
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
-        }
-
-        private ApplicationSignInManager _signInManager;
-
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set { _signInManager = value; }
         }
 
         //
@@ -101,28 +77,41 @@ namespace SignalRMVCChat.Controllers
                 return View(model);
             }
 
-            // This doen't count login failures towards lockout only two factor authentication
-            // To enable password failures to trigger lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+
+
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe,
+                shouldLockout: false);
+            
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index","Dashboard",new {area="Customer"});
-                    /*return RedirectToLocal(returnUrl);*/
+                    var result2 = SecurityService.SignInAsync(model.Email, model.Email);
+
+                    Response.Cookies.Add(new HttpCookie("gaptoken", result2.Token));
+
+                    if (string.IsNullOrEmpty(returnUrl))
+                    {
+                        return RedirectToAction("Index", "Dashboard", new { area = "Customer" });
+                    }
+                    else
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = model.RememberMe});
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "شماره موبایل / ایمیل یا رمز عبور اشتباه است");
                     return View(model);
             }
         }
 
         //
         // GET: /Account/VerifyCode
-        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
@@ -131,15 +120,16 @@ namespace SignalRMVCChat.Controllers
             {
                 return View("Error");
             }
-            var user = await UserManager.FindByIdAsync(await SignInManager.GetVerifiedUserIdAsync());
-            if (user != null)
-            {
-                ViewBag.Status = "For DEMO purposes the current " + provider + " code is: " + await UserManager.GenerateTwoFactorTokenAsync(user.Id, provider);
-            }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+
+            return View(new VerifyCodeViewModel {Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe});
         }
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            MySpecificGlobal.OnControllerException(filterContext, ViewData);
+        }
         //
+        
         // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
@@ -151,7 +141,12 @@ namespace SignalRMVCChat.Controllers
                 return View(model);
             }
 
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
+            // The following code protects for brute force attacks against the two factor codes. 
+            // If a user enters incorrect codes for a specified amount of time then the user account 
+            // will be locked out for a specified amount of time. 
+            // You can configure the account lockout settings in IdentityConfig
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code,
+                isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -167,58 +162,12 @@ namespace SignalRMVCChat.Controllers
 
         //
         // GET: /Account/Register
-        [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> Register()
+        public ActionResult Register()
         {
-          await  CreateRolesIfNotExist();
-
             return View();
         }
-        
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult> RegisterAdmin()
-        {
-            if (!System.Diagnostics.Debugger.IsAttached)
-            {
-                return Content("ثبت نام ادمین وب سایت تنها در حالت دیباگ امکان پذیر است با پشتیبانی تماس بگیرید");
-            }
-            return View("RegisterAdmin");
-        }
-      
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RegisterAdmin(RegisterViewModel model)
-        {
-            if (!System.Diagnostics.Debugger.IsAttached)
-            {
-                return Content("ثبت نام ادمین وب سایت تنها در حالت دیباگ امکان پذیر است با پشتیبانی تماس بگیرید");
-            }
-            
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
 
-                if (result.Succeeded)
-                {
-                   await  CreateRolesIfNotExist();
-                    await UserManager.AddToRoleAsync(user.Id, "admin");
-
-                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
-                    ViewBag.Link = callbackUrl;
-                    return View("DisplayEmail");
-                }
-                AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
         //
         // POST: /Account/Register
         [HttpPost]
@@ -226,30 +175,66 @@ namespace SignalRMVCChat.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+
+            if (ModelState.IsValid )
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+
+             //   string name = model.UserName.Replace("@", "J");
+                var user = new ApplicationUser
+                {
+                    Email = model.Email ,
+                    Name=model.Name,
+                    LastName=model.LastName,
+                    UserName = model.Email,
+                    
+                };
+                
+                
+                
+                var userExists = UserManager.Users
+                    .FirstOrDefault(s => s.Email==model.Email);
+
+                if (userExists!=null)
+                {
+                    AddErrors(new IdentityResult("این ایمیل یا شماره موبایل قبلا ثبت شده است ، در صورتی که رمز عبور خود را فراموش کرده اید از طریق فراموشی رمز عبور اقدام فرمایید"));
+                    return View(model);
+                }
+
+                var userApp = new AppUser
+                {
+                    SignUpDateTime=DateTime.Now,
+                    UserName = model.Email, Email = model.Email,
+                    Name = model.Name,
+                    LastName = model.LastName,
+                    Password=model.Email,
+                };;
+
+                var _user = UserService.GetByUsername(user.UserName, false);
+                if (_user != null)
+                {
+                    throw new Exception("این نام کاربری قبلا انتخاب شده است");
+                }
+
+                 UserService.Save(userApp);
+                
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                  //  UserManager.AddToRole(user.Id,"customer");
 
+                   // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                   var _myAccountProviderService= Injector.Inject<MyAccountProviderService>();
-                     _myAccountProviderService.CreateNewMyAccount(model.Email,model.Password);
-                    
-                 await   CreateRolesIfNotExist();
-                    await UserManager.AddToRoleAsync(user.Id, "customer");
-                    /*var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
-                    ViewBag.Link = callbackUrl;*/
+                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                   return await Login(new LoginViewModel
-                    {
-                        Email = model.Email, Password = model.Password
-                    },null);
-
+                    return View("ConfirmEmail" );
                 }
+
                 AddErrors(result);
             }
 
@@ -259,21 +244,22 @@ namespace SignalRMVCChat.Controllers
 
         //
         // GET: /Account/ConfirmEmail
-        /*[HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(int userId, string code)
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null)
+            if (userId == null && code == null)
             {
                 return View("Error");
             }
+
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
-        }*/
+            
+            ViewBag.Succeeded=result.Succeeded;
+            return View( "ConfirmEmail" );
+        }
 
         //
         // GET: /Account/ForgotPassword
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
@@ -289,18 +275,25 @@ namespace SignalRMVCChat.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
+                
+                var u = UserManager.Users
+                    .FirstOrDefault(s => s.UserName == model.Email || s.Email == model.Email );
+
+                string username = u?.UserName ?? u?.Email;
+                
+                var user = await UserManager.FindByNameAsync(username);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
 
-                var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
-                ViewBag.Link = callbackUrl;
-                return View("ForgotPasswordConfirmation");
+                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                // Send an email with this link
+                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -309,7 +302,6 @@ namespace SignalRMVCChat.Controllers
 
         //
         // GET: /Account/ForgotPasswordConfirmation
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
@@ -318,7 +310,6 @@ namespace SignalRMVCChat.Controllers
 
         //
         // GET: /Account/ResetPassword
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
@@ -336,24 +327,26 @@ namespace SignalRMVCChat.Controllers
             {
                 return View(model);
             }
+
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
+
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
+
             AddErrors(result);
             return View();
         }
 
         //
         // GET: /Account/ResetPasswordConfirmation
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
@@ -368,12 +361,12 @@ namespace SignalRMVCChat.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider,
+                Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl}));
         }
 
         //
         // GET: /Account/SendCode
-        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
@@ -382,9 +375,12 @@ namespace SignalRMVCChat.Controllers
             {
                 return View("Error");
             }
+
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            var factorOptions = userFactors.Select(purpose => new SelectListItem {Text = purpose, Value = purpose})
+                .ToList();
+            return View(new SendCodeViewModel
+                {Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe});
         }
 
         //
@@ -404,12 +400,13 @@ namespace SignalRMVCChat.Controllers
             {
                 return View("Error");
             }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+
+            return RedirectToAction("VerifyCode",
+                new {Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe});
         }
 
         //
         // GET: /Account/ExternalLoginCallback
-        [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
@@ -428,13 +425,14 @@ namespace SignalRMVCChat.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
+                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = false});
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    return View("ExternalLoginConfirmation",
+                        new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
             }
         }
 
@@ -443,7 +441,8 @@ namespace SignalRMVCChat.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
+            string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -458,7 +457,8 @@ namespace SignalRMVCChat.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -469,6 +469,7 @@ namespace SignalRMVCChat.Controllers
                         return RedirectToLocal(returnUrl);
                     }
                 }
+
                 AddErrors(result);
             }
 
@@ -479,32 +480,49 @@ namespace SignalRMVCChat.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
+      //  [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut();
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
 
         //
         // GET: /Account/ExternalLoginFailure
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
             return View();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
+
+                if (_signInManager != null)
+                {
+                    _signInManager.Dispose();
+                    _signInManager = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
         {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            get { return HttpContext.GetOwinContext().Authentication; }
         }
 
         private void AddErrors(IdentityResult result)
@@ -521,6 +539,7 @@ namespace SignalRMVCChat.Controllers
             {
                 return Redirect(returnUrl);
             }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -544,14 +563,16 @@ namespace SignalRMVCChat.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
+                var properties = new AuthenticationProperties {RedirectUri = RedirectUri};
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;
                 }
+
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
         #endregion
     }
 }

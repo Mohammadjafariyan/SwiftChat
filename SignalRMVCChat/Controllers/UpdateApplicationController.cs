@@ -11,7 +11,7 @@ using Debugger = SignalRMVCChat.Areas.sysAdmin.Service.MyGlobal;
 
 namespace SignalRMVCChat.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class UpdateApplicationController:Controller
     {
 

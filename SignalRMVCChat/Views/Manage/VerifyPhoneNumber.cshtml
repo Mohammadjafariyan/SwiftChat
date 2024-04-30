@@ -1,6 +1,8 @@
-﻿@model SignalRMVCChat.Models.VerifyPhoneNumberViewModel
+﻿@model VerifyPhoneNumberViewModel
 @{
     ViewBag.Title = "Verify Phone Number";
+    Layout = "~/Areas/Customer/Views/Shared/_Layout_Customer.cshtml";
+
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -9,7 +11,7 @@
 {
     @Html.AntiForgeryToken()
     @Html.Hidden("phoneNumber", @Model.PhoneNumber)
-    <h4>Add a phone number.</h4>
+    <h4>Enter verification code</h4>
     <h5>@ViewBag.Status</h5>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })

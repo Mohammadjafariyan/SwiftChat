@@ -112,7 +112,7 @@ namespace SignalRMVCChat.WebsocketTests
             
             
 
-            var acc = new AccountController();
+            var acc = new OldAccountController();
 
             MyUnitTestHelper.InitController(acc);
             var m = new RegisterViewModel

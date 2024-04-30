@@ -12,6 +12,7 @@ using Moq;
 using NUnit.Framework;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.Areas.sysAdmin.DependencyInjection;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.DependencyInjection;
@@ -32,7 +33,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
             MyGlobal.IsUnitTestEnvirement = true;
             MyDependencyResolver.RegisterDependencies();
   
-            var acc = new AccountController();
+            var acc = new OldAccountController();
             FakeHttpContextManager.init(acc);
 
             
@@ -72,7 +73,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
 
             httpContext.Object.Session["token"] = user.Token;
-            var filter = new MyAuthorizeFilter();
+            var filter = new TokenAuthorizeFilter();
 
             filter.OnActionExecuting(actionExecutedContext.Object);
             
@@ -87,7 +88,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
             MyGlobal.IsUnitTestEnvirement = true;
             MyDependencyResolver.RegisterDependencies();
 
-            var acc = new AccountController();
+            var acc = new OldAccountController();
             FakeHttpContextManager.init(acc);
 
             var m = new LoginViewModel()
@@ -124,7 +125,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
 
             MyDependencyResolver.RegisterDependencies();
 
-            var acc = new AccountController();
+            var acc = new OldAccountController();
             FakeHttpContextManager.init(acc);
             
             
@@ -167,7 +168,7 @@ namespace SignalRMVCChat.Areas.security.Controllers
             
             MyDependencyResolver.RegisterDependencies();
 
-            var acc = new AccountController();
+            var acc = new OldAccountController();
 
             var m = new RegisterViewModel
             {
@@ -201,7 +202,7 @@ var appUserService = DependencyInjection.Injector.Inject<AppUserService>();
             
          AppRoleService AppRoleService = Injector.Inject<AppRoleService>();
 
-            var acc=new AccountController();
+            var acc=new OldAccountController();
 
             await acc.CreateRolesIfNotExist();
             

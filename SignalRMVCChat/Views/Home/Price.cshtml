@@ -1,0 +1,16 @@
+﻿@using SignalRMVCChat.DependencyInjection
+@using SignalRMVCChat.Service
+@model dynamic
+
+<!--====  End of Promo Video  ====-->
+<!--===================================
+=            Pricing Table            =
+====================================-->
+
+@{
+    var planService = Injector.Inject<PlanService>();
+}
+
+<div style="padding:50px;background: white" dir="rtl" >
+    @Html.Partial("~/Areas/Admin/Views/Shared/PricingTable.cshtml", planService.GetAll())
+</div>

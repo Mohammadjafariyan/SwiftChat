@@ -9,6 +9,7 @@ using OpenQA.Selenium;
 using SignalRMVCChat.Areas.Common.Service;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.Areas.sysAdmin.Service;
 using SignalRMVCChat.SysAdmin.Service;
 using TelegramBotsWebApplication;
@@ -18,8 +19,8 @@ using TelegramBotsWebApplication.Areas.Admin.Models;
 
 namespace SignalRMVCChat.Areas.Common.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [MyAuthorizeFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [TokenAuthorizeFilter]
     public class TicketController : GenericController<Ticket>
     {
         public TicketService TicketService { get; }
@@ -185,7 +186,7 @@ namespace SignalRMVCChat.Areas.Common.Controllers
         //    var QUERY = TicketService.
         //        GetQuery();
 
-        //    if (CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.IsAdmin)
+        //    if (CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.IsAdmin)
         //    {
         //        QUERY = QUERY.Where(c => c.TicketSeenStatus == TicketSeenStatus.NotSeen
         //        && c.AppAdminId == CurrentRequestSingleton.CurrentRequest.AppLoginViewModel.AppUserId);

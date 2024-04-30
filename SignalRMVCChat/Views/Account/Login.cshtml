@@ -1,196 +1,335 @@
-﻿@model SignalRMVCChat.Models.LoginViewModel
-
+﻿@using Engine.Localization
+@model SignalRMVCChat.Areas.security.Models.LoginViewModel
 @{
     ViewBag.Title = "ورود به ناحیه کاربری";
-}    <style>
 
+    ViewBag.Bootstrap = 4;
 
-.validation {
-float: right;
-color: red;
-    direction: rtl;
 }
-
-.validation * {
-float: right;
-color: red;
-}
-label{
-}
-         .login-container{
-             margin-top: 5%;
-             margin-bottom: 5%;
-         }
-         .login-form-1{
-             padding: 5%;
-             box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
-         }
-         .login-form-1 h3{
-             text-align: center;
-             color: #333;
-         }
-         .login-form-2{
-             padding: 5%;
-             background: #0062cc;
-             box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
-         }
-         .login-form-2 h3{
-             text-align: center;
-             color: #fff;
-         }
-         .login-container form{
-             padding: 10%;
-         }
-         .btnSubmit
-         {
-             width: 50%;
-             border-radius: 1rem;
-             padding: 1.5%;
-             border: none;
-             cursor: pointer;
-         }
-         .login-form-1 .btnSubmit{
-             font-weight: 600;
-             color: #fff;
-             background-color: #29b3d2;
-         }
-         .login-form-2 .btnSubmit{
-             font-weight: 600;
-             color: #0062cc;
-             background-color: #fff;
-         }
-         .login-form-2 .ForgetPwd{
-             color: #fff;
-             font-weight: 600;
-             text-decoration: none;
-         }
-         .login-form-1 .ForgetPwd{
-             color: #29b3d2;
-             font-weight: 600;
-             text-decoration: none;
-         }
- 
-         input{
-             border: #29b3d2 solid 1px !important;
-         }
- 
-         .form-group{
-             text-align: right;
-         }
-         .form-group *{
-             text-align: right;
-         }
-     </style>
+<style>
+    .register{
+        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+        margin-top: 3%;
+        padding: 3%;
+    }
+    
+    .register{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
 
 
-<h2>@ViewBag.Title.</h2>
-<section class="banner bg-4" id="home">
-    <div class="container">
-        <div class="row">
-            <div class="container login-container">
-                <div class="row">
-                    <div class="col-md-12 login-form-1">
-                        <h3>ورود به سیستم</h3>
-                        <p>برای نصب پلاگین مخصوص وب سایت شما ، ابتدا نیاز است وارد شوید</p>
-                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
-                                        @Html.AntiForgeryToken()
-                            <div class="validation">
-                                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+    .register-left{
+        text-align: center;
+        color: #fff;
+        margin-top: 4%;
+    }
+    .register-left input{
+        border: none;
+        border-radius: 1.5rem;
+        padding: 2%;
+        width: 60%;
+        background: #f8f9fa;
+        font-weight: bold;
+        color: #383d41;
+        margin-top: 30%;
+        margin-bottom: 3%;
+        cursor: pointer;
+    }
+    .register-right{
+        background: #f8f9fa;
+        border-top-left-radius: 10% 50%;
+        border-bottom-left-radius: 10% 50%;
+    }
+    .register-left img{
+        margin-top: 15%;
+        margin-bottom: 5%;
+        width: 25%;
+        -webkit-animation: mover 2s infinite  alternate;
+        animation: mover 1s infinite  alternate;
+    }
+    @@-webkit-keyframes mover {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-20px); }
+    }
+    @@keyframes mover {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-20px); }
+    }
+    .register-left p{
+        font-weight: lighter;
+        padding: 12%;
+        margin-top: -9%;
+    }
+    .register .register-form{
+        padding: 10%;
+        margin-top: 10%;
+    }
+    .btnRegister{
+        float: right;
+        margin-top: 10%;
+        border: none;
+        border-radius: 1.5rem;
+        padding: 2%;
+        background: #0062cc;
+        color: #fff;
+        font-weight: 600;
+        width: 50%;
+        cursor: pointer;
+    }
+    .register .nav-tabs{
+        margin-top: 3%;
+        border: none;
+        background: #0062cc;
+        border-radius: 1.5rem;
+        width: 28%;
+        float: right;
+    }
+    .register .nav-tabs .nav-link{
+        padding: 2%;
+        height: 34px;
+        font-weight: 600;
+        color: #fff;
+        border-top-right-radius: 1.5rem;
+        border-bottom-right-radius: 1.5rem;
+    }
+    .register .nav-tabs .nav-link:hover{
+        border: none;
+    }
+    .register .nav-tabs .nav-link.active{
+        width: 100px;
+        color: #0062cc;
+        border: 2px solid #0062cc;
+        border-top-left-radius: 1.5rem;
+        border-bottom-left-radius: 1.5rem;
+    }
+    .register-heading{
+        text-align: center;
+        margin-top: 8%;
+        margin-bottom: -15%;
+        color: #495057;
+    }
+</style>
+@*
+<style>
+    body{
+        background: -webkit-linear-gradient(left, #0072ff, #00c6ff);
+    }
+    
+    input {
+        direction: ltr !important;
+    }
+    .contact-form{
+        background: #fff;
+        margin-top: 10%;
+        margin-bottom: 5%;
+        width: 70%;
+    }
+    .contact-form .form-control{
+        border-radius:1rem;
+    }
+    .contact-image{
+        text-align: center;
+    }
+    .contact-image img{
+        border-radius: 6rem;
+        width: 11%;
+        margin-top: -3%;
+        transform: rotate(29deg);
+    }
+    .contact-form form{
+        padding: 14%;
+    }
+    .contact-form form .row{
+        margin-bottom: -7%;
+    }
+    .contact-form h3{
+        margin-bottom: 8%;
+        margin-top: -10%;
+        text-align: center;
+        color: #0062cc;
+    }
+    .contact-form .btnContact {
+        width: 50%;
+        border: none;
+        border-radius: 1rem;
+        padding: 1.5%;
+        background: #dc3545;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+    }
+    .btnContactSubmit
+    {
+        width: 50%;
+        border-radius: 1rem;
+        padding: 1.5%;
+        color: #fff;
+        background-color: #0062cc;
+        border: none;
+        cursor: pointer;
+    }
+</style>*@
+
+
+<style>
+    .register{
+        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+        margin-top: 3%;
+        padding: 3%;
+    }
+    .register-left{
+        text-align: center;
+        color: #fff;
+        margin-top: 4%;
+    }
+    .register-left input{
+        border: none;
+        border-radius: 1.5rem;
+        padding: 2%;
+        width: 60%;
+        background: #f8f9fa;
+        font-weight: bold;
+        color: #383d41;
+        margin-bottom: 3%;
+        cursor: pointer;
+    }
+    .register-right{
+        background: #f8f9fa;
+        border-top-left-radius: 10% 50%;
+        border-bottom-left-radius: 10% 50%;
+    }
+    .register-left img{
+        margin-top: 15%;
+        margin-bottom: 5%;
+        width: 25%;
+        -webkit-animation: mover 2s infinite  alternate;
+        animation: mover 1s infinite  alternate;
+    }
+    @@-webkit-keyframes mover {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-20px); }
+    }
+    @@keyframes mover {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-20px); }
+    }
+    .register-left p{
+        font-weight: lighter;
+        padding: 12%;
+        margin-top: -9%;
+    }
+    .register .register-form{
+        padding: 10%;
+        margin-top: 10%;
+    }
+    .btnRegister{
+        float: right;
+        margin-top: 10%;
+        border: none;
+        border-radius: 1.5rem;
+        padding: 2%;
+        background: #0062cc;
+        color: #fff;
+        font-weight: 600;
+        width: 50%;
+        cursor: pointer;
+    }
+    .register .nav-tabs{
+        margin-top: 3%;
+        border: none;
+        background: #0062cc;
+        border-radius: 1.5rem;
+        width: 28%;
+        float: right;
+    }
+    .register .nav-tabs .nav-link{
+        padding: 2%;
+        height: 34px;
+        font-weight: 600;
+        color: #fff;
+        border-top-right-radius: 1.5rem;
+        border-bottom-right-radius: 1.5rem;
+    }
+    .register .nav-tabs .nav-link:hover{
+        border: none;
+    }
+    .register .nav-tabs .nav-link.active{
+        width: 100px;
+        color: #0062cc;
+        border: 2px solid #0062cc;
+        border-top-left-radius: 1.5rem;
+        border-bottom-left-radius: 1.5rem;
+    }
+    .register-heading{
+        text-align: center;
+        margin-top: 8%;
+        margin-bottom: -15%;
+        color: #495057;
+    }
+</style>
+
+
+<div class="container register">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img  style="width: 50px" src="~/Content/designassets/pin-location-icon-sign-symbol-design-free.png"  alt=""/>
+            <h3>@ViewBag.title</h3>
+
+      
+            <p>حساب کاربری ندارید ؟ </p>
+            <input type="button" onclick="window.location.href='@Url.Action("Register")'" name="" value="ثبت نام"/><br/>
+            <input style="margin: 0px" type="button" onclick="window.location.href='@Url.Action("ForgotPassword")'" name="" value="فراموشی رمز عبور"/><br/>
+
+        </div>
+        <div class="col-md-9 register-right" style="text-align: right">
+
+            <div class="tab-content" id="myTabContent" dir="rtl">
+                <div class="" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <h3 class="register-heading">فرم ورود</h3>
+
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }
+                        , FormMethod.Post, new { @class = "form ", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+
+                        <div class="row register-form">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m=>m.Email)
+                                    @Html.TextBoxFor(m => m.Email, new { placeholder = Request.GetText("نام کاربری یا ایمیل *"), @class = "form-control" })
+                                </div>
+
                             </div>
+
+                            <div class="col-md-6">
+
+
                                 <div class="form-group">
-                                    <div class="col-md-10">
-                                        <label >ایمیل</label>
-                                        @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
-                                        @Html.ValidationMessageFor(m => m.Email, "", new {@class = "text-danger"})
-                                    </div>
+                                                                       @Html.LabelFor(m=>m.Password)
+ @Html.PasswordFor(m => m.Password, new { placeholder = Request.GetText("تکرار رمز عبور *"), @class = "form-control" })
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-10">
-                                        <label>رمز عبور</label>
-                                        @Html.PasswordFor(m => m.Password, new {@class = "form-control"})
-                                        @Html.ValidationMessageFor(m => m.Password, "", new {@class = "text-danger"})
-                                    </div>
-                                </div>
-                                @*<div class="form-group">
-                                            <div class="col-md-offset-2 col-md-10">
-                                                <div class="checkbox">
-                                                    @Html.CheckBoxFor(m => m.RememberMe)
-                                                                                              <label>مرا به یا</label>
-                                                </div>
-                                            </div>
-                                        </div>*@
-                                <div class="form-group">
-                                    <div class="col-md-offset-2 col-md-10" style="text-align: center">
-                                        <input style="text-align: center" type="submit" class="btnSubmit" value="ورود"/>
-                                        <p>عضو نیستید ؟</p>
-                                        <p>
-                                            @Html.ActionLink("ثبت نام", "Register")
-                                        </p> </div>
+
+
+                                    <input type="submit" class="btnRegister" value="ورود"/>
+
                                 </div>
 
-                                @*<p>
-                                            @Html.ActionLink("Forget your password?", "ForgotPassword")
-                                        </p>*@
-                                }
                             </div>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        </div>
+                    }
+
                 </div>
             </div>
         </div>
     </div>
-</section>
 
-@*
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
-                @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-default" />
-                    </div>
-                </div>
-                <p>
-                    @Html.ActionLink("Register a new user?", "Register")
-                </p>
-                <p>
-                    @Html.ActionLink("Forget your password?", "ForgotPassword")
-                </p>
-            }
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new SignalRMVCChat.Models.ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-        </section>
-    </div>
 </div>
-*@
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

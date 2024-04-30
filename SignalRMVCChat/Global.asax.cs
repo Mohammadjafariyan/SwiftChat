@@ -1,4 +1,5 @@
-﻿using SignalRMVCChat.Models;
+﻿using System;
+using SignalRMVCChat.Models;
 using SignalRMVCChat;
 using System.Data.Entity;
 using System.Linq;
@@ -21,6 +22,18 @@ namespace SignalRMVCChat
     // visit http://go.microsoft.com/?LinkId=301868
     public class MvcApplication : System.Web.HttpApplication
     {
+        /*protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception exception = Server.GetLastError();
+
+            // Do something with the error.
+            System.Diagnostics.Debug.WriteLine(exception);
+
+            // Redirect somewhere or return an error code in case of web api
+            Response.Redirect("/Home/Error");
+
+        }*/
+        
         protected void Application_Start()
         {
             // This is where it "should" be

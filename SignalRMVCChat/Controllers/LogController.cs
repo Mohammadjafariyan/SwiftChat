@@ -6,7 +6,7 @@ using SignalRMVCChat.Service;
 
 namespace SignalRMVCChat.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
     public class LogController : Controller
     {
         [HttpPost]

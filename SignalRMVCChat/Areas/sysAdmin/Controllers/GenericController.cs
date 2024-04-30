@@ -4,15 +4,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Engine.SysAdmin.Models;
+ using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
  using SignalRMVCChat.Areas.sysAdmin.Service;
  using TelegramBotsWebApplication.ActionFilters;
 using TelegramBotsWebApplication.Areas.Admin.Models;
 using TelegramBotsWebApplication.Areas.Admin.Service;
 namespace TelegramBotsWebApplication.Areas.Admin.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [CurrentRequstSetterFilter]
-    [MyAuthorizeFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+   // [CurrentRequstSetterFilter]
+    [TokenAuthorizeFilter]
     public abstract class GenericController<T> : Controller where T:class,IEntity,new()
     {
         protected IService<T> Service;

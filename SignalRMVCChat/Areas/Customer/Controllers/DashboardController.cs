@@ -1,14 +1,15 @@
 ﻿using System.Net.Sockets;
 using System.Web.Mvc;
 using SignalRMVCChat.Areas.security.Service;
+using SignalRMVCChat.Areas.sysAdmin.ActionFilters;
 using SignalRMVCChat.DependencyInjection;
 using SignalRMVCChat.Service;
 using TelegramBotsWebApplication.ActionFilters;
 
 namespace SignalRMVCChat.Areas.Customer.Controllers
 {
-    [TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
-    [MyAuthorizeFilter]
+    //[TelegramBotsWebApplication.ActionFilters.MyControllerFilter]
+    [TokenAuthorizeFilter]
     public class DashboardController:Controller
     {
         protected override void OnException(ExceptionContext filterContext)

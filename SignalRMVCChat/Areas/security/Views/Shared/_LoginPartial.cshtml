@@ -4,7 +4,7 @@
 @using SignalRMVCChat.Models.GapChatContext
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account" 
+    using (Html.BeginForm("LogOff", "OldAccount" 
         , new {area=""}, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
     @Html.AntiForgeryToken()
@@ -27,7 +27,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("ثبت نام", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("ورود", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li>@Html.ActionLink("ثبت نام", "Register", "OldAccount", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("ورود", "Login", "OldAccount", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }

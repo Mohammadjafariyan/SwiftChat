@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using NUnit.Framework;
 using SignalRMVCChat.Areas.security.Models;
 using SignalRMVCChat.Areas.security.Service;
 using SignalRMVCChat.SysAdmin.Service;
@@ -28,28 +31,33 @@ namespace SignalRMVCChat.Areas.Common.Service
             //select roots 
             var query= base.GetQuery().Where(q=>q.ParentId.HasValue==false);
 
+            
             var appUserId = CurrentRequestSingleton.CurrentRequest?.AppLoginViewModel?.AppUserId;
 
-            if (appUserId.HasValue==false)
+            if (appUserId.HasValue)
             {
-                throw new System.Exception("کاربر وارد نشده است");
-            }
-            bool isSuperAdmin= _appRoleService.IsInRole(appUserId.Value, "superAdmin");
+                bool isSuperAdmin= _appRoleService.IsInRole(appUserId.Value, "superAdmin");
 
-            // اگر سوپر ادمین نباشد یعنی نمی تواند کل تیکت هارا ببیند فقط مال خودش را می بیند
-            if (isSuperAdmin == false)
+                // اگر سوپر ادمین نباشد یعنی نمی تواند کل تیکت هارا ببیند فقط مال خودش را می بیند
+                if (isSuperAdmin == false)
+                {
+                    if (_appRoleService.IsInRole(appUserId.Value,"admin"))
+                    {
+                        query=query.Where(r => r.AppAdminId == appUserId);
+                    }
+                    else
+                    {
+                        query=query.Where(r => r.AppUserId == appUserId);
+                    }
+                }
+                return query;
+            }
+            else
             {
-                if (_appRoleService.IsInRole(appUserId.Value,"admin"))
-                {
-                    query=query.Where(r => r.AppAdminId == appUserId);
-                }
-                else
-                {
-                    query=query.Where(r => r.AppUserId == appUserId);
-                }
+                return new List<Ticket>().AsQueryable();
             }
+           
 
-            return query;
         }
     }
 }
